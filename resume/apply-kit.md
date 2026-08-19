@@ -131,3 +131,95 @@ building one real n8n workflow would let you claim the tool directly.
 - **Offer a paid trial task.** It beats a CV every time when you have no formal experience.
 - **Track it.** Company, date, link, reply. If 30 applications get 0 replies, the message is wrong —
   not you.
+
+---
+
+## 7. No degree — where that never comes up
+
+You have a class 10 certificate. That is only a problem in places that ask. Most of the places
+worth your time never ask, because the client is looking at working software instead. Work these
+in order.
+
+### Tier 1 — education is never requested at all
+
+The client sees your proposal and your portfolio. There is no education field anywhere.
+
+- Upwork — https://www.upwork.com/
+- Fiverr — https://www.fiverr.com/
+- Freelancer — https://www.freelancer.com/
+- Contra — https://contra.com/
+- PeoplePerHour — https://www.peopleperhour.com/
+
+This is your fastest route to money. Start here today.
+
+### Tier 2 — a skills test replaces the degree
+
+These platforms vet you with an assessment or a live interview, then place you with companies.
+Passing the test *is* the credential. They pay far better than Indian entry-level salaries.
+
+- Arc.dev — https://arc.dev/ (remote-first, best for international clients)
+- Turing — https://www.turing.com/ (tests then matches you to US companies)
+- Lemon.io — https://lemon.io/
+- Gun.io — https://gun.io/
+- Index.dev — https://www.index.dev/
+- Uplers — https://www.uplers.com/
+- Toptal — https://www.toptal.com/ (hardest; try after a few months of paid work)
+
+Expect to fail one or two attempts. That is normal and costs nothing.
+
+### Tier 3 — startups and small companies, founder reads your code
+
+There is an education field, but nobody filters on it. A founder hiring their third developer
+cares whether your projects run.
+
+- Wellfound — https://wellfound.com/
+- Cutshort — https://cutshort.io/
+- Instahyre — https://www.instahyre.com/
+- Hirect — https://www.hirect.in/
+- Internshala — https://internshala.com/
+
+### Tier 4 — local businesses in Guwahati
+
+Nobody asks a vendor for a degree. They ask what it costs and when it is ready. You already have
+a paying client here and you already sell in person. This is a real channel, not a fallback.
+
+Shops, clinics, contractors, travel agencies, restaurants, coaching centres — all need a site and
+enquiry handling. Show A.S Borewell on your phone. That single demo closes more than any CV.
+
+### Tier 5 — agency subcontracting
+
+Search LinkedIn for "web development agency Guwahati", "automation agency India". Message the
+owner offering white-label overflow work. They care about delivery, never about schooling.
+
+### Where NOT to waste your time
+
+Skip these — they hard-filter on degree before a human ever sees you:
+
+- TCS, Infosys, Wipro, Cognizant, Accenture and other big IT services
+- Campus or "fresher batch" hiring drives
+- Any listing that says "B.Tech / BE / MCA required" or "graduate only"
+- Government and PSU tech roles
+
+Not a judgment on you. Their software rejects you before a person looks. Spend those hours in
+Tier 1 instead.
+
+---
+
+## 8. When someone asks about your education
+
+Never lie. A false credential can get you fired years later, and it is the one thing that turns a
+non-issue into a real problem. Say it plainly and move the conversation to what you can do.
+
+> I finished school at class 10 and taught myself to code. I've been building and shipping since —
+> here's what's live: priyangshunath190-netizen.github.io/portfolio
+>
+> Happy to do a paid trial task so you can judge the work directly.
+
+That is it. No apology, no long explanation. Confident and short.
+
+**On forms that require an education field:** put your real qualification. Leave it blank only if
+the field is optional.
+
+**Your strongest move:** offer the paid trial task before they ask about anything. A small fixed-price
+task — a landing page, one automation script — turns the conversation from credentials to work.
+Most people who say yes to that never ask about school again.
