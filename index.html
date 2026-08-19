@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Priyangshu Nath — Fullstack &amp; Automation Developer</title>
+<meta name="description" content="I build websites and business automation that ship. Six live projects: client sites, SaaS dashboards, mobile apps and internal tools.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0d10; --bg-2:#11151a; --line:#1f262e;
+    --ink:#eef2f6; --ink-2:#9aa7b4; --ink-3:#6b7885;
+    --accent:#4ade80; --accent-ink:#0b0d10;
+    --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.55;
+  }
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
+  a{color:inherit}
+
+  /* ---------- header ---------- */
+  header{padding:64px 0 8px}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 18px;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 0 4px rgba(74,222,128,.15)}
+  h1{
+    font-size:clamp(34px,5.4vw,58px); line-height:1.08; letter-spacing:-.025em;
+    font-weight:800; margin:0 0 20px; max-width:16ch;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+  .lede{font-size:clamp(16px,2vw,19px); color:var(--ink-2); max-width:60ch; margin:0 0 28px}
+  .cta{display:flex; flex-wrap:wrap; gap:12px; margin-bottom:14px}
+  .btn{
+    display:inline-block; padding:12px 22px; border-radius:999px; font-weight:600;
+    font-size:15px; text-decoration:none; border:1px solid var(--line); transition:.15s;
+  }
+  .btn-primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-ghost{color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--ink-3); background:var(--bg-2)}
+  .avail{font-size:14px;color:var(--ink-3)}
+
+  /* ---------- stats ---------- */
+  .stats{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:14px;
+    overflow:hidden; margin:44px 0 8px;
+  }
+  .stat{background:var(--bg-2); padding:20px 18px}
+  .stat b{display:block; font-size:26px; font-weight:800; letter-spacing:-.02em}
+  .stat span{font-size:13px; color:var(--ink-3)}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0}
+  h2{
+    font-size:13px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-3); margin:0 0 26px;
+  }
+
+  /* ---------- project cards ---------- */
+  .grid{display:grid; gap:22px}
+  .card{
+    border:1px solid var(--line); border-radius:16px; overflow:hidden;
+    background:var(--bg-2); display:grid; grid-template-columns:1.15fr 1fr;
+    transition:border-color .18s;
+  }
+  .card:hover{border-color:#2e3944}
+  .card.compact{grid-template-columns:.72fr 1fr}
+  .card .shot.phone{align-items:center; padding:30px 20px}
+  .card .shot{
+    background:#0e1116; display:flex; align-items:flex-start; justify-content:center;
+    padding:26px; border-right:1px solid var(--line); overflow:hidden;
+  }
+  .card .shot img{
+    width:100%; height:auto; display:block; border-radius:8px;
+    box-shadow:0 18px 40px rgba(0,0,0,.45);
+  }
+  .card .shot.phone img{max-width:210px; border-radius:16px}
+  .card .body{padding:28px 30px}
+  .tagrow{display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px}
+  .tag{
+    font-size:11.5px; font-weight:600; letter-spacing:.03em; padding:4px 9px;
+    border-radius:6px; background:#1a212a; color:var(--ink-2); border:1px solid var(--line);
+  }
+  .tag.live{background:rgba(74,222,128,.12); color:var(--accent); border-color:rgba(74,222,128,.3)}
+  .card h3{font-size:21px; font-weight:700; letter-spacing:-.015em; margin:0 0 8px}
+  .card .what{font-size:15px; color:var(--ink-2); margin:0 0 16px}
+  .card .built{font-size:13.5px; color:var(--ink-3); margin:0 0 18px}
+  .card .built b{color:var(--ink-2); font-weight:600}
+  .links{display:flex; flex-wrap:wrap; gap:16px; font-size:14px; font-weight:600}
+  .links a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent}
+  .links a:hover{border-bottom-color:var(--accent)}
+  .links span{color:var(--ink-3); font-weight:500}
+
+  /* ---------- also built ---------- */
+  .also{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .mini{border:1px solid var(--line); border-radius:12px; padding:20px; background:var(--bg-2)}
+  .mini h4{margin:0 0 6px; font-size:15.5px; font-weight:700}
+  .mini p{margin:0; font-size:13.5px; color:var(--ink-3)}
+
+  /* ---------- skills ---------- */
+  .skills{display:grid; grid-template-columns:repeat(3,1fr); gap:26px}
+  .skill h4{margin:0 0 10px; font-size:15px; font-weight:700}
+  .skill p{margin:0; font-size:14px; color:var(--ink-2)}
+
+  /* ---------- contact ---------- */
+  .contact{
+    border:1px solid var(--line); border-radius:16px; background:var(--bg-2);
+    padding:38px 34px; margin-bottom:20px;
+  }
+  .contact h3{margin:0 0 10px; font-size:24px; font-weight:800; letter-spacing:-.02em}
+  .contact p{margin:0 0 22px; color:var(--ink-2); max-width:56ch}
+  footer{padding:0 0 60px; color:var(--ink-3); font-size:13px}
+
+  @media (max-width:820px){
+    .card,.card.compact{grid-template-columns:1fr}
+    .card .shot{border-right:0; border-bottom:1px solid var(--line); padding:20px}
+    .card .body{padding:24px}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .also,.skills{grid-template-columns:1fr}
+    header{padding-top:44px}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow"><span class="dot"></span>Available for work — India / Remote</p>
+    <h1>I build websites and <em>automation</em> that actually ship.</h1>
+    <p class="lede">
+      Fullstack developer working with Next.js, React, Python and Node. I take a business problem —
+      leads going cold, manual data entry, no online presence — and hand back something running.
+      Everything below is a real, working build, not a mockup.
+    </p>
+    <div class="cta">
+      <a class="btn btn-primary" href="#contact">Hire me</a>
+      <a class="btn btn-ghost" href="#work">See the work</a>
+    </div>
+    <p class="avail">Full-time availability · Freelance or contract · Guwahati, Assam</p>
+
+    <div class="stats">
+      <div class="stat"><b>6</b><span>shipped projects</span></div>
+      <div class="stat"><b>2</b><span>live for real clients</span></div>
+      <div class="stat"><b>2</b><span>Android apps built</span></div>
+      <div class="stat"><b>100%</b><span>self-taught</span></div>
+    </div>
+  </header>
+
+  <section id="work">
+    <h2>Selected work</h2>
+    <div class="grid">
+
+      <!-- 1 -->
+      <article class="card compact">
+        <div class="shot phone"><img src="shots/borewell.jpg" alt="A.S Borewell mobile site — hero, call and WhatsApp buttons, services grid"></div>
+        <div class="body">
+          <div class="tagrow">
+            <span class="tag live">Live · real client</span>
+            <span class="tag">HTML/CSS/JS</span>
+            <span class="tag">WhatsApp API</span>
+            <span class="tag">Netlify</span>
+          </div>
+          <h3>A.S Borewell — contractor ordering site</h3>
+          <p class="what">
+            A borewell and piling contractor in Guwahati had no way for customers to reach him except
+            a phone number passed around by word of mouth. I built a mobile-app-style site where a
+            customer picks a service and the enquiry lands straight in his WhatsApp with an order code
+            attached — so nothing gets lost in the chat.
+          </p>
+          <p class="built"><b>Built:</b> 5-tab app-style navigation, service catalogue, enquiry form that
+            generates a tracked order code, one-tap call and WhatsApp, installable on Android.</p>
+          <div class="links"><a href="https://asborewell.netlify.app" target="_blank" rel="noopener">View live site →</a></div>
+        </div>
+      </article>
+
+      <!-- 2 -->
+      <article class="card">
+        <div class="shot"><img src="shots/colour.jpg" alt="COLOUR — full-bleed colour columns for black, white, red, blue and green"></div>
+        <div class="body">
+          <div class="tagrow">
+            <span class="tag live">Live · web + Android</span>
+            <span class="tag">Next.js</span>
+            <span class="tag">Python pipeline</span>
+            <span class="tag">Capacitor</span>
+          </div>
+          <h3>COLOUR — shop by colour, not by category</h3>
+          <p class="what">
+            Every shopping site makes you filter by category first. COLOUR flips it: you pick a colour,
+            and you get clothes that are genuinely that colour. The catch is that retailer colour labels
+            lie, so I wrote a pipeline that pulls each product image and extracts its real dominant
+            colour before the product is allowed in.
+          </p>
+          <p class="built"><b>Built:</b> 1,022 colour-verified products across men's and women's categories,
+            automated research → import → colour-extraction pipeline, static site deployed to GitHub Pages,
+            packaged as an Android APK with Capacitor.</p>
+          <div class="links"><span>Web app + APK · walkthrough on request</span></div>
+        </div>
+      </article>
+
+      <!-- 3 -->
+      <article class="card">
+        <div class="shot"><img src="shots/enquiry.jpg" alt="Enquiry Desk dashboard — today/this week/needs chasing tiles and a follow-up table"></div>
+        <div class="body">
+          <div class="tagrow">
+            <span class="tag">Automation</span>
+            <span class="tag">Python (stdlib only)</span>
+            <span class="tag">Multi-client</span>
+          </div>
+          <h3>Enquiry Desk — the follow-up nobody does</h3>
+          <p class="what">
+            Small businesses lose most of their money to enquiries they simply forgot to chase.
+            This dashboard logs every enquiry, values it, and pushes the ones going cold to the top
+            of the screen with a "waiting 34 days" badge. One config file re-skins the whole thing
+            for a different client and their services.
+          </p>
+          <p class="built"><b>Built:</b> live enquiry feed, needs-chasing priority sort, value-enquired
+            reporting, per-client profiles, zero external dependencies so it runs anywhere Python does.</p>
+          <div class="links"><span>Screenshot shows seeded demo data · live demo on request</span></div>
+        </div>
+      </article>
+
+      <!-- 4 -->
+      <article class="card">
+        <div class="shot"><img src="shots/collabpay.jpg" alt="CollabPay landing page — earnings chart and creator dashboard preview"></div>
+        <div class="body">
+          <div class="tagrow">
+            <span class="tag live">Live</span>
+            <span class="tag">Next.js 14</span>
+            <span class="tag">Supabase</span>
+            <span class="tag">Auth + roles</span>
+          </div>
+          <h3>CollabPay — creator monetisation SaaS</h3>
+          <p class="what">
+            A full multi-role product: creators build a business page and track earnings, brands browse
+            a marketplace and book them, admins moderate. Real authentication, real database, and a data
+            layer that falls back to mock data so the whole app still demos cleanly without a backend.
+          </p>
+          <p class="built"><b>Built:</b> three separate dashboards (creator / brand / admin), marketplace with
+            discovery, Supabase auth and tables, static export deployed to Netlify.</p>
+          <div class="links"><span>Deployed · credentials for a full walkthrough on request</span></div>
+        </div>
+      </article>
+
+      <!-- 5 -->
+      <article class="card">
+        <div class="shot"><img src="shots/opius.jpg" alt="OPIUS interior design marketplace homepage with a photoreal bedroom hero"></div>
+        <div class="body">
+          <div class="tagrow">
+            <span class="tag">7-page site</span>
+            <span class="tag">10-screen app</span>
+            <span class="tag">3D / WebGL</span>
+            <span class="tag">GLB viewers</span>
+          </div>
+          <h3>OPIUS — interior design marketplace</h3>
+          <p class="what">
+            Browse a finished room, then buy every product in it. The hard part was letting people
+            actually inspect a space online, so rooms load as 360° 3D models you can spin in the browser —
+            no plugin, no app install. Shipped as both a desktop marketplace and a separate mobile app.
+          </p>
+          <p class="built"><b>Built:</b> 7-page desktop marketplace, 10-screen mobile app with bottom-tab
+            navigation, 360° GLB room viewers (kitchen and bedroom), cart and checkout flow, room builder.</p>
+          <div class="links"><span>Desktop site + mobile app · demo on request</span></div>
+        </div>
+      </article>
+
+      <!-- 6 -->
+      <article class="card compact">
+        <div class="shot phone"><img src="shots/opiusapp.jpg" alt="OPIUS mobile app home screen with 360-degree room design cards"></div>
+        <div class="body">
+          <div class="tagrow">
+            <span class="tag">Mobile UI</span>
+            <span class="tag">Responsive</span>
+            <span class="tag">360° viewer</span>
+          </div>
+          <h3>OPIUS mobile — the same product, rebuilt for thumbs</h3>
+          <p class="what">
+            The mobile app isn't the desktop site squeezed down. It's a different information order:
+            location first, search first, then room designs as swipeable cards with a 360° badge, and a
+            bottom tab bar so the whole thing works one-handed.
+          </p>
+          <p class="built"><b>Built:</b> 10 screens, bottom-tab shell, category chips, saved items,
+            cart with live badge count, warm-neutral design system.</p>
+          <div class="links"><span>Installable Android build available</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Also built</h2>
+    <div class="also">
+      <div class="mini">
+        <h4>Contact centre platform</h4>
+        <p>Multi-tenant AI voice and chat SaaS. Node + Postgres, 243 passing tests, documented architecture and threat model.</p>
+      </div>
+      <div class="mini">
+        <h4>AR navigation app</h4>
+        <p>Camera-based route guidance that draws the turn line on the road ahead. Built twice — as a React PWA and as native Kotlin with CameraX.</p>
+      </div>
+      <div class="mini">
+        <h4>Task scheduler</h4>
+        <p>A pure-Python job runner with schedules, retries, logging and persistent state — the engine behind the automation work.</p>
+      </div>
+      <div class="mini">
+        <h4>Realty Desk</h4>
+        <p>Real-estate lead capture and CRM with automatic lead scoring and property matching. CSV import swaps demo data for real.</p>
+      </div>
+      <div class="mini">
+        <h4>3D product pages</h4>
+        <p>Scroll-driven WebGL product stories for a watch and a diamond ring, with live configurators. React Three Fiber.</p>
+      </div>
+      <div class="mini">
+        <h4>Video pipeline</h4>
+        <p>Automated short-form video generation: script to voiceover to rendered vertical video, unattended, via ffmpeg.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I do</h2>
+    <div class="skills">
+      <div class="skill">
+        <h4>Fullstack websites</h4>
+        <p>Next.js, React, TypeScript, Tailwind, Node. Client sites, dashboards, marketplaces and SaaS products —
+           designed, built, and deployed to Netlify, Vercel or GitHub Pages.</p>
+      </div>
+      <div class="skill">
+        <h4>Business automation</h4>
+        <p>Python and Node scripts that remove manual work: lead capture, follow-up chasing, WhatsApp enquiry
+           routing, scheduled jobs, data scraping and cleaning, report generation.</p>
+      </div>
+      <div class="skill">
+        <h4>Mobile &amp; 3D</h4>
+        <p>Android builds via Capacitor and native Kotlin. WebGL and Three.js product experiences,
+           360° model viewers, and Blender for the assets behind them.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact">
+      <h3>Let's build something.</h3>
+      <p>
+        Tell me the problem, not the spec — I'll tell you honestly whether code is the right fix,
+        and what it takes. Fast replies, working demos, no agency overhead.
+      </p>
+      <div class="cta" style="margin-bottom:0">
+        <a class="btn btn-primary" href="mailto:priyangshunath190@gmail.com">priyangshunath190@gmail.com</a>
+        <a class="btn btn-ghost" href="https://wa.me/918638830682" target="_blank" rel="noopener">WhatsApp · 86388 30682</a>
+        <a class="btn btn-ghost" href="https://github.com/priyangshunath190-netizen" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+    <footer>Priyangshu Nath · Fullstack &amp; automation developer · Guwahati, Assam, India · Available now</footer>
+  </section>
+
+</div>
+</body>
+</html>
