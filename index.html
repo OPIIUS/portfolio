@@ -108,6 +108,27 @@
   .mini{border:1px solid var(--line); border-radius:12px; padding:20px; background:var(--bg-2)}
   .mini h4{margin:0 0 6px; font-size:15.5px; font-weight:700}
   .mini p{margin:0; font-size:13.5px; color:var(--ink-3)}
+  .mini a{display:inline-block; margin-top:10px; color:var(--accent); text-decoration:none;
+    font-size:13px; font-weight:600; border-bottom:1px solid transparent}
+  .mini a:hover{border-bottom-color:var(--accent)}
+
+  /* ---------- live sites strip ---------- */
+  .livebar{
+    display:flex; flex-wrap:wrap; align-items:center; gap:10px;
+    margin:26px 0 0; padding:14px 18px; border:1px solid var(--line);
+    border-radius:12px; background:var(--bg-2);
+  }
+  .livebar b{font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-3);
+    font-weight:700; margin-right:2px}
+  .livebar a{
+    display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+    font-size:13.5px; font-weight:600; color:var(--ink);
+    border:1px solid var(--line); border-radius:999px; padding:7px 14px;
+  }
+  .livebar a:hover{border-color:var(--accent); color:var(--accent)}
+  .livebar a i{width:6px;height:6px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 0 3px rgba(74,222,128,.16); flex:0 0 auto}
+  .livebar a span{color:var(--ink-3); font-weight:500; font-size:12.5px}
 
   /* ---------- skills ---------- */
   .skills{display:grid; grid-template-columns:repeat(3,1fr); gap:26px}
@@ -188,6 +209,15 @@
       <div class="stat"><b>12</b><span>projects shipped</span></div>
       <div class="stat"><b>2</b><span>live for real clients</span></div>
       <div class="stat"><b>100%</b><span>self-taught</span></div>
+    </div>
+
+    <div class="livebar">
+      <b>Live sites</b>
+      <a href="https://asborewell.netlify.app" target="_blank" rel="noopener"><i></i>A.S Borewell <span>real client</span></a>
+      <a href="https://opius-guwahati.netlify.app/" target="_blank" rel="noopener"><i></i>OPIUS <span>marketplace</span></a>
+      <a href="https://kamruppolytechnic4-arch.github.io/" target="_blank" rel="noopener"><i></i>COLOUR <span>web + Android</span></a>
+      <a href="https://kamruppolytechnic4-arch.github.io/coaching-compliance-demo/" target="_blank" rel="noopener"><i></i>Luitpar Academy <span>compliance site</span></a>
+      <a href="#systems"><i></i>6 systems you can run <span>below</span></a>
     </div>
   </header>
 
@@ -332,7 +362,10 @@
           <p class="built"><b>Built:</b> 1,022 colour-verified products across men's and women's categories,
             automated research → import → colour-extraction pipeline, static site deployed to GitHub Pages,
             packaged as an Android APK with Capacitor.</p>
-          <div class="links"><span>Web app + APK · walkthrough on request</span></div>
+          <div class="links">
+            <a href="https://kamruppolytechnic4-arch.github.io/" target="_blank" rel="noopener">Open the live app →</a>
+            <span>Android APK on request</span>
+          </div>
         </div>
       </article>
 
@@ -430,6 +463,14 @@
   <section>
     <h2>Also built</h2>
     <div class="also">
+      <div class="mini">
+        <h4>Coaching compliance site</h4>
+        <p>The Assam Coaching Institutes (Control and Regulation) Act, 2025 forces every coaching
+           centre to publish fees, refunds and registration details. I read the Act and built a site
+           template that satisfies sections 4(2), 5(iii) and 10(1) — re-skinnable for any institute
+           in minutes. Shown here as a demo institute, not a client.</p>
+        <a href="https://kamruppolytechnic4-arch.github.io/coaching-compliance-demo/" target="_blank" rel="noopener">Open the live site →</a>
+      </div>
       <div class="mini">
         <h4>Contact centre platform</h4>
         <p>Multi-tenant AI voice and chat SaaS. Node + Postgres, 243 passing tests, documented architecture and threat model.</p>
