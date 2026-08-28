@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ScoutAI — Autonomous Business Research Agent</title>
+<link rel="stylesheet" href="assets/kit.css">
+<style>
+.plan{display:grid;gap:7px}
+.pstep{display:grid;grid-template-columns:24px 1fr;gap:9px;align-items:start;
+  padding:8px 10px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);
+  font-size:12.5px;opacity:.45;transition:opacity .3s,border-color .3s}
+.pstep.on{opacity:1;border-color:var(--gold)}
+.pstep.done{opacity:1;border-color:#1f6b48}
+.pstep i{font-style:normal;width:22px;height:22px;border-radius:6px;display:grid;place-items:center;
+  background:#242b30;font-size:11px;font-weight:700;color:var(--dim)}
+.pstep.on i{background:#4a3312;color:#f0c069}
+.pstep.done i{background:#16543a;color:#8ff0bd}
+.pstep b{display:block;font-size:12.6px}
+.pstep span{color:var(--dim);font-size:11.3px}
+.fact{padding:9px 11px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);
+  border-left:3px solid var(--line2);margin-bottom:7px;font-size:12.7px;line-height:1.5;animation:fade .3s}
+.fact.ver{border-left-color:var(--green)}
+.fact.un{border-left-color:var(--gold)}
+.fact .src{color:var(--dim);font-size:10.9px;margin-top:5px}
+.brief h4{margin:16px 0 7px;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--gold)}
+.brief h4:first-child{margin-top:0}
+.brief p{margin:0 0 9px;line-height:1.6;font-size:13.2px}
+.brief li{line-height:1.6;font-size:13.2px;margin-bottom:5px}
+.brief ul{margin:0 0 10px;padding-left:19px}
+.srcrow{display:flex;gap:8px;padding:7px 0;border-bottom:1px dashed #232a2f;font-size:12.2px}
+.srcrow a{text-decoration:none}
+.mode{font-size:10.5px;padding:2px 9px;border-radius:20px}
+.mode.live{background:#173a2c;color:var(--greenI)}
+.mode.off{background:#3d3315;color:#f0cf7c}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="mark r">SA</div>
+  <div class="ttl"><b>ScoutAI &middot; Autonomous Business Research Agent</b>
+    <span>Give it a topic. It plans, reads real sources, cross-checks facts and writes the brief.</span></div>
+  <div class="spacer"></div>
+  <span class="mode off" id="mode">checking connection...</span>
+  <a class="back" href="index.html">&larr; All systems</a>
+  <a class="back" href="../index.html">Profile</a>
+</div>
+
+<div class="stats">
+  <div class="stat"><i>Sub-questions</i><b id="s1">0</b></div>
+  <div class="stat b"><i>Sources read</i><b id="s2">0</b></div>
+  <div class="stat g"><i>Facts extracted</i><b id="s3">0</b></div>
+  <div class="stat y"><i>Cross-verified</i><b id="s4">0</b></div>
+  <div class="stat"><i>Confidence</i><b id="s5">-</b></div>
+</div>
+
+<div class="wrap cols-3">
+
+  <div>
+    <div class="card">
+      <h3>&#127919; Research brief</h3>
+      <div class="pad">
+        <label class="fld">What should I research?</label>
+        <input type="text" id="q" value="hotel booking automation" autocomplete="off">
+        <div style="height:9px"></div>
+        <div class="row" id="chips"></div>
+        <div style="height:11px"></div>
+        <button class="btn primary" id="run" style="width:100%">&#9654; Send the agent</button>
+      </div>
+      <div class="note" id="modenote">It searches Wikipedia and Hacker News live &mdash; no API key, no paid
+        service. With no internet it falls back to a small bundled corpus and says so.</div>
+    </div>
+
+    <div class="card">
+      <h3>&#128203; Agent plan <em id="pc"></em></h3>
+      <div class="pad plan" id="plan"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#129504; Agent log <em id="lc">0 events</em></h3>
+      <div class="log" id="log" style="height:300px"></div>
+    </div>
+    <div class="card">
+      <h3>&#128269; Facts found <em id="fc">0</em></h3>
+      <div class="pad" id="facts" style="max-height:340px;overflow:auto">
+        <div class="empty">Nothing yet.</div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#128221; The brief <em id="bt"></em></h3>
+      <div class="pad brief" id="brief">
+        <div class="empty">Send the agent and it will write a brief here.</div></div>
+    </div>
+    <div class="card">
+      <h3>&#128279; Sources <em id="sc">0</em></h3>
+      <div class="pad" id="sources"><div class="empty">-</div></div>
+      <div class="pad-sm"><button class="btn sm" id="dl" style="width:100%">Download brief (.md)</button></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ======================================================================
+   A real agent loop: plan -> search -> read -> extract -> verify -> write.
+   Sources are live and free (Wikipedia REST, Hacker News Algolia).
+   If there is no internet it uses a small bundled corpus and labels it.
+   ====================================================================== */
+
+var PLAN=[
+ {k:"decompose", n:"Break the question down", d:"turn one topic into the questions that actually matter"},
+ {k:"search",    n:"Find sources",            d:"search encyclopedic and industry sources in parallel"},
+ {k:"read",      n:"Read what it found",      d:"pull the full text of the best results"},
+ {k:"extract",   n:"Pull out the facts",      d:"keep sentences carrying numbers, dates and named companies"},
+ {k:"verify",    n:"Cross-check",             d:"a fact seen in two independent sources is marked verified"},
+ {k:"write",     n:"Write the brief",         d:"structure it, and say plainly what could not be confirmed"}
+];
+
+/* bundled fallback, used only with no internet - clearly labelled, no fake links */
+var CORPUS={
+ "hotel booking automation":[
+  {t:"Hotel technology overview (bundled sample)",x:"Online travel agencies charge hotels commissions of roughly 15 to 25 percent per booking, which is why direct booking channels matter to small properties. Independent hotels with fewer than 50 rooms make up the large majority of properties in India. A property management system handles reservations, housekeeping and billing."},
+  {t:"Messaging channels (bundled sample)",x:"WhatsApp has over 500 million users in India, making it the default customer channel for small businesses. Response time is the strongest predictor of whether an enquiry converts, and most enquiries arrive outside working hours."}
+ ],
+ "whatsapp business api":[
+  {t:"WhatsApp Business (bundled sample)",x:"The WhatsApp Business API is aimed at medium and large businesses and is billed per conversation. Businesses must be verified by Meta before sending template messages. The free WhatsApp Business app is aimed at small businesses and has no API."}
+ ],
+ "invoice automation":[
+  {t:"Accounts payable automation (bundled sample)",x:"Manual invoice processing costs a business between 4 and 15 dollars per invoice depending on volume. Duplicate payments account for roughly 0.1 to 0.5 percent of total spend in organisations without automated checks. India mandated e-invoicing for businesses above a turnover threshold, which pushed structured invoice data into wider use."}
+ ]
+};
+
+var PRESETS=["hotel booking automation","whatsapp business api","invoice automation",
+  "restaurant delivery commission","zoho corporation"];
+
+/* ---------------- helpers ---------------- */
+var LOG=document.getElementById('log');
+function now(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function logAdd(tag,cls,txt){
+  var d=document.createElement('div');d.className='lrow';
+  d.innerHTML='<span>'+now()+'</span><span class="tag t-'+cls+'">'+tag+'</span><span>'+esc(txt)+'</span>';
+  LOG.appendChild(d);LOG.scrollTop=LOG.scrollHeight;
+  document.getElementById('lc').textContent=LOG.children.length+' events';
+}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function drawPlan(active){
+  document.getElementById('plan').innerHTML=PLAN.map(function(p,i){
+    var cls=i<active?'done':(i===active?'on':'');
+    return '<div class="pstep '+cls+'"><i>'+(i<active?'&#10003;':(i+1))+'</i>'
+      +'<span><b>'+p.n+'</b><span>'+p.d+'</span></span></div>';}).join('');
+  document.getElementById('pc').textContent=(active<0?'':Math.min(active+1,PLAN.length)+' / '+PLAN.length);
+}
+
+/* ---------------- step 1: decompose ---------------- */
+function decompose(topic){
+  var t=topic.trim();
+  return [
+   {q:"What is "+t+", in plain terms?",          key:t},
+   {q:"How big is the market and who pays for it?",key:t+" market"},
+   {q:"Who are the main players?",                key:t+" companies"},
+   {q:"What is happening in it right now?",       key:t+" 2026"},
+   {q:"What goes wrong / what are the risks?",    key:t+" problems"}
+  ];
+}
+
+/* ---------------- step 2+3: live sources ---------------- */
+function jget(url){
+  return fetch(url,{mode:'cors'}).then(function(r){
+    if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});
+}
+function wikiSearch(q){
+  return jget('https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch='
+    +encodeURIComponent(q)+'&srlimit=3&format=json&origin=*')
+   .then(function(j){return (j.query&&j.query.search||[]).map(function(s){return s.title;});});
+}
+function wikiRead(title){
+  return jget('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(title))
+   .then(function(j){
+     if(!j.extract)throw new Error('no extract');
+     return {t:j.title,x:j.extract,u:(j.content_urls&&j.content_urls.desktop.page)||
+       'https://en.wikipedia.org/wiki/'+encodeURIComponent(title),from:'Wikipedia'};});
+}
+function unent(s){
+  var d=document.createElement('textarea');
+  d.innerHTML=String(s).replace(/<[^>]+>/g,' ');
+  return d.value.replace(/\s+/g,' ').trim();
+}
+function hnSearch(q){
+  return jget('https://hn.algolia.com/api/v1/search?tags=story&hitsPerPage=6&query='+encodeURIComponent(q))
+   .then(function(j){return (j.hits||[]).filter(function(h){return h.title;}).map(function(h){
+     var title=unent(h.title);
+     return {t:title,x:title+'. '+(h.story_text?unent(h.story_text)+' ':'')
+       +'Discussed by '+(h.num_comments||0)+' people with '+(h.points||0)+' points in '
+       +String(h.created_at).slice(0,4)+'.',
+       u:h.url||('https://news.ycombinator.com/item?id='+h.objectID),from:'Hacker News'};});});
+}
+
+/* ---------------- step 4: extract facts ---------------- */
+var STOP=/^(The|This|That|It|They|There|These|Those|A|An|In|On|For|And|But|With|As|At|By|From|Its|His|Her|Their|Some|Many|Most|Such|While|When|After|Before|However|Also|One|Two)$/;
+function sentences(x){
+  return String(x).replace(/\s+/g,' ').split(/(?<=[.!?])\s+(?=[A-Z0-9])/)
+    .map(function(s){return s.trim();}).filter(function(s){return s.length>35&&s.length<340;});
+}
+function isFacty(s){
+  if(/^Discussed by\b/i.test(s))return false;             /* our own metadata line, not a fact */
+  if((s.match(/https?:\/\//g)||[]).length>=2)return false; /* a link dump */
+  if(s.split(/\s+/).length<7)return false;
+  return /\b\d/.test(s)                                   /* a number */
+    || /\b(largest|leading|founded|acquired|owns|market|revenue|percent|per cent|million|billion|crore|lakh)\b/i.test(s);
+}
+/* Named players: a capitalised phrase only counts when it is NOT just the first
+   word of a sentence, and it either has two words or shows up more than once. */
+function players(docs,topic){
+  var c={}, tw=String(topic||'').toLowerCase().split(/\s+/);
+  docs.forEach(function(d){
+    sentences(d.x).concat([d.t]).forEach(function(s){
+      var body=s.replace(/^[^\s]+\s/,' ');            /* drop the sentence-initial word */
+      var m=body.match(/\b[A-Z][a-zA-Z0-9]{2,}(?:[\s&.]+[A-Z][a-zA-Z0-9]{1,}){0,2}\b/g)||[];
+      m.forEach(function(w){
+        w=w.trim().replace(/[.\s]+$/,'');
+        var first=w.split(/\s/)[0];
+        if(STOP.test(first)||w.length<4)return;
+        if(/^(January|February|March|April|May|June|July|August|September|October|November|December|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$/.test(w))return;
+        c[w]=(c[w]||0)+1;
+      });
+    });
+  });
+  return Object.keys(c)
+    /* keep multi-word names; a bare single word must be repeated hard and must not
+       simply be a word from the question itself */
+    .filter(function(w){
+      if(w.indexOf(' ')>0)return true;
+      return c[w]>=4 && tw.indexOf(w.toLowerCase())<0;
+    })
+    .sort(function(a,b){return c[b]-c[a];})
+    .slice(0,8);
+}
+
+/* ---------------- step 5: cross-check ---------------- */
+function keyOf(s){
+  return String(s).toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/)
+    .filter(function(w){return w.length>4;}).slice(0,7).sort().join(' ');
+}
+var TOOCOMMON=/^(about|above|after|again|against|because|before|between|company|companies|during|include|includes|including|other|others|people|percent|system|systems|through|under|where|which|while|world|years|their|there|these|those|would|could|should|being|based|often|around|number|different|following|available|business|businesses)$/;
+function distinct(s){
+  var m=String(s).toLowerCase().match(/\b[a-z]{5,}\b|\b\d[\d.,]*\b/g)||[];
+  var seen={},out=[];
+  m.forEach(function(t){ if(TOOCOMMON.test(t)||seen[t])return; seen[t]=1; out.push(t); });
+  return out.slice(0,9);
+}
+function overlap(a,b){
+  var A=a.split(' '),B=b.split(' '),n=0;
+  A.forEach(function(w){if(B.indexOf(w)>=0)n++;});
+  return n/Math.max(1,Math.min(A.length,B.length));
+}
+
+/* ---------------- run ---------------- */
+var STATE={facts:[],sources:[],brief:'',topic:''};
+var live=null;
+
+document.getElementById('run').onclick=async function(){
+  var btn=this;btn.disabled=true;btn.textContent='Working...';
+  var topic=document.getElementById('q').value.trim()||'hotel booking automation';
+  STATE={facts:[],sources:[],brief:'',topic:topic};
+  LOG.innerHTML='';
+  document.getElementById('facts').innerHTML='<div class="empty">Nothing yet.</div>';
+  document.getElementById('brief').innerHTML='<div class="empty">Working...</div>';
+  document.getElementById('sources').innerHTML='<div class="empty">-</div>';
+  ['s1','s2','s3','s4'].forEach(function(id){document.getElementById(id).textContent='0';});
+  document.getElementById('s5').textContent='-';
+
+  try{
+    /* 1 - decompose */
+    drawPlan(0);
+    logAdd('STEP','step','Topic: "'+topic+'"');
+    var subs=decompose(topic);
+    await sleep(450);
+    subs.forEach(function(s){logAdd('AI','ai','Sub-question: '+s.q);});
+    document.getElementById('s1').textContent=subs.length;
+
+    /* 2+3 - search and read */
+    drawPlan(1);
+    var docs=[];
+    for(var i=0;i<subs.length;i++){
+      var s=subs[i];
+      logAdd('STEP','step','Searching for: '+s.key);
+
+      /* each source is tried on its own - one dead source must not kill the run */
+      try{
+        var titles=await wikiSearch(s.key);
+        if(!live){live=true;setMode(true);}
+        logAdd('DATA','data','Wikipedia returned '+titles.length+' article(s)');
+        for(var j=0;j<Math.min(3,titles.length);j++){
+          var title=titles[j];
+          if(docs.some(function(d){return d.t===title;}))continue;
+          try{
+            var doc=await wikiRead(title);
+            docs.push(doc);
+            logAdd('DATA','data','Read "'+doc.t+'" ('+doc.x.length+' chars)');
+          }catch(e){logAdd('SYS','sys','Could not read '+title);}
+        }
+      }catch(e){
+        logAdd('SYS','sys','Wikipedia did not answer for "'+s.key+'" - carrying on with the other sources');
+      }
+
+      if(i<3){
+        try{
+          var hn=await hnSearch(s.key);
+          if(!live){live=true;setMode(true);}
+          hn.slice(0,3).forEach(function(h){
+            if(!docs.some(function(d){return d.t===h.t;}))docs.push(h);});
+          if(hn.length)logAdd('DATA','data','Hacker News: '+hn.length+' discussion(s) on this');
+        }catch(e){
+          logAdd('SYS','sys','Hacker News did not answer for "'+s.key+'"');
+        }
+      }
+      document.getElementById('s2').textContent=docs.length;
+      drawPlan(2);
+      await sleep(120);
+    }
+
+    /* offline fallback - only when every source failed */
+    if(!docs.length){
+      live=false;setMode(false);
+      logAdd('SYS','sys','No source could be reached');
+      var key=Object.keys(CORPUS).filter(function(k){
+        return topic.toLowerCase().indexOf(k.split(' ')[0])>=0;})[0]||Object.keys(CORPUS)[0];
+      logAdd('SYS','sys','Using bundled corpus for "'+key+'" - this is sample text, not live research');
+      CORPUS[key].forEach(function(d){docs.push({t:d.t,x:d.x,u:null,from:'Bundled sample'});});
+      document.getElementById('s2').textContent=docs.length;
+    }
+    STATE.sources=docs;
+
+    /* 4 - extract */
+    drawPlan(3);
+    var facts=[];
+    docs.forEach(function(d){
+      sentences(d.x).forEach(function(s){
+        if(isFacty(s))facts.push({s:s,src:d,k:keyOf(s),ver:false});
+      });
+    });
+    logAdd('CALC','calc','Scanned '+docs.length+' documents, kept '+facts.length+' sentences carrying real numbers');
+    facts=facts.slice(0,26);
+    document.getElementById('s3').textContent=facts.length;
+    await sleep(350);
+
+    /* 5 - cross-check, two ways: against other extracted facts, and against
+       the full text of every other document */
+    drawPlan(4);
+    var verified=0;
+    facts.forEach(function(f,i){
+      facts.forEach(function(g,j){
+        if(i>=j)return;
+        if(f.src.t===g.src.t)return;                 /* same document does not count */
+        if(overlap(f.k,g.k)>=0.4){f.ver=g.ver=true;}
+      });
+    });
+    facts.forEach(function(f){
+      if(f.ver)return;
+      var toks=distinct(f.s);
+      if(toks.length<3)return;
+      var need=Math.max(2,Math.ceil(toks.length*0.34));
+      var backed=docs.some(function(d){
+        if(d.t===f.src.t)return false;
+        var low=d.x.toLowerCase();
+        var hit=0;
+        toks.forEach(function(t){if(low.indexOf(t)>=0)hit++;});
+        return hit>=need;
+      });
+      if(backed)f.ver=true;
+    });
+    facts.forEach(function(f){if(f.ver)verified++;});
+    logAdd('CALC','calc',verified+' of '+facts.length+' facts appear in more than one independent source');
+    document.getElementById('s4').textContent=verified;
+    var conf=facts.length?Math.round(30+70*(verified/facts.length)):0;
+    if(!live)conf=Math.min(conf,55);
+    document.getElementById('s5').textContent=conf+'%';
+    STATE.facts=facts;
+    drawFacts(facts);
+    await sleep(350);
+
+    /* 6 - write */
+    drawPlan(5);
+    var names=players(docs,topic);
+    logAdd('AI','ai','Named entities that keep appearing: '+(names.slice(0,5).join(', ')||'none clear'));
+    var md=writeBrief(topic,facts,docs,names,conf,live);
+    STATE.brief=md;
+    document.getElementById('brief').innerHTML=mdToHtml(md);
+    document.getElementById('bt').textContent=conf+'% confidence';
+    drawSources(docs);
+    drawPlan(6);
+    logAdd('ACT','act','Brief written · '+facts.length+' facts · '+docs.length+' sources · '+conf+'% confidence');
+  }catch(e){
+    logAdd('SYS','sys','Agent stopped: '+e.message);
+  }
+  btn.disabled=false;btn.innerHTML='&#9654; Send the agent';
+};
+
+function writeBrief(topic,facts,docs,names,conf,isLive){
+  var ver=facts.filter(function(f){return f.ver;});
+  var un=facts.filter(function(f){return !f.ver;});
+  var pick=function(arr,n){return arr.slice(0,n).map(function(f){
+    return '- '+f.s+' *('+f.src.from+')*';}).join('\n');};
+
+  var md='# '+topic.replace(/\b\w/g,function(c){return c.toUpperCase();})+'\n\n';
+  md+='**Mode:** '+(isLive?'live sources (Wikipedia + Hacker News)':'bundled offline sample — not live research')
+    +'  \n**Confidence:** '+conf+'%  \n**Sources read:** '+docs.length+'  \n\n';
+
+  /* lead with the source that actually matches the topic, not just the first one back */
+  var tw=topic.toLowerCase().split(/\s+/).filter(function(w){return w.length>3;});
+  var lead=docs.slice().sort(function(a,b){
+    var sc=function(d){var s=(d.t+' '+d.x).toLowerCase(),n=0;
+      tw.forEach(function(w){if(s.indexOf(w)>=0)n++;});
+      return n+(d.from==='Wikipedia'?3:0);};   /* the opening line should be encyclopedic */
+    return sc(b)-sc(a);})[0];
+  md+='## What this is\n';
+  md+=(lead?lead.x.split(/(?<=[.!?])\s/).slice(0,2).join(' '):'No summary source was reachable.')+'\n\n';
+
+  md+='## What holds up (seen in more than one source)\n';
+  md+=(ver.length?pick(ver,6):'- Nothing was confirmed by two independent sources in this run.')+'\n\n';
+
+  md+='## Names that keep coming up\n';
+  md+=(names.length?names.slice(0,6).map(function(n){return '- '+n;}).join('\n'):'- No clear named players.')+'\n\n';
+
+  md+='## Single-source claims — treat as unconfirmed\n';
+  md+=(un.length?pick(un,5):'- None.')+'\n\n';
+
+  md+='## What I could not answer\n';
+  md+='- Anything behind a paywall, and anything published after the sources were last updated.\n';
+  if(!isLive)md+='- This run had no internet, so it used bundled sample text. Do not quote it as research.\n';
+  if(conf<60)md+='- Confidence is low here. Treat this as a starting map, not an answer.\n';
+  md+='\n## Sources\n';
+  docs.forEach(function(d,i){md+=(i+1)+'. '+d.t+(d.u?' — '+d.u:' (bundled sample)')+'\n';});
+  return md;
+}
+function mdToHtml(md){
+  var out='',lines=md.split('\n'),inList=false;
+  lines.forEach(function(l){
+    if(/^# /.test(l)){out+='<h4 style="color:var(--ink);font-size:15px;text-transform:none;letter-spacing:0">'
+      +esc(l.slice(2))+'</h4>';return;}
+    if(/^## /.test(l)){if(inList){out+='</ul>';inList=false;}out+='<h4>'+esc(l.slice(3))+'</h4>';return;}
+    if(/^\d+\. /.test(l)||/^- /.test(l)){
+      if(!inList){out+='<ul>';inList=true;}
+      out+='<li>'+fmt(l.replace(/^(\d+\.|-)\s/,''))+'</li>';return;}
+    if(!l.trim()){if(inList){out+='</ul>';inList=false;}return;}
+    if(inList){out+='</ul>';inList=false;}
+    out+='<p>'+fmt(l)+'</p>';
+  });
+  if(inList)out+='</ul>';
+  return out;
+}
+function fmt(s){
+  return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<span class="muted tiny">$1</span>')
+    .replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" target="_blank" rel="noopener">link</a>');
+}
+function drawFacts(facts){
+  var b=document.getElementById('facts');
+  if(!facts.length){b.innerHTML='<div class="empty">No hard facts found — try a broader topic.</div>';return;}
+  b.innerHTML=facts.map(function(f){
+    return '<div class="fact '+(f.ver?'ver':'un')+'">'+esc(f.s)
+      +'<div class="src">'+(f.ver?'&#10003; confirmed by another source':'&#9888; single source')
+      +' &middot; '+esc(f.src.from)+' &middot; '+esc(f.src.t)+'</div></div>';}).join('');
+  document.getElementById('fc').textContent=facts.length;
+}
+function drawSources(docs){
+  document.getElementById('sources').innerHTML=docs.map(function(d,i){
+    return '<div class="srcrow"><span class="muted">'+(i+1)+'</span><span>'
+      +(d.u?'<a href="'+d.u+'" target="_blank" rel="noopener">'+esc(d.t)+'</a>':esc(d.t))
+      +'<div class="muted tiny">'+esc(d.from)+'</div></span></div>';}).join('');
+  document.getElementById('sc').textContent=docs.length;
+}
+function setMode(isLive){
+  var m=document.getElementById('mode');
+  m.className='mode '+(isLive?'live':'off');
+  m.textContent=isLive?'LIVE WEB SOURCES':'OFFLINE — bundled sample';
+  document.getElementById('modenote').innerHTML=isLive
+    ? 'Reading Wikipedia and Hacker News live right now. No API key, nothing paid.'
+    : 'No internet reachable, so it is using a small bundled corpus. It says so in the brief rather than pretending.';
+}
+
+var chips=document.getElementById('chips');
+PRESETS.forEach(function(p){
+  var b=document.createElement('button');b.className='chip';b.textContent=p;
+  b.onclick=function(){document.getElementById('q').value=p;document.getElementById('run').click();};
+  chips.appendChild(b);
+});
+document.getElementById('dl').onclick=function(){
+  if(!STATE.brief)return alert('Run the agent first.');
+  var a=document.createElement('a');
+  a.href='data:text/markdown;charset=utf-8,'+encodeURIComponent(STATE.brief);
+  a.download=STATE.topic.replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'-brief.md';a.click();
+  logAdd('ACT','act','Brief downloaded as markdown');
+};
+
+drawPlan(-1);
+logAdd('SYS','sys','Agent idle · give it a topic');
+/* quick connectivity probe so the badge is honest before the first run */
+fetch('https://en.wikipedia.org/api/rest_v1/page/summary/Automation',{mode:'cors'})
+  .then(function(r){if(!r.ok)throw 0;setMode(true);live=true;})
+  .catch(function(){setMode(false);live=false;});
+
+/* ?auto=1 makes the page start itself - handy for a shareable link or a recording */
+if(/auto/.test(location.search))setTimeout(function(){var b=document.getElementById('run');if(b)b.click();},400);
+</script>
+</body>
+</html>

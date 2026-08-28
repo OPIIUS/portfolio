@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SupportDesk AI — WhatsApp Customer Support</title>
+<link rel="stylesheet" href="assets/kit.css">
+<style>
+.chat{height:470px}
+.compose{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:#111b21}
+.compose input{flex:1;background:#2a3942;border:0;border-radius:20px;padding:10px 12px}
+.send{width:40px;height:40px;border-radius:50%;background:var(--green);border:0;color:#fff;
+  cursor:pointer;font-size:15px}
+.quick{display:flex;flex-wrap:wrap;gap:6px;padding:9px 10px;background:#111b21;border-top:1px solid var(--line)}
+.conf{display:grid;grid-template-columns:1fr 46px;gap:8px;align-items:center;padding:9px 14px;
+  border-bottom:1px solid var(--line);font-size:11.5px;color:var(--dim)}
+.tick{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--red);
+  border-radius:9px;padding:9px 11px;margin-bottom:8px;font-size:12.4px}
+.tick b{color:var(--redI)}
+.tick.low{border-left-color:var(--gold)}
+.tick.low b{color:#f0c069}
+.kbrow{display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 0;
+  border-bottom:1px dashed #232a2f;font-size:12.2px}
+.kbrow.hit{color:var(--greenI)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="mark g">VE</div>
+  <div class="ttl"><b>SupportDesk AI &middot; Voltiq Electronics</b>
+    <span>Answers customer WhatsApp messages, checks real orders, escalates only what it should</span></div>
+  <div class="spacer"></div>
+  <button class="btn primary" id="play">&#9654; Play demo</button>
+  <button class="btn" id="reset">Reset</button>
+  <a class="back" href="index.html">&larr; All systems</a>
+  <a class="back" href="../index.html">Profile</a>
+</div>
+
+<div class="stats">
+  <div class="stat"><i>Messages handled</i><b id="s1">0</b></div>
+  <div class="stat g"><i>Solved without a human</i><b id="s2">100%</b></div>
+  <div class="stat"><i>Avg confidence</i><b id="s3">-</b></div>
+  <div class="stat r"><i>Tickets raised</i><b id="s4">0</b></div>
+  <div class="stat y"><i>Staff time saved</i><b id="s5">0 min</b></div>
+</div>
+
+<div class="wrap cols-3">
+
+  <div class="card">
+    <h3>&#128241; Customer WhatsApp <em>+91 98640 55555</em></h3>
+    <div class="conf"><div class="bar" id="cbar"><i style="width:0%"></i></div>
+      <b id="cval" style="text-align:right;color:var(--greenI)">-</b></div>
+    <div class="chat" id="chat"></div>
+    <div class="quick" id="quick"></div>
+    <div class="compose">
+      <input id="inp" placeholder="Type as the customer..." autocomplete="off">
+      <button class="send" id="send">&#10148;</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#129504; How it decided <em id="lc">0 events</em></h3>
+      <div class="log" id="log"></div>
+    </div>
+    <div class="card">
+      <h3>&#128218; Knowledge base <em id="kbc"></em></h3>
+      <div class="pad" style="max-height:240px;overflow:auto" id="kb"></div>
+      <div class="note">The shop owner edits this list. No AI training, no monthly fee &mdash;
+        add a line, the bot knows it.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#127915; Escalation queue <em id="tc">0 open</em></h3>
+      <div class="pad" id="tickets"><div class="empty">Nothing needs a human yet.</div></div>
+      <div class="note">A ticket is raised only when the bot is unsure, the customer is upset,
+        or they ask for a person. Everything else is handled and closed.</div>
+    </div>
+    <div class="card">
+      <h3>&#128230; Live order book</h3>
+      <div style="max-height:250px;overflow:auto">
+        <table><thead><tr><th>Order</th><th>Item</th><th>Status</th></tr></thead>
+        <tbody id="orders"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var SHOP={name:"Voltiq Electronics",city:"Guwahati",
+  address:"Fancy Bazar, MG Road, Guwahati 781001",hours:"10 AM to 8:30 PM, closed Sunday"};
+
+/* ---------------- real order book ---------------- */
+var ORDERS=[
+ {id:"OD2291",item:"LG 1.5T Split AC",cust:"Ankur Das",status:"Out for delivery",eta:"today by 7 PM",courier:"Voltiq van 3"},
+ {id:"OD2288",item:"Bosch Washing Machine",cust:"Priya Kalita",status:"Dispatched",eta:"tomorrow",courier:"Delhivery 44821"},
+ {id:"OD2274",item:"Philips Mixer Grinder",cust:"Rakesh Nath",status:"Delivered",eta:"delivered 3 days ago",courier:"-"},
+ {id:"OD2301",item:"Samsung 43\" TV",cust:"Meghna Das",status:"Packed",eta:"in 2 days",courier:"awaiting pickup"},
+ {id:"OD2263",item:"Havells Ceiling Fan x3",cust:"Bipul Sarma",status:"Delivered",eta:"delivered last week",courier:"-"},
+ {id:"OD2305",item:"IFB Microwave 30L",cust:"Nabanita Bora",status:"Payment pending",eta:"ships once paid",courier:"-"}
+];
+
+/* ---------------- knowledge base ---------------- */
+/* kw = words that point at this answer. A "!" prefix means a strong word. */
+var KB=[
+ {id:"delivery",kw:["!delivery","deliver","ship","shipping","days","reach","kitna","time"],
+  a:"We deliver free anywhere in Guwahati within 24 hours. Jorhat, Shillong and Dibrugarh take 2 to 3 days. Delivery is free above ₹5,000, otherwise ₹250."},
+ {id:"emi",kw:["!emi","instal","installment","monthly","finance","bajaj","credit","card"],
+  a:"Yes. No-cost EMI for 3, 6 and 9 months on all major credit cards and Bajaj Finserv. Bring your PAN and Aadhaar for a Bajaj card."},
+ {id:"return",kw:["!return","!refund","exchange","replace","policy","money back"],
+  a:"7 day replacement on any item with a manufacturing fault. Unopened boxes can be returned within 3 days for a full refund. Refunds reach your account in 4 to 5 working days."},
+ {id:"warranty",kw:["!warranty","guarantee","service","repair","brand warranty"],
+  a:"Every item carries the full brand warranty, and we handle the service claim for you - you do not need to run to the service centre. Keep the invoice, it is your warranty card."},
+ {id:"hours",kw:["!open","!timing","hours","close","closed","sunday","time","kitne baje"],
+  a:"We are open "+SHOP.hours+". Delivery runs even on Sunday."},
+ {id:"address",kw:["!address","!location","where","shop","reach","map","direction","situated"],
+  a:"We are at "+SHOP.address+", opposite the SBI main branch. Parking is available behind the building."},
+ {id:"install",kw:["!installation","install","fitting","fit","technician","mount"],
+  a:"AC, TV and washing machine installation is free within Guwahati and is done within 48 hours of delivery. Our technician calls you before coming."},
+ {id:"price",kw:["!price","cost","rate","how much","discount","offer","cheap","best"],
+  a:"Prices change with the ongoing offers, so tell me the exact model and I will give you today's best price. We also match any local shop's written quote."},
+ {id:"stock",kw:["!stock","available","availability","have","piece","model"],
+  a:"Tell me the brand and model and I will check stock for you right now. Most AC, TV and washing machine models are in stock."},
+ {id:"payment",kw:["!payment","upi","cash","pay","gpay","phonepe","online","advance"],
+  a:"We accept UPI, all cards, cash and net banking. For delivery orders a 20% advance confirms the order, the rest on delivery."},
+ {id:"amc",kw:["!amc","annual","maintenance","yearly","servicing","contract"],
+  a:"Annual maintenance for AC starts at ₹2,400 a year and covers 2 services plus free gas top-up once."},
+ {id:"bill",kw:["!bill","!invoice","gst","receipt","copy","duplicate"],
+  a:"Yes, we give a full GST invoice on every sale. If you lost yours, share your phone number and we will WhatsApp a duplicate copy."},
+ {id:"bulk",kw:["!bulk","wholesale","quantity","office","hotel","project","quotation"],
+  a:"For bulk or office orders we give special pricing and a proper quotation. Tell me the items and quantity and our manager will send it today."},
+ {id:"exchange",kw:["!exchange","old","purana","buyback","trade"],
+  a:"We take your old TV, AC, fridge or washing machine in exchange. The value depends on the condition - send a photo and we will tell you the amount."}
+];
+KB.forEach(function(k){k.hits=0;});
+
+var COMPLAINT=/\b(not working|stopped working|broken|damaged|defective|faulty|dead|burnt|leaking|noise|worst|useless|cheat|fraud|angry|disappointed|complaint|still not|not received|never came|delay)\b/;
+var HUMAN=/\b(human|agent|manager|owner|staff|a person|real person|talk to someone|speak to someone|call me)\b/;
+
+/* ---------------- the matcher ---------------- */
+function words(t){return t.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(Boolean);}
+function match(text){
+  var w=words(text), best=null, all=[];
+  KB.forEach(function(e){
+    var pts=0, matched=[];
+    e.kw.forEach(function(k){
+      var strong=k[0]==='!', key=strong?k.slice(1):k;
+      var hit=key.indexOf(' ')>=0 ? text.toLowerCase().indexOf(key)>=0 : w.indexOf(key)>=0;
+      if(hit){ pts+=strong?3:1; matched.push(key); }
+    });
+    if(pts>0) all.push({e:e,pts:pts,matched:matched});
+  });
+  all.sort(function(a,b){return b.pts-a.pts;});
+  best=all[0]||null;
+  if(!best)return {conf:0,all:[]};
+  /* confidence: how strong the winner is, and how far clear of the runner-up */
+  var second=all[1]?all[1].pts:0;
+  var conf=best.pts/(best.pts+2.2);
+  if(best.pts-second<=1&&second>0)conf*=0.72;      /* two answers fit equally - be careful */
+  return {conf:Math.min(0.97,conf),best:best,all:all};
+}
+function findOrder(text){
+  var m=text.toUpperCase().match(/\bOD\s?(\d{4})\b/)||text.match(/\border\s*#?\s*(\d{4})\b/i);
+  if(!m)return null;
+  var id='OD'+m[1];
+  for(var i=0;i<ORDERS.length;i++)if(ORDERS[i].id===id)return ORDERS[i];
+  return {missing:id};
+}
+
+/* ---------------- reply ---------------- */
+var stats={msgs:0,confSum:0,confN:0,tickets:0,auto:0}, tickets=[], asked={};
+function respond(raw){
+  var t=raw.toLowerCase().trim(), out=[], L=[], conf=1, resolved=true;
+  stats.msgs++;
+
+  if(/^(hi|hii|hey|hello|helo|namaste|good (morning|evening|afternoon))\b/.test(t)){
+    L.push(['STEP','step','Intent: GREETING']);
+    out.push("Hello! Welcome to *"+SHOP.name+"*, "+SHOP.city+".\nI can check your order, tell you prices, EMI, delivery time and warranty. What do you need?");
+    return {out:out,log:L,conf:0.95,resolved:true};
+  }
+
+  /* order lookup - a real record, not a guess */
+  var o=findOrder(raw);
+  if(o||/\b(my order|order status|where is my|track|kaha|kahan)\b/.test(t)){
+    L.push(['STEP','step','Intent: ORDER_STATUS']);
+    if(o&&o.missing){
+      L.push(['DATA','data','Looked up '+o.missing+' - no such order']);
+      out.push("I could not find order "+o.missing+" in our system. Please check the ID on your invoice - it looks like OD2291.");
+      return {out:out,log:L,conf:0.9,resolved:true};
+    }
+    if(o){
+      L.push(['DATA','data','Order '+o.id+' found: '+o.status]);
+      out.push("Order *"+o.id+"* - "+o.item+"\nStatus: *"+o.status+"*\nExpected: "+o.eta
+        +(o.courier!=='-'?"\nCourier: "+o.courier:"")
+        +(o.status==='Payment pending'?"\n\nWe will ship it the moment the payment reflects. I can send a UPI link if you like.":""));
+      return {out:out,log:L,conf:0.96,resolved:true};
+    }
+    L.push(['SYS','sys','No order ID in the message']);
+    out.push("Sure, I can check that. What is your order ID? It is on your invoice and looks like OD2291.");
+    return {out:out,log:L,conf:0.85,resolved:true};
+  }
+
+  /* upset customer - never argue, always escalate */
+  if(COMPLAINT.test(t)){
+    L.push(['STEP','step','Intent: COMPLAINT (customer is unhappy)']);
+    var tk=ticket(raw,'Complaint','high');
+    out.push("I am sorry about this, that should not happen.\n\nI have raised a priority ticket (*"+tk.id
+      +"*) and our service manager will call you within 2 hours. If the item is under warranty the repair or replacement is free and we handle the paperwork.");
+    L.push(['ACT','act','Ticket '+tk.id+' raised, priority HIGH, service manager notified']);
+    return {out:out,log:L,conf:0.93,resolved:false};
+  }
+
+  if(HUMAN.test(t)){
+    L.push(['STEP','step','Intent: HUMAN_REQUESTED']);
+    var tk2=ticket(raw,'Asked for a person','normal');
+    out.push("Of course. I have passed this to our team ("+tk2.id+") and someone will message you here within 10 minutes.");
+    L.push(['ACT','act','Ticket '+tk2.id+' raised and assigned']);
+    return {out:out,log:L,conf:0.95,resolved:false};
+  }
+
+  if(/^(thanks|thank you|thnx|ok thanks|great|nice|good)\b/.test(t)){
+    L.push(['STEP','step','Intent: THANKS']);
+    out.push("Happy to help. Anything else you need, just message here - we reply any time.");
+    return {out:out,log:L,conf:0.95,resolved:true};
+  }
+
+  /* knowledge base */
+  var m=match(raw);
+  if(m.best) L.push(['CALC','calc','Best match "'+m.best.e.id+'" on ['+m.best.matched.join(', ')
+    +'] · confidence '+Math.round(m.conf*100)+'%']);
+  if(m.all&&m.all.length>1) L.push(['CALC','calc','Runner-up "'+m.all[1].e.id+'" ('+m.all[1].pts+' pts)']);
+
+  if(m.conf>=0.5){
+    m.best.e.hits++;
+    out.push(m.best.e.a);
+    /* a second useful line where it helps */
+    if(m.best.e.id==='price')out.push("Popular right now: LG 1.5T 5-star AC, Samsung 43\" 4K TV, Bosch 7kg front load. Which one shall I price?");
+    return {out:out,log:L,conf:m.conf,resolved:true};
+  }
+
+  L.push(['SYS','sys','Confidence too low to answer - not guessing']);
+  var tk3=ticket(raw,'Bot unsure','normal');
+  out.push("That one I do not want to guess at. I have sent it to our team ("+tk3.id
+    +") and they will reply here shortly. Meanwhile I can help with orders, prices, EMI, delivery or warranty.");
+  L.push(['ACT','act','Ticket '+tk3.id+' raised for a human']);
+  return {out:out,log:L,conf:m.conf,resolved:false};
+}
+
+var TSEQ=4100;
+function ticket(msg,reason,pri){
+  TSEQ++;
+  var t={id:'TK-'+TSEQ,msg:msg.slice(0,70),reason:reason,pri:pri,at:new Date()};
+  tickets.unshift(t);stats.tickets++;
+  drawTickets();
+  return t;
+}
+
+/* ---------------- UI ---------------- */
+var chat=document.getElementById('chat'),logEl=document.getElementById('log'),busy=false;
+function now(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function fmtWA(s){return esc(s).replace(/\*(.+?)\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
+function bubble(txt,cls){
+  var d=document.createElement('div');d.className='msg '+cls;
+  d.innerHTML=fmtWA(txt)+'<small>'+now()+'</small>';
+  chat.appendChild(d);chat.scrollTop=chat.scrollHeight;
+}
+function logAdd(tag,cls,txt){
+  var d=document.createElement('div');d.className='lrow';
+  d.innerHTML='<span>'+now()+'</span><span class="tag t-'+cls.toLowerCase()+'">'+tag+'</span><span>'+esc(txt)+'</span>';
+  logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;
+  document.getElementById('lc').textContent=logEl.children.length+' events';
+}
+function setConf(c){
+  var pct=Math.round(c*100),bar=document.getElementById('cbar');
+  bar.className='bar'+(pct>=70?'':(pct>=50?' y':' r'));
+  bar.firstElementChild.style.width=pct+'%';
+  var v=document.getElementById('cval');
+  v.textContent=pct+'%';
+  v.style.color=pct>=70?'var(--greenI)':(pct>=50?'#f0c069':'var(--redI)');
+}
+function drawTickets(){
+  var b=document.getElementById('tickets');
+  if(!tickets.length){b.innerHTML='<div class="empty">Nothing needs a human yet.</div>';}
+  else b.innerHTML=tickets.map(function(t){
+    return '<div class="tick'+(t.pri==='high'?'':' low')+'"><b>'+t.id+'</b> &middot; '+esc(t.reason)
+      +' <span class="badge '+(t.pri==='high'?'r':'y')+'" style="float:right">'+t.pri+'</span>'
+      +'<div class="muted tiny" style="margin-top:4px">&ldquo;'+esc(t.msg)+'&rdquo;</div></div>';}).join('');
+  document.getElementById('tc').textContent=tickets.length+' open';
+  document.getElementById('s4').textContent=tickets.length;
+}
+function drawKB(){
+  document.getElementById('kb').innerHTML=KB.map(function(k){
+    return '<div class="kbrow'+(k.hits?' hit':'')+'"><span>'+k.id+'</span>'
+      +'<span class="muted tiny">'+(k.hits?k.hits+' used':'')+'</span></div>';}).join('');
+  document.getElementById('kbc').textContent=KB.length+' answers';
+}
+function drawOrders(){
+  document.getElementById('orders').innerHTML=ORDERS.map(function(o){
+    var cls=o.status==='Delivered'?'':(o.status==='Payment pending'?'r':'b');
+    return '<tr><td><b style="color:var(--gold)">'+o.id+'</b><div class="tiny muted">'+esc(o.cust)+'</div></td>'
+      +'<td>'+esc(o.item)+'</td><td><span class="badge '+cls+'">'+o.status+'</span></td></tr>';}).join('');
+}
+function stat(){
+  document.getElementById('s1').textContent=stats.msgs;
+  var pct=stats.msgs?Math.round(stats.auto/stats.msgs*100):100;
+  document.getElementById('s2').textContent=pct+'%';
+  document.getElementById('s3').textContent=stats.confN?Math.round(stats.confSum/stats.confN*100)+'%':'-';
+  document.getElementById('s5').textContent=Math.round(stats.msgs*2.5)+' min';
+}
+
+function say(text){
+  if(busy||!text.trim())return;busy=true;
+  bubble(text,'out');
+  logAdd('IN','sys','Customer: "'+text.slice(0,55)+'"');
+  var ty=document.createElement('div');ty.className='typing';ty.innerHTML='<i></i><i></i><i></i>';
+  chat.appendChild(ty);chat.scrollTop=chat.scrollHeight;
+  var r=respond(text);
+  stats.confSum+=r.conf;stats.confN++;
+  if(r.resolved)stats.auto++;
+  setTimeout(function(){
+    ty.parentNode&&ty.parentNode.removeChild(ty);
+    r.log.forEach(function(l){logAdd(l[0],l[1],l[2]);});
+    setConf(r.conf);drawKB();stat();
+    (function next(i){
+      if(i>=r.out.length){busy=false;return;}
+      bubble(r.out[i],'in');
+      setTimeout(function(){next(i+1);},430);
+    })(0);
+  },620+Math.random()*350);
+}
+
+var QUICK=["Hi","Where is my order OD2291?","How many days for delivery to Jorhat?",
+ "Do you give EMI?","What is your return policy?","Are you open on Sunday?",
+ "My new mixer stopped working after 2 days","Do you take my old TV in exchange?",
+ "Can I talk to a person?","Do you deliver to Bhutan?"];
+var qd=document.getElementById('quick');
+QUICK.forEach(function(q){var b=document.createElement('button');b.className='chip';b.textContent=q;
+  b.onclick=function(){say(q);};qd.appendChild(b);});
+
+document.getElementById('send').onclick=function(){
+  var i=document.getElementById('inp');say(i.value);i.value='';};
+document.getElementById('inp').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){say(this.value);this.value='';}});
+
+var SCRIPT=["Hi","Where is my order OD2291?","How many days for delivery to Jorhat?",
+ "Do you give EMI?","My new mixer stopped working after 2 days",
+ "What is your return policy?","Do you deliver to Bhutan?"];
+document.getElementById('play').onclick=function(){
+  var btn=this;btn.disabled=true;btn.textContent='Playing...';
+  var i=0;
+  (function step(){
+    if(i>=SCRIPT.length){btn.disabled=false;btn.innerHTML='&#9654; Play demo';return;}
+    typeOut(SCRIPT[i++],function(){setTimeout(step,1300);});
+  })();
+};
+function typeOut(text,done){
+  var inp=document.getElementById('inp'),j=0;inp.value='';
+  var t=setInterval(function(){
+    inp.value=text.slice(0,++j);
+    if(j>=text.length){clearInterval(t);setTimeout(function(){
+      say(text);inp.value='';
+      var w=setInterval(function(){if(!busy){clearInterval(w);done();}},220);},240);}
+  },26);
+}
+document.getElementById('reset').onclick=function(){
+  chat.innerHTML='';logEl.innerHTML='';tickets=[];KB.forEach(function(k){k.hits=0;});
+  stats={msgs:0,confSum:0,confN:0,tickets:0,auto:0};TSEQ=4100;
+  setConf(0);drawTickets();drawKB();stat();boot();
+};
+function boot(){
+  bubble("Hello! Welcome to *"+SHOP.name+"*, "+SHOP.city+".\nI can check your order, tell you prices, EMI, delivery time and warranty. What do you need?",'in');
+  logAdd('SYS','sys','Support desk online · knowledge base loaded ('+KB.length+' answers, '+ORDERS.length+' live orders)');
+}
+drawOrders();drawKB();drawTickets();stat();boot();
+
+/* ?auto=1 makes the page start itself - handy for a shareable link or a recording */
+if(/auto/.test(location.search))setTimeout(function(){var b=document.getElementById('play');if(b)b.click();},400);
+</script>
+</body>
+</html>

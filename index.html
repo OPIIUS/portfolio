@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Priyangshu Nath — Fullstack &amp; Automation Developer</title>
-<meta name="description" content="I build websites and business automation that ship. Six live projects: client sites, SaaS dashboards, mobile apps and internal tools.">
+<meta name="description" content="Fullstack and automation developer in Guwahati. Six AI systems you can open and run yourself in the browser — lead generation, WhatsApp support, invoice processing, CRM automation and a live research agent — plus twelve shipped projects.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -123,7 +123,37 @@
   .contact p{margin:0 0 22px; color:var(--ink-2); max-width:56ch}
   footer{padding:0 0 60px; color:var(--ink-3); font-size:13px}
 
+  /* ---------- interactive systems ---------- */
+  .try-lede{color:var(--ink-2); font-size:16px; max-width:64ch; margin:-6px 0 26px}
+  .try-lede b{color:var(--ink)}
+  .try{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+  .tcard{
+    display:flex; flex-direction:column; background:var(--bg-2); border:1px solid var(--line);
+    border-radius:16px; overflow:hidden; text-decoration:none; color:inherit;
+    transition:border-color .16s, transform .16s;
+  }
+  .tcard:hover{border-color:var(--accent); transform:translateY(-3px)}
+  .tcard .pic{background:#0e1113; border-bottom:1px solid var(--line); aspect-ratio:16/10; overflow:hidden}
+  .tcard .pic img{width:100%; height:100%; object-fit:cover; object-position:top left; display:block}
+  .tcard .in{padding:18px 20px 6px; flex:1}
+  .tcard h3{margin:0 0 4px; font-size:18px; font-weight:700; letter-spacing:-.015em}
+  .tcard .kind{color:var(--accent); font-size:12.5px; font-weight:600; margin:0 0 10px}
+  .tcard p{margin:0 0 14px; font-size:14.2px; color:var(--ink-2); line-height:1.6}
+  .tcard .open{
+    padding:13px 20px; border-top:1px solid var(--line); font-weight:600; font-size:14px;
+    color:var(--accent); display:flex; align-items:center; justify-content:space-between;
+  }
+  .tcard .open span:last-child{color:var(--ink-3); font-weight:500; font-size:12.5px}
+  .honest{
+    margin-top:22px; border:1px solid var(--line); border-left:3px solid var(--accent);
+    border-radius:12px; padding:18px 22px; background:var(--bg-2);
+  }
+  .honest b{color:var(--ink)}
+  .honest p{margin:0; color:var(--ink-2); font-size:14.5px; line-height:1.65}
+
+  @media (max-width:1000px){ .try{grid-template-columns:repeat(2,1fr)} }
   @media (max-width:820px){
+    .try{grid-template-columns:1fr}
     .card,.card.compact{grid-template-columns:1fr}
     .card .shot{border-right:0; border-bottom:1px solid var(--line); padding:20px}
     .card .body{padding:24px}
@@ -141,23 +171,119 @@
     <p class="eyebrow"><span class="dot"></span>Available for work — India / Remote</p>
     <h1>I build websites and <em>automation</em> that actually ship.</h1>
     <p class="lede">
-      Fullstack developer working with Next.js, React, Python and Node. I take a business problem —
-      leads going cold, manual data entry, no online presence — and hand back something running.
-      Everything below is a real, working build, not a mockup.
+      Fullstack and automation developer working with Next.js, React, Python and Node. I take a
+      business problem — leads going cold, manual data entry, no online presence — and hand back
+      something running. <b style="color:var(--ink)">You don't have to take my word for any of it:
+      six of my systems are open below and you can run them yourself in this browser.</b>
     </p>
     <div class="cta">
-      <a class="btn btn-primary" href="#contact">Hire me</a>
-      <a class="btn btn-ghost" href="#work">See the work</a>
+      <a class="btn btn-primary" href="#systems">Try my systems now</a>
+      <a class="btn btn-ghost" href="#work">See the shipped work</a>
+      <a class="btn btn-ghost" href="#contact">Hire me</a>
     </div>
-    <p class="avail">Full-time availability · Freelance or contract · Guwahati, Assam</p>
+    <p class="avail">Full-time availability · Freelance or contract · Guwahati, Assam · India / Remote</p>
 
     <div class="stats">
-      <div class="stat"><b>6</b><span>shipped projects</span></div>
+      <div class="stat"><b>6</b><span>systems you can run here</span></div>
+      <div class="stat"><b>12</b><span>projects shipped</span></div>
       <div class="stat"><b>2</b><span>live for real clients</span></div>
-      <div class="stat"><b>2</b><span>Android apps built</span></div>
       <div class="stat"><b>100%</b><span>self-taught</span></div>
     </div>
   </header>
+
+  <section id="systems">
+    <h2>Run my work yourself</h2>
+    <p class="try-lede">
+      Six AI automation systems, each one open and working. <b>Click any card, press the green
+      button on the page, and it runs.</b> Nothing to install, no sign-up, no video to sit through.
+      Add <code>?auto=1</code> to any of them and it starts on its own.
+    </p>
+
+    <div class="try">
+
+      <a class="tcard" href="demos/01-lead-gen.html">
+        <div class="pic"><img src="shots/01-lead-gen.png" alt="LeadForge — ranked leads with scores, buying signals and a generated outreach message"></div>
+        <div class="in">
+          <p class="kind">AI lead generation</p>
+          <h3>LeadForge</h3>
+          <p>Scores a market of businesses on seven buying signals, drops the ones not worth calling,
+             and writes a first message quoting each business's own numbers back to them. Move the
+             scoring sliders and the whole ranking recomputes.</p>
+        </div>
+        <div class="open"><span>Run the lead engine →</span><span>interactive</span></div>
+      </a>
+
+      <a class="tcard" href="demos/02-support-bot.html">
+        <div class="pic"><img src="shots/02-support-bot.png" alt="SupportDesk AI — WhatsApp chat, confidence meter, escalation queue and live order book"></div>
+        <div class="in">
+          <p class="kind">Customer support automation</p>
+          <h3>SupportDesk AI</h3>
+          <p>Answers customer messages, looks up real order records, and scores its own confidence.
+             Below the threshold it refuses to guess — it raises a ticket for a human instead. Type
+             your own questions at it.</p>
+        </div>
+        <div class="open"><span>Talk to the bot →</span><span>interactive</span></div>
+      </a>
+
+      <a class="tcard" href="demos/03-invoice-ai.html">
+        <div class="pic"><img src="shots/03-invoice-ai.png" alt="DocuParse AI — extracted invoice fields, verification checks and a processed ledger"></div>
+        <div class="in">
+          <p class="kind">Document processing</p>
+          <h3>DocuParse AI</h3>
+          <p>Reads six completely different invoice layouts with no template, then checks the
+             arithmetic, the GST number and the duplicates. Paste one of your own invoices in and it
+             will parse yours too.</p>
+        </div>
+        <div class="open"><span>Process the invoices →</span><span>paste your own</span></div>
+      </a>
+
+      <a class="tcard" href="demos/04-crm-autopilot.html">
+        <div class="pic"><img src="shots/04-crm-autopilot.png" alt="PipelineIQ — deal pipeline board, today's actions and a weighted forecast"></div>
+        <div class="in">
+          <p class="kind">Sales &amp; CRM automation</p>
+          <h3>PipelineIQ</h3>
+          <p>Watches a pipeline, works out which deals are quietly dying, sorts today's calls by the
+             money actually at risk, and drafts the follow-up message for each one.</p>
+        </div>
+        <div class="open"><span>Run today's automation →</span><span>interactive</span></div>
+      </a>
+
+      <a class="tcard" href="demos/05-research-agent.html">
+        <div class="pic"><img src="shots/05-research-agent.png" alt="ScoutAI — agent plan, extracted facts marked verified or single-source, and the written brief"></div>
+        <div class="in">
+          <p class="kind">Autonomous research agent</p>
+          <h3>ScoutAI</h3>
+          <p>Give it any topic. It breaks the question down, searches Wikipedia and Hacker News
+             <b>live while you watch</b>, cross-checks facts against each other, and writes a brief
+             that states plainly what it could not confirm.</p>
+        </div>
+        <div class="open"><span>Send the agent →</span><span>live web sources</span></div>
+      </a>
+
+      <a class="tcard" href="demos/hotel-front-desk.html">
+        <div class="pic"><img src="shots/hotel-front-desk.png" alt="AI Front Desk — hotel booking conversation, engine log, live room availability and bookings register"></div>
+        <div class="in">
+          <p class="kind">Conversational booking system</p>
+          <h3>AI Front Desk</h3>
+          <p>A hotel receptionist that checks room availability, quotes a rate and confirms a booking
+             in normal conversation. This one also exists as a <b>real WhatsApp bot</b> that books
+             rooms on a live number.</p>
+        </div>
+        <div class="open"><span>Book a room →</span><span>also runs on WhatsApp</span></div>
+      </a>
+
+    </div>
+
+    <div class="honest">
+      <p><b>Straight about what you are looking at:</b> the logic in all six is real and runs in
+      front of you — change an input and the output genuinely recomputes, nothing is a recorded
+      animation. The <i>data</i> in five of them is sample data (a market of businesses, an order
+      book, invoices, a pipeline), because in a real job that data comes from your CRM, your sheet
+      or your database — the engine is the part I built and it does not change. The research agent
+      uses live public sources, and the hotel front desk has a production version running on a real
+      WhatsApp number.</p>
+    </div>
+  </section>
 
   <section id="work">
     <h2>Selected work</h2>

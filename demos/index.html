@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rishi — AI Automation Systems</title>
+<link rel="stylesheet" href="assets/kit.css">
+<style>
+.hero{padding:34px 18px 22px;max-width:1080px}
+.hero h1{margin:0 0 10px;font-size:31px;letter-spacing:-.4px;line-height:1.15}
+.hero h1 span{color:var(--gold)}
+.hero p{margin:0 0 8px;color:var(--dim);font-size:15px;line-height:1.65;max-width:760px}
+.hero .row{margin-top:16px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:0 18px 26px}
+@media(max-width:1050px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.hero h1{font-size:24px}}
+.proj{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  text-decoration:none;color:var(--ink);display:flex;flex-direction:column;transition:border-color .2s,transform .2s}
+.proj:hover{border-color:var(--gold);transform:translateY(-2px)}
+.proj .top{padding:15px 16px 12px;display:flex;gap:12px;align-items:flex-start}
+.proj h3{margin:0;font-size:15.5px;letter-spacing:0;text-transform:none;color:var(--ink);
+  border:0;padding:0;display:block}
+.proj .sub{color:var(--dim);font-size:11.6px;margin-top:2px}
+.proj p{margin:0;padding:0 16px 13px;color:#b9c6cc;font-size:13.2px;line-height:1.6;flex:1}
+.proj .feat{padding:0 16px 13px;display:flex;flex-wrap:wrap;gap:5px}
+.proj .feat span{font-size:10.6px;padding:3px 8px;border-radius:6px;background:#212930;
+  color:#a6b4bb;border:1px solid #2c353b}
+.proj .go{padding:11px 16px;border-top:1px solid var(--line);color:var(--gold);
+  font-size:12.3px;display:flex;align-items:center;gap:7px}
+.proj.live .go{color:var(--greenI)}
+.sect{padding:0 18px 8px;color:var(--dim);font-size:11.5px;text-transform:uppercase;letter-spacing:.8px}
+.how{max-width:1080px;padding:0 18px 40px}
+.how .card{margin-bottom:0}
+.how ol{margin:0;padding-left:20px;line-height:1.75;font-size:13.4px}
+.how li{margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="mark">R</div>
+  <div class="ttl"><b>Rishi &middot; AI Automation Systems</b>
+    <span>Guwahati, Assam &mdash; systems that answer messages, chase money and do the paperwork</span></div>
+  <div class="spacer"></div>
+  <a class="back" href="../index.html">&larr; Back to profile</a>
+</div>
+
+<div class="hero">
+  <h1>Six working AI systems.<br><span>Open any one and use it right now.</span></h1>
+  <p>These are not screenshots or slide decks. Each page below is the real engine &mdash; it scores real
+  data, parses real documents, and one of them goes out to the live web while you watch. Press the
+  green button on any page and it runs.</p>
+  <p>Built with plain HTML and JavaScript, no frameworks and no paid APIs, so they load instantly
+  and work offline (except the research agent, which needs the internet by definition).</p>
+</div>
+
+<div class="sect">The systems</div>
+<div class="grid">
+
+  <a class="proj" href="01-lead-gen.html">
+    <div class="top"><div class="mark b">LF</div>
+      <div><h3>LeadForge</h3><div class="sub">AI lead generation</div></div></div>
+    <p>Scans a market, scores every business on seven buying signals, throws away the time-wasters
+    and writes a first message that quotes that business's own numbers back to them.</p>
+    <div class="feat"><span>weighted scoring</span><span>live re-tuning</span><span>message writer</span><span>CSV export</span></div>
+    <div class="go">Run the lead engine &rarr;</div>
+  </a>
+
+  <a class="proj" href="02-support-bot.html">
+    <div class="top"><div class="mark g">VE</div>
+      <div><h3>SupportDesk AI</h3><div class="sub">WhatsApp customer support</div></div></div>
+    <p>Answers customer questions, looks up real order records, and measures its own confidence.
+    When it is not sure, it refuses to guess and raises a ticket for a human instead.</p>
+    <div class="feat"><span>intent matching</span><span>order lookup</span><span>confidence score</span><span>escalation queue</span></div>
+    <div class="go">Talk to the bot &rarr;</div>
+  </a>
+
+  <a class="proj" href="03-invoice-ai.html">
+    <div class="top"><div class="mark v">DP</div>
+      <div><h3>DocuParse AI</h3><div class="sub">Invoice &amp; document processor</div></div></div>
+    <p>Reads six completely different invoice layouts with no template, pulls out every field,
+    then checks the arithmetic, the GST number and the duplicates. It catches money being lost.</p>
+    <div class="feat"><span>layout-free parsing</span><span>maths verification</span><span>GSTIN validation</span><span>duplicate detection</span></div>
+    <div class="go">Process the invoices &rarr;</div>
+  </a>
+
+  <a class="proj" href="04-crm-autopilot.html">
+    <div class="top"><div class="mark">PQ</div>
+      <div><h3>PipelineIQ</h3><div class="sub">Sales &amp; CRM automation</div></div></div>
+    <p>Watches every deal, works out which ones are quietly dying, sorts today's calls by the money
+    actually at risk, and drafts the follow-up message for each one.</p>
+    <div class="feat"><span>deal health scoring</span><span>weighted forecast</span><span>next-action rules</span><span>drafted follow-ups</span></div>
+    <div class="go">Run today's automation &rarr;</div>
+  </a>
+
+  <a class="proj live" href="05-research-agent.html">
+    <div class="top"><div class="mark r">SA</div>
+      <div><h3>ScoutAI</h3><div class="sub">Autonomous research agent</div></div></div>
+    <p>Give it a topic. It breaks the question into parts, searches Wikipedia and Hacker News
+    <b>live</b>, reads what it finds, cross-checks facts against each other and writes a brief that
+    admits what it could not confirm.</p>
+    <div class="feat"><span>live web sources</span><span>plan &rarr; read &rarr; verify</span><span>confidence score</span><span>markdown export</span></div>
+    <div class="go">&#9679; Send the agent to the live web &rarr;</div>
+  </a>
+
+  <a class="proj live" href="hotel-front-desk.html">
+    <div class="top"><div class="mark">RG</div>
+      <div><h3>AI Front Desk</h3><div class="sub">Hotel receptionist &mdash; also runs on real WhatsApp</div></div></div>
+    <p>A hotel receptionist that checks room availability, quotes a rate, and confirms the booking
+    in a normal conversation. This one also exists as a real WhatsApp bot that books rooms on a
+    live number.</p>
+    <div class="feat"><span>slot filling</span><span>live availability</span><span>booking engine</span><span>real WhatsApp version</span></div>
+    <div class="go">&#9679; Open the front desk &rarr;</div>
+  </a>
+
+</div>
+
+<div class="how">
+  <div class="card">
+    <h3>&#10067; What is actually running here</h3>
+    <div class="pad">
+      <ol>
+        <li><b>Real logic, not animations.</b> Every number on these pages is computed while you
+          watch. Change the scoring weights in LeadForge and the ranking changes. Paste your own
+          invoice into DocuParse and it parses that.</li>
+        <li><b>They show their working.</b> Each system has an engine log that says what it
+          understood and why it decided what it did &mdash; because a client will ask.</li>
+        <li><b>They admit what they do not know.</b> The support bot escalates instead of guessing.
+          The research agent tells you which facts only came from one source.</li>
+        <li><b>They are built to be re-skinned.</b> Each one has a single config block at the top
+          &mdash; hotel, shop, clinic, whichever business is paying.</li>
+      </ol>
+    </div>
+    <div class="note">Built by Rishi in Guwahati, Assam. The hotel front desk also runs as a live
+      WhatsApp bot on a real number &mdash; ask me for the recording.</div>
+  </div>
+</div>
+
+</body>
+</html>

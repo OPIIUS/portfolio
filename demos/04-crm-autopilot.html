@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PipelineIQ — AI Sales &amp; CRM Automation</title>
+<link rel="stylesheet" href="assets/kit.css">
+<style>
+.board{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:0 18px 12px}
+.col{background:var(--panel);border:1px solid var(--line);border-radius:12px;min-height:120px}
+.col h4{margin:0;padding:9px 11px;font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+  color:var(--dim);border-bottom:1px solid var(--line);display:flex;gap:6px}
+.col h4 em{font-style:normal;margin-left:auto}
+.col .body{padding:8px;display:grid;gap:7px;max-height:330px;overflow-y:auto}
+.deal{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--line2);
+  border-radius:9px;padding:8px 10px;cursor:pointer;animation:fade .3s ease}
+.deal:hover{border-color:var(--gold)}
+.deal.on{border-color:var(--gold);background:#232a26}
+.deal.hot{border-left-color:var(--red)}
+.deal.warm{border-left-color:var(--gold)}
+.deal.cool{border-left-color:var(--green)}
+.deal b{display:block;font-size:12.6px;line-height:1.3}
+.deal .v{color:var(--gold);font-weight:700;font-size:12.4px}
+.deal .m{color:var(--dim);font-size:10.8px;margin-top:3px}
+.act{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--red);
+  border-radius:9px;padding:9px 11px;margin-bottom:8px;cursor:pointer;animation:fade .3s}
+.act:hover{border-color:var(--gold)}
+.act.p2{border-left-color:var(--gold)}
+.act.p3{border-left-color:var(--blue)}
+.act b{font-size:12.6px}
+.act .w{color:var(--dim);font-size:11.3px;margin-top:3px;line-height:1.45}
+.draft{background:#0b141a;border:1px solid var(--line);border-radius:10px;padding:11px;
+  font-size:12.8px;line-height:1.55;white-space:pre-wrap}
+.tl{border-left:2px solid var(--line2);margin-left:6px;padding-left:12px}
+.tl div{position:relative;padding:5px 0;font-size:12.2px;color:var(--dim)}
+.tl div:before{content:"";position:absolute;left:-17px;top:11px;width:7px;height:7px;
+  border-radius:50%;background:var(--line2)}
+.tl div.now:before{background:var(--gold)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="mark">PQ</div>
+  <div class="ttl"><b>PipelineIQ &middot; AI Sales &amp; CRM Automation</b>
+    <span>Watches every deal, spots the ones going cold, and writes today's follow-ups for you</span></div>
+  <div class="spacer"></div>
+  <button class="btn primary" id="run">&#9654; Run today's automation</button>
+  <button class="btn" id="reset">Reset</button>
+  <a class="back" href="index.html">&larr; All systems</a>
+  <a class="back" href="../index.html">Profile</a>
+</div>
+
+<div class="stats">
+  <div class="stat y"><i>Open pipeline</i><b id="s1">&#8377;0</b></div>
+  <div class="stat g"><i>Weighted forecast</i><b id="s2">&#8377;0</b></div>
+  <div class="stat r"><i>Deals going cold</i><b id="s3">0</b></div>
+  <div class="stat"><i>Actions generated</i><b id="s4">0</b></div>
+  <div class="stat b"><i>Revenue rescued</i><b id="s5">&#8377;0</b></div>
+</div>
+
+<div class="board" id="board"></div>
+
+<div class="wrap cols-3">
+  <div class="card">
+    <h3>&#128293; Do these today <em id="ac">not run yet</em></h3>
+    <div class="pad" id="actions"><div class="empty">Press <b>Run today's automation</b>.</div></div>
+    <div class="note">Sorted by what actually earns money: deal size &times; how likely it is to close
+      &times; how fast it is going cold.</div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#129504; Engine log <em id="lc">0 events</em></h3>
+      <div class="log" id="log" style="height:250px"></div>
+    </div>
+    <div class="card">
+      <h3>&#128200; Forecast by stage</h3>
+      <div class="pad" id="fc"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>&#128203; Deal detail <em id="dn"></em></h3>
+    <div class="pad" id="detail"><div class="empty">Click any deal or action.</div></div>
+  </div>
+</div>
+
+<script>
+/* ==========================================================================
+   The pipeline. In the paid version this is the client's real CRM or their
+   Google Sheet. Everything below runs the same on real rows.
+   ========================================================================== */
+var STAGES=[
+ {k:"new",     n:"New enquiry", p:0.10},
+ {k:"contact", n:"Contacted",   p:0.25},
+ {k:"demo",    n:"Demo done",   p:0.45},
+ {k:"quote",   n:"Quote sent",  p:0.65},
+ {k:"won",     n:"Won",         p:1.00}
+];
+function stage(k){for(var i=0;i<STAGES.length;i++)if(STAGES[i].k===k)return STAGES[i];return STAGES[0];}
+
+var DEALS=[
+ {id:1, co:"Samrat Furniture",        ppl:"Mr. Samrat",     ph:"9864000501", val:85000, st:"quote",   days:9,  src:"Referral",  need:"WhatsApp ordering page for the showroom"},
+ {id:2, co:"Hotel Brahmaputra Grand", ppl:"Mr. Baruah",     ph:"9864000101", val:120000,st:"demo",    days:5,  src:"Cold call", need:"24x7 booking assistant on WhatsApp"},
+ {id:3, co:"Khorika Kitchen",         ppl:"Mr. Saikia",     ph:"9864000201", val:45000, st:"quote",   days:14, src:"Walk-in",   need:"Table booking + takeaway orders"},
+ {id:4, co:"Smile Care Dental",       ppl:"Dr. Choudhury",  ph:"9864000301", val:60000, st:"contact", days:3,  src:"Instagram", need:"Appointment booking, reminder messages"},
+ {id:5, co:"North East Trails",       ppl:"Mr. Deka",       ph:"9864000601", val:95000, st:"demo",    days:11, src:"Referral",  need:"Itinerary quotes sent automatically"},
+ {id:6, co:"Iron Temple Gym",         ppl:"Mr. Rabha",      ph:"9864000401", val:35000, st:"new",     days:2,  src:"Website",   need:"Membership enquiry auto-reply"},
+ {id:7, co:"Muga Silk House",         ppl:"Ms. Barua",      ph:"9864000502", val:70000, st:"quote",   days:4,  src:"Referral",  need:"Catalogue + order taking on WhatsApp"},
+ {id:8, co:"Assam Holiday Makers",    ppl:"Mr. Talukdar",   ph:"9864000602", val:55000, st:"contact", days:16, src:"Cold call", need:"Lead capture from Facebook ads"},
+ {id:9, co:"Pine Crest Shillong",     ppl:"Mr. Lyngdoh",    ph:"9864000105", val:150000,st:"demo",    days:7,  src:"Referral",  need:"Front desk automation, 22 rooms"},
+ {id:10,co:"City Physio Centre",      ppl:"Dr. Nath",       ph:"9864000303", val:28000, st:"new",     days:1,  src:"Justdial",  need:"Appointment reminders"},
+ {id:11,co:"Paradise Biryani House",  ppl:"Mr. Khan",       ph:"9864000202", val:40000, st:"contact", days:8,  src:"Walk-in",   need:"Online order page, no commission"},
+ {id:12,co:"Brahmaputra Cruise Trips",ppl:"Ms. Bhuyan",     ph:"9864000604", val:110000,st:"quote",   days:2,  src:"Instagram", need:"Seat booking + payment link"},
+ {id:13,co:"Hills Craft Emporium",    ppl:"Ms. Nongrum",    ph:"9864000505", val:32000, st:"new",     days:6,  src:"Website",   need:"Product catalogue on WhatsApp"},
+ {id:14,co:"Voltiq Electronics",      ppl:"Mr. Agarwal",    ph:"9864055555", val:75000, st:"won",     days:12, src:"Referral",  need:"Support desk - delivered"}
+];
+
+/* ---------- how healthy is this deal ---------- */
+var SRCQ={Referral:1.0,Instagram:0.8,"Walk-in":0.8,Website:0.7,Justdial:0.6,"Cold call":0.5};
+function health(d){
+  var s=stage(d.st);
+  var fresh=Math.max(0,1-d.days/21);                 /* dead after ~3 weeks of silence */
+  var size=Math.min(1,d.val/150000);
+  var src=SRCQ[d.src]||0.6;
+  var score=Math.round((s.p*0.40 + fresh*0.30 + size*0.18 + src*0.12)*100);
+  return {score:score,fresh:fresh,prob:s.p};
+}
+function weighted(d){return d.val*stage(d.st).p*(0.55+0.45*health(d).fresh);}
+
+/* ---------- what should happen next ---------- */
+function nextAction(d){
+  var h=health(d), s=stage(d.st);
+  if(d.st==="won") return {pri:3,title:"Ask for a referral",
+    why:"Won "+d.days+" days ago. A happy client is the cheapest next client you will ever get.",
+    msg:"Hello "+d.ppl+", hope the system is running well for you.\n\nOne small ask - do you know one other business owner who is losing enquiries on WhatsApp? A one line introduction from you is worth more than any advertisement I could run.\n\nThank you either way."};
+
+  if(d.st==="quote"&&d.days>=7) return {pri:1,title:"Quote is dying - call today",
+    why:"Quote of ₹"+d.val.toLocaleString('en-IN')+" sent "+d.days+" days ago with no reply. After 10 days a quote almost never closes.",
+    msg:"Hello "+d.ppl+", Rishi here.\n\nI sent you the quote for the "+d.need.toLowerCase()+" about "+d.days+" days ago. I am not chasing you for an answer - I only want to know if the price was the problem or the timing.\n\nIf it is the price, tell me your number and I will tell you honestly whether I can do it. If it is timing, tell me the month and I will stop bothering you until then."};
+
+  if(d.st==="quote") return {pri:2,title:"Confirm they got the quote",
+    why:"Quote sent "+d.days+" day(s) ago. A short nudge now doubles the reply rate.",
+    msg:"Hello "+d.ppl+", just checking the quote reached you properly.\n\nAny question on it, ask me directly - I would rather explain than have you guess."};
+
+  if(d.st==="demo"&&d.days>=6) return {pri:1,title:"Demo went cold - send the quote",
+    why:"They saw the demo "+d.days+" days ago and nothing was sent after. This is the most common way a sale is lost.",
+    msg:"Hello "+d.ppl+", thank you for the time you gave me for the demo.\n\nI have put the exact scope we discussed for the "+d.need.toLowerCase()+" into a one page quote - price, what you get, how many days. Shall I send it here on WhatsApp?"};
+
+  if(d.st==="demo") return {pri:2,title:"Send the written quote",
+    why:"Demo done "+d.days+" day(s) ago. Send the price while they still remember it.",
+    msg:"Hello "+d.ppl+", as discussed in the demo, here is what I will build for you: "+d.need+".\n\nSending the one page quote now with the price and the delivery date."};
+
+  if(d.st==="contact"&&d.days>=7) return {pri:1,title:"Going cold - book the demo",
+    why:"Contacted "+d.days+" days ago and still no demo. Without a demo this deal is only a name on a list.",
+    msg:"Hello "+d.ppl+", Rishi here from Guwahati.\n\nWe spoke about "+d.need.toLowerCase()+". Rather than explaining it again, may I show you a 2 minute working demo? I can come to your shop or send a short video - whichever is easier for you."};
+
+  if(d.st==="contact") return {pri:2,title:"Book the demo",
+    why:"Contacted "+d.days+" day(s) ago. Move it to a demo before the interest cools.",
+    msg:"Hello "+d.ppl+", shall I show you the demo this week? It takes 2 minutes and costs you nothing."};
+
+  if(d.st==="new"&&d.days>=3) return {pri:1,title:"Enquiry not answered yet",
+    why:"This enquiry came in "+d.days+" days ago and nobody has called. Most buyers pick whoever replies first.",
+    msg:"Hello "+d.ppl+", I am Rishi. You had enquired about "+d.need.toLowerCase()+".\n\nSorry for the delay in reaching you. Are you free for a 5 minute call today or tomorrow?"};
+
+  return {pri:2,title:"Make the first call",
+    why:"New enquiry from "+d.src+", "+d.days+" day(s) old. Call while it is warm.",
+    msg:"Hello "+d.ppl+", I am Rishi from Guwahati. You enquired about "+d.need.toLowerCase()+".\n\nCan I call you for 5 minutes today to understand exactly what you need?"};
+}
+
+/* ---------- UI ---------- */
+var actions=[], sel=null, rescued=0, logEl=document.getElementById('log');
+function money(n){return '₹'+Math.round(n).toLocaleString('en-IN');}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function now(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+function logAdd(tag,cls,txt){
+  var d=document.createElement('div');d.className='lrow';
+  d.innerHTML='<span>'+now()+'</span><span class="tag t-'+cls+'">'+tag+'</span><span>'+esc(txt)+'</span>';
+  logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;
+  document.getElementById('lc').textContent=logEl.children.length+' events';
+}
+
+function drawBoard(){
+  var b=document.getElementById('board');b.innerHTML='';
+  STAGES.forEach(function(s){
+    var mine=DEALS.filter(function(d){return d.st===s.k;});
+    var col=document.createElement('div');col.className='col';
+    col.innerHTML='<h4>'+s.n+' <em>'+mine.length+' &middot; '+money(mine.reduce(function(a,d){return a+d.val;},0))+'</em></h4>'
+      +'<div class="body"></div>';
+    var body=col.querySelector('.body');
+    mine.sort(function(x,y){return y.val-x.val;}).forEach(function(d){
+      var h=health(d);
+      var cls=d.days>=7?'hot':(d.days>=4?'warm':'cool');
+      var el=document.createElement('div');
+      el.className='deal '+cls+(sel&&sel.id===d.id?' on':'');
+      el.innerHTML='<b>'+esc(d.co)+'</b><div class="row" style="justify-content:space-between;margin-top:3px">'
+        +'<span class="v">'+money(d.val)+'</span><span class="tiny muted">'+h.score+'</span></div>'
+        +'<div class="m">'+esc(d.ppl)+' &middot; silent '+d.days+'d</div>';
+      el.onclick=function(){show(d);};
+      body.appendChild(el);
+    });
+    if(!mine.length)body.innerHTML='<div class="tiny muted" style="padding:8px">empty</div>';
+    b.appendChild(col);
+  });
+}
+
+function drawStats(){
+  var open=DEALS.filter(function(d){return d.st!=='won';});
+  document.getElementById('s1').textContent=money(open.reduce(function(a,d){return a+d.val;},0));
+  document.getElementById('s2').textContent=money(open.reduce(function(a,d){return a+weighted(d);},0));
+  document.getElementById('s3').textContent=open.filter(function(d){return d.days>=7;}).length;
+  document.getElementById('s4').textContent=actions.length;
+  document.getElementById('s5').textContent=money(rescued);
+  var fc=document.getElementById('fc');
+  fc.innerHTML=STAGES.filter(function(s){return s.k!=='won';}).map(function(s){
+    var mine=DEALS.filter(function(d){return d.st===s.k;});
+    var w=mine.reduce(function(a,d){return a+weighted(d);},0);
+    var tot=mine.reduce(function(a,d){return a+d.val;},0);
+    return '<div style="margin-bottom:9px"><div class="row" style="justify-content:space-between;font-size:12.2px">'
+      +'<span>'+s.n+' <span class="muted tiny">'+Math.round(s.p*100)+'% close rate</span></span>'
+      +'<b style="color:var(--gold)">'+money(w)+'</b></div>'
+      +'<div class="bar" style="margin-top:4px"><i style="width:'+(tot?Math.round(w/tot*100):0)+'%"></i></div></div>';
+  }).join('');
+}
+
+function drawActions(){
+  var box=document.getElementById('actions');
+  if(!actions.length){box.innerHTML='<div class="empty">Press <b>Run today\'s automation</b>.</div>';return;}
+  box.innerHTML=actions.map(function(a,i){
+    return '<div class="act p'+a.act.pri+'" data-i="'+i+'">'
+      +'<div class="row" style="justify-content:space-between">'
+      +'<b>'+esc(a.d.co)+'</b><span class="badge '+(a.act.pri===1?'r':(a.act.pri===2?'y':'b'))+'">'
+      +(a.act.pri===1?'today':(a.act.pri===2?'this week':'when free'))+'</span></div>'
+      +'<div style="color:var(--gold);font-size:12.3px;margin-top:2px">'+esc(a.act.title)
+      +' &middot; '+money(a.d.val)+'</div>'
+      +'<div class="w">'+esc(a.act.why)+'</div></div>';}).join('');
+  Array.prototype.forEach.call(box.querySelectorAll('.act'),function(el){
+    el.onclick=function(){show(actions[+el.dataset.i].d);};});
+  document.getElementById('ac').textContent=actions.length+' actions';
+}
+
+function show(d){
+  sel=d;drawBoard();
+  var h=health(d), a=nextAction(d), s=stage(d.st);
+  document.getElementById('dn').textContent=d.co;
+  document.getElementById('detail').innerHTML=
+     '<div class="kv" style="margin-bottom:10px">'
+    +'<b>Contact</b><span>'+esc(d.ppl)+' &middot; +91 '+d.ph+'</span>'
+    +'<b>Value</b><span><b style="color:var(--gold)">'+money(d.val)+'</b></span>'
+    +'<b>Stage</b><span>'+s.n+' <span class="muted tiny">'+Math.round(s.p*100)+'% typical close</span></span>'
+    +'<b>Source</b><span>'+esc(d.src)+'</span>'
+    +'<b>Wants</b><span>'+esc(d.need)+'</span>'
+    +'<b>Health</b><span><b>'+h.score+'/100</b></span>'
+    +'<b>Worth now</b><span>'+money(weighted(d))+' <span class="muted tiny">value × close rate × freshness</span></span>'
+    +'</div>'
+    +'<div class="bar'+(h.score>=60?'':(h.score>=40?' y':' r'))+'" style="margin-bottom:12px"><i style="width:'+h.score+'%"></i></div>'
+    +'<div class="tl" style="margin-bottom:12px">'
+    +'<div>Came in from '+esc(d.src)+'</div>'
+    +'<div>Reached stage: '+s.n+'</div>'
+    +'<div class="now">Silent for '+d.days+' day'+(d.days>1?'s':'')+'</div>'
+    +'<div style="color:var(--gold)">Next: '+esc(a.title)+'</div></div>'
+    +'<div class="muted tiny" style="margin-bottom:7px">Message written for this deal:</div>'
+    +'<div class="draft" id="draft">'+esc(a.msg)+'</div>'
+    +'<div class="row" style="margin-top:10px">'
+    +'<a class="btn sm" style="text-decoration:none" target="_blank" rel="noopener" href="https://wa.me/91'
+      +d.ph+'?text='+encodeURIComponent(a.msg)+'">Send on WhatsApp</a>'
+    +'<button class="btn sm" onclick="markDone('+d.id+')">Mark as followed up</button></div>';
+}
+function markDone(id){
+  var d=DEALS.filter(function(x){return x.id===id;})[0];if(!d)return;
+  var before=weighted(d);
+  d.days=0;
+  var idx=STAGES.map(function(s){return s.k;}).indexOf(d.st);
+  if(idx<3)d.st=STAGES[idx+1].k;                     /* a real follow-up moves the deal forward */
+  rescued+=Math.max(0,weighted(d)-before);
+  actions=actions.filter(function(a){return a.d.id!==id;});
+  logAdd('ACT','act','Followed up '+d.co+' → now '+stage(d.st).n+', clock reset');
+  drawBoard();drawActions();drawStats();show(d);
+}
+
+document.getElementById('run').onclick=function(){
+  var btn=this;btn.disabled=true;btn.textContent='Working...';
+  actions=[];logEl.innerHTML='';drawActions();
+  logAdd('STEP','step','Reading '+DEALS.length+' deals from the pipeline');
+  var i=0;
+  (function step(){
+    if(i>=DEALS.length){
+      actions.sort(function(a,b){
+        if(a.act.pri!==b.act.pri)return a.act.pri-b.act.pri;
+        return b.value-a.value;});
+      var urgent=actions.filter(function(a){return a.act.pri===1;});
+      logAdd('CALC','calc','Sorted by money at risk · '+urgent.length+' need action today');
+      logAdd('AI','ai','Follow-up message written for each deal, using its own history');
+      logAdd('ACT','act',money(urgent.reduce(function(a,x){return a+x.d.val;},0))+' of pipeline was about to go cold');
+      drawActions();drawStats();
+      btn.disabled=false;btn.innerHTML='&#9654; Run today\'s automation';
+      return;
+    }
+    var d=DEALS[i++], h=health(d), a=nextAction(d);
+    if(d.st==='won'&&d.days<10){ logAdd('SYS','sys',d.co+' — won recently, leaving it alone'); }
+    else{
+      actions.push({d:d,act:a,value:weighted(d)});
+      var tag=a.pri===1?'ACT':'DATA', cls=a.pri===1?'act':'data';
+      logAdd(tag,cls,d.co+' ('+money(d.val)+') — '+a.title+(a.pri===1?' [URGENT]':''));
+    }
+    drawStats();
+    setTimeout(step,110);
+  })();
+};
+document.getElementById('reset').onclick=function(){location.reload();};
+
+drawBoard();drawStats();drawActions();
+logAdd('SYS','sys','Pipeline loaded · '+DEALS.length+' deals · '
+  +money(DEALS.filter(function(d){return d.st!=='won';}).reduce(function(a,d){return a+d.val;},0))+' open');
+
+/* ?auto=1 makes the page start itself - handy for a shareable link or a recording */
+if(/auto/.test(location.search))setTimeout(function(){var b=document.getElementById('run');if(b)b.click();},400);
+</script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LeadForge — AI Lead Generation</title>
+<link rel="stylesheet" href="assets/kit.css">
+<style>
+.leadrow td{font-size:12.6px}
+.why{color:var(--dim);font-size:11.3px;line-height:1.45;margin-top:3px}
+.sig{display:inline-block;font-size:10.3px;padding:1px 6px;border-radius:5px;margin:2px 3px 0 0;
+  background:#232b31;color:#a9b8bf;border:1px solid #2e373d}
+.sig.hot{background:#3a2016;color:#ffb59f;border-color:#5a3226}
+.sig.warm{background:#3a3016;color:#f0cf8c;border-color:#5a4a26}
+.drawer{position:sticky;top:70px}
+.pitch{background:#0b141a;border:1px solid var(--line);border-radius:10px;padding:12px;
+  font-size:13px;line-height:1.55;white-space:pre-wrap}
+.scorebar{display:grid;grid-template-columns:96px 1fr 34px;gap:8px;align-items:center;
+  font-size:11.3px;color:var(--dim);margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="mark b">LF</div>
+  <div class="ttl"><b>LeadForge &middot; AI Lead Generation</b>
+    <span>Finds businesses that need what you sell, scores them, and writes the first message</span></div>
+  <div class="spacer"></div>
+  <a class="back" href="index.html">&larr; All systems</a>
+  <a class="back" href="../index.html">Profile</a>
+</div>
+
+<div class="stats">
+  <div class="stat"><i>Businesses scanned</i><b id="s1">0</b></div>
+  <div class="stat g"><i>Qualified leads</i><b id="s2">0</b></div>
+  <div class="stat y"><i>Grade A (call today)</i><b id="s3">0</b></div>
+  <div class="stat b"><i>Pipeline value</i><b id="s4">&#8377;0</b></div>
+  <div class="stat"><i>Hours of manual work saved</i><b id="s5">0</b></div>
+</div>
+
+<div class="wrap cols-3">
+
+  <div>
+    <div class="card">
+      <h3>&#127919; Target</h3>
+      <div class="pad">
+        <label class="fld">Who do you sell to?</label>
+        <select id="niche">
+          <option value="all">Every business type</option>
+          <option value="hotel">Hotels &amp; guest houses</option>
+          <option value="restaurant">Restaurants &amp; cafes</option>
+          <option value="clinic">Clinics &amp; dentists</option>
+          <option value="gym">Gyms &amp; fitness</option>
+          <option value="boutique">Boutiques &amp; furniture</option>
+          <option value="travel">Travel agencies</option>
+        </select>
+        <div style="height:10px"></div>
+        <label class="fld">City</label>
+        <select id="city">
+          <option value="all">All of North East</option>
+          <option value="Guwahati" selected>Guwahati</option>
+          <option value="Shillong">Shillong</option>
+          <option value="Jorhat">Jorhat</option>
+          <option value="Dibrugarh">Dibrugarh</option>
+        </select>
+        <div style="height:10px"></div>
+        <label class="fld">What you charge (&#8377;)</label>
+        <input type="text" id="ticket" value="7999">
+        <div style="height:12px"></div>
+        <button class="btn primary" id="run" style="width:100%">&#9654; Run lead engine</button>
+        <div style="height:8px"></div>
+        <button class="btn sm" id="csv" style="width:100%">Export qualified leads to CSV</button>
+      </div>
+      <div class="note">The engine scores every business on 7 buying signals, keeps the ones worth
+        your time, and writes a first message that names their actual problem.</div>
+    </div>
+
+    <div class="card">
+      <h3>&#9881;&#65039; Scoring weights <em id="wsum"></em></h3>
+      <div class="pad" id="weights"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#128202; Ranked leads <em id="cnt">not run yet</em></h3>
+      <div style="max-height:640px;overflow:auto">
+        <table><thead><tr><th style="width:34px"></th><th>Business</th><th>Signals</th>
+          <th style="width:74px">Score</th></tr></thead>
+        <tbody id="tb"></tbody></table>
+        <div class="empty" id="emp">Press <b>Run lead engine</b> to scan the market.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer">
+    <div class="card">
+      <h3>&#129504; Engine log <em id="lc">0 events</em></h3>
+      <div class="log" id="log"></div>
+    </div>
+    <div class="card">
+      <h3>&#9993;&#65039; Outreach message <em id="who"></em></h3>
+      <div class="pad" id="detail">
+        <div class="empty">Click any lead to see why it scored, and the message written for it.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ==========================================================================
+   The market. In the paid version this comes from Google Maps / Justdial /
+   IndiaMART scrapes. The scoring and message writing below is the actual
+   product and runs exactly the same on real rows.
+   ========================================================================== */
+var MARKET=[
+ {n:"Hotel Brahmaputra Grand",t:"hotel",c:"Guwahati",own:"Mr. Baruah",rating:4.3,rev:212,site:0,siteBad:0,posted:140,ads:0,staff:14,ph:"9864000101"},
+ {n:"Nakshatra Residency",t:"hotel",c:"Guwahati",own:"Ms. Devi",rating:4.6,rev:87,site:1,siteBad:1,posted:41,ads:0,staff:9,ph:"9864000102"},
+ {n:"Hotel Riverview Inn",t:"hotel",c:"Guwahati",own:"Mr. Das",rating:3.9,rev:41,site:0,siteBad:0,posted:220,ads:0,staff:6,ph:"9864000103"},
+ {n:"Kaziranga Stay House",t:"hotel",c:"Jorhat",own:"Mr. Gogoi",rating:4.5,rev:154,site:0,siteBad:0,posted:95,ads:0,staff:11,ph:"9864000104"},
+ {n:"Pine Crest Shillong",t:"hotel",c:"Shillong",own:"Mr. Lyngdoh",rating:4.7,rev:308,site:1,siteBad:0,posted:12,ads:1,staff:22,ph:"9864000105"},
+ {n:"Hotel Dibru Palace",t:"hotel",c:"Dibrugarh",own:"Mr. Phukan",rating:4.1,rev:63,site:0,siteBad:0,posted:180,ads:0,staff:8,ph:"9864000106"},
+
+ {n:"Khorika Assamese Kitchen",t:"restaurant",c:"Guwahati",own:"Mr. Saikia",rating:4.6,rev:1240,site:0,siteBad:0,posted:9,ads:0,staff:18,ph:"9864000201"},
+ {n:"Paradise Biryani House",t:"restaurant",c:"Guwahati",own:"Mr. Khan",rating:4.2,rev:640,site:1,siteBad:1,posted:33,ads:1,staff:12,ph:"9864000202"},
+ {n:"Cafe Hendrix",t:"restaurant",c:"Guwahati",own:"Ms. Sharma",rating:4.4,rev:388,site:0,siteBad:0,posted:5,ads:0,staff:7,ph:"9864000203"},
+ {n:"Tea Pot Corner",t:"restaurant",c:"Jorhat",own:"Mr. Bora",rating:4.0,rev:96,site:0,siteBad:0,posted:260,ads:0,staff:4,ph:"9864000204"},
+ {n:"Shillong Grill Point",t:"restaurant",c:"Shillong",own:"Mr. Marak",rating:4.5,rev:512,site:0,siteBad:0,posted:21,ads:0,staff:14,ph:"9864000205"},
+ {n:"Dibrugarh Dhaba Junction",t:"restaurant",c:"Dibrugarh",own:"Mr. Sonowal",rating:3.8,rev:74,site:0,siteBad:0,posted:310,ads:0,staff:5,ph:"9864000206"},
+ {n:"Momo Ghar Express",t:"restaurant",c:"Guwahati",own:"Ms. Lama",rating:4.7,rev:820,site:0,siteBad:0,posted:14,ads:0,staff:9,ph:"9864000207"},
+
+ {n:"Smile Care Dental",t:"clinic",c:"Guwahati",own:"Dr. Choudhury",rating:4.8,rev:196,site:1,siteBad:1,posted:60,ads:0,staff:6,ph:"9864000301"},
+ {n:"Brahmaputra Skin Clinic",t:"clinic",c:"Guwahati",own:"Dr. Kalita",rating:4.5,rev:88,site:0,siteBad:0,posted:150,ads:0,staff:5,ph:"9864000302"},
+ {n:"City Physio Centre",t:"clinic",c:"Guwahati",own:"Dr. Nath",rating:4.2,rev:37,site:0,siteBad:0,posted:400,ads:0,staff:3,ph:"9864000303"},
+ {n:"Hills Eye Care",t:"clinic",c:"Shillong",own:"Dr. Syiem",rating:4.6,rev:142,site:1,siteBad:0,posted:28,ads:1,staff:9,ph:"9864000304"},
+ {n:"Jorhat Child Clinic",t:"clinic",c:"Jorhat",own:"Dr. Hazarika",rating:4.4,rev:64,site:0,siteBad:0,posted:210,ads:0,staff:4,ph:"9864000305"},
+
+ {n:"Iron Temple Gym",t:"gym",c:"Guwahati",own:"Mr. Rabha",rating:4.5,rev:264,site:0,siteBad:0,posted:18,ads:0,staff:8,ph:"9864000401"},
+ {n:"FitZone 24x7",t:"gym",c:"Guwahati",own:"Mr. Ahmed",rating:4.1,rev:112,site:1,siteBad:1,posted:70,ads:1,staff:6,ph:"9864000402"},
+ {n:"Shillong Strength Club",t:"gym",c:"Shillong",own:"Mr. Kharkongor",rating:4.3,rev:58,site:0,siteBad:0,posted:190,ads:0,staff:4,ph:"9864000403"},
+ {n:"Yoga Bhavan Studio",t:"gym",c:"Jorhat",own:"Ms. Dutta",rating:4.9,rev:71,site:0,siteBad:0,posted:110,ads:0,staff:3,ph:"9864000404"},
+
+ {n:"Samrat Furniture",t:"boutique",c:"Guwahati",own:"Mr. Samrat",rating:4.4,rev:158,site:0,siteBad:0,posted:75,ads:0,staff:10,ph:"9864000501"},
+ {n:"Muga Silk House",t:"boutique",c:"Guwahati",own:"Ms. Barua",rating:4.7,rev:410,site:1,siteBad:1,posted:22,ads:0,staff:12,ph:"9864000502"},
+ {n:"Assam Handloom Corner",t:"boutique",c:"Jorhat",own:"Ms. Neog",rating:4.5,rev:93,site:0,siteBad:0,posted:240,ads:0,staff:5,ph:"9864000503"},
+ {n:"Urban Interio Studio",t:"boutique",c:"Guwahati",own:"Mr. Jain",rating:4.2,rev:47,site:1,siteBad:0,posted:16,ads:1,staff:7,ph:"9864000504"},
+ {n:"Hills Craft Emporium",t:"boutique",c:"Shillong",own:"Ms. Nongrum",rating:4.6,rev:129,site:0,siteBad:0,posted:130,ads:0,staff:6,ph:"9864000505"},
+
+ {n:"North East Trails",t:"travel",c:"Guwahati",own:"Mr. Deka",rating:4.6,rev:186,site:1,siteBad:1,posted:47,ads:0,staff:7,ph:"9864000601"},
+ {n:"Assam Holiday Makers",t:"travel",c:"Guwahati",own:"Mr. Talukdar",rating:4.3,rev:74,site:0,siteBad:0,posted:165,ads:0,staff:5,ph:"9864000602"},
+ {n:"Meghalaya Cab &amp; Tours",t:"travel",c:"Shillong",own:"Mr. Sangma",rating:4.4,rev:238,site:0,siteBad:0,posted:88,ads:0,staff:11,ph:"9864000603"},
+ {n:"Brahmaputra Cruise Trips",t:"travel",c:"Guwahati",own:"Ms. Bhuyan",rating:4.8,rev:322,site:1,siteBad:0,posted:7,ads:1,staff:16,ph:"9864000604"},
+ {n:"Tea Garden Getaways",t:"travel",c:"Dibrugarh",own:"Mr. Gohain",rating:4.2,rev:52,site:0,siteBad:0,posted:280,ads:0,staff:4,ph:"9864000605"}
+];
+
+var LABEL={hotel:"hotel",restaurant:"restaurant",clinic:"clinic",gym:"gym",
+           boutique:"shop",travel:"travel agency"};
+
+/* ---------- the buying signals, and what each is worth ---------- */
+var SIGNALS=[
+ {k:"nosite",  w:26, name:"No website at all",
+   hit:function(b){return !b.site;},
+   why:function(b){return "No website - every enquiry has to go through a phone call.";}},
+ {k:"badsite", w:14, name:"Website exists but is dead",
+   hit:function(b){return b.site&&b.siteBad;},
+   why:function(b){return "Has a website but it is broken or abandoned - they already believed in this once.";}},
+ {k:"demand",  w:22, name:"Proven demand (reviews)",
+   hit:function(b){return b.rev>=100;},
+   why:function(b){return b.rev+" reviews - customers are already coming, nothing is capturing them online.";}},
+ {k:"loved",   w:12, name:"Well rated (4.4+)",
+   hit:function(b){return b.rating>=4.4;},
+   why:function(b){return b.rating+" star rating - the business is good, the marketing is the weak part.";}},
+ {k:"quiet",   w:16, name:"Silent online (90+ days)",
+   hit:function(b){return b.posted>=90;},
+   why:function(b){return "Last post "+b.posted+" days ago - nobody is handling their online side.";}},
+ {k:"size",    w:10, name:"Big enough to pay",
+   hit:function(b){return b.staff>=6;},
+   why:function(b){return b.staff+" staff - large enough to afford this and feel the pain.";}},
+ {k:"noads",   w:8,  name:"Not already spending on ads",
+   hit:function(b){return !b.ads;},
+   why:function(b){return "Not running ads - no agency has locked them in yet.";}}
+];
+var MAXW=SIGNALS.reduce(function(a,s){return a+s.w;},0);
+
+function score(b){
+  var pts=0, hits=[];
+  SIGNALS.forEach(function(s){ if(s.hit(b)){ pts+=s.w; hits.push(s); } });
+  /* a business already running ads AND with a live site is somebody else's client */
+  if(b.ads&&b.site&&!b.siteBad) pts-=12;
+  var pct=Math.max(0,Math.round(pts/MAXW*100));
+  return {pct:pct, hits:hits, grade: pct>=70?'A' : pct>=50?'B' : 'C'};
+}
+
+/* ---------- the first message, written from that business's own facts ---------- */
+function pitch(b,sc,ticket){
+  var kind=LABEL[b.t]||"business";
+  var open, problem, proof;
+
+  if(!b.site) problem="I could not find a website or booking page for you anywhere.";
+  else if(b.siteBad) problem="Your website is up but it looks like nobody has touched it in months.";
+  else problem="You are online, but enquiries still land on a phone nobody can always answer.";
+
+  if(b.rev>=300) proof="With "+b.rev+" reviews and a "+b.rating+" rating, customers clearly already like you.";
+  else if(b.rev>=100) proof="You have "+b.rev+" reviews at "+b.rating+" stars, so demand is not the problem.";
+  else proof="Your rating is "+b.rating+", which is better than most "+kind+"s around you.";
+
+  open="Hello "+b.own+", I am Rishi from Guwahati.";
+
+  var pain;
+  if(b.t==="hotel") pain="Right now, when someone messages at 11pm asking about rooms, nobody replies until morning - and they book somewhere else.";
+  else if(b.t==="restaurant") pain="Right now every order and table booking goes through a phone call, and the ones you miss just go to the next place.";
+  else if(b.t==="clinic") pain="Right now appointment requests come by phone during working hours only, and the rest are lost.";
+  else if(b.t==="gym") pain="Right now enquiries about fees and timings come in one by one on WhatsApp and get answered late.";
+  else if(b.t==="travel") pain="Right now every itinerary and price question is answered by hand, again and again.";
+  else pain="Right now every price and stock question is answered by hand on WhatsApp, one customer at a time.";
+
+  return open+"\n\n"+problem+" "+proof+"\n\n"+pain+"\n\n"
+   +"I build a small system that answers those messages automatically, 24 hours, and saves every enquiry "
+   +"so you can see them in one place. It takes me about 3 days and costs ₹"+Number(ticket).toLocaleString('en-IN')+" one time.\n\n"
+   +"Can I show you a 2 minute demo of it working for a "+kind+"? No cost to look.";
+}
+
+/* ---------- UI ---------- */
+var results=[], sel=-1, logEl=document.getElementById('log');
+function now(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+function logAdd(tag,cls,txt){
+  var d=document.createElement('div');d.className='lrow';
+  d.innerHTML='<span>'+now()+'</span><span class="tag t-'+cls+'">'+tag+'</span><span>'+txt+'</span>';
+  logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;
+  document.getElementById('lc').textContent=logEl.children.length+' events';
+}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+
+/* weight sliders - the visitor can retune the engine and re-run */
+var wbox=document.getElementById('weights');
+SIGNALS.forEach(function(s){
+  var d=document.createElement('div');d.style.marginBottom='9px';
+  d.innerHTML='<div style="display:flex;justify-content:space-between;font-size:11.8px">'
+    +'<span>'+s.name+'</span><b style="color:var(--gold)" id="w_'+s.k+'">'+s.w+'</b></div>'
+    +'<input type="range" min="0" max="30" value="'+s.w+'" style="width:100%" data-k="'+s.k+'">';
+  wbox.appendChild(d);
+});
+wbox.addEventListener('input',function(e){
+  if(e.target.type!=='range')return;
+  var k=e.target.dataset.k, v=+e.target.value;
+  SIGNALS.forEach(function(s){if(s.k===k)s.w=v;});
+  document.getElementById('w_'+k).textContent=v;
+  MAXW=SIGNALS.reduce(function(a,s){return a+s.w;},0);
+  document.getElementById('wsum').textContent='max '+MAXW+' pts';
+  if(results.length)paint();
+});
+document.getElementById('wsum').textContent='max '+MAXW+' pts';
+
+function paint(){
+  results.forEach(function(r){var s=score(r.b);r.pct=s.pct;r.hits=s.hits;r.grade=s.grade;});
+  results.sort(function(a,b){return b.pct-a.pct;});
+  var tb=document.getElementById('tb');tb.innerHTML='';
+  results.forEach(function(r,i){
+    var tr=document.createElement('tr');tr.className='click leadrow'+(i===sel?' on':'');
+    tr.onclick=function(){sel=i;paint();detail(r);};
+    var sigs=r.hits.slice(0,4).map(function(h){
+      var cls=h.w>=20?'hot':(h.w>=12?'warm':'');
+      return '<span class="sig '+cls+'">'+esc(h.name)+'</span>';}).join('');
+    tr.innerHTML='<td><div class="grade '+r.grade+'">'+r.grade+'</div></td>'
+      +'<td><b>'+esc(r.b.n)+'</b><div class="why">'+esc(r.b.c)+' &middot; '+LABEL[r.b.t]
+        +' &middot; '+r.b.rating+'★ ('+r.b.rev+')</div></td>'
+      +'<td>'+sigs+'</td>'
+      +'<td><b style="font-size:14px">'+r.pct+'</b><div class="bar'+(r.pct>=70?'':(r.pct>=50?' y':' r'))
+        +'" style="margin-top:4px"><i style="width:'+r.pct+'%"></i></div></td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById('emp').style.display=results.length?'none':'block';
+  document.getElementById('cnt').textContent=results.length+' qualified';
+  var ticket=+document.getElementById('ticket').value||0;
+  var A=results.filter(function(r){return r.grade==='A';}).length;
+  document.getElementById('s2').textContent=results.length;
+  document.getElementById('s3').textContent=A;
+  document.getElementById('s4').textContent='₹'+(results.length*ticket*0.15).toLocaleString('en-IN',{maximumFractionDigits:0});
+}
+
+function detail(r){
+  var ticket=document.getElementById('ticket').value;
+  document.getElementById('who').textContent=r.b.n;
+  var rows=r.hits.map(function(h){
+    return '<div class="scorebar"><span>'+esc(h.name)+'</span>'
+      +'<div class="bar"><i style="width:'+Math.round(h.w/30*100)+'%"></i></div>'
+      +'<b style="color:var(--greenI);text-align:right">+'+h.w+'</b></div>';}).join('');
+  var why=r.hits.map(function(h){return '&bull; '+esc(h.why(r.b));}).join('<br>');
+  var msg=pitch(r.b,r,ticket);
+  document.getElementById('detail').innerHTML=
+     '<div class="kv" style="margin-bottom:10px"><b>Owner</b><span>'+esc(r.b.own)+'</span>'
+    +'<b>Phone</b><span>+91 '+r.b.ph+'</span>'
+    +'<b>Fit score</b><span><b style="color:var(--gold)">'+r.pct+' / 100</b> &middot; grade '+r.grade+'</span></div>'
+    +rows
+    +'<div class="why" style="margin:8px 0 12px">'+why+'</div>'
+    +'<div class="pitch" id="pitchbox">'+esc(msg)+'</div>'
+    +'<div class="row" style="margin-top:10px">'
+    +'<button class="btn sm" onclick="copyPitch()">Copy message</button>'
+    +'<a class="btn sm" style="text-decoration:none" target="_blank" rel="noopener" '
+    +'href="https://wa.me/91'+r.b.ph+'?text='+encodeURIComponent(msg)+'">Open in WhatsApp</a></div>';
+}
+function copyPitch(){
+  var t=document.getElementById('pitchbox').textContent;
+  navigator.clipboard&&navigator.clipboard.writeText(t);
+  logAdd('ACT','act','Message copied to clipboard');
+}
+
+document.getElementById('run').onclick=function(){
+  var btn=this;btn.disabled=true;btn.textContent='Scanning...';
+  logEl.innerHTML='';results=[];sel=-1;
+  document.getElementById('tb').innerHTML='';
+  document.getElementById('detail').innerHTML='<div class="empty">Click any lead to see why it scored.</div>';
+  var niche=document.getElementById('niche').value, city=document.getElementById('city').value;
+  var pool=MARKET.filter(function(b){
+    return (niche==='all'||b.t===niche)&&(city==='all'||b.c===city);});
+
+  logAdd('STEP','step','Target: '+(niche==='all'?'all business types':LABEL[niche]+'s')
+    +' in '+(city==='all'?'North East India':city));
+  logAdd('DATA','data','Loaded '+MARKET.length+' businesses, '+pool.length+' match the target');
+  document.getElementById('s1').textContent=MARKET.length;
+
+  var i=0;
+  (function step(){
+    if(i>=pool.length){
+      logAdd('CALC','calc','Ranked by fit score, dropped everything under 40');
+      var A=results.filter(function(r){return r.grade==='A';}).length;
+      logAdd('ACT','act',results.length+' qualified leads, '+A+' worth calling today');
+      logAdd('AI','ai','Outreach message written for each one, naming their own numbers');
+      document.getElementById('s5').textContent=Math.round(pool.length*4/60*10)/10+' hrs';
+      btn.disabled=false;btn.textContent='▶ Run lead engine';
+      paint();
+      return;
+    }
+    var b=pool[i++], s=score(b);
+    if(s.pct>=40){
+      results.push({b:b,pct:s.pct,hits:s.hits,grade:s.grade});
+      if(s.grade==='A')logAdd('DATA','data',b.n+' → '+s.pct+' pts (grade A)');
+    } else {
+      logAdd('SYS','sys','Skipped '+b.n+' - '+s.pct+' pts, not worth your time');
+    }
+    paint();
+    setTimeout(step,55);
+  })();
+};
+
+document.getElementById('csv').onclick=function(){
+  if(!results.length){alert('Run the engine first.');return;}
+  var rows=[['Grade','Score','Business','Type','City','Owner','Phone','Rating','Reviews','Signals','First message']];
+  results.forEach(function(r){
+    rows.push([r.grade,r.pct,r.b.n,LABEL[r.b.t],r.b.c,r.b.own,"91"+r.b.ph,r.b.rating,r.b.rev,
+      r.hits.map(function(h){return h.name;}).join('; '),
+      pitch(r.b,r,document.getElementById('ticket').value).replace(/\n/g,' ')]);
+  });
+  var csv=rows.map(function(r){return r.map(function(c){
+    return '"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='qualified-leads.csv';a.click();
+  logAdd('ACT','act','Exported '+results.length+' leads to qualified-leads.csv');
+};
+
+logAdd('SYS','sys','Lead engine ready · '+MARKET.length+' businesses in the index');
+
+/* ?auto=1 makes the page start itself - handy for a shareable link or a recording */
+if(/auto/.test(location.search))setTimeout(function(){var b=document.getElementById('run');if(b)b.click();},400);
+</script>
+</body>
+</html>

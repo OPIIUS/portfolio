@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocuParse AI — Invoice &amp; Document Processor</title>
+<link rel="stylesheet" href="assets/kit.css">
+<style>
+textarea#src{height:330px;font-family:Consolas,ui-monospace,monospace;font-size:12px;line-height:1.5;
+  white-space:pre;overflow:auto}
+.flag{display:flex;gap:9px;padding:8px 10px;border-radius:9px;margin-bottom:7px;font-size:12.4px;
+  background:#211a17;border:1px solid #3d2a22;line-height:1.45}
+.flag.ok{background:#152b21;border-color:#1f4a35}
+.flag.warn{background:#2a2415;border-color:#4a3f1c}
+.flag b{white-space:nowrap}
+.items th{font-size:10px}
+.items td{padding:7px 10px;font-size:12.2px}
+.verdict{padding:12px 14px;border-radius:11px;font-weight:700;font-size:14px;display:flex;
+  align-items:center;gap:10px;margin-bottom:12px}
+.verdict.pass{background:#143a29;color:#8ff0bd;border:1px solid #1f6b48}
+.verdict.hold{background:#3a2016;color:#ffb59f;border:1px solid #6b2f22}
+.drop{border:1.5px dashed var(--line2);border-radius:11px;padding:10px;text-align:center;
+  color:var(--dim);font-size:11.5px;margin-top:9px}
+.drop.over{border-color:var(--green);color:var(--greenI)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="mark v">DP</div>
+  <div class="ttl"><b>DocuParse AI &middot; Invoice &amp; Document Processor</b>
+    <span>Reads any invoice format, pulls out every field, checks the maths, flags what is wrong</span></div>
+  <div class="spacer"></div>
+  <button class="btn primary" id="batch">&#9654; Process all 6 invoices</button>
+  <a class="back" href="index.html">&larr; All systems</a>
+  <a class="back" href="../index.html">Profile</a>
+</div>
+
+<div class="stats">
+  <div class="stat"><i>Documents processed</i><b id="s1">0</b></div>
+  <div class="stat g"><i>Fields extracted</i><b id="s2">0</b></div>
+  <div class="stat r"><i>Problems caught</i><b id="s3">0</b></div>
+  <div class="stat y"><i>Money at risk</i><b id="s4">&#8377;0</b></div>
+  <div class="stat"><i>Time saved</i><b id="s5">0 min</b></div>
+</div>
+
+<div class="wrap cols-3">
+
+  <div class="card">
+    <h3>&#128196; Document in <em id="fname">sample</em></h3>
+    <div class="pad">
+      <label class="fld">Load a sample, or paste any invoice text</label>
+      <select id="sample"></select>
+      <div style="height:9px"></div>
+      <textarea id="src" spellcheck="false"></textarea>
+      <div class="drop" id="drop">or drop a .txt / .csv file here</div>
+      <div style="height:10px"></div>
+      <button class="btn primary" id="run" style="width:100%">Extract &amp; verify</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#128269; Extracted <em id="conf"></em></h3>
+      <div class="pad" id="out"><div class="empty">Press <b>Extract &amp; verify</b>.</div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#129504; Engine log <em id="lc">0 events</em></h3>
+      <div class="log" id="log" style="height:230px"></div>
+    </div>
+    <div class="card">
+      <h3>&#128220; Processed ledger <em id="ldc">0 rows</em></h3>
+      <div style="max-height:300px;overflow:auto">
+        <table><thead><tr><th>Invoice</th><th>Vendor</th><th>Total</th><th>Result</th></tr></thead>
+        <tbody id="ledger"></tbody></table>
+        <div class="empty" id="lde">Nothing processed yet.</div>
+      </div>
+      <div class="pad-sm row">
+        <button class="btn sm" id="json">Export JSON</button>
+        <button class="btn sm" id="csv">Export CSV</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ======================================================================
+   Six real-shaped invoices, all in different layouts - which is the whole
+   point. Two of them have something wrong with them on purpose.
+   ====================================================================== */
+var SAMPLES=[
+{name:"1 · Bora Traders (clean)",text:
+"BORA TRADERS\n"+
+"GS Road, Ulubari, Guwahati - 781007\n"+
+"GSTIN: 18AABCB1234C1ZW\n"+
+"Phone: 0361-2345678\n\n"+
+"TAX INVOICE\n"+
+"Invoice No : BT/2026-27/0412\n"+
+"Invoice Date : 12/08/2026\n"+
+"Due Date : 26/08/2026\n"+
+"PO Number : PO-8891\n\n"+
+"Bill To : Riverstone Grand Hotel, Christian Basti, Guwahati\n"+
+"Party GSTIN : 18AACCR9012D1ZP\n\n"+
+"Sr  Description                 Qty    Rate      Amount\n"+
+"1   Bath Towel 500 GSM          120    240.00    28800.00\n"+
+"2   Bedsheet Double King         60    980.00    58800.00\n"+
+"3   Pillow Cover Set             90    150.00    13500.00\n\n"+
+"Subtotal                                        101100.00\n"+
+"CGST 9%                                           9099.00\n"+
+"SGST 9%                                           9099.00\n"+
+"Grand Total                                     119298.00\n\n"+
+"Payment: UPI boratraders@sbi / A/c 30512345678 IFSC SBIN0007655"},
+
+{name:"2 · Elite Linen (wrong maths)",text:
+"ELITE LINEN SUPPLIERS PVT LTD\n"+
+"Zoo Road Tiniali, Guwahati 781024\n"+
+"GSTIN 18AAFCE5566K1Z9\n\n"+
+"INVOICE #EL-2291        Dated: 05-08-2026\n"+
+"Terms: Net 30\n\n"+
+"Customer: Riverstone Grand Hotel\n\n"+
+"ITEM                          QTY   RATE     TOTAL\n"+
+"Turkish Bath Robe              40   1250     50000\n"+
+"Hand Towel Pack of 10          25    850     21250\n"+
+"Floor Mat Anti-slip            30    460     13800\n\n"+
+"Sub Total                                    85050\n"+
+"IGST 18%                                     15309\n"+
+"Round Off                                        0\n"+
+"TOTAL PAYABLE                               104359\n\n"+
+"Bank: HDFC 50200012345678 IFSC HDFC0001234"},
+
+{name:"3 · Green Farm (handwritten style)",text:
+"Green Farm Vegetables\n"+
+"Beltola Bazar, Guwahati\n"+
+"GST: 18BKPPD7788L1Z2\n\n"+
+"Bill no 771\n"+
+"Date 20/08/2026\n\n"+
+"potato 50 kg @ 28 = 1400\n"+
+"onion 40 kg @ 34 = 1360\n"+
+"tomato 25 kg @ 42 = 1050\n"+
+"green chilli 8 kg @ 90 = 720\n\n"+
+"Total 4530\n"+
+"no gst, unregistered supply\n"+
+"paid cash"},
+
+{name:"4 · Skyline Facility (bad GSTIN)",text:
+"SKYLINE FACILITY SERVICES\n"+
+"Six Mile, Guwahati 781022\n"+
+"GSTIN: 18ABCD12345Z9Q1\n\n"+
+"TAX INVOICE\n"+
+"Invoice Number: SFS/AUG/119\n"+
+"Date: 01/08/2026\n"+
+"Due: 15/08/2026\n\n"+
+"Description                        Qty   Rate       Amount\n"+
+"Housekeeping staff (monthly)         8   14500      116000\n"+
+"Deep cleaning - lobby                1   18000       18000\n\n"+
+"Subtotal                                            134000\n"+
+"CGST 9%                                              12060\n"+
+"SGST 9%                                              12060\n"+
+"Grand Total                                         158120\n"},
+
+{name:"5 · Bora Traders (duplicate)",text:
+"BORA TRADERS\n"+
+"GS Road, Ulubari, Guwahati - 781007\n"+
+"GSTIN: 18AABCB1234C1ZW\n\n"+
+"TAX INVOICE\n"+
+"Invoice No : BT/2026-27/0412\n"+
+"Invoice Date : 12/08/2026\n\n"+
+"Sr  Description                 Qty    Rate      Amount\n"+
+"1   Bath Towel 500 GSM          120    240.00    28800.00\n"+
+"2   Bedsheet Double King         60    980.00    58800.00\n"+
+"3   Pillow Cover Set             90    150.00    13500.00\n\n"+
+"Subtotal                                        101100.00\n"+
+"CGST 9%                                           9099.00\n"+
+"SGST 9%                                           9099.00\n"+
+"Grand Total                                     119298.00"},
+
+{name:"6 · Assam Power (utility bill)",text:
+"ASSAM POWER DISTRIBUTION COMPANY LTD\n"+
+"Consumer: RIVERSTONE GRAND HOTEL\n"+
+"Consumer No: 3308871122\n"+
+"GSTIN: 18AAGCA1234H1ZK\n\n"+
+"BILL NO 9920114455\n"+
+"Bill Date: 03/08/2026\n"+
+"Due Date: 18/08/2026\n"+
+"Billing Period: Jul 2026\n\n"+
+"Units consumed        4820 kWh\n\n"+
+"Energy charge          4820      8.00    38560.00\n"+
+"Fixed charge              1   4200.00     4200.00\n"+
+"Electricity duty          1   2313.60     2313.60\n\n"+
+"Subtotal                        45073.60\n"+
+"Grand Total                     45073.60\n"+
+"Late payment after due date: 2% per month"}
+];
+
+/* ======================================================================
+   The parser. Layout-independent: it looks for what a field means,
+   not where it sits on the page.
+   ====================================================================== */
+var STATE={"18":"Assam","07":"Delhi","27":"Maharashtra","29":"Karnataka","33":"Tamil Nadu",
+  "19":"West Bengal","06":"Haryana","09":"Uttar Pradesh","24":"Gujarat","36":"Telangana"};
+var GSTIN_RE=/\b\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]\b/;
+
+function num(s){ if(s===undefined||s===null)return null;
+  var v=parseFloat(String(s).replace(/[^\d.\-]/g,'')); return isNaN(v)?null:v; }
+function money(n){ return '₹'+(n===null?'-':Number(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})); }
+function findLine(lines,re){ for(var i=0;i<lines.length;i++) if(re.test(lines[i])) return {i:i,t:lines[i]}; return null; }
+function lastNum(line){ var m=String(line).match(/(-?[\d,]+\.?\d*)\s*$/); return m?num(m[1]):null; }
+
+function parseInvoice(text){
+  var lines=text.split(/\r?\n/), raw=text;
+  var d={fields:0};
+
+  /* vendor = first meaningful line */
+  for(var i=0;i<lines.length;i++){
+    var l=lines[i].trim();
+    if(l&&!/^(tax )?invoice|^bill\b/i.test(l)){ d.vendor=l.replace(/\s{2,}/g,' '); break; }
+  }
+  /* gstin */
+  var g=raw.match(GSTIN_RE);
+  var gAny=raw.match(/GSTIN?\s*[:\-]?\s*([0-9A-Z]{10,20})/i);
+  d.gstin = g ? g[0] : (gAny ? gAny[1].trim() : null);
+  d.gstinValid = d.gstin ? GSTIN_RE.test(d.gstin) : false;
+  d.state = d.gstin ? (STATE[d.gstin.slice(0,2)]||null) : null;
+
+  /* invoice number - must carry a digit, so the word "Invoice" itself never wins */
+  d.number=null;
+  [/(?:invoice|bill|inv)\s*(?:no\.?|number|#)\s*[:\-]?\s*([A-Za-z0-9][A-Za-z0-9\/\-]{2,24})/i,
+   /(?:invoice|bill)\s*#\s*([A-Za-z0-9][A-Za-z0-9\/\-]{2,24})/i].some(function(re){
+    var m=raw.match(re);
+    if(m&&/\d/.test(m[1])){ d.number=m[1].trim().replace(/[\-\/]+$/,''); return true; }
+    return false;
+  });
+
+  /* dates */
+  var dates=raw.match(/\b(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})\b/g)||[];
+  var dl=findLine(lines,/(invoice date|bill date|^date|dated)/i);
+  d.date = dl ? (String(dl.t).match(/\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/)||[null])[0] : (dates[0]||null);
+  var du=findLine(lines,/due\s*(date)?/i);
+  d.due = du ? (String(du.t).match(/\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/)||[null])[0] : null;
+
+  /* "PO" must be its own word (so "ASSAM POWER" is not a purchase order) and the
+     value has to contain a digit */
+  var po=raw.match(/\b(?:p\.?\s?o\.?|purchase order)\b\s*(?:number|no\.?|#)?\s*[:\-]?\s*([A-Z0-9][A-Z0-9\-\/]{2,17})/i);
+  d.po = (po&&/\d/.test(po[1])) ? po[1] : null;
+
+  var bill=findLine(lines,/(bill to|customer|consumer)\s*[:\-]/i);
+  d.billTo = bill ? String(bill.t).split(/[:\-]/).slice(1).join(':').trim() : null;
+
+  /* line items - two shapes: a table, or "item 50 kg @ 28 = 1400" */
+  d.items=[];
+  var TOTALISH=/^\s*(sub\s?-?\s?total|total|grand total|cgst|sgst|igst|utgst|round|payment|bank|terms|amount in words|late payment)/i;
+  var COLHEAD=/^\s*(sr|s\.?\s?no|sl|description|item|particulars|qty|hsn)\b/i;
+  /* anything that is a header field, not a purchased line */
+  var META=/(gstin|gst\s*[:\-]|invoice|bill\s*(no|date|to)|^\s*date|due|p\.?o\.?\s*(number|no)|phone|mobile|email|party|customer|consumer|address|period|ifsc|a\/c|account|upi|units?\s+consumed|unregistered|paid\s+cash|dated)/i;
+  var DATEISH=/\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/;
+
+  lines.forEach(function(l){
+    var t=l.trim();
+    if(!t||TOTALISH.test(t)||COLHEAD.test(t)||META.test(t)||DATEISH.test(t))return;
+
+    /* shape A: "potato 50 kg @ 28 = 1400" */
+    var eq=t.match(/^(.+?)\s+([\d.]+)\s*(?:kg|nos|pcs|units?)?\s*@\s*([\d.,]+)\s*=\s*([\d.,]+)$/i);
+    if(eq){ d.items.push({desc:eq[1].trim(),qty:num(eq[2]),rate:num(eq[3]),amount:num(eq[4])}); return; }
+
+    /* shape B: a table row ending in qty, rate, amount */
+    var nums=t.match(/[\d,]+\.?\d*/g);
+    if(!nums||nums.length<3)return;
+    var desc=t.replace(/^\s*\d+[\.\)]?\s+/,'').replace(/(\s+[\d,]+\.?\d*){3}\s*$/,'').trim();
+    if(!/[A-Za-z]{3}/.test(desc)||desc.length<3)return;
+    var tail=nums.slice(-3).map(num);
+    if(tail[0]===null||tail[2]===null||tail[2]<=0)return;
+    d.items.push({desc:desc,qty:tail[0],rate:tail[1],amount:tail[2]});
+  });
+
+  /* totals */
+  var st=findLine(lines,/^\s*sub\s?-?\s?total/i);
+  d.subtotal = st ? lastNum(st.t) : null;
+  var tot=findLine(lines,/(grand total|total payable|^\s*total\b)/i);
+  d.total = tot ? lastNum(tot.t) : null;
+  d.taxes=[];
+  ['CGST','SGST','IGST','UTGST'].forEach(function(k){
+    var tl=findLine(lines,new RegExp('^\\s*'+k,'i'));
+    if(tl){ var pc=String(tl.t).match(/(\d{1,2}(?:\.\d+)?)\s*%/);
+      d.taxes.push({kind:k,pct:pc?num(pc[1]):null,amount:lastNum(tl.t)}); }
+  });
+  d.taxTotal=d.taxes.reduce(function(a,t){return a+(t.amount||0);},0);
+  if(!d.subtotal&&d.total&&!d.taxes.length)d.subtotal=d.total;
+
+  var bank=raw.match(/(?:a\/c|account)\s*(?:no)?\s*[:\-]?\s*(\d{9,18})/i);
+  d.account=bank?bank[1]:null;
+  var upi=raw.match(/\b([a-z0-9._-]+@[a-z]{3,})\b/i);
+  d.upi=(upi&&!/\.(com|in|org|net)$/i.test(upi[1]))?upi[1]:null;
+
+  ['vendor','gstin','number','date','due','po','billTo','subtotal','total','account','upi']
+    .forEach(function(k){ if(d[k]!==null&&d[k]!==undefined)d.fields++; });
+  d.fields+=d.items.length+d.taxes.length;
+  return d;
+}
+
+/* ---------------- the checks that actually save money ---------------- */
+function verify(d,ledger){
+  var f=[];
+  var close=function(a,b){return Math.abs((a||0)-(b||0))<=1.5;};
+
+  if(d.items.length){
+    var sum=d.items.reduce(function(a,i){return a+(i.amount||0);},0);
+    if(d.subtotal===null) f.push({t:'warn',k:'No subtotal line',m:'Line items add up to '+money(sum)+'. Using that.'});
+    else if(close(sum,d.subtotal)) f.push({t:'ok',k:'Line items match subtotal',m:money(sum)});
+    else f.push({t:'bad',k:'Line items do NOT match subtotal',
+      m:'Items add up to '+money(sum)+' but the invoice says '+money(d.subtotal)
+        +'. Difference '+money(Math.abs(sum-d.subtotal))+'.',risk:Math.abs(sum-d.subtotal)});
+    d.items.forEach(function(i){
+      if(i.qty&&i.rate&&i.amount&&!close(i.qty*i.rate,i.amount))
+        f.push({t:'bad',k:'Line maths wrong: '+i.desc,
+          m:i.qty+' x '+money(i.rate)+' should be '+money(i.qty*i.rate)+', invoice says '+money(i.amount)+'.',
+          risk:Math.abs(i.qty*i.rate-i.amount)});
+    });
+  }
+
+  d.taxes.forEach(function(t){
+    if(t.pct&&d.subtotal){
+      var should=Math.round(d.subtotal*t.pct)/100;
+      if(close(should,t.amount)) f.push({t:'ok',k:t.kind+' '+t.pct+'% correct',m:money(t.amount)});
+      else f.push({t:'bad',k:t.kind+' '+t.pct+'% is wrong',
+        m:'Should be '+money(should)+' on '+money(d.subtotal)+', invoice says '+money(t.amount)+'.',
+        risk:Math.abs(should-t.amount)});
+    }
+  });
+
+  if(d.subtotal!==null&&d.total!==null){
+    var expect=d.subtotal+d.taxTotal;
+    if(close(expect,d.total)) f.push({t:'ok',k:'Grand total adds up',m:money(d.total)});
+    else f.push({t:'bad',k:'Grand total is wrong',
+      m:money(d.subtotal)+' + '+money(d.taxTotal)+' tax = '+money(expect)
+        +', but the invoice asks for '+money(d.total)+'.',risk:Math.abs(expect-d.total)});
+  }
+
+  if(!d.gstin) f.push({t:'warn',k:'No GSTIN on the document',m:'You cannot claim input tax credit without it.'});
+  else if(!d.gstinValid) f.push({t:'bad',k:'GSTIN is not a valid format',
+    m:d.gstin+' does not match the 15 character GST pattern. Input tax credit will be rejected.',risk:d.taxTotal});
+  else f.push({t:'ok',k:'GSTIN valid',m:d.gstin+(d.state?' &middot; '+d.state:'')});
+
+  if(!d.number) f.push({t:'warn',k:'No invoice number found',m:'Hard to track or dispute later.'});
+  var dup=ledger.filter(function(r){return r.number&&r.number===d.number&&r.vendor===d.vendor;});
+  if(dup.length) f.push({t:'bad',k:'DUPLICATE invoice',
+    m:'Invoice '+d.number+' from '+d.vendor+' was already processed. Do not pay twice.',risk:d.total||0});
+
+  if(d.due&&d.date){
+    var pd=function(s){var p=s.split(/[\/\-]/);var y=+p[2];if(y<100)y+=2000;return new Date(y,+p[1]-1,+p[0]);};
+    var days=Math.round((pd(d.due)-pd(d.date))/864e5);
+    if(days>0)f.push({t:'ok',k:'Payment terms',m:days+' days from invoice date'});
+    var late=Math.round((new Date()-pd(d.due))/864e5);
+    if(late>0)f.push({t:'warn',k:'Payment is overdue',m:'Due date passed '+late+' days ago.'});
+  }
+  return f;
+}
+
+/* ---------------- UI ---------------- */
+var ledger=[], stats={docs:0,fields:0,bad:0,risk:0}, logEl=document.getElementById('log');
+function now(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);}
+function esc(s){return String(s===null||s===undefined?'-':s).replace(/[&<>]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+function logAdd(tag,cls,txt){
+  var d=document.createElement('div');d.className='lrow';
+  d.innerHTML='<span>'+now()+'</span><span class="tag t-'+cls+'">'+tag+'</span><span>'+txt+'</span>';
+  logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;
+  document.getElementById('lc').textContent=logEl.children.length+' events';
+}
+
+var sel=document.getElementById('sample');
+SAMPLES.forEach(function(s,i){var o=document.createElement('option');o.value=i;o.textContent=s.name;sel.appendChild(o);});
+sel.onchange=function(){
+  document.getElementById('src').value=SAMPLES[this.value].text;
+  document.getElementById('fname').textContent=SAMPLES[this.value].name;
+};
+document.getElementById('src').value=SAMPLES[0].text;
+document.getElementById('fname').textContent=SAMPLES[0].name;
+
+var drop=document.getElementById('drop');
+['dragenter','dragover'].forEach(function(e){drop.addEventListener(e,function(ev){
+  ev.preventDefault();drop.classList.add('over');});});
+['dragleave','drop'].forEach(function(e){drop.addEventListener(e,function(ev){
+  ev.preventDefault();drop.classList.remove('over');});});
+drop.addEventListener('drop',function(ev){
+  var f=ev.dataTransfer.files[0];if(!f)return;
+  var r=new FileReader();
+  r.onload=function(){document.getElementById('src').value=r.result;
+    document.getElementById('fname').textContent=f.name;
+    logAdd('SYS','sys','Loaded '+esc(f.name)+' ('+Math.round(f.size/1024)+' KB)');};
+  r.readAsText(f);
+});
+
+function process(text,label){
+  logAdd('STEP','step','Reading document: '+esc(label));
+  var d=parseInvoice(text);
+  logAdd('DATA','data','Vendor: '+esc(d.vendor)+' · Invoice '+esc(d.number)+' · '+esc(d.date));
+  logAdd('DATA','data',d.items.length+' line items, '+d.taxes.length+' tax lines, '+d.fields+' fields extracted');
+  var flags=verify(d,ledger);
+  var bad=flags.filter(function(f){return f.t==='bad';});
+  var risk=bad.reduce(function(a,f){return a+(f.risk||0);},0);
+  bad.forEach(function(f){logAdd('ACT','act',f.k+' — '+String(f.m).replace(/&middot;/g,'·'));});
+  if(!bad.length)logAdd('CALC','calc','All checks passed — safe to pay');
+  else logAdd('CALC','calc',bad.length+' problem(s), '+money(risk)+' at risk');
+
+  d.label=label;d.flags=flags;d.bad=bad.length;d.risk=risk;
+  ledger.unshift(d);
+  stats.docs++;stats.fields+=d.fields;stats.bad+=bad.length;stats.risk+=risk;
+  render(d);drawLedger();drawStats();
+  return d;
+}
+
+function render(d){
+  var pass=d.bad===0;
+  var items=d.items.length?('<table class="items"><thead><tr><th>Description</th><th>Qty</th>'
+    +'<th>Rate</th><th>Amount</th></tr></thead><tbody>'
+    +d.items.map(function(i){return '<tr><td>'+esc(i.desc)+'</td><td>'+esc(i.qty)+'</td><td>'
+      +(i.rate===null?'-':money(i.rate))+'</td><td>'+(i.amount===null?'-':money(i.amount))+'</td></tr>';}).join('')
+    +'</tbody></table>'):'<div class="muted tiny pad">No line items detected.</div>';
+
+  var flags=d.flags.map(function(f){
+    var cls=f.t==='ok'?'ok':(f.t==='warn'?'warn':'');
+    var icon=f.t==='ok'?'&#10003;':(f.t==='warn'?'&#9888;':'&#10007;');
+    return '<div class="flag '+cls+'"><span>'+icon+'</span><span><b>'+f.k+'</b><br>'
+      +'<span class="muted">'+f.m+'</span></span></div>';}).join('');
+
+  document.getElementById('conf').textContent=d.fields+' fields';
+  document.getElementById('out').innerHTML=
+     '<div class="verdict '+(pass?'pass':'hold')+'">'+(pass?'&#10003; Verified — safe to pay':'&#9888; Hold — '+d.bad+' problem'+(d.bad>1?'s':'')+' found')+'</div>'
+    +'<div class="kv" style="margin-bottom:12px">'
+    +'<b>Vendor</b><span>'+esc(d.vendor)+'</span>'
+    +'<b>GSTIN</b><span>'+esc(d.gstin)+(d.gstin?(d.gstinValid?' <span class="badge">valid</span>':' <span class="badge r">invalid</span>'):'')
+      +(d.state?' <span class="muted tiny">'+d.state+'</span>':'')+'</span>'
+    +'<b>Invoice no</b><span>'+esc(d.number)+'</span>'
+    +'<b>Date</b><span>'+esc(d.date)+(d.due?' &nbsp;<span class="muted">due '+esc(d.due)+'</span>':'')+'</span>'
+    +(d.po?'<b>PO</b><span>'+esc(d.po)+'</span>':'')
+    +(d.billTo?'<b>Bill to</b><span>'+esc(d.billTo)+'</span>':'')
+    +(d.account?'<b>Bank A/c</b><span>'+esc(d.account)+'</span>':'')
+    +(d.upi?'<b>UPI</b><span>'+esc(d.upi)+'</span>':'')
+    +'</div>'
+    +items
+    +'<div class="kv" style="margin:12px 0">'
+    +'<b>Subtotal</b><span>'+money(d.subtotal)+'</span>'
+    +d.taxes.map(function(t){return '<b>'+t.kind+(t.pct?' '+t.pct+'%':'')+'</b><span>'+money(t.amount)+'</span>';}).join('')
+    +'<b style="color:var(--ink)">Grand total</b><span><b style="color:var(--gold);font-size:15px">'+money(d.total)+'</b></span>'
+    +'</div>'
+    +flags;
+}
+function drawLedger(){
+  document.getElementById('ledger').innerHTML=ledger.map(function(d,i){
+    return '<tr'+(i===0?' class="new"':'')+'><td><b style="color:var(--gold)">'+esc(d.number)+'</b></td>'
+      +'<td>'+esc(String(d.vendor||'').slice(0,22))+'</td><td>'+money(d.total)+'</td>'
+      +'<td><span class="badge '+(d.bad?'r':'')+'">'+(d.bad?d.bad+' issue'+(d.bad>1?'s':''):'Clean')+'</span></td></tr>';}).join('');
+  document.getElementById('lde').style.display=ledger.length?'none':'block';
+  document.getElementById('ldc').textContent=ledger.length+' rows';
+}
+function drawStats(){
+  document.getElementById('s1').textContent=stats.docs;
+  document.getElementById('s2').textContent=stats.fields;
+  document.getElementById('s3').textContent=stats.bad;
+  document.getElementById('s4').textContent='₹'+Math.round(stats.risk).toLocaleString('en-IN');
+  document.getElementById('s5').textContent=Math.round(stats.docs*6)+' min';
+}
+
+document.getElementById('run').onclick=function(){
+  process(document.getElementById('src').value,document.getElementById('fname').textContent);
+};
+document.getElementById('batch').onclick=function(){
+  var btn=this;btn.disabled=true;btn.textContent='Processing...';
+  ledger=[];stats={docs:0,fields:0,bad:0,risk:0};logEl.innerHTML='';
+  var i=0;
+  (function step(){
+    if(i>=SAMPLES.length){
+      logAdd('SYS','sys','Batch finished · '+stats.docs+' documents, '+stats.bad+' problems, '
+        +money(stats.risk)+' protected');
+      btn.disabled=false;btn.innerHTML='&#9654; Process all 6 invoices';return;}
+    var s=SAMPLES[i++];
+    document.getElementById('src').value=s.text;
+    document.getElementById('fname').textContent=s.name;
+    sel.value=i-1;
+    process(s.text,s.name);
+    setTimeout(step,900);
+  })();
+};
+document.getElementById('json').onclick=function(){
+  if(!ledger.length)return alert('Process something first.');
+  var a=document.createElement('a');
+  a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(ledger,null,2));
+  a.download='invoices.json';a.click();
+  logAdd('ACT','act','Exported invoices.json');
+};
+document.getElementById('csv').onclick=function(){
+  if(!ledger.length)return alert('Process something first.');
+  var rows=[['Invoice','Vendor','GSTIN','Date','Due','Subtotal','Tax','Total','Problems','Notes']];
+  ledger.forEach(function(d){rows.push([d.number,d.vendor,d.gstin,d.date,d.due,d.subtotal,
+    d.taxTotal,d.total,d.bad,d.flags.filter(function(f){return f.t==='bad';})
+      .map(function(f){return f.k;}).join('; ')]);});
+  var csv=rows.map(function(r){return r.map(function(c){
+    return '"'+String(c===null||c===undefined?'':c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='invoices.csv';a.click();
+  logAdd('ACT','act','Exported invoices.csv');
+};
+
+logAdd('SYS','sys','Parser ready · handles any layout, no template needed');
+
+/* ?auto=1 makes the page start itself - handy for a shareable link or a recording */
+if(/auto/.test(location.search))setTimeout(function(){var b=document.getElementById('batch');if(b)b.click();},400);
+</script>
+</body>
+</html>
