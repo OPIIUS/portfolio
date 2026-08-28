@@ -1,0 +1,765 @@
+<!--
+  ============================================================
+  COACHING COMPLIANCE SITE — REUSABLE TEMPLATE
+  Built to satisfy the Assam Coaching Institutes
+  (Control and Regulation) Act, 2025 — Sections 4(2), 5(iii), 10(1)
+
+  TO RE-SKIN FOR A REAL CLIENT, FIND AND REPLACE:
+    918638830682   -> their WhatsApp number, country code, no +, no spaces
+                      (currently set to Rishi's demo number)
+    Luitpar Academy -> their institute name
+    LPA-KAM-0000/2026 -> their registration number once issued
+
+  THEN EDIT: courses, faculty, fees, results, hostel, contact.
+  Everything else can stay as-is.
+  ============================================================
+-->
+<title>Luitpar Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --paper:      #FBFAF7;
+    --surface:    #FFFFFF;
+    --surface-2:  #F4F2ED;
+    --ink:        #1A1D26;
+    --ink-soft:   #5C6070;
+    --rule:       #E2DED6;
+    --accent:     #B8322C;
+    --accent-deep:#7E2320;
+    --accent-wash:#F7EBEA;
+    --verify:     #2F6B4F;
+    --verify-wash:#EAF2ED;
+    --shadow:     0 1px 2px rgba(26,29,38,.06), 0 8px 24px rgba(26,29,38,.05);
+
+    --display: "Bitter", Georgia, "Times New Roman", serif;
+    --body:    "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono:    "IBM Plex Mono", ui-monospace, "Courier New", monospace;
+
+    --measure: 66ch;
+    --pad: clamp(1.15rem, 4vw, 2.5rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #14161C;
+      --surface:    #1C1F27;
+      --surface-2:  #232733;
+      --ink:        #E9E7E2;
+      --ink-soft:   #A0A4B2;
+      --rule:       #333846;
+      --accent:     #E4695F;
+      --accent-deep:#F0918A;
+      --accent-wash:#2B1E1E;
+      --verify:     #6FBF95;
+      --verify-wash:#1B2A22;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #14161C;
+    --surface:    #1C1F27;
+    --surface-2:  #232733;
+    --ink:        #E9E7E2;
+    --ink-soft:   #A0A4B2;
+    --rule:       #333846;
+    --accent:     #E4695F;
+    --accent-deep:#F0918A;
+    --accent-wash:#2B1E1E;
+    --verify:     #6FBF95;
+    --verify-wash:#1B2A22;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.2; }
+  p { margin: 0; }
+  a { color: var(--accent); }
+
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 var(--pad); }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: var(--surface);
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar__in {
+    max-width: 940px; margin: 0 auto; padding: .7rem var(--pad);
+    display: flex; align-items: center; gap: 1rem; justify-content: space-between;
+  }
+  .brandmark { display: flex; align-items: center; gap: .6rem; min-width: 0; }
+  .brandmark__glyph {
+    width: 34px; height: 34px; flex: none; border-radius: 3px;
+    background: var(--accent); color: #fff;
+    display: grid; place-items: center;
+    font-family: var(--display); font-weight: 700; font-size: 1rem;
+  }
+  .brandmark__name {
+    font-family: var(--display); font-weight: 600; font-size: 1.02rem;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .wa {
+    display: inline-flex; align-items: center; gap: .45rem;
+    background: var(--accent); color: #fff; text-decoration: none;
+    font-weight: 600; font-size: .88rem; letter-spacing: .01em;
+    padding: .55rem .9rem; border-radius: 4px; flex: none;
+    border: 1px solid var(--accent);
+    transition: background .15s ease;
+  }
+  .wa:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+  .wa svg { width: 15px; height: 15px; fill: currentColor; }
+  .wa--ghost {
+    background: transparent; color: var(--accent);
+    border: 1px solid var(--rule);
+  }
+  .wa--ghost:hover { background: var(--accent-wash); border-color: var(--accent); color: var(--accent-deep); }
+  .wa--block { width: 100%; justify-content: center; }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(2.5rem, 7vw, 4.5rem) 0 clamp(2rem, 5vw, 3rem); }
+  .eyebrow {
+    font-family: var(--mono); font-size: .72rem; font-weight: 500;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .hero h1 {
+    font-size: clamp(2.1rem, 7vw, 3.4rem); font-weight: 700;
+    margin: .55rem 0 0; letter-spacing: -.015em;
+  }
+  .hero__lede {
+    max-width: var(--measure); margin-top: 1rem;
+    font-size: clamp(1rem, 2.4vw, 1.12rem); color: var(--ink-soft);
+  }
+  .regline {
+    display: inline-flex; flex-wrap: wrap; align-items: center; gap: .5rem;
+    margin-top: 1.5rem; padding: .5rem .8rem;
+    background: var(--verify-wash); border: 1px solid var(--rule);
+    border-radius: 4px;
+    font-family: var(--mono); font-size: .76rem; color: var(--verify);
+  }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.6rem; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px; margin-top: 2.6rem;
+    background: var(--rule); border: 1px solid var(--rule); border-radius: 5px;
+    overflow: hidden;
+  }
+  .stat { background: var(--surface); padding: 1.05rem 1.1rem; }
+  .stat__n {
+    font-family: var(--mono); font-size: 1.55rem; font-weight: 600;
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+  }
+  .stat__l { font-size: .78rem; color: var(--ink-soft); margin-top: .15rem; }
+
+  /* ---------- sections ---------- */
+  section { padding: clamp(2.2rem, 6vw, 3.4rem) 0; border-top: 1px solid var(--rule); }
+  .sec-head { margin-bottom: 1.6rem; }
+  .sec-head h2 {
+    font-size: clamp(1.4rem, 4vw, 1.85rem); font-weight: 600;
+    margin-top: .4rem; letter-spacing: -.01em;
+  }
+  .sec-head p { color: var(--ink-soft); max-width: var(--measure); margin-top: .5rem; font-size: .95rem; }
+
+  /* ---------- courses ---------- */
+  .courses { display: grid; gap: .9rem; grid-template-columns: repeat(auto-fit, minmax(275px, 1fr)); }
+  .course {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 1.15rem; display: flex; flex-direction: column; gap: .85rem;
+    box-shadow: var(--shadow);
+  }
+  .course h3 { font-size: 1.08rem; font-weight: 600; }
+  .course__tag {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .spec { display: grid; gap: .3rem; margin-top: auto; }
+  .spec__row {
+    display: flex; justify-content: space-between; gap: 1rem;
+    font-size: .87rem; padding-bottom: .3rem; border-bottom: 1px dotted var(--rule);
+  }
+  .spec__row:last-child { border-bottom: 0; }
+  .spec__k { color: var(--ink-soft); }
+  .spec__v { font-family: var(--mono); font-variant-numeric: tabular-nums; font-weight: 500; }
+
+  /* ---------- tables ---------- */
+  .tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); }
+  table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 480px; }
+  th, td { text-align: left; padding: .72rem .9rem; border-bottom: 1px solid var(--rule); }
+  th {
+    font-family: var(--mono); font-size: .7rem; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase; color: var(--ink-soft);
+    background: var(--surface-2);
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ---------- policy ---------- */
+  .policy-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+  .panel {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 6px; padding: 1.2rem;
+  }
+  .panel h3 { font-size: 1.02rem; font-weight: 600; margin-bottom: .8rem; }
+  .panel ul { margin: 0; padding-left: 1.1rem; display: grid; gap: .5rem; font-size: .9rem; }
+  .panel li::marker { color: var(--accent); }
+  .note {
+    margin-top: .9rem; padding: .65rem .8rem; border-left: 3px solid var(--accent);
+    background: var(--accent-wash); font-size: .85rem; border-radius: 0 4px 4px 0;
+  }
+
+  /* ---------- faculty ---------- */
+  .faculty { display: grid; gap: .8rem; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); }
+  .fac {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-radius: 6px; padding: 1rem 1.1rem;
+  }
+  .fac__n { font-family: var(--display); font-weight: 600; font-size: 1rem; }
+  .fac__q { font-size: .85rem; color: var(--ink-soft); margin-top: .3rem; }
+  .fac__m {
+    font-family: var(--mono); font-size: .72rem; color: var(--accent);
+    letter-spacing: .05em; margin-top: .55rem;
+  }
+
+  /* ---------- facilities ---------- */
+  .checks {
+    display: grid; gap: .55rem .9rem;
+    grid-template-columns: repeat(auto-fit, minmax(238px, 1fr));
+    list-style: none; padding: 0; margin: 0; font-size: .89rem;
+  }
+  .checks li { display: flex; gap: .55rem; align-items: flex-start; }
+  .checks li::before {
+    content: "✓"; color: var(--verify); font-weight: 700; flex: none; line-height: 1.5;
+  }
+
+  .helplines {
+    display: grid; gap: 1px; margin-top: 1.2rem;
+    grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+    background: var(--rule); border: 1px solid var(--rule); border-radius: 5px; overflow: hidden;
+  }
+  .hl { background: var(--surface); padding: .75rem .9rem; }
+  .hl__k { font-size: .76rem; color: var(--ink-soft); }
+  .hl__v { font-family: var(--mono); font-weight: 600; font-size: 1.02rem; margin-top: .1rem; }
+
+  /* ---------- contact ---------- */
+  .contact-grid { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); }
+  .addr { font-size: .95rem; line-height: 1.75; }
+  .addr strong { display: block; font-family: var(--display); font-size: 1.05rem; margin-bottom: .35rem; }
+
+  /* ---------- statutory footer ---------- */
+  .statutory {
+    background: var(--surface-2); border: 1px solid var(--rule);
+    border-radius: 6px; padding: 1.3rem;
+  }
+  .statutory h3 { font-size: 1rem; font-weight: 600; }
+  .statutory > p { font-size: .85rem; color: var(--ink-soft); margin-top: .4rem; max-width: var(--measure); }
+  .disclosures {
+    list-style: none; padding: 0; margin: 1.1rem 0 0;
+    display: grid; gap: .4rem; grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+    font-size: .85rem;
+  }
+  .disclosures a {
+    display: flex; gap: .5rem; text-decoration: none; color: var(--ink);
+    padding: .35rem .45rem; border-radius: 4px;
+  }
+  .disclosures a:hover { background: var(--surface); color: var(--accent); }
+  .disclosures a::before { content: "✓"; color: var(--verify); font-weight: 700; flex: none; }
+
+  footer { padding: 2rem 0 3rem; border-top: 1px solid var(--rule); }
+  .colophon { font-size: .8rem; color: var(--ink-soft); max-width: var(--measure); }
+
+  .printbtn {
+    background: transparent; border: 1px solid var(--rule); color: var(--ink);
+    font-family: var(--body); font-size: .85rem; font-weight: 500;
+    padding: .5rem .85rem; border-radius: 4px; cursor: pointer; margin-top: 1.1rem;
+  }
+  .printbtn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* ---------- notice board print sheet (Section 5(iii)) ---------- */
+  .noticeboard { display: none; }
+  @media print {
+    body { background: #fff; color: #000; font-size: 11pt; }
+    .topbar, .hero, section, footer, .wa, .printbtn { display: none !important; }
+    .noticeboard { display: block; padding: 0; }
+    .noticeboard h1 { font-size: 20pt; margin-bottom: .2rem; }
+    .noticeboard h2 { font-size: 12pt; margin: 1rem 0 .35rem; border-bottom: 1px solid #000; }
+    .noticeboard table { min-width: 0; font-size: 10pt; }
+    .noticeboard th, .noticeboard td { border: 1px solid #666; padding: 4pt 6pt; background: #fff; color: #000; }
+    .noticeboard ul { margin: 0; padding-left: 1.1rem; }
+  }
+</style>
+
+<header class="topbar">
+  <div class="topbar__in">
+    <div class="brandmark">
+      <div class="brandmark__glyph">LA</div>
+      <div class="brandmark__name">Luitpar Academy</div>
+    </div>
+    <a class="wa" href="https://wa.me/918638830682?text=Hello%20Luitpar%20Academy%2C%20I%20want%20course%20and%20fee%20details.">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.16c-.24.68-1.4 1.3-1.94 1.34-.5.05-.98.22-3.3-.69-2.78-1.1-4.55-3.94-4.69-4.12-.14-.18-1.13-1.5-1.13-2.86 0-1.36.71-2.03.96-2.31.25-.28.55-.35.73-.35.18 0 .37 0 .53.01.17.01.4-.06.62.48.24.57.8 1.97.87 2.11.07.14.12.31.02.5-.1.18-.15.29-.29.45-.14.16-.3.36-.43.48-.14.14-.29.29-.13.57.17.28.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.3 1.41.28.14.45.12.61-.07.17-.19.7-.82.89-1.1.19-.28.37-.23.62-.14.25.09 1.6.76 1.87.9.28.14.46.21.53.32.07.12.07.66-.17 1.34z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Guwahati · Established 2016</div>
+      <h1>Luitpar Academy</h1>
+      <p class="hero__lede">
+        Classroom coaching for APSC, UPSC, NEET, JEE, ADRE and banking examinations.
+        Every fee, policy and result on this page is published in full, as required of a
+        registered coaching institute in Assam.
+      </p>
+      <div class="regline">
+        <span>Registered Coaching Institute</span>
+        <span>·</span>
+        <span>Reg. No. LPA-KAM-0000/2026</span>
+      </div>
+      <div class="hero__cta">
+        <a class="wa" href="https://wa.me/918638830682?text=Hello%2C%20I%20want%20to%20book%20a%20free%20demo%20class.">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.16c-.24.68-1.4 1.3-1.94 1.34-.5.05-.98.22-3.3-.69-2.78-1.1-4.55-3.94-4.69-4.12-.14-.18-1.13-1.5-1.13-2.86 0-1.36.71-2.03.96-2.31.25-.28.55-.35.73-.35.18 0 .37 0 .53.01.17.01.4-.06.62.48.24.57.8 1.97.87 2.11.07.14.12.31.02.5-.1.18-.15.29-.29.45-.14.16-.3.36-.43.48-.14.14-.29.29-.13.57.17.28.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.3 1.41.28.14.45.12.61-.07.17-.19.7-.82.89-1.1.19-.28.37-.23.62-.14.25.09 1.6.76 1.87.9.28.14.46.21.53.32.07.12.07.66-.17 1.34z"/></svg>
+          Book a free demo class
+        </a>
+        <a class="wa wa--ghost" href="#fees">See full fee structure</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="stat__n">4,820</div><div class="stat__l">students coached since 2016</div></div>
+        <div class="stat"><div class="stat__n">1,100</div><div class="stat__l">final selections &amp; admissions</div></div>
+        <div class="stat"><div class="stat__n">18</div><div class="stat__l">full-time teachers</div></div>
+        <div class="stat"><div class="stat__n">1</div><div class="stat__l">branch, Zoo Road Tiniali</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COURSES + DURATION + BATCH SIZE + FEE -->
+  <section id="courses">
+    <div class="wrap reveal">
+      <div class="sec-head">
+        <div class="eyebrow">Courses</div>
+        <h2>What we teach, and for how long</h2>
+        <p>Batch strength is fixed at admission and is not increased once a course begins.</p>
+      </div>
+      <div class="courses">
+
+        <article class="course">
+          <div><div class="course__tag">State civil services</div><h3>APSC / ACS — Prelims &amp; Mains</h3></div>
+          <div class="spec">
+            <div class="spec__row"><span class="spec__k">Duration</span><span class="spec__v">11 months</span></div>
+            <div class="spec__row"><span class="spec__k">Batch size</span><span class="spec__v">40</span></div>
+            <div class="spec__row"><span class="spec__k">Total fee</span><span class="spec__v">₹68,000</span></div>
+          </div>
+          <a class="wa wa--block" href="https://wa.me/918638830682?text=Hi%2C%20I%20want%20details%20of%20the%20APSC%20%2F%20ACS%20batch%20%E2%80%94%20fees%2C%20timings%20and%20next%20start%20date.">Ask about this batch</a>
+        </article>
+
+        <article class="course">
+          <div><div class="course__tag">Civil services</div><h3>UPSC CSE Foundation</h3></div>
+          <div class="spec">
+            <div class="spec__row"><span class="spec__k">Duration</span><span class="spec__v">14 months</span></div>
+            <div class="spec__row"><span class="spec__k">Batch size</span><span class="spec__v">35</span></div>
+            <div class="spec__row"><span class="spec__k">Total fee</span><span class="spec__v">₹1,15,000</span></div>
+          </div>
+          <a class="wa wa--block" href="https://wa.me/918638830682?text=Hi%2C%20I%20want%20details%20of%20the%20UPSC%20CSE%20Foundation%20batch%20%E2%80%94%20fees%2C%20timings%20and%20next%20start%20date.">Ask about this batch</a>
+        </article>
+
+        <article class="course">
+          <div><div class="course__tag">Medical entrance</div><h3>NEET — Integrated Class 11 + 12</h3></div>
+          <div class="spec">
+            <div class="spec__row"><span class="spec__k">Duration</span><span class="spec__v">24 months</span></div>
+            <div class="spec__row"><span class="spec__k">Batch size</span><span class="spec__v">45</span></div>
+            <div class="spec__row"><span class="spec__k">Total fee</span><span class="spec__v">₹1,42,000</span></div>
+          </div>
+          <a class="wa wa--block" href="https://wa.me/918638830682?text=Hi%2C%20I%20want%20details%20of%20the%20NEET%20integrated%20batch%20%E2%80%94%20fees%2C%20timings%20and%20next%20start%20date.">Ask about this batch</a>
+        </article>
+
+        <article class="course">
+          <div><div class="course__tag">Engineering entrance</div><h3>JEE Main + Advanced</h3></div>
+          <div class="spec">
+            <div class="spec__row"><span class="spec__k">Duration</span><span class="spec__v">24 months</span></div>
+            <div class="spec__row"><span class="spec__k">Batch size</span><span class="spec__v">45</span></div>
+            <div class="spec__row"><span class="spec__k">Total fee</span><span class="spec__v">₹1,48,000</span></div>
+          </div>
+          <a class="wa wa--block" href="https://wa.me/918638830682?text=Hi%2C%20I%20want%20details%20of%20the%20JEE%20Main%20%2B%20Advanced%20batch%20%E2%80%94%20fees%2C%20timings%20and%20next%20start%20date.">Ask about this batch</a>
+        </article>
+
+        <article class="course">
+          <div><div class="course__tag">State recruitment</div><h3>ADRE — Grade III &amp; IV</h3></div>
+          <div class="spec">
+            <div class="spec__row"><span class="spec__k">Duration</span><span class="spec__v">6 months</span></div>
+            <div class="spec__row"><span class="spec__k">Batch size</span><span class="spec__v">60</span></div>
+            <div class="spec__row"><span class="spec__k">Total fee</span><span class="spec__v">₹24,000</span></div>
+          </div>
+          <a class="wa wa--block" href="https://wa.me/918638830682?text=Hi%2C%20I%20want%20details%20of%20the%20ADRE%20batch%20%E2%80%94%20fees%2C%20timings%20and%20next%20start%20date.">Ask about this batch</a>
+        </article>
+
+        <article class="course">
+          <div><div class="course__tag">Banking</div><h3>IBPS &amp; SBI — PO and Clerk</h3></div>
+          <div class="spec">
+            <div class="spec__row"><span class="spec__k">Duration</span><span class="spec__v">7 months</span></div>
+            <div class="spec__row"><span class="spec__k">Batch size</span><span class="spec__v">50</span></div>
+            <div class="spec__row"><span class="spec__k">Total fee</span><span class="spec__v">₹32,000</span></div>
+          </div>
+          <a class="wa wa--block" href="https://wa.me/918638830682?text=Hi%2C%20I%20want%20details%20of%20the%20banking%20(IBPS%20%2F%20SBI)%20batch%20%E2%80%94%20fees%2C%20timings%20and%20next%20start%20date.">Ask about this batch</a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FEES -->
+  <section id="fees">
+    <div class="wrap reveal">
+      <div class="sec-head">
+        <div class="eyebrow">Fees</div>
+        <h2>Complete fee structure</h2>
+        <p>These are the only amounts charged. There is no separate library, test-series or material charge. A printed receipt is issued for every payment.</p>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Course</th><th>Admission fee</th><th>Tuition fee</th><th>Total</th><th>Instalments</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>APSC / ACS</td><td class="num">₹2,000</td><td class="num">₹66,000</td><td class="num">₹68,000</td><td class="num">3</td></tr>
+            <tr><td>UPSC CSE Foundation</td><td class="num">₹2,000</td><td class="num">₹1,13,000</td><td class="num">₹1,15,000</td><td class="num">4</td></tr>
+            <tr><td>NEET Integrated</td><td class="num">₹2,000</td><td class="num">₹1,40,000</td><td class="num">₹1,42,000</td><td class="num">4</td></tr>
+            <tr><td>JEE Main + Advanced</td><td class="num">₹2,000</td><td class="num">₹1,46,000</td><td class="num">₹1,48,000</td><td class="num">4</td></tr>
+            <tr><td>ADRE Grade III &amp; IV</td><td class="num">₹1,000</td><td class="num">₹23,000</td><td class="num">₹24,000</td><td class="num">2</td></tr>
+            <tr><td>IBPS / SBI PO &amp; Clerk</td><td class="num">₹1,000</td><td class="num">₹31,000</td><td class="num">₹32,000</td><td class="num">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        Fee concessions of 25–50% are available for students from SC, ST, OBC and EWS
+        categories and for students with disabilities. Ask at the front office.
+      </div>
+    </div>
+  </section>
+
+  <!-- REFUND + EXIT -->
+  <section id="policy">
+    <div class="wrap reveal">
+      <div class="sec-head">
+        <div class="eyebrow">Policies</div>
+        <h2>Refund and exit</h2>
+        <p>Written in plain terms so a parent can read it before paying, not after.</p>
+      </div>
+      <div class="policy-grid">
+
+        <div class="panel">
+          <h3>Fee refund policy</h3>
+          <ul>
+            <li>Cancel within 15 days of the course starting — <strong>90% of tuition fee refunded</strong>.</li>
+            <li>Between 16 and 45 days — <strong>60% refunded</strong>.</li>
+            <li>Between 46 and 90 days — <strong>25% refunded</strong>.</li>
+            <li>After 90 days — no refund of tuition fee.</li>
+            <li>The admission fee is not refundable in any case.</li>
+            <li>Refunds are paid by bank transfer within 21 working days of the written request.</li>
+          </ul>
+          <div class="note">If we cancel or fail to start a batch, 100% of everything paid is returned, including the admission fee.</div>
+        </div>
+
+        <div class="panel">
+          <h3>Easy exit policy</h3>
+          <ul>
+            <li>A student may leave at any time by giving a written request at the front office.</li>
+            <li>No penalty, and no requirement to complete the course.</li>
+            <li>Original documents are returned within 3 working days.</li>
+            <li>A transfer letter and attendance record are issued on request, free of charge.</li>
+            <li>No student is stopped, and no result or document is withheld, over a fee dispute.</li>
+          </ul>
+          <div class="note">Complaints may be dropped in the complaint box at reception or filed with the District Authority, Kamrup (Metro).</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FACULTY -->
+  <section id="faculty">
+    <div class="wrap reveal">
+      <div class="sec-head">
+        <div class="eyebrow">Faculty</div>
+        <h2>Who teaches, and what they hold</h2>
+        <p>All teaching staff hold a graduate degree or higher. Any change in teaching staff is updated on this page.</p>
+      </div>
+      <div class="faculty">
+        <div class="fac"><div class="fac__n">Dr. Nabanita Kalita</div><div class="fac__q">M.Sc., Ph.D. Chemistry — Gauhati University</div><div class="fac__m">Chemistry · 12 years</div></div>
+        <div class="fac"><div class="fac__n">Pranab Jyoti Sarma</div><div class="fac__q">M.A. Political Science — Jawaharlal Nehru University</div><div class="fac__m">Polity &amp; Governance · 9 years</div></div>
+        <div class="fac"><div class="fac__n">Rituraj Bora</div><div class="fac__q">B.Tech Civil Engineering — Assam Engineering College</div><div class="fac__m">Mathematics · 8 years</div></div>
+        <div class="fac"><div class="fac__n">Farhana Ahmed</div><div class="fac__q">M.Sc. Physics — Cotton University</div><div class="fac__m">Physics · 7 years</div></div>
+        <div class="fac"><div class="fac__n">Dhruba Jyoti Das</div><div class="fac__q">M.A. History — Gauhati University</div><div class="fac__m">History &amp; Assam GK · 11 years</div></div>
+        <div class="fac"><div class="fac__n">Simanta Deka</div><div class="fac__q">M.Com, B.Ed — Gauhati University</div><div class="fac__m">Quantitative Aptitude · 6 years</div></div>
+        <div class="fac"><div class="fac__n">Ankita Baruah</div><div class="fac__q">M.Sc. Zoology — Cotton University</div><div class="fac__m">Biology · 6 years</div></div>
+        <div class="fac"><div class="fac__n">Hirak Jyoti Nath</div><div class="fac__q">M.A. English — Dibrugarh University</div><div class="fac__m">English &amp; Comprehension · 10 years</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results">
+    <div class="wrap reveal">
+      <div class="sec-head">
+        <div class="eyebrow">Results</div>
+        <h2>Students coached, and students selected</h2>
+        <p>Counted from our own admission register. We do not count students who took only a test series or a short crash course.</p>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Examination</th><th>Students coached</th><th>Finally selected / admitted</th><th>Latest year</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>APSC / ACS</td><td class="num">610</td><td class="num">63</td><td class="num">2025</td></tr>
+            <tr><td>UPSC CSE</td><td class="num">190</td><td class="num">9</td><td class="num">2025</td></tr>
+            <tr><td>NEET</td><td class="num">1,240</td><td class="num">411</td><td class="num">2026</td></tr>
+            <tr><td>JEE Main</td><td class="num">1,105</td><td class="num">386</td><td class="num">2026</td></tr>
+            <tr><td>Banking &amp; SSC</td><td class="num">980</td><td class="num">240</td><td class="num">2025</td></tr>
+            <tr><td>ADRE Grade III &amp; IV</td><td class="num">695</td><td class="num">— result awaited</td><td class="num">2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        We do not promise a rank or a guaranteed selection. These are past figures and are
+        not a prediction of any individual student's result.
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSTEL -->
+  <section id="hostel">
+    <div class="wrap reveal">
+      <div class="sec-head">
+        <div class="eyebrow">Hostel</div>
+        <h2>Accommodation</h2>
+      </div>
+      <div class="policy-grid">
+        <div class="panel">
+          <h3>Boys' hostel — Zoo Road Tiniali</h3>
+          <ul>
+            <li>3-seater and 2-seater rooms, attached bathroom.</li>
+            <li>₹7,200 per month including three meals.</li>
+            <li>Resident warden, entry register, CCTV at entrance.</li>
+            <li>7 minutes' walk from the classrooms.</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Girls' hostel — Ambikagiri Nagar</h3>
+          <ul>
+            <li>3-seater rooms, attached bathroom.</li>
+            <li>₹7,600 per month including three meals.</li>
+            <li>Resident lady warden, biometric entry, CCTV at entrance and corridors.</li>
+            <li>Institute-arranged pick-up and drop for evening batches.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note">Hostel fee is separate from tuition fee and is paid directly to the hostel. It is not included in any course fee shown above.</div>
+    </div>
+  </section>
+
+  <!-- FACILITIES + SAFETY -->
+  <section id="facilities">
+    <div class="wrap reveal">
+      <div class="sec-head">
+        <div class="eyebrow">Premises</div>
+        <h2>Facilities and safety</h2>
+      </div>
+      <ul class="checks">
+        <li>Minimum one square metre of classroom space per enrolled student</li>
+        <li>Fire extinguishers on every floor, Fire &amp; Building Safety Certificate on display</li>
+        <li>Valid Trade Licence and Occupancy Certificate at reception</li>
+        <li>Separate toilets for male and female students</li>
+        <li>First-aid kit and a tie-up with a hospital 400 m away</li>
+        <li>Safe drinking water on every floor</li>
+        <li>CCTV in corridors and at both entrances</li>
+        <li>Ramp access and ground-floor classroom for students with disabilities</li>
+        <li>Complaint box and complaint register at reception</li>
+        <li>Covered parking for cycles and two-wheelers</li>
+        <li>Counsellor available on Tuesdays and Fridays, and before every result</li>
+        <li>Weekly off on Sunday. No batch is segregated by marks.</li>
+      </ul>
+
+      <div class="helplines">
+        <div class="hl"><div class="hl__k">Emergency</div><div class="hl__v">112</div></div>
+        <div class="hl"><div class="hl__k">Police</div><div class="hl__v">100</div></div>
+        <div class="hl"><div class="hl__k">Fire service</div><div class="hl__v">101</div></div>
+        <div class="hl"><div class="hl__k">Ambulance</div><div class="hl__v">108</div></div>
+        <div class="hl"><div class="hl__k">Women helpline</div><div class="hl__v">181</div></div>
+        <div class="hl"><div class="hl__k">Child helpline</div><div class="hl__v">1098</div></div>
+        <div class="hl"><div class="hl__k">Tele-MANAS (mental health)</div><div class="hl__v">14416</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap reveal">
+      <div class="sec-head">
+        <div class="eyebrow">Visit</div>
+        <h2>Contact and office hours</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="addr">
+          <strong>Luitpar Academy</strong>
+          3rd Floor, Sundari Complex<br>
+          Zoo Road Tiniali, Guwahati – 781024<br>
+          Kamrup (Metro), Assam
+        </div>
+        <div class="addr">
+          <strong>Office hours</strong>
+          Monday to Saturday, 9:00 am – 7:00 pm<br>
+          Sunday closed<br>
+          Front office answers WhatsApp until 9:00 pm
+        </div>
+        <div class="addr">
+          <strong>Governing body</strong>
+          Two members from management, one teacher,
+          one student representative and one guardian
+          representative. Names are on the reception notice board.
+        </div>
+      </div>
+      <div style="margin-top:1.4rem">
+        <a class="wa" href="https://wa.me/918638830682?text=Hello%2C%20I%20would%20like%20to%20visit%20the%20institute.%20What%20time%20should%20I%20come%3F">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.16c-.24.68-1.4 1.3-1.94 1.34-.5.05-.98.22-3.3-.69-2.78-1.1-4.55-3.94-4.69-4.12-.14-.18-1.13-1.5-1.13-2.86 0-1.36.71-2.03.96-2.31.25-.28.55-.35.73-.35.18 0 .37 0 .53.01.17.01.4-.06.62.48.24.57.8 1.97.87 2.11.07.14.12.31.02.5-.1.18-.15.29-.29.45-.14.16-.3.36-.43.48-.14.14-.29.29-.13.57.17.28.74 1.22 1.59 1.98 1.09.97 2.01 1.27 2.3 1.41.28.14.45.12.61-.07.17-.19.7-.82.89-1.1.19-.28.37-.23.62-.14.25.09 1.6.76 1.87.9.28.14.46.21.53.32.07.12.07.66-.17 1.34z"/></svg>
+          Message the front office
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATUTORY DISCLOSURE INDEX -->
+  <section id="statutory">
+    <div class="wrap reveal">
+      <div class="statutory">
+        <h3>Statutory disclosures</h3>
+        <p>
+          Published under the Assam Coaching Institutes (Control and Regulation) Act, 2025 —
+          Section 4(2), read with Section 5(iii) and Section 10(1). The same particulars are
+          displayed on the notice board at our premises.
+        </p>
+        <ul class="disclosures">
+          <li><a href="#faculty">Qualification of tutors</a></li>
+          <li><a href="#courses">Courses and curriculum</a></li>
+          <li><a href="#courses">Duration of completion</a></li>
+          <li><a href="#hostel">Hostel facilities</a></li>
+          <li><a href="#fees">Fees being charged</a></li>
+          <li><a href="#policy">Easy exit policy</a></li>
+          <li><a href="#policy">Fee refund policy</a></li>
+          <li><a href="#results">Number of students coached</a></li>
+          <li><a href="#results">Number finally selected or admitted</a></li>
+          <li><a href="#courses">Batch strength per course</a></li>
+        </ul>
+        <button class="printbtn" onclick="window.print()">Print the notice board sheet</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="colophon">
+      Luitpar Academy is a registered coaching institute. We do not describe ourselves as
+      recognised or approved by any authority. We make no promise or guarantee of rank or marks.
+      Page last updated 23 August 2026.
+      <br><br>
+      <em>Sample demonstration site built as a template for coaching institutes in Assam.
+      The institute shown here is fictitious.</em>
+    </p>
+  </div>
+</footer>
+
+<!-- Printed notice board sheet, Section 5(iii) -->
+<div class="noticeboard">
+  <h1>Luitpar Academy</h1>
+  <div>Registered Coaching Institute · Reg. No. LPA-KAM-0000/2026<br>
+  3rd Floor, Sundari Complex, Zoo Road Tiniali, Guwahati – 781024</div>
+
+  <h2>Courses, duration, batch strength and fees</h2>
+  <table>
+    <thead><tr><th>Course</th><th>Duration</th><th>Batch</th><th>Total fee</th></tr></thead>
+    <tbody>
+      <tr><td>APSC / ACS</td><td>11 months</td><td>40</td><td>₹68,000</td></tr>
+      <tr><td>UPSC CSE Foundation</td><td>14 months</td><td>35</td><td>₹1,15,000</td></tr>
+      <tr><td>NEET Integrated</td><td>24 months</td><td>45</td><td>₹1,42,000</td></tr>
+      <tr><td>JEE Main + Advanced</td><td>24 months</td><td>45</td><td>₹1,48,000</td></tr>
+      <tr><td>ADRE Grade III &amp; IV</td><td>6 months</td><td>60</td><td>₹24,000</td></tr>
+      <tr><td>IBPS / SBI PO &amp; Clerk</td><td>7 months</td><td>50</td><td>₹32,000</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Fee refund policy</h2>
+  <ul>
+    <li>Within 15 days of course start — 90% of tuition fee refunded.</li>
+    <li>16 to 45 days — 60% refunded. 46 to 90 days — 25% refunded.</li>
+    <li>After 90 days — no refund. Admission fee is non-refundable.</li>
+    <li>Refund paid by bank transfer within 21 working days.</li>
+    <li>If the institute cancels a batch — 100% refunded.</li>
+  </ul>
+
+  <h2>Easy exit policy</h2>
+  <ul>
+    <li>A student may leave at any time on written request. No penalty.</li>
+    <li>Original documents returned within 3 working days.</li>
+    <li>No document or result is withheld over a fee dispute.</li>
+  </ul>
+
+  <h2>Teaching staff</h2>
+  <ul>
+    <li>Dr. Nabanita Kalita — M.Sc., Ph.D. Chemistry — 12 years</li>
+    <li>Pranab Jyoti Sarma — M.A. Political Science — 9 years</li>
+    <li>Rituraj Bora — B.Tech Civil — 8 years</li>
+    <li>Farhana Ahmed — M.Sc. Physics — 7 years</li>
+    <li>Dhruba Jyoti Das — M.A. History — 11 years</li>
+    <li>Simanta Deka — M.Com, B.Ed — 6 years</li>
+    <li>Ankita Baruah — M.Sc. Zoology — 6 years</li>
+    <li>Hirak Jyoti Nath — M.A. English — 10 years</li>
+  </ul>
+
+  <h2>Complaints and emergency</h2>
+  <div>Complaint box and register at reception. Complaints may also be filed with the
+  District Authority, Kamrup (Metro).<br>
+  Emergency 112 · Police 100 · Fire 101 · Ambulance 108 · Women 181 · Child 1098 · Tele-MANAS 14416</div>
+</div>
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -60px 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
