@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rental Desk - GHY Self Drive</title>
+<style>
+/* shared demo kit, inlined so this page works as a single file */
+/* ============================================================
+   Shared design kit for the AI automation portfolio demos.
+   Dark, dense, product-looking. One file, no dependencies.
+   ============================================================ */
+:root{
+  --bg:#0e1113; --panel:#161a1d; --panel2:#1d2226; --line:#2a3136; --line2:#353d43;
+  --ink:#e8eef1; --dim:#8b979e; --dim2:#67747b;
+  --gold:#d9a441; --green:#1f9d63; --greenI:#79dfae; --blue:#4b8ff7; --blueI:#8fc2ff;
+  --red:#e05c4b; --redI:#ff9f92; --violet:#9b7bf0;
+  --wa:#005c4b; --waIn:#202c33;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-size:14px;
+  font-family:"Segoe UI",Inter,system-ui,-apple-system,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--blueI)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:#2c3439;border-radius:8px}
+::-webkit-scrollbar-track{background:transparent}
+
+/* ---------- header ---------- */
+.hdr{display:flex;align-items:center;gap:14px;padding:12px 18px;flex-wrap:wrap;
+  background:linear-gradient(90deg,#12171a,#1b2226);border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:20}
+.mark{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+  font-weight:800;font-size:15px;color:#12161a;background:linear-gradient(135deg,var(--gold),#8a6417)}
+.mark.b{background:linear-gradient(135deg,#6ea8ff,#2d5fb8);color:#0a1220}
+.mark.g{background:linear-gradient(135deg,#4fd39a,#127a4d);color:#04150d}
+.mark.v{background:linear-gradient(135deg,#b79bff,#5b3fc0);color:#100a24}
+.mark.r{background:linear-gradient(135deg,#ff9b8c,#b8392a);color:#1c0906}
+.hdr .ttl b{display:block;font-size:15.5px;letter-spacing:.2px}
+.hdr .ttl span{display:block;color:var(--dim);font-size:11.5px;margin-top:1px}
+.spacer{margin-left:auto}
+.back{color:var(--dim);text-decoration:none;font-size:12px;border:1px solid var(--line);
+  padding:6px 11px;border-radius:8px}
+.back:hover{color:var(--gold);border-color:var(--gold)}
+
+/* ---------- buttons + inputs ---------- */
+.btn{background:var(--panel2);border:1px solid var(--line2);color:var(--ink);
+  padding:8px 14px;border-radius:9px;cursor:pointer;font-size:12.5px;font-family:inherit}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn.primary{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
+.btn.primary:hover{background:#25b473;color:#fff;border-color:#25b473}
+.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.btn.blue:hover{background:#6ba0ff;color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.sm{padding:5px 10px;font-size:11.5px}
+select,input[type=text],textarea{background:#11161a;border:1px solid var(--line2);color:var(--ink);
+  padding:9px 11px;border-radius:9px;font-family:inherit;font-size:13px;outline:0;width:100%}
+select:focus,input:focus,textarea:focus{border-color:var(--blue)}
+label.fld{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+  color:var(--dim);margin:0 0 5px 2px}
+
+/* ---------- layout ---------- */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:12px 18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+.stat i{font-style:normal;color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.6px}
+.stat b{display:block;font-size:20px;margin-top:3px;font-variant-numeric:tabular-nums}
+.stat.g b{color:var(--greenI)} .stat.y b{color:var(--gold)}
+.stat.r b{color:var(--redI)} .stat.b b{color:var(--blueI)}
+.wrap{padding:0 18px 22px;display:grid;gap:12px;align-items:start}
+.cols-3{grid-template-columns:340px 1fr 1fr}
+.cols-2{grid-template-columns:380px 1fr}
+.cols-2w{grid-template-columns:1fr 420px}
+@media(max-width:1150px){.wrap{grid-template-columns:1fr!important}.stats{grid-template-columns:repeat(2,1fr)}}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden;margin-bottom:12px}
+.card:last-child{margin-bottom:0}
+.card > h3{margin:0;padding:11px 14px;font-size:12px;letter-spacing:.8px;text-transform:uppercase;
+  color:var(--dim);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.card > h3 em{font-style:normal;margin-left:auto;font-size:11px;text-transform:none;letter-spacing:0}
+.pad{padding:14px}
+.pad-sm{padding:10px 14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.note{padding:10px 14px;color:var(--dim);font-size:11.5px;border-top:1px solid var(--line);line-height:1.5}
+.muted{color:var(--dim)}
+.tiny{font-size:11px}
+
+/* ---------- engine log ---------- */
+.log{height:280px;overflow-y:auto;padding:10px 12px;font-size:11.8px;
+  font-family:Consolas,"SF Mono",ui-monospace,monospace}
+.lrow{display:flex;gap:8px;padding:4px 0;border-bottom:1px dashed #232a2f;animation:fade .25s ease}
+.lrow > span:first-child{color:var(--dim2);min-width:44px}
+.lrow > span:last-child{color:#c8d4da;min-width:0;word-break:break-word}
+.tag{padding:1px 6px;border-radius:5px;font-size:10.5px;font-weight:700;letter-spacing:.3px;
+  height:16px;white-space:nowrap}
+.t-step{background:#1b3a63;color:var(--blueI)}
+.t-data{background:#173a2c;color:var(--greenI)}
+.t-calc{background:#3d3315;color:#f0cf7c}
+.t-act{background:#4a1f1c;color:var(--redI)}
+.t-sys{background:#2b2f33;color:#b9c6cc}
+.t-ai{background:#2e2350;color:#c3aeff}
+
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:12.6px}
+th{text-align:left;color:var(--dim);font-weight:600;font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.6px;padding:9px 12px;border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:var(--panel);z-index:1}
+td{padding:9px 12px;border-bottom:1px solid #20262a;vertical-align:top}
+tr.click{cursor:pointer}
+tr.click:hover td{background:#1b2226}
+tr.on td{background:#1d2a26}
+tr.new td{animation:flash 1.8s ease}
+@keyframes flash{0%{background:#12432e}100%{background:transparent}}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* ---------- bits ---------- */
+.badge{font-size:10.5px;padding:2px 8px;border-radius:20px;background:#173a2c;color:var(--greenI);
+  white-space:nowrap;display:inline-block}
+.badge.b{background:#1b3a63;color:var(--blueI)}
+.badge.y{background:#4a3312;color:#f0c069}
+.badge.r{background:#4a1f1c;color:var(--redI)}
+.badge.n{background:#262c31;color:var(--dim)}
+.badge.v{background:#2e2350;color:#c3aeff}
+.grade{width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
+  font-weight:800;font-size:13px}
+.grade.A{background:#16543a;color:#8ff0bd}
+.grade.B{background:#4a3a12;color:#f0d089}
+.grade.C{background:#3a2a2a;color:#e0a79f}
+.bar{height:6px;border-radius:6px;background:#242b30;overflow:hidden}
+.bar > i{display:block;height:100%;background:linear-gradient(90deg,#1f9d63,#4fd39a)}
+.bar.y > i{background:linear-gradient(90deg,#b58318,#e8c063)}
+.bar.r > i{background:linear-gradient(90deg,#a83b2c,#e58374)}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:5px 10px;font-size:12.7px}
+.kv b{color:var(--dim);font-weight:500}
+.empty{padding:26px;text-align:center;color:var(--dim);font-size:12.5px}
+.chip{background:#22303a;border:1px solid #2f3f4a;color:#cfe0e6;font-size:11.5px;
+  padding:5px 10px;border-radius:14px;cursor:pointer;font-family:inherit}
+.chip:hover{border-color:var(--green);color:#fff}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block}
+.pulse{animation:p 1.8s infinite}
+@keyframes p{0%{box-shadow:0 0 0 0 rgba(31,157,99,.6)}70%{box-shadow:0 0 0 9px rgba(31,157,99,0)}100%{box-shadow:0 0 0 0 rgba(31,157,99,0)}}
+
+/* chat bubbles */
+.chat{background:#0b141a;padding:13px;display:flex;flex-direction:column;gap:8px;overflow-y:auto}
+.msg{max-width:86%;padding:8px 11px;border-radius:11px;line-height:1.45;font-size:13.1px;
+  white-space:pre-wrap;word-break:break-word;animation:fade .25s ease}
+.msg.in{background:var(--waIn);align-self:flex-start;border-top-left-radius:3px}
+.msg.out{background:var(--wa);align-self:flex-end;border-top-right-radius:3px}
+.msg small{display:block;color:#8fa2ab;font-size:10px;margin-top:4px;text-align:right}
+.typing{align-self:flex-start;background:var(--waIn);padding:11px 14px;border-radius:11px;display:flex;gap:4px}
+.typing i{width:6px;height:6px;background:#7d8f98;border-radius:50%;animation:bnc 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes bnc{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
+/* page styles */
+.mark.wr{background:linear-gradient(135deg,#ffb35c,#c25a12);color:#1c0c02}
+.live{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--dim)}
+
+/* lifecycle stepper */
+.flow{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;padding:12px 18px 0}
+.fs{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px;
+  font-size:11.5px;color:var(--dim);position:relative;transition:all .3s}
+.fs b{display:block;font-size:10px;letter-spacing:.6px;color:var(--dim2);margin-bottom:2px}
+.fs.done{border-color:#1f5a3f;color:var(--greenI)}
+.fs.done b{color:#4f9c78}
+.fs.now{border-color:var(--gold);color:#f3d08a;background:#211c12;box-shadow:0 0 0 1px rgba(217,164,65,.25)}
+.fs.now b{color:var(--gold)}
+.flowcap{padding:6px 18px 0;font-size:11.5px;color:var(--dim)}
+.flowcap b{color:var(--ink);font-weight:600}
+@media(max-width:1150px){.flow{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:560px){.flow{grid-template-columns:repeat(2,1fr)}}
+
+/* chat */
+#chat{height:460px}
+.compose{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:#111b21}
+.compose input{flex:1;background:#2a3942;border:0;color:var(--ink);padding:10px 12px;border-radius:20px;outline:0;
+  font-family:inherit;font-size:13px;min-width:0}
+.send{width:40px;height:40px;border-radius:50%;background:var(--green);border:0;color:#fff;cursor:pointer;font-size:15px;flex:none}
+.quick{display:flex;flex-wrap:wrap;gap:6px;padding:9px 10px;background:#111b21;border-top:1px solid var(--line)}
+.msg.sys{align-self:center;background:#1a2a33;color:#9fc3d4;font-size:11.5px;border-radius:8px;max-width:94%;text-align:center}
+
+/* fleet board */
+.fleet{padding:10px 12px;display:grid;gap:8px}
+.ftype{font-size:10.5px;text-transform:uppercase;letter-spacing:.6px;color:var(--dim);margin:4px 2px 0;
+  display:flex;justify-content:space-between;gap:8px}
+.ftype span{text-transform:none;letter-spacing:0;color:var(--gold)}
+.units{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:6px}
+.unit{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:11.5px;transition:border-color .3s}
+.unit b{display:block;font-family:Consolas,ui-monospace,monospace;font-size:11.5px;letter-spacing:.3px}
+.unit small{display:block;color:var(--dim);margin-top:3px;font-size:10.5px}
+.unit.hl{border-color:var(--gold)}
+.unit.svc{cursor:pointer}
+
+/* register */
+.reg{max-height:330px;overflow:auto}
+.rid{color:var(--gold);font-weight:700;white-space:nowrap}
+td small{color:var(--dim)}
+
+/* counter panel */
+.counter .kv{grid-template-columns:120px 1fr}
+.counter input[type=number],.counter select{padding:7px 9px;font-size:12.5px}
+input[type=number]{background:#11161a;border:1px solid var(--line2);color:var(--ink);border-radius:9px;
+  font-family:inherit;outline:0;width:100%}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.checks label{display:flex;gap:7px;align-items:center;font-size:12px;background:var(--panel2);
+  border:1px solid var(--line);border-radius:8px;padding:6px 9px;cursor:pointer}
+.bill{margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.bill div{display:flex;justify-content:space-between;gap:10px;padding:7px 11px;font-size:12.5px;border-bottom:1px solid #20262a}
+.bill div:last-child{border-bottom:0}
+.bill .minus{color:var(--redI)}
+.bill .tot{background:#16241e;font-weight:700;color:var(--greenI)}
+.bill .due{background:#2a1715;font-weight:700;color:var(--redI)}
+.bill .hd{background:#1a2025;color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.6px}
+.fg{margin-top:10px}
+.sectl{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 6px}
+.hint{font-size:11px;color:var(--dim);margin-top:4px}
+.fill{animation:flash 1.2s ease}
+.wrap > *{min-width:0}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="mark wr">GS</div>
+  <div class="ttl"><b>GHY Self Drive &middot; Rental Desk</b>
+    <span>Self-drive car rentals in Guwahati &mdash; from the first WhatsApp message to the deposit refund, one flow</span></div>
+  <div class="spacer"></div>
+  <div class="live"><span class="dot pulse"></span> ONLINE &middot; replies in ~1s</div>
+  <button class="btn primary" id="play">&#9654; Play a full rental</button>
+  <button class="btn" id="reset">Reset</button>
+  <a class="back" href="index.html">&larr; All systems</a>
+</div>
+
+<div class="flow" id="flow"></div>
+<div class="flowcap" id="flowcap"></div>
+
+<div class="stats">
+  <div class="stat"><i>Messages handled</i><b id="s1">0</b></div>
+  <div class="stat g"><i>Rentals booked</i><b id="s2">0</b></div>
+  <div class="stat b"><i>Cars on the road</i><b id="s3">0</b></div>
+  <div class="stat y"><i>Rent booked</i><b id="s4">0</b></div>
+  <div class="stat"><i>Deposits held</i><b id="s5">0</b></div>
+</div>
+
+<div class="wrap cols-3">
+
+  <div class="card">
+    <h3>&#128241; WhatsApp chat <em>GHY Self Drive</em></h3>
+    <div class="chat" id="chat"></div>
+    <div class="quick" id="quick"></div>
+    <div class="compose">
+      <input id="inp" placeholder="Type as the customer..." autocomplete="off">
+      <button class="send" id="send" aria-label="Send">&#10148;</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#129504; What the assistant understood <em id="lgc">0 events</em></h3>
+      <div class="log" id="log"></div>
+    </div>
+    <div class="card">
+      <h3>&#128663; Fleet board <em id="fdate"></em></h3>
+      <div class="fleet" id="fleet"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>&#128203; Rentals register <em id="rc">0 rentals</em></h3>
+      <div class="reg">
+        <table><thead><tr><th>ID</th><th>Customer</th><th>Car</th><th>Dates</th><th>Status</th></tr></thead>
+        <tbody id="tb"></tbody></table>
+      </div>
+      <div class="note">Click a rental to open it at the counter. Saved on this device &middot; in the live
+        version this is a Google Sheet or the company's own database.</div>
+    </div>
+    <div class="card counter">
+      <h3>&#128273; Counter &mdash; handover &amp; return <em id="ctag"></em></h3>
+      <div class="pad" id="counter"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ================= shop setup (edit this block with the real fleet and prices) ================= */
+var SHOP={
+  name:"GHY Self Drive", city:"Guwahati",
+  pickup:"9:00 AM", dropBy:"8:00 PM", hours:"8 AM to 9 PM, all 7 days",
+  advancePct:30,          /* % of rent paid on UPI to block the car */
+  lateHr:300,             /* per hour after a 30-minute grace period */
+  fuelBar:400,            /* per missing fuel bar (8-bar gauge) */
+  fuelMax:8,
+  childSeat:200           /* per day */
+};
+var CARS={
+  swift:  {label:"Maruti Swift",          cls:"Hatchback, 5 seats", day:1799, wkend:2199, dep:5000,  km:250, xkm:8,
+           units:[["AS01 FC 2214",28120],["AS01 FC 2215",31406],["AS01 GC 1180",14411]]},
+  dzire:  {label:"Maruti Dzire",          cls:"Sedan, 5 seats",     day:1999, wkend:2399, dep:5000,  km:250, xkm:9,
+           units:[["AS01 GD 4410",41054],["AS01 GD 4411",38663]]},
+  creta:  {label:"Hyundai Creta",         cls:"SUV, 5 seats",       day:2999, wkend:3499, dep:10000, km:300, xkm:12,
+           units:[["AS01 GK 3501",22430],["AS01 GK 3502",25872],["AS01 GK 3503",17309]]},
+  scorpio:{label:"Mahindra Scorpio-N",    cls:"4x4 SUV, 7 seats",   day:3499, wkend:3999, dep:10000, km:300, xkm:12,
+           units:[["AS01 HM 4501",16120],["AS01 HM 4502",15288]]},
+  innova: {label:"Toyota Innova Crysta",  cls:"MPV, 7 seats",       day:3999, wkend:4499, dep:10000, km:300, xkm:14,
+           units:[["AS01 HN 7701",52210],["AS01 HN 7702",47935]]}
+};
+/* rough round-trip distances from Guwahati, used to warn customers about the km limit */
+var ROUTES={
+  shillong: {name:"Shillong",            km:200,  note:"about 100 km each way on NH6, 3 hours of good road"},
+  sohra:    {name:"Sohra (Cherrapunji)", km:340,  note:"Guwahati - Shillong - Sohra and back, some tight ghat sections"},
+  dawki:    {name:"Dawki",               km:380,  note:"via Shillong, the last stretch is narrow and busy on weekends"},
+  kaziranga:{name:"Kaziranga",           km:420,  note:"flat NH715 run, watch for trucks and speed limits in the park zone"},
+  majuli:   {name:"Majuli",              km:640,  note:"includes the Nimati ghat ferry - car space is limited, go early"},
+  tawang:   {name:"Tawang",              km:1050, note:"Sela Pass at 4,170 m, plan at least 4 days", ilp:true, best:"scorpio"},
+  ziro:     {name:"Ziro",                km:900,  note:"long hilly drive, plan 3 or more days", ilp:true},
+  city:     {name:"around the city",     km:80,   note:"city driving rarely goes past the daily limit"}
+};
+var RS='₹';
+
+/* ================= helpers ================= */
+function money(n){return (n<0?'-':'')+RS+Math.abs(Math.round(n||0)).toLocaleString('en-IN');}
+function d2(n){return n<10?'0'+n:''+n;}
+function iso(d){return d.getFullYear()+'-'+d2(d.getMonth()+1)+'-'+d2(d.getDate());}
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var DAY=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function dt(s){return new Date(s+'T00:00:00');}
+function fmt(s){var d=dt(s);return DAY[d.getDay()]+' '+d.getDate()+' '+MON[d.getMonth()];}
+function addD(s,n){var d=dt(s);d.setDate(d.getDate()+n);return iso(d);}
+function today(){return iso(new Date());}
+function clock(){var d=new Date();return d2(d.getHours())+':'+d2(d.getMinutes());}
+function nextDow(dow){var d=new Date(),i=0;while(d.getDay()!==dow&&i<8){d.setDate(d.getDate()+1);i++;}return iso(d);}
+function isWk(s){var g=dt(s).getDay();return g===0||g===6;}
+function endOf(r){return addD(r.start,r.days-1);}
+function $(id){return document.getElementById(id);}
+
+/* ================= data ================= */
+var UNITS={}, RENT=[], MET={msgs:0}, SEQ=1040, SEL=null;
+function buildUnits(){
+  UNITS={};
+  for(var k in CARS)CARS[k].units.forEach(function(u){UNITS[u[0]]={reg:u[0],type:k,odo:u[1],fuel:SHOP.fuelMax,svc:null};});
+}
+function rentFor(type,start,days){
+  var sum=0,wk=0;
+  for(var i=0;i<days;i++){var d=addD(start,i); if(isWk(d)){sum+=CARS[type].wkend;wk++;}else sum+=CARS[type].day;}
+  return {sum:sum,wk:wk};
+}
+function mk(name,phone,type,reg,start,days,status,dest){
+  SEQ++;
+  var rent=rentFor(type,start,days).sum;
+  return {id:'GS-'+SEQ,name:name,phone:phone,type:type,reg:reg,start:start,days:days,rent:rent,
+    adv:Math.round(rent*SHOP.advancePct/100),dep:CARS[type].dep,seat:false,dest:dest||null,
+    status:status,src:'WhatsApp'};
+}
+function seed(){
+  buildUnits();
+  var sat=nextDow(6), t=today(), out=[];
+  var a=mk('Priya Baruah','98640 11873','swift','AS01 FC 2215',addD(t,-1),3,'On trip','city');
+  a.out={odo:31406,fuel:8,seat:false};
+  var d=mk('Nitin Kalita','70020 45519','dzire','AS01 GD 4410',addD(t,-2),4,'On trip','kaziranga');
+  d.out={odo:41054,fuel:8,seat:true};
+  out.push(mk('Arjun Bora','98540 22301','scorpio','AS01 HM 4501',sat,2,'Booked','shillong'));
+  out.push(mk('Kenny Lyngdoh','87210 90044','scorpio','AS01 HM 4502',addD(sat,-1),3,'Booked','dawki'));
+  out.push(mk('Rituraj Das','60010 77231','creta','AS01 GK 3502',sat,2,'Booked','sohra'));
+  out.push(d); out.push(a);
+  return out;
+}
+function load(){
+  var r=null,m=null,u=null;
+  try{r=JSON.parse(localStorage.getItem('gs_rent')||'null');}catch(e){}
+  try{m=JSON.parse(localStorage.getItem('gs_met')||'null');}catch(e){}
+  try{u=JSON.parse(localStorage.getItem('gs_units')||'null');}catch(e){}
+  if(r&&u){RENT=r;UNITS=u;}else RENT=seed();
+  MET=m||{msgs:0};
+  RENT.forEach(function(x){var n=parseInt((x.id||'').split('-')[1],10);if(n>SEQ)SEQ=n;});
+}
+function save(){try{localStorage.setItem('gs_rent',JSON.stringify(RENT));
+  localStorage.setItem('gs_met',JSON.stringify(MET));localStorage.setItem('gs_units',JSON.stringify(UNITS));}catch(e){}}
+function byId(id){for(var i=0;i<RENT.length;i++)if(RENT[i].id===id)return RENT[i];return null;}
+
+/* ================= availability ================= */
+function active(r){return r.status==='Booked'||r.status==='On trip';}
+function unitFree(reg,start,days){
+  if(UNITS[reg].svc)return false;
+  var end=addD(start,days);
+  for(var i=0;i<RENT.length;i++){var r=RENT[i];
+    if(r.reg===reg&&active(r)&&r.start<end&&start<addD(r.start,r.days))return false;}
+  return true;
+}
+function freeUnits(type,start,days){
+  return CARS[type].units.map(function(u){return u[0];}).filter(function(g){return unitFree(g,start,days);});
+}
+
+/* ================= understanding the message ================= */
+function byMon(day,mon){
+  var k=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'].indexOf(mon.slice(0,3));
+  var y=new Date().getFullYear(), d=new Date(y,k,day);
+  if(iso(d)<today())d.setFullYear(y+1);
+  return iso(d);
+}
+function parseDate(t){
+  if(/\btoday\b|\bright now\b/.test(t))return today();
+  if(/day after tom/.test(t))return addD(today(),2);
+  if(/\b(tomorrow|tmrw|tmr|kal)\b/.test(t))return addD(today(),1);
+  if(/weekend/.test(t))return nextDow(6);
+  var dw=t.match(/\b(?:next |coming |this )?(sunday|monday|tuesday|wednesday|thursday|friday|saturday|sun|mon|tues|tue|wed|thurs|thur|thu|fri|sat)\b/);
+  if(dw){var m={sun:0,mon:1,tue:2,wed:3,thu:4,fri:5,sat:6};return nextDow(m[dw[1].slice(0,3)]);}
+  var m1=t.match(/\b(\d{1,2})\s*(?:st|nd|rd|th)?\s*(?:of\s*)?(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)/);
+  if(m1)return byMon(+m1[1],m1[2]);
+  var m2=t.match(/\b(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*\s*(\d{1,2})\b/);
+  if(m2)return byMon(+m2[2],m2[1]);
+  var m3=t.match(/\b(\d{1,2})[\/\-\.](\d{1,2})\b/);
+  if(m3){var d=new Date(new Date().getFullYear(),+m3[2]-1,+m3[1]);if(iso(d)<today())d.setFullYear(d.getFullYear()+1);return iso(d);}
+  return null;
+}
+function parseDays(t){
+  var m=t.match(/(\d+)\s*(?:days?|din)\b/); if(m)return Math.max(1,Math.min(30,+m[1]));
+  if(/\b(a|one|1) day\b|\bfull day\b|\bday trip\b/.test(t))return 1;
+  if(/\btwo days\b/.test(t))return 2;
+  if(/\bthree days\b/.test(t))return 3;
+  if(/\ba week\b|\bone week\b/.test(t))return 7;
+  return null;
+}
+function parseCar(t){
+  var hit={};
+  if(/swift/.test(t))hit.swift=1;
+  if(/dzire|desire|sedan/.test(t))hit.dzire=1;
+  if(/creta|hyundai/.test(t))hit.creta=1;
+  if(/scorpio|mahindra|4x4|four wheel/.test(t))hit.scorpio=1;
+  if(/innova|crysta|toyota|7 ?seater|seven seater/.test(t))hit.innova=1;
+  var k=Object.keys(hit);
+  return k.length===1?k[0]:null;     /* two cars named = a comparison, not a choice */
+}
+function parseDest(t){
+  if(/shillong/.test(t)&&!/sohra|cherra|dawki/.test(t))return 'shillong';
+  if(/sohra|cherra/.test(t))return 'sohra';
+  if(/dawki|umngot/.test(t))return 'dawki';
+  if(/kaziranga/.test(t))return 'kaziranga';
+  if(/majuli/.test(t))return 'majuli';
+  if(/tawang|sela/.test(t))return 'tawang';
+  if(/ziro/.test(t))return 'ziro';
+  if(/\bcity\b|local|within guwahati|in guwahati|around town/.test(t))return 'city';
+  return null;
+}
+function parseSeat(t){return /child seat|baby seat|car seat for|infant|toddler|with (a|my) (baby|kid|child)/.test(t);}
+var STATES='AN AP AR AS BR CG CH DD DL GA GJ HP HR JH JK KA KL LA LD MH ML MN MP MZ NL OD OR PB PY RJ SK TN TR TS UK UP WB'.split(' ');
+function parseDL(raw){
+  var m=raw.toUpperCase().match(/\b([A-Z]{2})[\s\-]?(\d{2})[\s\-]?((?:19|20)\d{2})[\s\-]?(\d{7})\b/);
+  if(!m)return null;
+  var yr=+m[3], ok=STATES.indexOf(m[1])>=0&&yr<=new Date().getFullYear()&&yr>=1960;
+  return {raw:m[0],num:m[1]+m[2]+' '+m[3]+m[4],state:m[1],year:yr,ok:ok};
+}
+function stripDL(raw){var d=parseDL(raw);return d?raw.replace(new RegExp(d.raw.replace(/[-\s]/g,'[\\s\\-]?'),'i'),' '):raw;}
+function parsePhone(raw){var m=stripDL(raw).replace(/[\s\-]/g,'').match(/(?:\+?91)?([6-9]\d{9})(?!\d)/);return m?m[1]:null;}
+function titleCase(s){return s.trim().replace(/\s+/g,' ').replace(/\b\w/g,function(c){return c.toUpperCase();});}
+function parseName(raw){
+  var s=stripDL(raw).replace(/\+?\d[\d\s\-]{6,}/g,' ').replace(/\b(dl|licen[cs]e|no|number|mobile|phone|ph)\b[:.]?/ig,' ');
+  var m=s.match(/(?:i am|i'm|im|this is|name is|myself)\s+([A-Za-z][A-Za-z\.\s]{1,28})/i);
+  if(m)return titleCase(m[1].replace(/[\.\s]+$/,''));
+  var w=s.replace(/[,\-\.:]/g,' ').split(/\s+/).filter(function(x){return /^[A-Za-z]{2,}$/.test(x);});
+  if(w.length&&w.length<=4&&!/^(yes|yeah|ok|okay|sure|please|book|thanks|hi|hello|and|my|is|paid|done)$/i.test(w[0]))
+    return titleCase(w.join(' '));
+  return null;
+}
+function fmtPhone(p){return p.slice(0,5)+' '+p.slice(5);}
+
+/* ================= FAQ brain ================= */
+var FAQ=[
+ [/child seat|baby seat|infant|toddler/, "Yes - we have ISOFIX child seats at "+RS+SHOP.childSeat+" per day. Tell me when you book and it will be fitted before pickup."],
+ [/deposit|security/, "The deposit is refundable and depends on the car: "+RS+"5,000 for the Swift and Dzire, "+RS+"10,000 for the Creta, Scorpio-N and Innova. We refund it on UPI the moment the car is checked in."],
+ [/document|licen[cs]e|\bdl\b|aadhaar|aadhar|\bid\b|kyc/, "You need your original driving licence (LMV / car class, at least 1 year old) and any government photo ID such as Aadhaar. Share your DL number here and I will verify it before pickup."],
+ [/fuel|petrol|diesel/, "The car comes with fuel and goes back with the same level. Short fuel is "+RS+SHOP.fuelBar+" per bar on the 8-bar gauge - usually cheaper to fill up yourself."],
+ [/km limit|kilomet|\bkms?\b|limit/, "Each day comes with free kilometres: 250 on the Swift and Dzire, 300 on the Creta, Scorpio-N and Innova. Extra km is "+RS+"8 to "+RS+"14 per km depending on the car."],
+ [/\blate\b|extend|extra hour/, "Return by "+SHOP.dropBy+" on your last day. There is a 30-minute grace period, then "+RS+SHOP.lateHr+" per hour. Want more days? Message here and I will extend it if the car is free."],
+ [/\bilp\b|permit|arunachal|inner line/, "Tawang, Ziro and the rest of Arunachal need an Inner Line Permit. It is issued online at arunachalilp.com in about a day - we will send you the link and the car papers you need to upload."],
+ [/breakdown|puncture|flat tyre|accident|roadside|emergency/, "Every rental has 24x7 roadside help: call the number on the key tag and we arrange a mechanic or a tow. There is a spare tyre and jack in the boot."],
+ [/driver|chauffeur/, "These are self-drive cars. If you need a driver, ask for our chauffeur service - "+RS+"800 per day plus the driver's food and stay on outstation trips."],
+ [/insurance|insured/, "All cars have comprehensive insurance. For damage you pay only the repair cost up to the deposit amount."],
+ [/where|address|location|pickup point|office/, "We are in Guwahati and open "+SHOP.hours+". The exact location pin is sent with your booking confirmation. Airport and railway station delivery is "+RS+"500."],
+ [/cancel|refund policy/, "Free cancellation up to 24 hours before pickup - the advance is refunded in full. Inside 24 hours, half the advance is kept."],
+ [/pay|upi|cash|card|advance/, "You pay "+SHOP.advancePct+"% of the rent on UPI to block the car. The rest of the rent and the refundable deposit are paid at pickup by UPI, card or cash."],
+ [/\bage\b|how old|minimum age/, "Drivers must be 21 or older and have held a car licence for at least 1 year."]
+];
+function faqAnswer(t){for(var i=0;i<FAQ.length;i++)if(FAQ[i][0].test(t))return FAQ[i][1];return null;}
+
+/* ================= conversation state ================= */
+var S=null;
+function newS(){return {start:null,days:null,car:null,dest:null,seat:false,reg:null,quoted:false,
+  agreed:false,name:null,phone:null,dl:null,payAsked:false,miss:0,rent:0,adv:0};}
+
+function stage(){
+  if(!S.start)return 'date';
+  if(!S.days)return 'days';
+  if(!S.car)return 'car';
+  if(!S.agreed)return 'quote';
+  if(!S.name||!S.phone||!S.dl)return 'kyc';
+  return 'pay';
+}
+function span(){return fmt(S.start)+(S.days>1?' to '+fmt(addD(S.start,S.days-1)):'');}
+function menu(){
+  var o="Here is what is free for "+span()+":";
+  for(var k in CARS){
+    var b=CARS[k], f=freeUnits(k,S.start,S.days).length;
+    o+="\n- <b>"+b.label+"</b> ("+b.cls+") "+money(b.day)+"/day, "+money(b.wkend)+" Sat-Sun, "+b.km+" km/day free: "
+      +(f?f+" free":"<b>fully booked</b>");
+  }
+  return o;
+}
+function routeNote(){
+  if(!S.dest)return '';
+  var r=ROUTES[S.dest], out="\n\n"+r.name+" is roughly "+r.km+" km round trip - "+r.note+".";
+  if(r.ilp)out+=" You will also need an Inner Line Permit for Arunachal - I will send the link.";
+  return out;
+}
+function quote(){
+  var b=CARS[S.car], r=rentFor(S.car,S.start,S.days), helm=S.seat?SHOP.childSeat*S.days:0;
+  S.rent=r.sum+helm; S.adv=Math.round(S.rent*SHOP.advancePct/100);
+  var allow=b.km*S.days, o="Here is your quote:\n\n"
+   +"- <b>"+b.label+"</b> ("+S.reg+")\n"
+   +"- Pickup "+fmt(S.start)+", "+SHOP.pickup+"\n"
+   +"- Return by "+fmt(addD(S.start,S.days-1))+", "+SHOP.dropBy+"\n"
+   +"- Rent: "+money(r.sum)+" for "+S.days+" day"+(S.days>1?"s":"")+(r.wk?" ("+r.wk+" at the weekend rate)":"")+"\n"
+   +(helm?"- Child seat: "+money(helm)+"\n":"")
+   +"- Free km: "+allow+" km, then "+money(b.xkm)+"/km\n"
+   +"- Refundable deposit: "+money(b.dep)+" (at pickup)\n"
+   +"- <b>Total rent: "+money(S.rent)+"</b> - "+money(S.adv)+" now on UPI blocks the car";
+  if(S.dest){var need=ROUTES[S.dest].km;
+    o+=need>allow
+      ?"\n\nHeads up: "+ROUTES[S.dest].name+" is about "+need+" km, so expect roughly "+money((need-allow)*b.xkm)+" in extra km. Adding a day would cover it."
+      :"\n\n"+ROUTES[S.dest].name+" (~"+need+" km) fits inside your "+allow+" free km.";}
+  return o+"\n\nShall I book it? Reply YES.";
+}
+
+/* ================= reply engine ================= */
+function respond(raw){
+  var t=raw.toLowerCase().trim(), out=[], L=[], st=stage();
+  MET.msgs++;
+
+  /* booking details are only read before the customer agrees to the quote */
+  if(st!=='kyc'&&st!=='pay'){
+    var e={};
+    var d=parseDate(t);   if(d){S.start=d;e['pickup date']=fmt(d);S.quoted=false;S.reg=null;}
+    var n=parseDays(t);   if(n){S.days=n;e['days']=n;S.quoted=false;S.reg=null;}
+    else if(d&&/weekend/.test(t)&&!S.days){S.days=2;e['days']='2 (Sat + Sun)';}
+    var bk=parseCar(t);  if(bk){S.car=bk;e['car']=CARS[bk].label;S.quoted=false;S.reg=null;}
+    var ds=parseDest(t);  if(ds){S.dest=ds;e['destination']=ROUTES[ds].name+' (~'+ROUTES[ds].km+' km)';}
+    if(parseSeat(t)&&!S.seat){S.seat=true;e['child seat']='yes';}
+    for(var key in e)L.push(['ENTITY','data',key+' = '+e[key]]);
+  }
+
+  if(/\b(human|manager|owner|staff|real person|call me|talk to someone|speak to someone)\b/.test(t)){
+    L.push(['INTENT','step','HUMAN_HANDOFF']); flag(raw,'Asked for a person');
+    out.push("Sure - I have flagged this chat for the owner. You will get a call on this number within 10 minutes.");
+    return {out:out,log:L};
+  }
+
+  if(st!=='kyc'&&st!=='pay'&&/^(hi+|hey|hello|helo|hlo|namaste|good (morning|evening|afternoon))\b/.test(t)&&!Object.keys(e).length){
+    L.push(['INTENT','step','GREETING']);
+    out.push("Hey! Welcome to "+SHOP.name+", "+SHOP.city+" 🚗\nI can check which cars are free, give you an exact quote and book one right here.\n\nWhen do you need the car, and where are you headed?");
+    return {out:out,log:L};
+  }
+
+  /* KYC: name + mobile + driving licence */
+  if(st==='kyc'){
+    var dl=parseDL(raw), ph=parsePhone(raw), nm=parseName(raw);
+    /* a bare question is not a name */
+    if(nm&&!S.name&&(ph||dl||(!/\?/.test(raw)&&!faqAnswer(t)))){S.name=nm;L.push(['ENTITY','data','customer name = '+nm]);}
+    if(ph&&!S.phone){S.phone=ph;L.push(['ENTITY','data','mobile = '+ph]);}
+    if(dl){
+      L.push(['CHECK','calc','DL '+dl.num+': state '+dl.state+', issued '+dl.year+' - '+(dl.ok?'format valid':'INVALID')]);
+      if(dl.ok){S.dl=dl.num;L.push(['CHECK','calc','Live version: DL status checked on Parivahan Sarathi']);}
+      else{out.push("That licence number does not look right - it should be like AS01 20190012345 (state, RTO, year, 7 digits). Could you check it?");
+        return {out:out,log:L};}
+    }
+    if(S.name&&S.phone&&S.dl){
+      S.payAsked=true;
+      L.push(['ACTION','act','UPI collect request '+money(S.adv)+' sent to '+S.phone]);
+      out.push("Thanks "+S.name.split(' ')[0]+", licence verified ✅\n\nTo block <b>"+S.reg+"</b> for "+span()+", please pay the advance of <b>"+money(S.adv)+"</b>.\n\n💳 UPI request sent to "+fmtPhone(S.phone)+" (in the live version, a Razorpay / UPI link)\n\nReply PAID once it is done.");
+      return {out:out,log:L};
+    }
+    var miss=[]; if(!S.name)miss.push('full name'); if(!S.phone)miss.push('10-digit mobile'); if(!S.dl)miss.push('driving licence number');
+    var f0=!(ph||dl||S.name===nm)&&faqAnswer(t); if(f0){L.push(['INTENT','step','FAQ']);out.push(f0);}
+    out.push("I still need your "+miss.join(', ').replace(/, ([^,]*)$/,' and $1')+".");
+    return {out:out,log:L};
+  }
+
+  /* payment */
+  if(st==='pay'){
+    if(/paid|done|payment|sent|transferred|ho gaya/.test(t)){
+      var free=freeUnits(S.car,S.start,S.days);
+      if(free.indexOf(S.reg)<0){S.reg=free[0]||null;}
+      if(!S.reg){out.push("Sorry - that car was just taken by another booking. I have refunded the advance and flagged the owner.");
+        flag(raw,'Car taken during payment');S=newS();return {out:out,log:L};}
+      var ref='UPI'+(400000000+Math.floor(Math.random()*99999999));
+      L.push(['ACTION','act','Payment webhook: '+money(S.adv)+' received, ref '+ref]);
+      var r=createRental();
+      L.push(['ACTION','act','RENTAL CREATED '+r.id+' - '+r.reg+' blocked '+fmt(r.start)+' to '+fmt(endOf(r))]);
+      L.push(['ACTION','act','Confirmation + location pin sent, reminder queued for pickup morning']);
+      out.push("🎉 Booked!\n\n<b>Rental ID: "+r.id+"</b>\n"+CARS[r.type].label+" - "+r.reg+"\nPickup "+fmt(r.start)+", "+SHOP.pickup
+        +"\nReturn by "+fmt(endOf(r))+", "+SHOP.dropBy+"\nAdvance paid: "+money(r.adv)+"\n\nAt pickup, bring:\n- original driving licence\n- Aadhaar or any photo ID\n- balance rent "+money(r.rent-r.adv)+" + refundable deposit "+money(r.dep)
+        +(r.dest&&ROUTES[r.dest].ilp?"\n- your Arunachal ILP (link: arunachalilp.com)":"")
+        +"\n\nThe location pin is on its way. Drive safe!");
+      S=newS();
+      return {out:out,log:L};
+    }
+    out.push("Once the "+money(S.adv)+" advance is paid, reply PAID and I will confirm straight away.");
+    return {out:out,log:L};
+  }
+
+  /* agreeing to the quote */
+  if(S.quoted&&/^(yes|yeah|yep|ya|ok|okay|sure|confirm|book|go ahead|done|proceed|haan)\b/.test(t)){
+    S.agreed=true; L.push(['INTENT','step','BOOKING_ACCEPTED']);
+    out.push("Great! For the rental agreement I need:\n- your full name\n- 10-digit mobile number\n- driving licence number\n\nYou can send them in one message.");
+    return {out:out,log:L};
+  }
+  if(S.quoted&&/^(no|nope|not now|change|different|another car|something else)/.test(t)){
+    L.push(['INTENT','step','MODIFY']); S.car=null; S.reg=null; S.quoted=false;
+    out.push("No problem. "+menu()+"\n\nWhich one would you like instead?");
+    return {out:out,log:L};
+  }
+
+  var f=faqAnswer(t), carIntent=/car|suv|sedan|hatchback|self.?drive|rent|drive|trip|book|free|availab|which|options/.test(t)||d||n||bk||ds;
+
+  /* pure question with no booking details */
+  if(f&&!Object.keys(e).filter(function(k){return k!=='child seat';}).length){
+    L.push(['INTENT','step','FAQ']); out.push(f);
+    var p0=stage();
+    if(p0==='quote'&&S.quoted)out.push("Shall I book the "+CARS[S.car].label+" for you? Reply YES.");
+    else if(p0==='date'&&S.dest)out.push("When would you like to pick up the car?");
+    return {out:out,log:L};
+  }
+  if(/price|rate|rent\b|cost|tariff|how much|charges/.test(t)&&!bk&&!S.start){
+    L.push(['INTENT','step','RATE_ENQUIRY']);
+    var o="Rent per day (Sat-Sun rate in brackets), fuel not included:";
+    for(var k in CARS)o+="\n- "+CARS[k].label+": "+money(CARS[k].day)+" ("+money(CARS[k].wkend)+"), "+CARS[k].km+" km/day free";
+    out.push(o+"\n\nWhich day do you need the car?");
+    return {out:out,log:L};
+  }
+
+  if(carIntent)L.push(['INTENT','step','RENTAL_REQUEST']);
+  var p=stage();
+
+  if(p==='date'&&(carIntent||S.dest)){out.push((S.dest?"Nice, "+ROUTES[S.dest].name+" is a great drive."+routeNote()+"\n\n":"")+"Which day do you want to pick up the car?");return {out:out,log:L};}
+  if(p==='days'){out.push("And for how many days?");return {out:out,log:L};}
+  if(p==='car'){
+    for(var kk in CARS)L.push(['CHECK','calc',CARS[kk].label+': '+freeUnits(kk,S.start,S.days).length+' of '+CARS[kk].units.length+' free']);
+    var rec=S.dest&&ROUTES[S.dest].best?"\n\nFor "+ROUTES[S.dest].name+" I would pick the "+CARS[ROUTES[S.dest].best].label+".":"";
+    out.push(menu()+routeNote().replace(/^\n\n/,"\n\n🗺️ ")+rec+"\n\nWhich one should I book?");
+    return {out:out,log:L};
+  }
+  if(p==='quote'){
+    var fr=freeUnits(S.car,S.start,S.days);
+    L.push(['CHECK','calc',CARS[S.car].label+': '+fr.length+' of '+CARS[S.car].units.length+' free for '+span()]);
+    if(!fr.length){
+      var alts=[];
+      for(var a in CARS)if(a!==S.car&&freeUnits(a,S.start,S.days).length)alts.push(a);
+      /* only suggest cars whose free km cover the trip, when there are any */
+      var fit=alts.filter(function(x){return !S.dest||CARS[x].km*S.days>=ROUTES[S.dest].km;});
+      if(fit.length)alts=fit;
+      L.push(['CHECK','calc','Fully booked - offering '+alts.map(function(x){return CARS[x].label;}).join(', ')]);
+      out.push("Sorry - every "+CARS[S.car].label+" is already out for "+span()+" 😔"
+        +(alts.length?"\n\nThese are free and good for the trip:"+alts.map(function(x){return "\n- <b>"+CARS[x].label+"</b> "+money(CARS[x].wkend)+" Sat-Sun, "+CARS[x].km+" km/day";}).join('')+"\n\nWant one of these instead?":"\n\nCould you try different dates?"));
+      S.car=null; return {out:out,log:L};
+    }
+    S.reg=S.reg&&fr.indexOf(S.reg)>=0?S.reg:fr[0]; S.quoted=true;
+    L.push(['CHECK','calc','Assigned '+S.reg+' (odo '+UNITS[S.reg].odo.toLocaleString('en-IN')+' km)']);
+    var qt=quote();
+    L.push(['CHECK','calc','Quote: rent '+money(S.rent)+', advance '+money(S.adv)+', deposit '+money(CARS[S.car].dep)]);
+    if(f)out.push(f);
+    out.push(qt);
+    return {out:out,log:L};
+  }
+
+  S.miss++; L.push(['INTENT','step','UNCLEAR']);
+  if(S.miss>=2){flag(raw,'Bot could not answer');out.push("Let me get the owner on this - I have forwarded your message and they will reply here shortly.");}
+  else out.push("I can check car availability, quote a rental, and answer questions on deposit, km limits, fuel, child seats or permits. What do you need?");
+  return {out:out,log:L};
+}
+
+function createRental(){
+  SEQ++;
+  var r={id:'GS-'+SEQ,name:S.name,phone:fmtPhone(S.phone),dl:S.dl,type:S.car,reg:S.reg,start:S.start,days:S.days,
+    rent:S.rent,adv:S.adv,dep:CARS[S.car].dep,seat:!!S.seat,dest:S.dest,status:'Booked',src:'WhatsApp'};
+  RENT.unshift(r); SEL=r.id; save(); render(true);
+  return r;
+}
+function flag(msg,why){
+  SEQ++;
+  RENT.unshift({id:'GS-'+SEQ,name:'Unknown customer',note:why+': "'+msg.slice(0,34)+'"',status:'Needs human',src:'WhatsApp'});
+  save(); render(true);
+}
+
+/* ================= counter: handover and return ================= */
+function counter(){
+  var box=$('counter'), r=SEL?byId(SEL):null;
+  if(!r||!r.type){$('ctag').textContent='';
+    box.innerHTML='<div class="empty" style="padding:14px">Pick a rental from the register above to hand over the keys or check a car back in.</div>';return;}
+  var b=CARS[r.type], u=UNITS[r.reg];
+  $('ctag').textContent=r.id+' · '+r.status;
+  var head='<div class="kv"><b>Customer</b><span>'+r.name+' &middot; '+r.phone+'</span>'
+    +'<b>Car</b><span>'+b.label+' &middot; <span style="font-family:Consolas,monospace">'+r.reg+'</span></span>'
+    +'<b>Dates</b><span>'+fmt(r.start)+' '+SHOP.pickup+' &rarr; '+fmt(endOf(r))+' '+SHOP.dropBy+'</span>'
+    +(r.dl?'<b>Licence</b><span>'+r.dl+' <span class="badge">verified</span></span>':'')
+    +(r.dest?'<b>Trip</b><span>'+ROUTES[r.dest].name+' (~'+ROUTES[r.dest].km+' km)</span>':'')+'</div>';
+
+  if(r.status==='Booked'){
+    var bal=r.rent-r.adv;
+    box.innerHTML=head
+      +'<div class="sectl">Handover checklist</div>'
+      +'<div class="grid2"><div><label class="fld">Odometer out (km)</label><input type="number" id="hOdo" value="'+u.odo+'"></div>'
+      +'<div><label class="fld">Fuel out (bars of 8)</label><select id="hFuel">'+[8,7,6,5,4,3,2,1].map(function(x){return '<option'+(x===u.fuel?' selected':'')+'>'+x+'</option>';}).join('')+'</select></div></div>'
+      +'<div class="checks">'
+      +['Original DL seen','Photo ID seen','4-side + interior photos',(r.seat?'Child seat fitted':'Spare tyre + jack in boot'),'RC, insurance + PUC in car','Tyres, brakes + AC checked']
+        .map(function(x,i){return '<label><input type="checkbox" class="hc" id="hc'+i+'"> '+x+'</label>';}).join('')
+      +'</div>'
+      +'<div class="bill"><div class="hd"><span>Collect at pickup</span><span></span></div>'
+      +'<div><span>Balance rent</span><span>'+money(bal)+'</span></div>'
+      +'<div><span>Refundable deposit</span><span>'+money(r.dep)+'</span></div>'
+      +'<div class="tot"><span>Collect now</span><span>'+money(bal+r.dep)+'</span></div></div>'
+      +'<div class="row fg"><button class="btn primary" id="hGo">Hand over keys</button><span class="hint" id="hMsg">Tick every check to continue.</span></div>';
+    $('hGo').onclick=function(){handover(r);};
+    return;
+  }
+  if(r.status==='On trip'){
+    var o=r.out||{odo:u.odo,fuel:SHOP.fuelMax};
+    box.innerHTML=head
+      +'<div class="kv" style="margin-top:6px"><b>Went out at</b><span>'+o.odo.toLocaleString('en-IN')+' km &middot; fuel '+o.fuel+'/8</span>'
+      +'<b>Free km</b><span>'+(b.km*r.days)+' km ('+b.km+' x '+r.days+' days)</span></div>'
+      +'<div class="sectl">Return inspection</div>'
+      +'<div class="grid2"><div><label class="fld">Odometer in (km)</label><input type="number" id="rOdo" value="'+(o.odo+Math.round(b.km*r.days*0.8))+'"></div>'
+      +'<div><label class="fld">Fuel in (bars)</label><select id="rFuel">'+[8,7,6,5,4,3,2,1,0].map(function(x){return '<option>'+x+'</option>';}).join('')+'</select></div>'
+      +'<div><label class="fld">Returned</label><select id="rLate"><option value="0">On time</option><option value="1">45 min late</option><option value="3">3 hours late</option><option value="24">Next morning</option></select></div>'
+      +'<div><label class="fld">Damage</label><select id="rDmg"><option value="0">None</option><option value="1500">Bumper scratch</option><option value="2500">Broken side mirror</option><option value="3500">Dent on door</option><option value="4000">Tyre cut</option><option value="6000">Cracked windscreen</option></select></div></div>'
+      +'<div id="bill"></div>'
+      +'<div class="row fg"><button class="btn primary" id="rGo">Check in &amp; refund deposit</button></div>';
+    ['rOdo','rFuel','rLate','rDmg'].forEach(function(id){$(id).oninput=function(){bill(r);};});
+    $('rGo').onclick=function(){checkin(r);};
+    bill(r);
+    return;
+  }
+  if(r.status==='Closed'){
+    box.innerHTML=head+'<div class="sectl">Settlement</div>'+billHtml(r.settle)
+      +'<div class="hint" style="margin-top:8px">Receipt sent to the customer on WhatsApp. '+(r.settle.refund>=0?'Refund initiated on UPI.':'Balance collected at the counter.')+'</div>';
+    return;
+  }
+}
+function settle(r){
+  var b=CARS[r.type], o=r.out||{odo:UNITS[r.reg].odo,fuel:SHOP.fuelMax};
+  var odo=+$('rOdo').value||o.odo, fuel=+$('rFuel').value, late=+$('rLate').value, dmg=+$('rDmg').value;
+  var used=Math.max(0,odo-o.odo), allow=b.km*r.days, xk=Math.max(0,used-allow);
+  var lateFee=late>=24?b.day:late*SHOP.lateHr;
+  var s={odo:odo,fuel:fuel,used:used,allow:allow,xk:xk,xkFee:xk*b.xkm,xkm:b.xkm,
+    late:late,lateFee:lateFee,fuelShort:Math.max(0,o.fuel-fuel),fuelFee:Math.max(0,o.fuel-fuel)*SHOP.fuelBar,
+    dmg:dmg,dmgTxt:$('rDmg').options[$('rDmg').selectedIndex].text,dep:r.dep};
+  s.ded=s.xkFee+s.lateFee+s.fuelFee+s.dmg; s.refund=s.dep-s.ded;
+  return s;
+}
+function billHtml(s){
+  var ln=function(a,v,c){return '<div'+(c?' class="'+c+'"':'')+'><span>'+a+'</span><span>'+v+'</span></div>';};
+  return '<div class="bill">'
+    +ln('Driven','','hd')
+    +ln('Distance',s.used.toLocaleString('en-IN')+' km of '+s.allow+' free')
+    +ln('Deposit held',money(s.dep))
+    +(s.xkFee?ln('Extra km ('+s.xk+' x '+money(s.xkm)+')','- '+money(s.xkFee),'minus'):'')
+    +(s.lateFee?ln('Late return ('+(s.late>=24?'1 extra day':s.late+' hr')+')','- '+money(s.lateFee),'minus'):'')
+    +(s.fuelFee?ln('Fuel short ('+s.fuelShort+' bar'+(s.fuelShort>1?'s':'')+')','- '+money(s.fuelFee),'minus'):'')
+    +(s.dmg?ln('Damage: '+s.dmgTxt.toLowerCase(),'- '+money(s.dmg),'minus'):'')
+    +(s.refund>=0?ln('Refund to customer',money(s.refund),'tot'):ln('Customer owes',money(-s.refund),'due'))
+    +'</div>';
+}
+function bill(r){$('bill').innerHTML=billHtml(settle(r));}
+function handover(r){
+  var all=[].slice.call(document.querySelectorAll('.hc')).every(function(c){return c.checked;});
+  if(!all){$('hMsg').textContent='Some checks are still open - tick them all first.';$('hMsg').style.color='var(--redI)';return;}
+  var odo=+$('hOdo').value, fuel=+$('hFuel').value;
+  r.out={odo:odo,fuel:fuel,seat:!!r.seat}; r.status='On trip';
+  UNITS[r.reg].odo=odo; UNITS[r.reg].fuel=fuel;
+  logAdd('ACTION','act',r.id+' handed over: '+r.reg+' at '+odo.toLocaleString('en-IN')+' km, fuel '+fuel+'/8');
+  logAdd('ACTION','act','Balance '+money(r.rent-r.adv)+' + deposit '+money(r.dep)+' collected');
+  logAdd('ACTION','act','Return reminder queued for '+fmt(endOf(r))+', 5 PM');
+  bubble("🔑 <b>Trip started - "+r.id+"</b>\n"+CARS[r.type].label+" ("+r.reg+")\nOdometer: "+odo.toLocaleString('en-IN')+" km &middot; fuel "+fuel+"/8\nFree km: "+(CARS[r.type].km*r.days)
+    +"\nReturn by "+fmt(endOf(r))+", "+SHOP.dropBy+"\n\nDeposit "+money(r.dep)+" received. Breakdown or flat tyre? Reply HELP any time. Drive safe!",'in');
+  save(); render(false);
+}
+function checkin(r){
+  var s=settle(r);
+  r.back={odo:s.odo,fuel:s.fuel}; r.settle=s; r.status='Closed';
+  UNITS[r.reg].odo=s.odo; UNITS[r.reg].fuel=SHOP.fuelMax;
+  if(s.dmg){UNITS[r.reg].svc=s.dmgTxt;logAdd('ACTION','act',r.reg+' sent to service: '+s.dmgTxt.toLowerCase());}
+  logAdd('CHECK','calc',r.id+': '+s.used+' km driven, '+s.xk+' over limit, fuel -'+s.fuelShort+', late '+s.late+'h');
+  logAdd('ACTION','act',s.refund>=0?'Deposit refund '+money(s.refund)+' sent on UPI':'Balance '+money(-s.refund)+' to collect');
+  var lines="✅ <b>Car checked in - "+r.id+"</b>\n\nDistance: "+s.used+" km ("+s.allow+" free)\nDeposit: "+money(s.dep);
+  if(s.xkFee)lines+="\nExtra "+s.xk+" km: -"+money(s.xkFee);
+  if(s.lateFee)lines+="\nLate return: -"+money(s.lateFee);
+  if(s.fuelFee)lines+="\nFuel short: -"+money(s.fuelFee);
+  if(s.dmg)lines+="\n"+s.dmgTxt+": -"+money(s.dmg);
+  lines+=s.refund>=0?"\n\n<b>Refund: "+money(s.refund)+"</b> - sent to your UPI now.":"\n\n<b>Balance due: "+money(-s.refund)+"</b>";
+  bubble(lines+"\n\nThanks for driving with "+SHOP.name+"! How was it? Reply with 1 to 5 ⭐",'in');
+  save(); render(false);
+}
+
+/* ================= UI ================= */
+var chat=$('chat'), logEl=$('log'), busy=false;
+function bubble(txt,cls){
+  var d=document.createElement('div'); d.className='msg '+cls;
+  d.innerHTML=txt.replace(/\n/g,'<br>')+(cls==='sys'?'':'<small>'+clock()+'</small>');
+  chat.appendChild(d); chat.scrollTop=chat.scrollHeight;
+}
+function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function logAdd(tag,cls,txt){
+  var d=document.createElement('div'); d.className='lrow';
+  d.innerHTML='<span>'+clock()+'</span><span class="tag t-'+cls+'">'+tag+'</span><span>'+txt+'</span>';
+  logEl.appendChild(d); logEl.scrollTop=logEl.scrollHeight;
+  $('lgc').textContent=logEl.children.length+' events';
+}
+function custSays(text){
+  if(busy||!text||!text.trim())return;
+  busy=true;
+  bubble(esc(text),'out');
+  logAdd('IN','sys','Customer: "'+esc(text.slice(0,58))+'"');
+  var ty=document.createElement('div'); ty.className='typing'; ty.innerHTML='<i></i><i></i><i></i>';
+  chat.appendChild(ty); chat.scrollTop=chat.scrollHeight;
+  var r=respond(text);
+  setTimeout(function(){
+    ty.parentNode&&ty.parentNode.removeChild(ty);
+    r.log.forEach(function(x){logAdd(x[0],x[1],x[2]);});
+    (function next(i){
+      if(i>=r.out.length){busy=false;render(false);save();return;}
+      bubble(r.out[i],'in');
+      setTimeout(function(){next(i+1);},450);
+    })(0);
+  },650+Math.random()*350);
+}
+
+var STEPS=['Enquiry','Quote','KYC','Advance paid','Handover','On trip','Return check','Deposit settled'];
+function flow(){
+  var r=SEL?byId(SEL):null, at, cap;
+  if(r&&r.type){
+    at=r.status==='Booked'?4:r.status==='On trip'?6:8;
+    cap='Following <b>'+r.id+'</b> &middot; '+r.name+' &middot; '+CARS[r.type].label;
+  }else{
+    var st=stage();
+    at={date:0,days:0,car:0,quote:S.quoted?1:0,kyc:2,pay:3}[st];
+    if(at===0&&!S.start&&!S.dest)at=MET.msgs?0:-1;
+    cap=at<0?'Waiting for a customer to message':'Live chat &middot; '+(S.car?CARS[S.car].label:'choosing a car');
+  }
+  $('flow').innerHTML=STEPS.map(function(s,i){
+    return '<div class="fs'+(i<at?' done':(i===at?' now':''))+'"><b>'+(i<at?'✓ ':'')+'STEP '+(i+1)+'</b>'+s+'</div>';
+  }).join('');
+  $('flowcap').innerHTML=cap;
+}
+function stats(){
+  var real=RENT.filter(function(r){return r.type;});
+  $('s1').textContent=MET.msgs;
+  $('s2').textContent=real.length;
+  $('s3').textContent=real.filter(function(r){return r.status==='On trip';}).length;
+  $('s4').textContent=money(real.reduce(function(a,r){return a+r.rent;},0));
+  $('s5').textContent=money(real.filter(function(r){return r.status==='On trip';}).reduce(function(a,r){return a+r.dep;},0));
+}
+function render(flash){
+  var tb=$('tb'); tb.innerHTML='';
+  RENT.forEach(function(r,i){
+    var tr=document.createElement('tr'); tr.className='click'+(r.id===SEL?' on':'')+(flash&&i===0?' new':'');
+    var badge=r.status==='Booked'?'b':r.status==='On trip'?'y':r.status==='Closed'?'':'r';
+    tr.innerHTML='<td class="rid">'+r.id+'</td>'
+      +'<td>'+r.name+(r.phone?'<br><small>'+r.phone+'</small>':'')+'</td>'
+      +'<td>'+(r.type?CARS[r.type].label+'<br><small>'+r.reg+'</small>':'<small>'+(r.note||'')+'</small>')+'</td>'
+      +'<td>'+(r.start?fmt(r.start)+'<br><small>'+r.days+' day'+(r.days>1?'s':'')+'</small>':'-')+'</td>'
+      +'<td><span class="badge '+badge+'">'+r.status+'</span></td>';
+    tr.onclick=function(){SEL=r.id;render(false);};
+    tb.appendChild(tr);
+  });
+  $('rc').textContent=RENT.length+' rentals';
+
+  var fl=$('fleet'), day=S&&S.start?S.start:today(), days=S&&S.start&&S.days?S.days:1;
+  $('fdate').textContent=(S&&S.start?'for '+fmt(day)+(days>1?' +'+(days-1)+'d':''):'today, '+fmt(day));
+  fl.innerHTML='';
+  for(var k in CARS){
+    var b=CARS[k], units=b.units.map(function(u){return u[0];}), nfree=freeUnits(k,day,days).length;
+    var h='<div class="ftype">'+b.label+' <span>'+nfree+' / '+units.length+' free</span></div><div class="units">';
+    units.forEach(function(g){
+      var u=UNITS[g], who=null;
+      RENT.forEach(function(r){if(r.reg===g&&active(r)&&r.start<addD(day,days)&&day<addD(r.start,r.days))who=who||r;});
+      var st=u.svc?['r','In service']:who?(who.status==='On trip'?['y','On trip']:['b','Booked']):['','Free'];
+      var sel=SEL&&byId(SEL)&&byId(SEL).reg===g;
+      h+='<div class="unit'+(sel?' hl':'')+(u.svc?' svc':'')+'" data-reg="'+g+'"'+(u.svc?' title="Click when the repair is done"':'')+'><b>'+g+'</b>'
+        +'<span class="badge '+st[0]+'">'+st[1]+'</span>'
+        +'<small>'+(u.svc?u.svc:who?who.name.split(' ')[0]+' &middot; till '+fmt(endOf(who)):u.odo.toLocaleString('en-IN')+' km')+'</small></div>';
+    });
+    fl.insertAdjacentHTML('beforeend',h+'</div>');
+  }
+  [].forEach.call(fl.querySelectorAll('.unit.svc'),function(el){el.onclick=function(){
+    var g=el.getAttribute('data-reg'); UNITS[g].svc=null; logAdd('ACTION','act',g+' back from service, available'); save(); render(false);};});
+  counter(); flow(); stats();
+}
+
+var QUICK=["Hi","Need a car this weekend for a Shillong trip","What are your rates?","How much is the deposit?",
+ "Scorpio","Creta","Tawang trip, 5 days from 10 Oct","Do you have a child seat?","Yes","Do I need a permit for Arunachal?","Talk to the owner"];
+var qd=$('quick');
+QUICK.forEach(function(q){
+  var b=document.createElement('button'); b.className='chip'; b.textContent=q;
+  b.onclick=function(){custSays(q);};
+  qd.appendChild(b);
+});
+$('send').onclick=function(){var i=$('inp');custSays(i.value);i.value='';};
+$('inp').addEventListener('keydown',function(e){if(e.key==='Enter'){custSays(this.value);this.value='';}});
+
+/* ================= scripted full rental, for a pitch or a screen recording ================= */
+var SCRIPT=["Hi","Need a car this weekend for a Shillong trip, might go to Cherrapunji too","Scorpio",
+ "ok Creta then","is fuel included?","yes book it","Rahul Sharma 9864012345, DL AS01 20190012345","paid"];
+function wait(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function whenIdle(){return new Promise(function(res){var w=setInterval(function(){if(!busy){clearInterval(w);res();}},200);});}
+function typeOut(text){
+  return new Promise(function(res){
+    var inp=$('inp'), j=0; inp.value='';
+    var t=setInterval(function(){
+      inp.value=text.slice(0,++j);
+      if(j>=text.length){clearInterval(t);setTimeout(function(){custSays(text);inp.value='';whenIdle().then(res);},250);}
+    },26);
+  });
+}
+function setVal(id,v){var el=$(id);el.value=v;el.classList.remove('fill');void el.offsetWidth;el.classList.add('fill');if(el.oninput)el.oninput();}
+async function playAll(){
+  var btn=$('play'); btn.disabled=true; btn.textContent='Playing...';
+  for(var i=0;i<SCRIPT.length;i++){await typeOut(SCRIPT[i]);await wait(1300);}
+  var r=RENT[0];
+  if(r&&r.type&&r.status==='Booked'){
+    bubble('Pickup day at the counter','sys'); await wait(900);
+    SEL=r.id; render(false); $('counter').scrollIntoView({behavior:'smooth',block:'center'}); await wait(1200);
+    var cs=document.querySelectorAll('.hc');
+    for(var c=0;c<cs.length;c++){cs[c].checked=true;await wait(260);}
+    await wait(700); $('hGo').click(); await wait(2200);
+    bubble('Two days later - the car comes back','sys'); await wait(900);
+    $('counter').scrollIntoView({behavior:'smooth',block:'center'}); await wait(900);
+    setVal('rOdo',r.out.odo+648); await wait(800);
+    setVal('rFuel',6); await wait(800);
+    setVal('rLate',1); await wait(1100);
+    $('rGo').click();
+  }
+  btn.disabled=false; btn.innerHTML='&#9654; Play a full rental';
+}
+$('play').onclick=playAll;
+$('reset').onclick=function(){
+  try{['gs_rent','gs_met','gs_units'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+  SEQ=1040; RENT=seed(); MET={msgs:0}; S=newS(); SEL=null;
+  chat.innerHTML=''; logEl.innerHTML=''; $('lgc').textContent='0 events';
+  save(); render(false); boot();
+};
+
+function boot(){
+  bubble("Hey! Welcome to <b>"+SHOP.name+"</b>, "+SHOP.city+" 🚗\nI can check which cars are free, quote your rental and book it right here - any time.\n\nWhere are you driving, and when?",'in');
+  logAdd('SYS','sys','Assistant online &middot; WhatsApp channel connected &middot; '+Object.keys(UNITS).length+' cars in fleet');
+}
+load(); S=newS(); render(false); boot();
+/* ?auto=1 plays the whole rental on its own - handy for a shareable link or a recording */
+if(/auto/.test(location.search))setTimeout(playAll,600);
+</script>
+</body>
+</html>
