@@ -243,7 +243,7 @@ footer b{color:#fff}
           <div><b>24/7</b><span>roadside help</span></div>
         </div>
       </div>
-      <div class="hero-art" aria-hidden="true"><svg viewBox="0 0 460 260" id="heroCar"></svg></div>
+      <div class="hero-art" aria-hidden="true"><svg id="heroCar"></svg></div>
     </div>
 
     <form class="search" onsubmit="event.preventDefault();applySearch()">
@@ -473,18 +473,63 @@ const $ = id => document.getElementById(id);
 const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
 let mode = "self", filter = "All";
 
-function carSVG(color, w=300){
-  // side-profile car, tinted per model
-  return `<svg viewBox="0 0 300 120" width="100%" style="max-width:${w}px;margin:0 auto" aria-hidden="true">
-    <ellipse cx="150" cy="108" rx="130" ry="7" fill="#000" opacity=".12"/>
-    <path d="M22 86 C20 70 30 62 52 58 L92 52 C108 34 128 26 160 26 L196 27 C218 28 234 40 250 54 L270 58 C284 61 290 70 289 86 Z" fill="${color}" stroke="rgba(0,0,0,.25)" stroke-width="1.5"/>
-    <path d="M104 52 C116 38 132 33 158 33 L160 52 Z" fill="#2a3645" opacity=".85"/>
-    <path d="M168 33 L194 33 C212 34 226 43 238 54 L168 54 Z" fill="#2a3645" opacity=".85"/>
-    <path d="M24 74 H288" stroke="rgba(0,0,0,.12)" stroke-width="2"/>
-    <rect x="266" y="62" width="18" height="7" rx="3" fill="#ffd87a"/>
-    <rect x="22" y="64" width="12" height="7" rx="3" fill="#e5484d"/>
-    <g><circle cx="80" cy="88" r="19" fill="#1c2127"/><circle cx="80" cy="88" r="9" fill="#aeb6bf"/></g>
-    <g><circle cx="228" cy="88" r="19" fill="#1c2127"/><circle cx="228" cy="88" r="9" fill="#aeb6bf"/></g>
+// Body shapes per class; each car is drawn in its own paint colour.
+const SHAPES = {
+  hatch: {L:36, R:284, bot:92, belt:62, roof:28, r0:44, r1:60, f1:176, f0:226, hood:70, deck:null, w:[90,232], wr:20},
+  sedan: {L:18, R:300, bot:92, belt:62, roof:31, r0:80, r1:114, f1:192, f0:238, hood:71, deck:60, w:[76,244], wr:20},
+  suv:   {L:24, R:296, bot:88, belt:57, roof:20, r0:38, r1:46,  f1:196, f0:240, hood:59, deck:null, w:[80,240], wr:23, rails:true},
+  muv:   {L:16, R:300, bot:90, belt:60, roof:25, r0:30, r1:40,  f1:194, f0:244, hood:67, deck:null, w:[74,246], wr:21}
+};
+const TYPE = {Hatchback:"hatch", Sedan:"sedan", SUV:"suv", MUV:"muv"};
+function shade(hex, amt){
+  const n = parseInt(hex.slice(1), 16), f = v => Math.max(0, Math.min(255, Math.round(v + amt * (amt > 0 ? 255 - v : v))));
+  return "#" + [n >> 16, n >> 8 & 255, n & 255].map(f).map(v => v.toString(16).padStart(2, "0")).join("");
+}
+function carSVG(c, w=300, uid=c.id){
+  const s = SHAPES[TYPE[c.cls] || "sedan"], col = c.color, id = "g" + uid;
+  const {L, R, bot, belt, roof, r0, r1, f1, f0, hood, deck} = s;
+  const rearTop = deck ?? belt - 4;
+  // lower body: rear bumper -> deck -> cabin base -> hood -> nose -> under
+  const body = `M${L+4} ${bot} Q${L} ${bot} ${L} ${bot-8} L${L+1} ${rearTop+8} Q${L+2} ${rearTop} ${L+14} ${rearTop}
+    L${r0} ${belt} L${f0} ${belt} Q${f0+26} ${hood-4} ${R-18} ${hood} Q${R-2} ${hood+3} ${R} ${hood+14} L${R} ${bot-8} Q${R} ${bot} ${R-6} ${bot} Z`;
+  const cabin = `M${r0} ${belt} L${r1} ${roof+4} Q${r1+4} ${roof} ${r1+14} ${roof} L${f1-8} ${roof} Q${f1} ${roof} ${f1+6} ${roof+4} L${f0} ${belt} Z`;
+  const gi = 5, mid = Math.round((r1 + f1) / 2 + 6);
+  const glassR = `M${r0+gi+2} ${belt-2} L${r1+gi} ${roof+gi+3} L${mid-4} ${roof+gi} L${mid-4} ${belt-2} Z`;
+  const glassF = `M${mid+3} ${belt-2} L${mid+3} ${roof+gi} L${f1-2} ${roof+gi} Q${f1+2} ${roof+gi} ${f1+6} ${roof+gi+4} L${f0-6} ${belt-2} Z`;
+  const wheel = x => `<g transform="translate(${x} ${bot})">
+      <circle r="${s.wr+5}" fill="#0d1014"/>
+      <circle r="${s.wr}" fill="#1b1f24"/><circle r="${s.wr-5}" fill="url(#${id}rim)"/>
+      ${[0,72,144,216,288].map(a => `<rect x="-2" y="${-(s.wr-6)}" width="4" height="${s.wr-8}" rx="2" fill="#5f6873" transform="rotate(${a})"/>`).join("")}
+      <circle r="4" fill="#9aa3ad"/></g>`;
+  const arch = x => `<path d="M${x-s.wr-8} ${bot} A${s.wr+8} ${s.wr+8} 0 0 1 ${x+s.wr+8} ${bot} Z" fill="#0b0e12"/>`;
+  return `<svg viewBox="0 0 320 124" width="100%" style="max-width:${w}px;margin:0 auto" role="img" aria-label="${c.name}">
+    <defs>
+      <linearGradient id="${id}p" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="${shade(col,.35)}"/><stop offset=".38" stop-color="${col}"/>
+        <stop offset=".62" stop-color="${shade(col,-.12)}"/><stop offset="1" stop-color="${shade(col,-.45)}"/></linearGradient>
+      <linearGradient id="${id}g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#3c4a5c"/><stop offset=".55" stop-color="#1a222d"/><stop offset="1" stop-color="#0f141b"/></linearGradient>
+      <radialGradient id="${id}rim"><stop offset="0" stop-color="#e7ebef"/><stop offset=".75" stop-color="#b3bcc6"/><stop offset="1" stop-color="#6d7680"/></radialGradient>
+      <radialGradient id="${id}sh"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    </defs>
+    <ellipse cx="${(L+R)/2}" cy="${bot+s.wr+4}" rx="${(R-L)/2+14}" ry="9" fill="url(#${id}sh)"/>
+    ${s.rails ? `<rect x="${r1+6}" y="${roof-4}" width="${f1-r1-16}" height="3" rx="1.5" fill="#1d232a"/>` : ""}
+    <path d="${cabin}" fill="url(#${id}p)"/>
+    <path d="${glassR}" fill="url(#${id}g)"/><path d="${glassF}" fill="url(#${id}g)"/>
+    <path d="M${mid+6} ${roof+gi+2} L${mid+22} ${roof+gi+2} L${mid+4} ${belt-4} Z" fill="#fff" opacity=".13"/>
+    <path d="${body}" fill="url(#${id}p)"/>
+    ${arch(s.w[0])}${arch(s.w[1])}
+    <path d="M${L+6} ${belt+9} Q${(L+R)/2} ${belt+4} ${R-10} ${hood+6}" stroke="#fff" stroke-opacity=".35" stroke-width="1.5" fill="none"/>
+    <path d="M${L+4} ${bot-9} L${R-4} ${bot-9}" stroke="#000" stroke-opacity=".18" stroke-width="5"/>
+    <path d="M${mid} ${belt} L${mid+2} ${bot-12}" stroke="#000" stroke-opacity=".28" stroke-width="1.2"/>
+    ${s.deck === null ? `<path d="M${f0-4} ${belt} Q${f0+4} ${belt+18} ${f0-2} ${bot-12}" stroke="#000" stroke-opacity=".28" stroke-width="1.2" fill="none"/>` : `<path d="M${f0-4} ${belt} L${f0-2} ${bot-12}" stroke="#000" stroke-opacity=".28" stroke-width="1.2"/><path d="M${r0+4} ${belt} L${r0+8} ${bot-12}" stroke="#000" stroke-opacity=".28" stroke-width="1.2"/>`}
+    <rect x="${mid-22}" y="${belt+8}" width="12" height="3" rx="1.5" fill="#000" opacity=".35"/>
+    <rect x="${f0-40}" y="${belt+8}" width="12" height="3" rx="1.5" fill="#000" opacity=".35"/>
+    <path d="M${f0-10} ${belt-1} q6 -8 14 -4 l-2 7 z" fill="${shade(col,-.3)}"/>
+    <path d="M${R-24} ${hood+2} Q${R-6} ${hood+2} ${R-1} ${hood+10} L${R-18} ${hood+9} Z" fill="#fff4cf" stroke="#c9b27a" stroke-width=".6"/>
+    <rect x="${R-10}" y="${hood+17}" width="10" height="8" rx="2" fill="#12161b"/>
+    <rect x="${L}" y="${rearTop+4}" width="7" height="9" rx="2" fill="#c7202e"/>
+    ${wheel(s.w[0])}${wheel(s.w[1])}
   </svg>`;
 }
 
@@ -523,7 +568,7 @@ function renderCars(){
              : c.stock === 1 ? `<span class="avail low">Last one left</span>`
              : `<span class="avail">${c.stock} available</span>`;
     return `<article class="car">
-      <div class="pic"><span class="tag">${c.cls}</span>${av}${carSVG(c.color)}</div>
+      <div class="pic"><span class="tag">${c.cls}</span>${av}${carSVG(c)}</div>
       <div class="body">
         <h3>${c.name}</h3><div class="cls">or similar</div>
         <div class="specs"><span>${c.seats} seats</span><span>${c.trans}</span><span>${c.fuel}</span><span>${c.km} km/day free</span></div>
@@ -656,8 +701,7 @@ function renderPackages(){
 function init(){
   document.querySelectorAll(".cityName").forEach(e => e.textContent = CONFIG.city);
   $("cPhone").innerHTML = CONFIG.phoneDisplay; $("cAddr").innerHTML = CONFIG.address;
-  $("heroCar").innerHTML = carSVG("#c8102e", 460).replace(/^<svg[^>]*>|<\/svg>$/g, "");
-  $("heroCar").setAttribute("viewBox", "0 0 300 120");
+  $("heroCar").outerHTML = carSVG({...CARS.find(c => c.id === "creta"), color:"#c8102e"}, 460, "hero");
   $("tCars").textContent = CARS.reduce((s, c) => s + Math.max(c.stock, 1), 0);
   fillSelects(); renderFilters(); renderCars(); renderPackages();
 
