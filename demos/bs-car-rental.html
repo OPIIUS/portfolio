@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BS Car Rental Service — Self-drive &amp; chauffeur cars</title>
+<meta name="description" content="Demo website for BS Car Rental Service: browse the fleet, get an instant quote and book on WhatsApp.">
+<style>
+:root{
+  --bg:#f6f7f9; --card:#fff; --ink:#15191e; --dim:#566069; --line:#e2e6ea;
+  --brand:#c8102e; --brandD:#9c0c23; --brandL:#fdecef; --navy:#101a2b; --navy2:#1b2940;
+  --green:#137a45; --greenL:#e6f5ec; --gold:#b7791f; --wa:#1a8a4a;
+  --r:14px; --sh:0 1px 2px rgba(16,26,43,.06),0 6px 20px rgba(16,26,43,.06);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "Segoe UI",Inter,system-ui,-apple-system,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img,svg{display:block}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+h1,h2,h3{line-height:1.2;margin:0}
+h2{font-size:30px;letter-spacing:-.4px}
+.eyebrow{color:var(--brand);font-weight:700;font-size:12.5px;letter-spacing:1.2px;text-transform:uppercase;margin:0 0 8px}
+.lede{color:var(--dim);max-width:640px;margin:10px 0 0}
+section{padding:72px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:10px;
+  padding:12px 20px;font:600 14.5px/1 inherit;font-family:inherit;cursor:pointer;text-decoration:none;transition:background .15s,transform .15s}
+.btn:active{transform:translateY(1px)}
+.btn.red{background:var(--brand);color:#fff}.btn.red:hover{background:var(--brandD)}
+.btn.wa{background:var(--wa);color:#fff}.btn.wa:hover{background:#13703b}
+.btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.55)}
+.btn.ghost:hover{background:rgba(255,255,255,.1)}
+.btn.line{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.btn.line:hover{border-color:var(--ink)}
+.btn.block{width:100%}
+.demo-bar{background:#fff7e0;color:#6b4a06;font-size:12.5px;text-align:center;padding:7px 12px;border-bottom:1px solid #f1dfae}
+.demo-bar a{color:#6b4a06;font-weight:600}
+
+/* nav */
+nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:22px;height:66px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo .b{width:40px;height:40px;border-radius:10px;background:var(--brand);color:#fff;font-weight:800;display:grid;place-items:center;letter-spacing:-.5px}
+.logo b{display:block;font-size:16px;line-height:1.1}
+.logo span{display:block;font-size:11px;color:var(--dim);letter-spacing:.4px}
+.links{display:flex;gap:22px;margin-left:auto}
+.links a{text-decoration:none;font-size:14px;color:var(--dim);font-weight:500}
+.links a:hover{color:var(--brand)}
+.navcta{display:flex;gap:8px}
+.navcta .btn{padding:10px 14px;font-size:13.5px}
+.burger{display:none;margin-left:auto;background:none;border:1px solid var(--line);border-radius:9px;padding:8px 10px;cursor:pointer;font-size:18px;line-height:1}
+@media(max-width:900px){
+  .links,.navcta .call{display:none}
+  .burger{display:block}
+  .navcta{margin-left:0}
+  nav.open .links{display:flex;position:absolute;top:66px;left:0;right:0;flex-direction:column;gap:0;background:#fff;border-bottom:1px solid var(--line);padding:6px 20px 12px}
+  nav.open .links a{padding:11px 0;border-bottom:1px solid var(--line)}
+}
+
+/* hero */
+.hero{background:radial-gradient(1200px 500px at 85% -10%,#2a3c5c 0,transparent 60%),linear-gradient(160deg,var(--navy),var(--navy2));color:#fff;padding:64px 0 0}
+.hero .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:48px;letter-spacing:-1px}
+.hero h1 em{font-style:normal;color:#ff8a9b}
+.hero p.sub{color:#c9d3e0;font-size:17px;max-width:520px;margin:16px 0 24px}
+.hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.trust{display:flex;gap:26px;margin-top:30px;flex-wrap:wrap}
+.trust div b{display:block;font-size:22px}
+.trust div span{font-size:12.5px;color:#b3bfcf}
+.hero-art{position:relative;min-height:260px}
+.hero-art svg{width:100%;height:auto}
+.search{background:#fff;color:var(--ink);border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.25);padding:18px;margin:44px 0 -60px;position:relative;z-index:2;
+  display:grid;grid-template-columns:1.3fr 1fr 1fr .9fr auto;gap:12px;align-items:end}
+.hero + .after{padding-top:110px}
+@media(max-width:960px){
+  .hero .grid{grid-template-columns:1fr}.hero-art{display:none}.hero h1{font-size:36px}
+  .search{grid-template-columns:1fr 1fr}.search .go{grid-column:1/-1}
+}
+@media(max-width:520px){.search{grid-template-columns:1fr}h2{font-size:25px}.hero h1{font-size:31px}}
+label.f{display:block;font-size:11.5px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;margin:0 0 5px}
+input,select,textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-size:14px;background:#fff;color:var(--ink);outline:0}
+input:focus,select:focus,textarea:focus{border-color:var(--brand)}
+.search .go .btn{height:44px;width:100%}
+
+/* fleet */
+.fhead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 20px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font:inherit;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.mode{display:inline-flex;background:#e9ecef;border-radius:11px;padding:4px}
+.mode button{border:0;background:none;padding:8px 14px;border-radius:8px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--dim)}
+.mode button.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.cars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:980px){.cars{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.cars{grid-template-columns:1fr}}
+.car{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column}
+.car .pic{background:linear-gradient(180deg,#eef1f5,#f8f9fb);padding:18px 18px 8px;position:relative}
+.car .tag{position:absolute;top:12px;left:12px;background:#fff;border:1px solid var(--line);font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px}
+.car .avail{position:absolute;top:12px;right:12px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--greenL);color:var(--green)}
+.car .avail.low{background:#fff4e0;color:#8a5a0b}
+.car .avail.out{background:#f1f2f4;color:var(--dim)}
+.car .body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column}
+.car h3{font-size:18px}
+.car .cls{color:var(--dim);font-size:13px}
+.specs{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 14px}
+.specs span{font-size:12px;background:#f1f3f5;border-radius:7px;padding:3px 8px;color:#39424b}
+.price{display:flex;align-items:baseline;gap:6px;margin-top:auto}
+.price b{font-size:24px}
+.price span{color:var(--dim);font-size:13px}
+.price small{margin-left:auto;color:var(--dim);font-size:12px}
+.car .btn{margin-top:12px}
+.empty{grid-column:1/-1;text-align:center;color:var(--dim);padding:40px;background:#fff;border:1px dashed var(--line);border-radius:var(--r)}
+
+/* booking */
+.book{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.bgrid{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;margin-top:28px;align-items:start}
+@media(max-width:900px){.bgrid{grid-template-columns:1fr}}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form .full{grid-column:1/-1}
+@media(max-width:560px){.form{grid-template-columns:1fr}}
+.opts{display:flex;gap:18px;flex-wrap:wrap;font-size:14px}
+.opts label{display:flex;align-items:center;gap:7px;cursor:pointer}
+.opts input{width:auto;accent-color:var(--brand)}
+.quote{background:var(--navy);color:#fff;border-radius:16px;padding:22px;position:sticky;top:86px}
+.quote h3{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:#b3bfcf;font-weight:600}
+.quote .car-n{font-size:21px;font-weight:700;margin:8px 0 2px}
+.quote .when{color:#b3bfcf;font-size:13px}
+.qrows{margin:16px 0;border-top:1px solid #2c3a52}
+.qrows div{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #2c3a52;font-size:14px}
+.qrows div span:first-child{color:#c9d3e0}
+.qrows .tot{font-size:19px;font-weight:700;border-bottom:0}
+.qrows .tot span:first-child{color:#fff}
+.qnote{font-size:12.5px;color:#b3bfcf;margin:0 0 14px}
+.err{color:#ffb3bf;font-size:13px;margin:0 0 12px;display:none}
+.err.show{display:block}
+
+/* packages, why, steps */
+.pk{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:28px}
+@media(max-width:980px){.pk{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.pk{grid-template-columns:1fr}}
+.pkc{border-radius:var(--r);overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--sh);display:flex;flex-direction:column}
+.pkc .top{height:110px;position:relative;color:#fff;padding:14px;display:flex;align-items:flex-end}
+.pkc .top b{font-size:19px;position:relative}
+.pkc .in{padding:14px;font-size:13.5px;color:var(--dim);flex:1;display:flex;flex-direction:column}
+.pkc .in strong{color:var(--ink);font-size:17px;display:block;margin-top:auto;padding-top:10px}
+.pkc .in a{color:var(--brand);font-weight:600;text-decoration:none;margin-top:6px;font-size:13.5px}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+@media(max-width:860px){.why{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.why{grid-template-columns:1fr}}
+.why div{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.why .ic{width:42px;height:42px;border-radius:11px;background:var(--brandL);color:var(--brand);display:grid;place-items:center;font-size:20px;margin-bottom:12px}
+.why h3{font-size:16.5px;margin-bottom:6px}
+.why p{margin:0;color:var(--dim);font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px;counter-reset:s}
+@media(max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+.steps div{counter-increment:s;padding-top:6px}
+.steps div::before{content:counter(s);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;margin-bottom:12px}
+.steps h3{font-size:16px;margin-bottom:4px}
+.steps p{margin:0;color:var(--dim);font-size:14px}
+
+/* reviews, faq */
+.dark{background:var(--navy);color:#fff}
+.dark .lede{color:#c9d3e0}
+.dark .eyebrow{color:#ff8a9b}
+.rev{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
+@media(max-width:860px){.rev{grid-template-columns:1fr}}
+.rev figure{margin:0;background:var(--navy2);border:1px solid #2c3a52;border-radius:var(--r);padding:20px}
+.rev .st{color:#f5c451;letter-spacing:2px}
+.rev blockquote{margin:10px 0 14px;color:#e2e8f0;font-size:14.5px}
+.rev figcaption{font-size:13px;color:#b3bfcf}
+.rev figcaption b{color:#fff}
+.faq{max-width:780px;margin-top:24px}
+.faq details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
+.faq summary{cursor:pointer;padding:15px 18px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:20px;color:var(--brand);line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:0;padding:0 18px 16px;color:var(--dim)}
+
+/* contact + footer */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:28px}
+@media(max-width:860px){.contact{grid-template-columns:1fr}}
+.cinfo{display:grid;gap:12px}
+.cinfo div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 18px}
+.cinfo b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--dim);margin-bottom:3px}
+.map{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:#e9eef3;min-height:280px;position:relative}
+.map svg{width:100%;height:100%;position:absolute;inset:0}
+footer{background:#0b1220;color:#b3bfcf;padding:34px 0;font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer b{color:#fff}
+
+/* float + modal */
+.fab{position:fixed;right:18px;bottom:18px;z-index:40;width:56px;height:56px;border-radius:50%;background:var(--wa);color:#fff;border:0;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.25);display:grid;place-items:center}
+.modal{position:fixed;inset:0;background:rgba(11,18,32,.6);z-index:50;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.show{display:flex}
+.mbox{background:#fff;border-radius:16px;max-width:460px;width:100%;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.mhead{background:#075e54;color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px}
+.mhead .av{width:36px;height:36px;border-radius:50%;background:var(--brand);display:grid;place-items:center;font-weight:800;font-size:13px}
+.mhead small{display:block;color:#cde9e4;font-size:12px}
+.mchat{background:#efe7dd;padding:18px;max-height:50vh;overflow:auto}
+.bubble{background:#d9fdd3;border-radius:10px 0 10px 10px;padding:10px 12px;font-size:13.5px;white-space:pre-wrap;margin-left:30px;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.bubble.in{background:#fff;border-radius:0 10px 10px 10px;margin:12px 30px 0 0}
+.mfoot{padding:14px 18px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.mnote{font-size:12px;color:var(--dim);padding:0 18px;margin:12px 0 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;z-index:60;transition:transform .25s,opacity .25s;opacity:0;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">Demo website built as a preview for BS Car Rental Service &mdash; cars, prices and contact details are placeholders. <a href="index.html">&larr; Back to demos</a></div>
+
+<nav id="nav">
+  <div class="wrap">
+    <a class="logo" href="#top"><div class="b">BS</div><div><b>BS Car Rental</b><span>SELF-DRIVE &middot; WITH DRIVER</span></div></a>
+    <div class="links">
+      <a href="#fleet">Fleet</a><a href="#book">Book</a><a href="#tours">Tours</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
+    </div>
+    <div class="navcta">
+      <a class="btn line call" id="navCall" href="#contact">&#9742; Call</a>
+      <a class="btn red" href="#book">Book now</a>
+    </div>
+    <button class="burger" aria-label="Menu" onclick="document.getElementById('nav').classList.toggle('open')">&#9776;</button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <p class="eyebrow" style="color:#ff8a9b">Car rental in <span class="cityName"></span></p>
+        <h1>Clean cars. Clear prices.<br><em>On the road in 30 minutes.</em></h1>
+        <p class="sub">Self-drive or with a professional driver &mdash; for a day in the city, an airport run, or a week in the hills. See the exact price before you book.</p>
+        <div class="ctas">
+          <a class="btn red" href="#fleet">Browse the fleet</a>
+          <button class="btn ghost" onclick="openWA(generalMsg())">&#128172; Ask on WhatsApp</button>
+        </div>
+        <div class="trust">
+          <div><b id="tCars">0</b><span>cars in the fleet</span></div>
+          <div><b>4.8&#9733;</b><span>average rating</span></div>
+          <div><b>24/7</b><span>roadside help</span></div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><svg viewBox="0 0 460 260" id="heroCar"></svg></div>
+    </div>
+
+    <form class="search" onsubmit="event.preventDefault();applySearch()">
+      <div><label class="f" for="sLoc">Pickup location</label><select id="sLoc"></select></div>
+      <div><label class="f" for="sFrom">Pickup</label><input type="datetime-local" id="sFrom"></div>
+      <div><label class="f" for="sTo">Return</label><input type="datetime-local" id="sTo"></div>
+      <div><label class="f" for="sMode">Trip type</label>
+        <select id="sMode"><option value="self">Self-drive</option><option value="driver">With driver</option></select></div>
+      <div class="go"><button class="btn red" type="submit">Find cars</button></div>
+    </form>
+  </div>
+</header>
+
+<section id="fleet" class="after">
+  <div class="wrap">
+    <div class="fhead">
+      <div><p class="eyebrow">Our fleet</p><h2>Pick your car</h2>
+        <p class="lede" id="fleetLede">Prices shown per day. Fuel is on you &mdash; every car is handed over with a full tank and returned full.</p></div>
+      <div class="mode" role="tablist">
+        <button class="on" data-mode="self" onclick="setMode('self')">Self-drive</button>
+        <button data-mode="driver" onclick="setMode('driver')">With driver</button>
+      </div>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="cars" id="cars"></div>
+  </div>
+</section>
+
+<section id="book" class="book">
+  <div class="wrap">
+    <p class="eyebrow">Instant quote</p>
+    <h2>Book in under a minute</h2>
+    <p class="lede">Fill this in and you get the full price breakdown straight away. Hit &ldquo;Book on WhatsApp&rdquo; and the details go to our desk &mdash; we confirm within 15 minutes.</p>
+    <div class="bgrid">
+      <form class="form" id="bookForm" onsubmit="event.preventDefault();submitBooking()">
+        <div class="full"><label class="f" for="bCar">Car</label><select id="bCar"></select></div>
+        <div><label class="f" for="bFrom">Pickup date &amp; time</label><input type="datetime-local" id="bFrom" required></div>
+        <div><label class="f" for="bTo">Return date &amp; time</label><input type="datetime-local" id="bTo" required></div>
+        <div><label class="f" for="bLoc">Pickup location</label><select id="bLoc"></select></div>
+        <div><label class="f" for="bMode">Trip type</label>
+          <select id="bMode"><option value="self">Self-drive</option><option value="driver">With driver</option></select></div>
+        <div class="full"><label class="f">Add-ons</label>
+          <div class="opts" id="addons"></div></div>
+        <div><label class="f" for="bName">Your name</label><input type="text" id="bName" placeholder="Full name" required autocomplete="name"></div>
+        <div><label class="f" for="bPhone">Mobile number</label><input type="tel" id="bPhone" placeholder="10-digit mobile" required autocomplete="tel" pattern="[0-9 +\-]{10,15}"></div>
+        <div class="full"><label class="f" for="bNote">Anything else? (optional)</label><textarea id="bNote" rows="2" placeholder="Flight number, destination, child seat..."></textarea></div>
+      </form>
+
+      <aside class="quote" aria-live="polite">
+        <h3>Your quote</h3>
+        <div class="car-n" id="qCar">&mdash;</div>
+        <div class="when" id="qWhen">&mdash;</div>
+        <div class="qrows" id="qRows"></div>
+        <p class="qnote" id="qNote"></p>
+        <p class="err" id="qErr"></p>
+        <button class="btn wa block" form="bookForm" type="submit">&#128172; Book on WhatsApp</button>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="tours">
+  <div class="wrap">
+    <p class="eyebrow">Outstation</p>
+    <h2>Popular trips with a driver</h2>
+    <p class="lede">Fixed-price packages including driver, fuel, tolls and parking. No meter anxiety.</p>
+    <div class="pk" id="packages"></div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">Why BS Car Rental</p>
+    <h2>Renting a car should be boring. In a good way.</h2>
+    <div class="why">
+      <div><div class="ic">&#8377;</div><h3>The price you see is the price you pay</h3><p>Rent, deposit and km limits are all on the quote. No &ldquo;service charge&rdquo; at the counter.</p></div>
+      <div><div class="ic">&#10003;</div><h3>Serviced &amp; sanitised</h3><p>Every car is washed, checked and photographed before handover. You get the photos too.</p></div>
+      <div><div class="ic">&#9201;</div><h3>Fast refunds</h3><p>Security deposit back to your UPI within 24 hours of return, with a written breakdown.</p></div>
+      <div><div class="ic">&#128737;</div><h3>Insured cars</h3><p>Comprehensive insurance on every car. Add zero-dep cover and a scratch costs you nothing.</p></div>
+      <div><div class="ic">&#128205;</div><h3>Doorstep delivery</h3><p>We bring the car to your home, hotel or the airport and collect it when you're done.</p></div>
+      <div><div class="ic">&#9742;</div><h3>A real person, 24/7</h3><p>Flat tyre at 2 a.m.? Call the same number and someone picks up.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="book" style="padding-top:60px">
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2>Four steps, no paperwork pile</h2>
+    <div class="steps">
+      <div><h3>Choose &amp; quote</h3><p>Pick a car and dates above. The full price shows instantly.</p></div>
+      <div><h3>Confirm on WhatsApp</h3><p>Send the booking. We confirm and share a UPI link for the advance.</p></div>
+      <div><h3>Show your documents</h3><p>Driving licence and one ID (Aadhaar / passport). Self-drive only needs the DL original at pickup.</p></div>
+      <div><h3>Drive</h3><p>Collect from our garage or get it delivered. Return with a full tank, deposit comes back.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <p class="eyebrow">Reviews</p>
+    <h2>What customers say</h2>
+    <p class="lede">Sample reviews for the demo &mdash; the live site pulls these from Google.</p>
+    <div class="rev">
+      <figure><div class="st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>Took the Innova to Shillong with the family. Driver was on time, knew every good stop, and the final bill matched the quote to the rupee.</blockquote><figcaption><b>Sample customer</b> &middot; Outstation trip</figcaption></figure>
+      <figure><div class="st">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>Self-drive Swift for three days. Car was spotless, deposit refunded the same evening I dropped it off.</blockquote><figcaption><b>Sample customer</b> &middot; Self-drive</figcaption></figure>
+      <figure><div class="st">&#9733;&#9733;&#9733;&#9733;&#9734;</div><blockquote>Flight landed at midnight and the car was already waiting at arrivals. Would be five stars if they had more automatics.</blockquote><figcaption><b>Sample customer</b> &middot; Airport pickup</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <p class="eyebrow">FAQ</p>
+    <h2>Good questions</h2>
+    <div class="faq">
+      <details open><summary>What documents do I need for self-drive?</summary><p>A valid driving licence held for at least one year, plus one government ID (Aadhaar, passport or voter ID). Minimum age is 21.</p></details>
+      <details><summary>How much is the security deposit?</summary><p>It depends on the car and is shown on your quote. It's collected by UPI at pickup and refunded within 24 hours of return, minus any fuel shortfall, extra km or damage &mdash; always with a written breakdown.</p></details>
+      <details><summary>What if I drive more than the km limit?</summary><p>Each car has a free daily km allowance shown on its card. Beyond that, you pay the per-km rate listed &mdash; nothing else.</p></details>
+      <details><summary>Can I cancel?</summary><p>Free cancellation up to 24 hours before pickup. Inside 24 hours, one day's rent is kept from the advance.</p></details>
+      <details><summary>Is fuel included?</summary><p>For self-drive, no &mdash; you get a full tank and return it full. For chauffeur rentals and tour packages, fuel is included.</p></details>
+      <details><summary>Can you take the car to another state?</summary><p>Yes for Meghalaya and Arunachal with a driver (we arrange the permits). Self-drive outside the state needs approval at booking.</p></details>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="book">
+  <div class="wrap">
+    <p class="eyebrow">Contact</p>
+    <h2>Visit, call or message</h2>
+    <div class="contact">
+      <div class="cinfo">
+        <div><b>Phone &amp; WhatsApp</b><span id="cPhone"></span></div>
+        <div><b>Garage</b><span id="cAddr"></span></div>
+        <div><b>Hours</b>Desk open 7 a.m. &ndash; 10 p.m. every day &middot; roadside help 24/7</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;border:0;padding:0;background:none">
+          <button class="btn wa" onclick="openWA(generalMsg())">&#128172; WhatsApp us</button>
+          <a class="btn line" href="#book">Get a quote</a>
+        </div>
+      </div>
+      <div class="map" aria-label="Map placeholder">
+        <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="280" fill="#e6ecf1"/>
+          <path d="M-10 190 C 80 150, 150 230, 230 180 S 360 120, 420 150" stroke="#b9d3ea" stroke-width="26" fill="none"/>
+          <g stroke="#fff" stroke-width="9" fill="none"><path d="M0 70 H400"/><path d="M120 0 V280"/><path d="M280 0 L240 280"/><path d="M0 250 L400 110"/></g>
+          <g stroke="#fff" stroke-width="4" fill="none" opacity=".8"><path d="M0 30 H400"/><path d="M60 0 V280"/><path d="M340 0 V280"/><path d="M0 120 H400"/></g>
+          <g transform="translate(200 105)"><path d="M0 0 C-14 -18 -14 -34 0 -34 C14 -34 14 -18 0 0Z" fill="#c8102e"/><circle cy="-24" r="5" fill="#fff"/></g>
+          <rect x="128" y="112" rx="8" width="144" height="30" fill="#fff"/><text x="200" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="#15191e" font-family="Segoe UI,system-ui,sans-serif">BS Car Rental</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b>BS Car Rental Service</b><br><span class="cityName"></span> &middot; Self-drive &amp; chauffeur cars</div>
+    <div>Demo website &middot; built by Rishi, Guwahati &middot; <a href="index.html" style="color:#fff">more demos</a></div>
+  </div>
+</footer>
+
+<button class="fab" aria-label="Chat on WhatsApp" onclick="openWA(generalMsg())">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg>
+</button>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" onclick="if(event.target===this)closeWA()">
+  <div class="mbox">
+    <div class="mhead"><div class="av">BS</div><div><b id="mTitle">BS Car Rental</b><small>WhatsApp &middot; usually replies in 15 min</small></div></div>
+    <div class="mchat"><div class="bubble" id="mMsg"></div><div class="bubble in" id="mReply"></div></div>
+    <p class="mnote" id="mNote"></p>
+    <div class="mfoot">
+      <button class="btn line" onclick="closeWA()">Close</button>
+      <button class="btn line" onclick="copyMsg()">Copy message</button>
+      <a class="btn wa" id="mSend" target="_blank" rel="noopener">Open WhatsApp</a>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   CONFIG — everything business-specific lives here.
+   Swap these for the real details and the site is live.
+   ============================================================ */
+const CONFIG = {
+  name: "BS Car Rental Service",
+  city: "Guwahati, Assam",
+  whatsapp: "",                     // real number goes here, e.g. "9198XXXXXXXX". Empty = demo mode.
+  phoneDisplay: "+91 XXXXX XXXXX (placeholder)",
+  address: "Garage address goes here &middot; near GS Road (placeholder)",
+  gstRate: 0.12,                    // GST on rent
+  locations: [
+    {id:"garage", name:"Our garage (free)", fee:0},
+    {id:"city",   name:"Doorstep in city", fee:300},
+    {id:"airport",name:"LGBI Airport", fee:600},
+    {id:"rail",   name:"Guwahati Railway Station", fee:300}
+  ],
+  driver: {perDay:900, nightAllowance:300}, // driver charge per day; night allowance if trip crosses 10 p.m.
+  addons: [
+    {id:"zerodep", name:"Zero-dep cover", perDay:250},
+    {id:"child",   name:"Child seat", perDay:150},
+    {id:"carrier", name:"Roof carrier", perDay:200}
+  ]
+};
+
+const CARS = [
+  {id:"alto",   name:"Maruti Alto K10",     cls:"Hatchback", seats:4, trans:"Manual", fuel:"Petrol", rate:1300, km:250, extraKm:8,  deposit:3000, stock:3, color:"#e04848"},
+  {id:"swift",  name:"Maruti Swift",        cls:"Hatchback", seats:5, trans:"Manual", fuel:"Petrol", rate:1600, km:250, extraKm:9,  deposit:4000, stock:4, color:"#2d6fd6"},
+  {id:"baleno", name:"Maruti Baleno AMT",   cls:"Hatchback", seats:5, trans:"Automatic", fuel:"Petrol", rate:1900, km:250, extraKm:10, deposit:5000, stock:1, color:"#8a8f98"},
+  {id:"dzire",  name:"Maruti Dzire",        cls:"Sedan",     seats:5, trans:"Manual", fuel:"CNG",    rate:1800, km:300, extraKm:10, deposit:5000, stock:5, color:"#f2f2f2"},
+  {id:"city",   name:"Honda City",          cls:"Sedan",     seats:5, trans:"Automatic", fuel:"Petrol", rate:2800, km:300, extraKm:13, deposit:8000, stock:2, color:"#1d2a44"},
+  {id:"creta",  name:"Hyundai Creta",       cls:"SUV",       seats:5, trans:"Automatic", fuel:"Diesel", rate:3200, km:300, extraKm:14, deposit:10000, stock:2, color:"#b02a2a"},
+  {id:"scorpio",name:"Mahindra Scorpio-N",  cls:"SUV",       seats:7, trans:"Manual", fuel:"Diesel", rate:3500, km:300, extraKm:15, deposit:10000, stock:0, color:"#2b2f33"},
+  {id:"ertiga", name:"Maruti Ertiga",       cls:"MUV",       seats:7, trans:"Manual", fuel:"CNG",    rate:2400, km:300, extraKm:12, deposit:6000, stock:3, color:"#6b7d8f"},
+  {id:"innova", name:"Toyota Innova Crysta",cls:"MUV",       seats:7, trans:"Manual", fuel:"Diesel", rate:4200, km:300, extraKm:17, deposit:12000, stock:2, color:"#e9e4d8"},
+];
+
+const PACKAGES = [
+  {name:"Shillong day trip", km:"~200 km", days:1, price:4500, car:"Dzire / Ertiga", grad:"#2e7d5b,#0f3d2c", desc:"Umiam Lake, Elephant Falls, Police Bazaar. Back the same night."},
+  {name:"Cherrapunji & Dawki", km:"~450 km", days:2, price:9800, car:"Ertiga / Innova", grad:"#1f6f9b,#0b2f48", desc:"Living root bridges, Nohkalikai, the clear river at Dawki."},
+  {name:"Kaziranga safari", km:"~420 km", days:2, price:8900, car:"Dzire / Ertiga", grad:"#8a6a1f,#3b2b07", desc:"Drop at the park gate for morning jeep safari, back via Nagaon."},
+  {name:"Tawang expedition", km:"~1,100 km", days:6, price:32000, car:"Scorpio / Innova", grad:"#5a4a9b,#221a4a", desc:"Bomdila, Dirang, Sela Pass. Inner Line Permit arranged by us."},
+];
+
+/* ============================================================ */
+const $ = id => document.getElementById(id);
+const inr = n => "₹" + Math.round(n).toLocaleString("en-IN");
+let mode = "self", filter = "All";
+
+function carSVG(color, w=300){
+  // side-profile car, tinted per model
+  return `<svg viewBox="0 0 300 120" width="100%" style="max-width:${w}px;margin:0 auto" aria-hidden="true">
+    <ellipse cx="150" cy="108" rx="130" ry="7" fill="#000" opacity=".12"/>
+    <path d="M22 86 C20 70 30 62 52 58 L92 52 C108 34 128 26 160 26 L196 27 C218 28 234 40 250 54 L270 58 C284 61 290 70 289 86 Z" fill="${color}" stroke="rgba(0,0,0,.25)" stroke-width="1.5"/>
+    <path d="M104 52 C116 38 132 33 158 33 L160 52 Z" fill="#2a3645" opacity=".85"/>
+    <path d="M168 33 L194 33 C212 34 226 43 238 54 L168 54 Z" fill="#2a3645" opacity=".85"/>
+    <path d="M24 74 H288" stroke="rgba(0,0,0,.12)" stroke-width="2"/>
+    <rect x="266" y="62" width="18" height="7" rx="3" fill="#ffd87a"/>
+    <rect x="22" y="64" width="12" height="7" rx="3" fill="#e5484d"/>
+    <g><circle cx="80" cy="88" r="19" fill="#1c2127"/><circle cx="80" cy="88" r="9" fill="#aeb6bf"/></g>
+    <g><circle cx="228" cy="88" r="19" fill="#1c2127"/><circle cx="228" cy="88" r="9" fill="#aeb6bf"/></g>
+  </svg>`;
+}
+
+function driverDays(from, to){
+  const ms = to - from;
+  return Math.max(1, Math.ceil(ms / 864e5));
+}
+function billDays(from, to){
+  // 24-hour blocks, with a 2-hour grace period on the last day
+  const hrs = (to - from) / 36e5;
+  if (hrs <= 24) return 1;
+  const full = Math.floor(hrs / 24), rem = hrs - full * 24;
+  return rem <= 2 ? full : full + 1;
+}
+
+function renderFilters(){
+  const cls = ["All", ...new Set(CARS.map(c => c.cls)), "Automatic", "7 seater"];
+  $("filters").innerHTML = cls.map(c => `<button class="chip ${c===filter?"on":""}" onclick="setFilter('${c}')">${c}</button>`).join("");
+}
+function setFilter(f){ filter = f; renderFilters(); renderCars(); }
+function setMode(m){
+  mode = m; $("sMode").value = m; $("bMode").value = m;
+  document.querySelectorAll(".mode button").forEach(b => b.classList.toggle("on", b.dataset.mode === m));
+  $("fleetLede").innerHTML = m === "self"
+    ? "Prices shown per day. Fuel is on you &mdash; every car is handed over with a full tank and returned full."
+    : `Prices include a professional driver (${inr(CONFIG.driver.perDay)}/day). Fuel billed at actuals, or pick a fixed-price tour below.`;
+  renderCars(); updateQuote();
+}
+function dayRate(c){ return c.rate + (mode === "driver" ? CONFIG.driver.perDay : 0); }
+
+function renderCars(){
+  const list = CARS.filter(c => filter === "All" || c.cls === filter ||
+    (filter === "Automatic" && c.trans === "Automatic") || (filter === "7 seater" && c.seats >= 7));
+  $("cars").innerHTML = list.length ? list.map(c => {
+    const av = c.stock === 0 ? `<span class="avail out">Booked out</span>`
+             : c.stock === 1 ? `<span class="avail low">Last one left</span>`
+             : `<span class="avail">${c.stock} available</span>`;
+    return `<article class="car">
+      <div class="pic"><span class="tag">${c.cls}</span>${av}${carSVG(c.color)}</div>
+      <div class="body">
+        <h3>${c.name}</h3><div class="cls">or similar</div>
+        <div class="specs"><span>${c.seats} seats</span><span>${c.trans}</span><span>${c.fuel}</span><span>${c.km} km/day free</span></div>
+        <div class="price"><b>${inr(dayRate(c))}</b><span>/ day</span><small>Deposit ${inr(c.deposit)}</small></div>
+        <button class="btn ${c.stock ? "red" : "line"}" onclick="pick('${c.id}')">${c.stock ? "Select &amp; get quote" : "Join waitlist"}</button>
+      </div></article>`;
+  }).join("") : `<div class="empty">No cars match that filter.</div>`;
+}
+
+function pick(id){
+  const c = CARS.find(x => x.id === id);
+  if (!c.stock){ openWA(`Hi ${CONFIG.name}, the ${c.name} is booked out on your site. Please add me to the waitlist.`); return; }
+  $("bCar").value = id; updateQuote();
+  $("book").scrollIntoView({behavior:"smooth"});
+}
+
+function fillSelects(){
+  const locOpts = CONFIG.locations.map(l => `<option value="${l.id}">${l.name}${l.fee ? " (+" + inr(l.fee) + ")" : ""}</option>`).join("");
+  $("sLoc").innerHTML = locOpts; $("bLoc").innerHTML = locOpts;
+  $("bCar").innerHTML = CARS.map(c => `<option value="${c.id}" ${c.stock ? "" : "disabled"}>${c.name} — ${c.cls}${c.stock ? "" : " (booked out)"}</option>`).join("");
+  $("bCar").value = "swift";
+  $("addons").innerHTML = CONFIG.addons.map(a => `<label><input type="checkbox" value="${a.id}"> ${a.name} <span style="color:var(--dim)">(${inr(a.perDay)}/day)</span></label>`).join("");
+}
+
+function toLocal(d){ const p = n => String(n).padStart(2,"0");
+  return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`; }
+function fmt(d){ return d.toLocaleString("en-IN",{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"}); }
+
+function readQuote(){
+  const c = CARS.find(x => x.id === $("bCar").value);
+  const from = new Date($("bFrom").value), to = new Date($("bTo").value);
+  const m = $("bMode").value, loc = CONFIG.locations.find(l => l.id === $("bLoc").value);
+  const addons = [...document.querySelectorAll("#addons input:checked")].map(i => CONFIG.addons.find(a => a.id === i.value));
+  if (isNaN(from) || isNaN(to)) return {c, err:"Pick pickup and return times."};
+  if (to <= from) return {c, err:"Return has to be after pickup."};
+  if (from < new Date(Date.now() - 36e5)) return {c, err:"Pickup time is in the past."};
+  const days = billDays(from, to);
+  const rows = [[`Rent · ${days} day${days>1?"s":""} × ${inr(c.rate)}`, c.rate * days]];
+  if (m === "driver"){
+    rows.push([`Driver · ${days} × ${inr(CONFIG.driver.perDay)}`, CONFIG.driver.perDay * days]);
+    const nights = Math.max(0, driverDays(from, to) - 1) + (to.getHours() >= 22 || to.getHours() < 5 ? 1 : 0);
+    if (nights) rows.push([`Driver night allowance · ${nights}`, CONFIG.driver.nightAllowance * nights]);
+  }
+  addons.forEach(a => rows.push([`${a.name} · ${days} × ${inr(a.perDay)}`, a.perDay * days]));
+  if (loc.fee) rows.push([`Delivery & pickup · ${loc.name}`, loc.fee]);
+  const sub = rows.reduce((s, r) => s + r[1], 0);
+  const gst = sub * CONFIG.gstRate;
+  const total = sub + gst;
+  const advance = Math.ceil(total * 0.25 / 100) * 100;
+  return {c, from, to, m, loc, addons, days, rows, gst, total, advance};
+}
+
+function updateQuote(){
+  const q = readQuote();
+  $("qCar").textContent = q.c.name;
+  if (q.err){
+    $("qWhen").textContent = $("bMode").value === "driver" ? "With driver" : "Self-drive";
+    $("qRows").innerHTML = ""; $("qNote").textContent = "";
+    $("qErr").textContent = q.err; $("qErr").classList.add("show"); return;
+  }
+  $("qErr").classList.remove("show");
+  $("qWhen").textContent = `${fmt(q.from)} → ${fmt(q.to)} · ${q.m === "driver" ? "with driver" : "self-drive"}`;
+  $("qRows").innerHTML = q.rows.map(r => `<div><span>${r[0]}</span><span>${inr(r[1])}</span></div>`).join("")
+    + `<div><span>GST ${Math.round(CONFIG.gstRate*100)}%</span><span>${inr(q.gst)}</span></div>`
+    + `<div class="tot"><span>Total</span><span>${inr(q.total)}</span></div>`;
+  const kmFree = q.c.km * q.days;
+  $("qNote").innerHTML = (q.m === "self"
+      ? `Includes ${kmFree.toLocaleString("en-IN")} km, then ${inr(q.c.extraKm)}/km. Refundable deposit ${inr(q.c.deposit)} at pickup.`
+      : `Includes ${kmFree.toLocaleString("en-IN")} km. Fuel, tolls &amp; parking billed at actuals.`)
+    + ` Advance to confirm: <b style="color:#fff">${inr(q.advance)}</b>.`;
+}
+
+function submitBooking(){
+  const q = readQuote();
+  if (q.err){ toast(q.err); return; }
+  const name = $("bName").value.trim(), phone = $("bPhone").value.trim();
+  if (!name || phone.replace(/\D/g,"").length < 10){ toast("Add your name and a 10-digit mobile number."); return; }
+  const lines = [
+    `Hi ${CONFIG.name}, I'd like to book:`,
+    ``,
+    `🚗 ${q.c.name} (${q.m === "driver" ? "with driver" : "self-drive"})`,
+    `📅 ${fmt(q.from)} → ${fmt(q.to)} (${q.days} day${q.days>1?"s":""})`,
+    `📍 Pickup: ${q.loc.name}`,
+    q.addons.length ? `➕ ${q.addons.map(a => a.name).join(", ")}` : null,
+    `💰 Quoted total: ${inr(q.total)} incl. GST`,
+    ``,
+    `Name: ${name}`, `Mobile: ${phone}`,
+    $("bNote").value.trim() ? `Note: ${$("bNote").value.trim()}` : null
+  ].filter(l => l !== null);
+  openWA(lines.join("\n"), q);
+}
+
+function generalMsg(){ return `Hi ${CONFIG.name}, I'd like to rent a car. Can you help?`; }
+
+let lastMsg = "";
+function openWA(msg, q){
+  lastMsg = msg;
+  $("mMsg").textContent = msg;
+  $("mReply").textContent = q
+    ? `Thanks! ${q.c.name} is available for those dates ✅\nPlease pay the ${inr(q.advance)} advance on this UPI link to confirm and send a photo of your driving licence.`
+    : `Hello! 👋 Tell us your dates and pickup point and we'll send the best available car and price.`;
+  const live = !!CONFIG.whatsapp;
+  $("mSend").href = live ? `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}` : "#";
+  $("mSend").style.display = live ? "" : "none";
+  $("mNote").textContent = live ? "" : "Demo mode: on the live site this opens WhatsApp with the message ready to send to the business number. The reply shown is an example.";
+  $("modal").classList.add("show");
+}
+function closeWA(){ $("modal").classList.remove("show"); }
+function copyMsg(){
+  (navigator.clipboard ? navigator.clipboard.writeText(lastMsg) : Promise.reject())
+    .then(() => toast("Message copied"), () => toast("Couldn't copy — select the text instead"));
+}
+function toast(t){ const el = $("toast"); el.textContent = t; el.classList.add("show"); clearTimeout(toast.h); toast.h = setTimeout(() => el.classList.remove("show"), 2400); }
+
+function applySearch(){
+  $("bLoc").value = $("sLoc").value; $("bFrom").value = $("sFrom").value; $("bTo").value = $("sTo").value;
+  setMode($("sMode").value);
+  $("fleet").scrollIntoView({behavior:"smooth"});
+}
+
+function renderPackages(){
+  $("packages").innerHTML = PACKAGES.map(p => `<div class="pkc">
+    <div class="top" style="background:linear-gradient(135deg,${p.grad})"><b>${p.name}</b></div>
+    <div class="in">${p.desc}<br><span style="font-size:12.5px">${p.days} day${p.days>1?"s":""} · ${p.km} · ${p.car}</span>
+      <strong>${inr(p.price)} <span style="font-size:12.5px;color:var(--dim);font-weight:400">all-inclusive</span></strong>
+      <a href="#" onclick="event.preventDefault();openWA('Hi ${CONFIG.name}, I\\'m interested in the ${p.name} package (${inr(p.price)}). What dates are free?')">Enquire &rarr;</a></div>
+  </div>`).join("");
+}
+
+function init(){
+  document.querySelectorAll(".cityName").forEach(e => e.textContent = CONFIG.city);
+  $("cPhone").innerHTML = CONFIG.phoneDisplay; $("cAddr").innerHTML = CONFIG.address;
+  $("heroCar").innerHTML = carSVG("#c8102e", 460).replace(/^<svg[^>]*>|<\/svg>$/g, "");
+  $("heroCar").setAttribute("viewBox", "0 0 300 120");
+  $("tCars").textContent = CARS.reduce((s, c) => s + Math.max(c.stock, 1), 0);
+  fillSelects(); renderFilters(); renderCars(); renderPackages();
+
+  // default dates: tomorrow 9 a.m. → day after, 9 a.m.
+  const f = new Date(); f.setDate(f.getDate() + 1); f.setHours(9, 0, 0, 0);
+  const t = new Date(f); t.setDate(t.getDate() + 2);
+  [$("sFrom"), $("bFrom")].forEach(e => { e.value = toLocal(f); e.min = toLocal(new Date()); });
+  [$("sTo"), $("bTo")].forEach(e => { e.value = toLocal(t); e.min = toLocal(new Date()); });
+
+  ["bCar","bFrom","bTo","bLoc","bMode"].forEach(id => $(id).addEventListener("input", updateQuote));
+  $("bMode").addEventListener("change", () => setMode($("bMode").value));
+  $("addons").addEventListener("change", updateQuote);
+  document.querySelectorAll(".links a").forEach(a => a.addEventListener("click", () => $("nav").classList.remove("open")));
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeWA(); });
+  updateQuote();
+}
+init();
+</script>
+</body>
+</html>
