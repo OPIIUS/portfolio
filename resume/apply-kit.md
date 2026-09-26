@@ -4,7 +4,7 @@ Everything below is paste-ready. Change only the **bold** bits.
 
 Your two links, used everywhere:
 
-- Portfolio: https://opiius.github.io/portfolio/
+- Portfolio: https://opiius.github.io/portfolio/profile.html
 - GitHub: https://github.com/OPIIUS
 
 ---
@@ -20,7 +20,7 @@ Your two links, used everywhere:
 >
 > Self-taught, full-time available, remote or Guwahati.
 >
-> Portfolio: opiius.github.io/portfolio
+> Portfolio: opiius.github.io/portfolio/profile.html
 
 **LinkedIn headline** (the one line people actually read):
 
@@ -36,7 +36,7 @@ Your two links, used everywhere:
 >
 > I'm applying for the **[role]** position.
 >
-> Rather than describe my experience, here it is running: opiius.github.io/portfolio
+> Rather than describe my experience, here it is running: opiius.github.io/portfolio/profile.html
 >
 > Six projects, all built and deployed by me. The most relevant to you is probably **[pick one —
 > see the cheat sheet below]**.
@@ -69,7 +69,7 @@ Short. Do not paste a CV into a DM.
 
 > Hi **[name]**, I'm a fullstack developer in Guwahati — Next.js, React and Python automation.
 >
-> I have 6 live projects you can click through here: opiius.github.io/portfolio
+> I have 6 live projects you can click through here: opiius.github.io/portfolio/profile.html
 >
 > Do you ever hand off overflow work? I'm happy to start with one small paid task so you can see the
 > quality before anything bigger.
@@ -94,7 +94,7 @@ Their mistake is talking about themselves. Yours won't.
 >
 > I can start today and show you something working within **[X]** days before you pay the rest.
 >
-> More of my work: opiius.github.io/portfolio
+> More of my work: opiius.github.io/portfolio/profile.html
 
 ---
 
@@ -211,7 +211,7 @@ Never lie. A false credential can get you fired years later, and it is the one t
 non-issue into a real problem. Say it plainly and move the conversation to what you can do.
 
 > I finished school at class 10 and taught myself to code. I've been building and shipping since —
-> here's what's live: opiius.github.io/portfolio
+> here's what's live: opiius.github.io/portfolio/profile.html
 >
 > Happy to do a paid trial task so you can judge the work directly.
 
