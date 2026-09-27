@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0071e3">
+<title>Tour Desk</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+
+<div id="boot" class="loading">Loading Tour Desk…</div>
+
+<!-- Sign in -->
+<div id="login" class="authwrap" hidden>
+  <form class="card authcard" data-form="login" novalidate>
+    <div class="logo">TD</div>
+    <h1>Sign in</h1>
+    <p class="lead" id="loginAgency">Tour Desk</p>
+    <div class="f"><label for="liEmail">Email</label><input id="liEmail" name="email" type="email" autocomplete="username" required></div>
+    <div class="f"><label for="liPass">Password</label><input id="liPass" name="password" type="password" autocomplete="current-password" required></div>
+    <p class="err" id="loginErr" role="alert"></p>
+    <button class="btn pri" type="submit">Sign in</button>
+    <p class="hint">Forgot your password? Ask the owner of your account to reset it in Settings → Users.</p>
+  </form>
+</div>
+
+<!-- First-time setup -->
+<div id="setup" class="authwrap" hidden>
+  <form class="card authcard" data-form="setup" novalidate>
+    <div class="logo">TD</div>
+    <h1>Set up Tour Desk</h1>
+    <p class="lead">Create the owner account. You can add staff later.</p>
+    <div class="f"><label for="suCode">Setup code</label><input id="suCode" name="setup_code" autocomplete="off" required>
+      <p class="hint">Printed in the server log the first time Tour Desk starts.</p></div>
+    <div class="f"><label for="suAgency">Agency name</label><input id="suAgency" name="agency_name" required></div>
+    <div class="f"><label for="suName">Your name</label><input id="suName" name="name" autocomplete="name" required></div>
+    <div class="f"><label for="suEmail">Email</label><input id="suEmail" name="email" type="email" autocomplete="username" required></div>
+    <div class="f"><label for="suPass">Password</label><input id="suPass" name="password" type="password" autocomplete="new-password" minlength="8" required>
+      <p class="hint">At least 8 characters.</p></div>
+    <p class="err" id="setupErr" role="alert"></p>
+    <button class="btn pri" type="submit">Create owner account</button>
+  </form>
+</div>
+
+<!-- App -->
+<div id="shell" hidden>
+  <header class="top">
+    <div class="logo" id="agencyMark">TD</div>
+    <div><b id="agencyName">Tour Desk</b><small id="agencyCity">Tour desk</small></div>
+    <div class="sp"></div>
+    <div class="who"><span id="whoName"></span><br><a href="#/settings/account">Account</a></div>
+  </header>
+  <div class="app">
+    <nav class="side" id="nav" aria-label="Main">
+      <a href="#/today" data-nav="today">Today</a>
+      <a href="#/enquiries" data-nav="enquiries">Enquiries <span class="ct" id="ctEnq"></span></a>
+      <a href="#/quote/new" data-nav="quote-new">New quote</a>
+      <a href="#/quotes" data-nav="quotes">Quotes</a>
+      <a href="#/trips" data-nav="trips">Trips</a>
+      <a href="#/fleet" data-nav="fleet">Vehicles &amp; drivers</a>
+      <a href="#/money" data-nav="money">Payments</a>
+      <div class="gap"></div>
+      <a href="#/settings" data-nav="settings">Settings</a>
+    </nav>
+    <main id="view" tabindex="-1"></main>
+  </div>
+</div>
+
+<div id="modalRoot"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="/pricing.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

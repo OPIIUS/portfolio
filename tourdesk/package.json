@@ -1,0 +1,17 @@
+{
+  "name": "tourdesk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tour Desk: enquiries, quotations, trips, vehicles and payments for tour agencies. By OPIIUS.",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/*.test.js",
+    "reset-password": "node scripts/reset-password.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0"
+  }
+}

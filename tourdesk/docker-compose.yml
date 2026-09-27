@@ -1,0 +1,33 @@
+# One Tour Desk per agency. Set DOMAIN in .env, then: docker compose up -d
+services:
+  tourdesk:
+    build: .
+    restart: unless-stopped
+    environment:
+      - TRUST_PROXY=1
+      - SETUP_CODE=${SETUP_CODE:-}
+      - TZ_AGENCY=${TZ_AGENCY:-Asia/Kolkata}
+      - BACKUP_KEEP=${BACKUP_KEEP:-14}
+    volumes:
+      - ./data:/data
+    expose:
+      - "3000"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN:?Set DOMAIN in .env, e.g. desk.brahmaputratrails.in}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - tourdesk
+
+volumes:
+  caddy_data:
+  caddy_config:
