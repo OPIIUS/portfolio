@@ -389,7 +389,7 @@ function mkTrip(name,phone,pax,startOff,pkgId,cat,vid,paidPct,hotelsOk,supplierP
     cat:cat,rooms:Math.ceil(pax/2),veh:vid,extra:p.extra,markup:15,gst:5,pkg:p.name};
   var pr=price(q);
   return {id:"T-"+(SEQ.t++),name:name,phone:phone,pax:pax,start:q.start,days:q.days,cat:cat,rooms:q.rooms,veh:vid,
-    extra:q.extra,markup:15,gst:5,pkg:p.name,total:pr.total,cost:pr.cost,paid:Math.round(pr.total*paidPct/100/100)*100,
+    extra:q.extra,markup:15,gst:5,pkg:p.name,total:pr.total,cost:pr.cost,paid:paidPct>=100?pr.total:Math.round(pr.total*paidPct/100/100)*100,
     hotelsOk:hotelsOk,supplierPaid:supplierPaid,status:"Confirmed"};
 }
 function seed(){
