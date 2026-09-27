@@ -63,6 +63,37 @@
   .plan{padding:40px 22px}
   .plan .cols{grid-template-columns:1fr}
 }
+
+/* demos */
+.band{padding:40px 0 110px}
+.band .head{text-align:center;margin-bottom:34px}
+.band .head .sub{margin-bottom:0}
+.tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:0 auto 30px;padding:5px;border-radius:980px;background:var(--bg-2);width:max-content;max-width:100%}
+.tabs button{border:0;background:none;font:inherit;font-size:15px;padding:9px 18px;border-radius:980px;cursor:pointer;color:var(--ink-2);white-space:nowrap}
+.tabs button[aria-selected="true"]{background:var(--bg-3);color:var(--ink);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.dpanel{display:grid;grid-template-columns:1.45fr 1fr;gap:40px;align-items:center}
+.dpanel video{width:100%;aspect-ratio:16/9;display:block;border-radius:22px;background:#000;box-shadow:var(--shadow)}
+.dpanel h3{font-size:30px;line-height:1.1;margin:0 0 8px;letter-spacing:-.015em}
+.dpanel .len{font-size:14px;color:var(--ink-3);margin:0 0 18px}
+.dpanel ul{list-style:none;margin:0 0 26px;padding:0}
+.dpanel li{padding:10px 0 10px 30px;position:relative;border-top:1px solid var(--line);font-size:16px;color:var(--ink-2)}
+.dpanel li::before{content:"\2713";position:absolute;left:4px;color:var(--accent);font-weight:700}
+.dpanel .cta{justify-content:flex-start}
+.enq{max-width:860px;margin:56px auto 0;background:var(--bg-2);border-radius:28px;padding:36px 36px 30px}
+.enq h3{margin:0 0 6px;font-size:24px;letter-spacing:-.01em}
+.enq p.s{margin:0 0 20px;color:var(--ink-3);font-size:15px}
+.enq form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.enq label{display:block;font-size:13px;color:var(--ink-3);margin-bottom:6px}
+.enq input,.enq select,.enq textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--bg-3);border:1px solid var(--line);border-radius:12px;padding:12px 14px;outline:0}
+.enq input:focus,.enq select:focus,.enq textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,.18)}
+.enq .full{grid-column:1/-1}
+.enq textarea{min-height:84px;resize:vertical}
+.enq .row2{grid-column:1/-1;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.enq .note{margin:0;text-align:left;font-size:13px}
+.enq .err{color:#d70015;font-size:13px;margin:0}.enq .err:empty{display:none}
+@media(max-width:860px){.dpanel{grid-template-columns:1fr;gap:24px}}
+@media(max-width:560px){.tabs{display:grid;grid-template-columns:1fr 1fr;width:100%;border-radius:20px}.tabs button{border-radius:14px}}
+@media(max-width:640px){.enq{padding:26px 18px}.enq form{grid-template-columns:1fr}.dpanel h3{font-size:24px}.band{padding:24px 0 72px}}
 </style>
 </head>
 <body>
@@ -71,6 +102,7 @@
   <div class="wrap">
     <a class="logo" href="./">OPII<i>US</i></a>
     <ul>
+      <li><a href="#demos">Demos</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#price">Price</a></li>
       <li><a href="#faq">FAQ</a></li>
@@ -87,11 +119,53 @@
     <p class="lede">OPIIUS builds rental dashboards, quotation systems, websites, WhatsApp bots and automation
       for any repetitive work in your business. One simple price for every service.</p>
     <div class="cta">
-      <a class="btn btn-primary" href="#services">See what we build</a>
-      <a class="btn btn-ghost" href="#price">₹6,000 setup · ₹3,000/month</a>
+      <a class="btn btn-primary" href="#demos">Watch the demos</a>
+      <a class="btn btn-ghost" href="#enquire">Enquire now</a>
     </div>
   </div>
 </header>
+
+<div class="band" id="demos">
+  <div class="wrap">
+    <div class="head">
+      <p class="kicker">Live demos</p>
+      <h2>See it working. Then try it yourself.</h2>
+      <p class="sub">Pick your business. Watch the 30-second demo, open the real dashboard, and enquire, all from here.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Choose a business">
+      <button role="tab" id="t-bike" aria-controls="demo-panel" aria-selected="true" data-k="bike">Bike rental</button>
+      <button role="tab" id="t-car" aria-controls="demo-panel" aria-selected="false" data-k="car">Car rental</button>
+      <button role="tab" id="t-tour" aria-controls="demo-panel" aria-selected="false" data-k="tour">Tour operator</button>
+      <button role="tab" id="t-tent" aria-controls="demo-panel" aria-selected="false" data-k="tent">Tent house</button>
+    </div>
+    <div class="dpanel" id="demo-panel" role="tabpanel" aria-labelledby="t-bike">
+      <video id="dVideo" controls playsinline preload="metadata" poster="demos/media/bike.jpg"></video>
+      <div>
+        <h3 id="dTitle">Bike &amp; scooty rentals</h3>
+        <p class="len">30-second demo · sample data</p>
+        <ul id="dList"></ul>
+        <div class="cta">
+          <a class="btn btn-primary" id="dTry" href="demos/bike-desk.html" target="_blank" rel="noopener">Try it live</a>
+          <a class="btn btn-ghost" id="dEnq" href="#enquire">Enquire about this</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="enq" id="enquire">
+      <h3>Want this for your business?</h3>
+      <p class="s">₹6,000 setup + ₹3,000/month, set up with your own data. Send your details and we'll reply the same day.</p>
+      <form id="enqForm" novalidate>
+        <div><label for="eName">Your name</label><input id="eName" autocomplete="name" required></div>
+        <div><label for="ePhone">Phone / WhatsApp</label><input id="ePhone" type="tel" inputmode="tel" autocomplete="tel" required></div>
+        <div class="full"><label for="eBiz">Your business</label>
+          <select id="eBiz"><option value="bike">Bike &amp; scooty rental</option><option value="car">Self-drive car rental</option><option value="tour">Tour operator / travel agency</option><option value="tent">Tent house / event decorator</option><option value="other">Something else</option></select></div>
+        <div class="full"><label for="eMsg">Anything to add? (optional)</label><textarea id="eMsg" placeholder="e.g. 15 bikes, 2 branches"></textarea></div>
+        <div class="row2"><button class="btn btn-primary" type="submit">Send on WhatsApp</button><p class="note">Opens WhatsApp with your message ready. Or call <a href="tel:+918638830682">86388 30682</a>.</p></div>
+        <p class="err full" id="eErr" role="alert"></p>
+      </form>
+    </div>
+  </div>
+</div>
 
 <section id="services">
   <div class="wrap">
@@ -106,7 +180,8 @@
         <p>One screen for your bikes, cars, rooms or equipment: what's out, what's free, who's due back and what's been paid.</p>
         <ul><li>Bookings and availability calendar</li><li>Customer and ID records</li><li>Due-back and payment alerts</li></ul>
         <a href="demos/bike-desk.html">Try a bike rental dashboard</a>
-        <a href="demos/media/bike-rental-dashboard-demo.mp4" style="margin-top:8px">Watch the 2-minute video</a>
+        <a href="demos/car-desk.html" style="margin-top:8px">Try a car rental dashboard</a>
+        <a href="#demo-bike" style="margin-top:8px">Watch the demos</a>
       </div>
 
       <div class="svc">
@@ -140,7 +215,7 @@
         <ul><li>Quotes in 2 minutes, with your margin shown</li><li>Bookings, drivers and vehicles on one calendar</li><li>Payments due and profit per job</li></ul>
         <a href="demos/tour-desk.html">Try a tour agency dashboard</a>
         <a href="demos/event-desk.html" style="margin-top:8px">Try a tent house dashboard</a>
-        <a href="demos/media/tent-house-dashboard-demo.mp4" style="margin-top:8px">Watch the 2-minute video</a>
+        <a href="#demo-tour" style="margin-top:8px">Watch the demos</a>
       </div>
 
       <div class="svc">
@@ -226,5 +301,36 @@
   <div class="wrap">© OPIIUS · Guwahati, Assam · <a href="profile.html">About the founder</a></div>
 </footer>
 
+<script>
+(function(){
+  var D={
+    bike:{t:"Bike &amp; scooty rentals",u:"demos/bike-desk.html",l:["See every bike that is out, due back or late","Never book the same bike to two riders","Late fees and deposit refunds worked out for you"],n:"bike and scooty rental"},
+    car:{t:"Self-drive car rentals",u:"demos/car-desk.html",l:["Every car, pickup and return on one screen","Blocks double bookings and suggests the next free date","Deposits, late fees and refunds calculated"],n:"self-drive car rental"},
+    tour:{t:"Tour operators",u:"demos/tour-desk.html",l:["Package quotes in under 2 minutes, with your margin","Cars and drivers on one calendar, no double booking","Who still owes you, and profit on every trip"],n:"tour and travel agency"},
+    tent:{t:"Tent houses &amp; decorators",u:"demos/event-desk.html",l:["Quotes checked against your chairs, pandals and generators","Stock calendar for every item, every day","Advances, balances and labour payments in one place"],n:"tent house and decoration business"}
+  };
+  var cur="bike",v=document.getElementById("dVideo"),tabs=document.querySelectorAll(".tabs button");
+  var EXT=v.canPlayType('video/mp4; codecs="avc1.4D401F, mp4a.40.2"')?".mp4":".webm";
+  function show(k,play){if(!D[k])return;cur=k;var d=D[k];
+    tabs.forEach(function(b){var on=b.dataset.k===k;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;});
+    document.getElementById("demo-panel").setAttribute("aria-labelledby","t-"+k);
+    v.pause();v.poster="demos/media/"+k+".jpg";v.src="demos/media/"+k+EXT;v.load();
+    document.getElementById("dTitle").innerHTML=d.t;document.getElementById("dTry").href=d.u;
+    document.getElementById("dList").innerHTML=d.l.map(function(x){return "<li>"+x+"</li>";}).join("");
+    document.getElementById("eBiz").value=k;
+    if(play){var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}}
+  tabs.forEach(function(b,i){b.addEventListener("click",function(){show(b.dataset.k,false);});
+    b.addEventListener("keydown",function(e){var n=e.key==="ArrowRight"?1:e.key==="ArrowLeft"?-1:0;if(!n)return;var j=(i+n+tabs.length)%tabs.length;tabs[j].focus();show(tabs[j].dataset.k,false);});});
+  function fromHash(){var m=location.hash.match(/^#demo-(bike|car|tour|tent)$/);if(m){show(m[1],false);document.getElementById("demos").scrollIntoView({behavior:"smooth"});}}
+  window.addEventListener("hashchange",fromHash);show("bike",false);fromHash();
+  document.getElementById("dEnq").addEventListener("click",function(){document.getElementById("eBiz").value=cur;setTimeout(function(){document.getElementById("eName").focus({preventScroll:true});},500);});
+  document.getElementById("enqForm").addEventListener("submit",function(e){e.preventDefault();
+    var n=document.getElementById("eName").value.trim(),p=document.getElementById("ePhone").value.trim(),b=document.getElementById("eBiz"),m=document.getElementById("eMsg").value.trim(),err=document.getElementById("eErr");
+    if(!n||p.replace(/\D/g,"").length<10){err.textContent=!n?"Please add your name.":"Please add a 10-digit phone number.";(!n?document.getElementById("eName"):document.getElementById("ePhone")).focus();return;}
+    err.textContent="";var biz=b.value==="other"?"business":(D[b.value]?D[b.value].n:"business");
+    var t="Hi OPIIUS, I'm "+n+" ("+p+"). I run a "+biz+" and I'd like to see the dashboard with my own data."+(m?" "+m:"");
+    window.open("https://wa.me/918638830682?text="+encodeURIComponent(t),"_blank","noopener");});
+})();
+</script>
 </body>
 </html>
