@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tour Desk — Operations Dashboard</title>
+<meta name="description" content="A working operations dashboard for tour and travel agencies: enquiries, 2-minute quotations, trips, vehicles and drivers, and payments on one screen. Built by OPIIUS, Guwahati.">
+<style>
+:root{
+  --bg:#f5f5f7; --panel:#ffffff; --panel2:#fbfbfd; --line:#e3e3e8; --line2:#d2d2d7;
+  --ink:#1d1d1f; --ink2:#424245; --dim:#6e6e73;
+  --blue:#0071e3; --blueS:rgba(0,113,227,.10); --green:#1a7f37; --greenS:rgba(26,127,55,.10);
+  --amber:#b25000; --amberS:rgba(178,80,0,.10); --red:#c9302c; --redS:rgba(201,48,44,.10);
+  --violet:#6e44d4; --violetS:rgba(110,68,212,.10);
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#000; --panel:#1c1c1e; --panel2:#232326; --line:#2c2c2e; --line2:#3a3a3c;
+    --ink:#f5f5f7; --ink2:#d2d2d7; --dim:#a1a1a6;
+    --blue:#2997ff; --blueS:rgba(41,151,255,.16); --green:#30d158; --greenS:rgba(48,209,88,.14);
+    --amber:#ff9f0a; --amberS:rgba(255,159,10,.14); --red:#ff453a; --redS:rgba(255,69,58,.14);
+    --violet:#bf5af2; --violetS:rgba(191,90,242,.16);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Inter,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+a{color:var(--blue);text-decoration:none}
+button{font-family:inherit}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:10px 20px;
+  background:color-mix(in srgb,var(--panel) 80%,transparent);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.logo{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:14px;
+  background:linear-gradient(135deg,#0071e3,#6e44d4)}
+.top b{display:block;font-size:15px}
+.top small{display:block;color:var(--dim);font-size:12px}
+.top .sp{margin-left:auto}
+.top .by{font-size:12px;color:var(--dim)}
+.top .by a{font-weight:600}
+.reset{font-size:12px;color:var(--dim);background:none;border:1px solid var(--line2);border-radius:980px;padding:5px 11px;cursor:pointer}
+.reset:hover{color:var(--ink)}
+
+/* layout */
+.app{display:grid;grid-template-columns:210px 1fr;min-height:calc(100vh - 55px)}
+nav.side{padding:18px 12px;border-right:1px solid var(--line);background:var(--panel2)}
+nav.side button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;color:var(--ink2);
+  padding:9px 12px;border-radius:10px;font-size:14px;cursor:pointer;text-align:left}
+nav.side button:hover{background:var(--line)}
+nav.side button.on{background:var(--blue);color:#fff}
+nav.side .ct{margin-left:auto;font-size:11px;font-weight:600;background:var(--redS);color:var(--red);border-radius:980px;padding:1px 7px}
+nav.side button.on .ct{background:rgba(255,255,255,.25);color:#fff}
+nav.side .hint{margin:18px 8px 0;font-size:12px;color:var(--dim);line-height:1.5}
+main{padding:24px 28px 60px;min-width:0}
+h1{font-size:28px;letter-spacing:-.02em;margin:0 0 4px}
+.lead{color:var(--dim);margin:0 0 20px}
+h2{font-size:17px;margin:0 0 12px;letter-spacing:-.01em}
+.view{display:none}.view.on{display:block}
+
+/* cards */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 18px;box-shadow:var(--shadow)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:18px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 14px;box-shadow:var(--shadow)}
+.kpi b{display:block;font-size:24px;letter-spacing:-.02em;font-weight:700}
+.kpi span{font-size:12px;color:var(--dim)}
+.kpi.warn b{color:var(--red)}
+.stack>*+*{margin-top:16px}
+
+/* lists and tables */
+.row{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row .m{flex:1;min-width:0}
+.row .m b{display:block;font-size:14px}
+.row .m span{display:block;font-size:12.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis}
+.row .m span.pill{display:inline-block;margin-right:4px}
+.row .m span.inl{display:inline}
+.empty{color:var(--dim);font-size:13px;padding:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11.5px;color:var(--dim);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* pills and buttons */
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:980px;white-space:nowrap}
+.p-blue{background:var(--blueS);color:var(--blue)} .p-green{background:var(--greenS);color:var(--green)}
+.p-amber{background:var(--amberS);color:var(--amber)} .p-red{background:var(--redS);color:var(--red)}
+.p-violet{background:var(--violetS);color:var(--violet)} .p-grey{background:var(--line);color:var(--ink2)}
+.btn{border:1px solid var(--line2);background:var(--panel);color:var(--ink);padding:7px 13px;border-radius:980px;
+  font-size:13px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:500}
+.btn.pri:hover{filter:brightness(1.08);color:#fff}
+.btn.ok{background:var(--green);border-color:var(--green);color:#fff}
+.btn.sm{padding:4px 10px;font-size:12px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+select,input{font-family:inherit;font-size:13.5px;color:var(--ink);background:var(--panel2);border:1px solid var(--line2);
+  border-radius:10px;padding:8px 10px;outline:0;min-width:0}
+select:focus,input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blueS)}
+label{display:block;font-size:12px;color:var(--dim);margin-bottom:5px;font-weight:500}
+.f{display:flex;flex-direction:column;min-width:0}
+.f select,.f input{width:100%}
+.fgrid.c3{grid-template-columns:2fr 1fr 1fr}.fgrid.c3e{grid-template-columns:repeat(3,1fr)}
+.kpis.k4{grid-template-columns:repeat(4,1fr)}
+.fgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid var(--line2);background:var(--panel);border-radius:980px;padding:5px 12px;font-size:12.5px;cursor:pointer;color:var(--ink2)}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.alert{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:12px;font-size:13px;margin-top:8px}
+.alert.r{background:var(--redS);color:var(--red)} .alert.a{background:var(--amberS);color:var(--amber)}
+.alert.g{background:var(--greenS);color:var(--green)}
+.alert b{color:inherit}
+
+/* quote builder */
+.qb{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;align-items:start}
+.days .d{display:grid;grid-template-columns:44px 1.6fr 1fr 1.4fr 28px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.days .d:first-child{border-top:0}
+.days .d .n{font-weight:700;color:var(--blue);font-size:13px}
+.days .d input,.days .d select{width:100%}
+.x{border:0;background:none;color:var(--dim);cursor:pointer;font-size:18px;line-height:1}
+.x:hover{color:var(--red)}
+.sum{position:sticky;top:76px}
+.sum .l{display:flex;justify-content:space-between;padding:6px 0;font-size:13.5px;color:var(--ink2)}
+.sum .l.t{border-top:1px solid var(--line);margin-top:6px;padding-top:12px;font-size:17px;font-weight:700;color:var(--ink)}
+.sum .l.pp{font-size:13px;color:var(--dim)}
+.sum .l.pr{color:var(--green);font-weight:600}
+.timer{font-size:12px;color:var(--dim);margin-top:10px}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:980px;padding:2px;background:var(--panel2)}
+.seg button{border:0;background:none;padding:5px 12px;border-radius:980px;font-size:12.5px;cursor:pointer;color:var(--ink2)}
+.seg button.on{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+
+/* quotation preview */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-start;justify-content:center;
+  padding:40px 16px;z-index:50;overflow-y:auto}
+.modal.on{display:flex}
+.sheet{background:#fff;color:#1d1d1f;width:100%;max-width:720px;border-radius:18px;padding:34px 36px;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.sheet .hd{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #0071e3;padding-bottom:14px;margin-bottom:18px}
+.sheet .hd b{font-size:20px}
+.sheet .hd small{display:block;color:#6e6e73;font-size:12px}
+.sheet h3{font-size:14px;margin:18px 0 8px;color:#0071e3;text-transform:uppercase;letter-spacing:.05em}
+.sheet table td,.sheet table th{border-color:#e3e3e8;color:#1d1d1f}
+.sheet .tot{display:flex;justify-content:space-between;font-size:18px;font-weight:700;border-top:2px solid #1d1d1f;padding-top:10px;margin-top:10px}
+.sheet ul{margin:0;padding-left:18px;font-size:13px;color:#424245}
+.sheet .foot{margin-top:22px;font-size:12px;color:#6e6e73}
+
+/* fleet grid */
+.fleet td.c{padding:4px;text-align:center;min-width:44px}
+.fleet .busy{display:block;border-radius:7px;padding:5px 2px;font-size:11px;font-weight:600;background:var(--blueS);color:var(--blue)}
+.fleet .busy.on{background:var(--greenS);color:var(--green)}
+.fleet .free{display:block;border-radius:7px;padding:5px 2px;font-size:11px;color:var(--dim);background:var(--panel2)}
+.fleet th.today{color:var(--blue)}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);
+  padding:11px 18px;border-radius:980px;font-size:13.5px;opacity:0;transition:.25s;z-index:60;pointer-events:none;max-width:90vw}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.qb{grid-template-columns:1fr}.sum{position:static}}
+@media(max-width:760px){
+  .app{grid-template-columns:1fr}
+  nav.side{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;border-right:0;border-bottom:1px solid var(--line);position:sticky;top:55px;z-index:15}
+  nav.side button{width:auto;white-space:nowrap;padding:7px 12px}
+  nav.side .hint{display:none}
+  main{padding:18px 16px 60px}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .fgrid,.fgrid.c3,.fgrid.c3e{grid-template-columns:1fr 1fr}
+  .fgrid.c3 .f:first-child{grid-column:1/-1}
+  .kpis.k4{grid-template-columns:repeat(2,1fr)}
+  .card{padding:16px 14px}
+  .days .d{grid-template-columns:34px 1fr 28px;grid-template-areas:"n t x" "n c c" "n h h"}
+  .days .d .n{grid-area:n}.days .d .dt{grid-area:t}.days .d .dc{grid-area:c}.days .d .dh{grid-area:h}.days .d .x{grid-area:x}
+  .top .by{display:none}
+  .sheet{padding:24px 20px}
+}
+@media print{body *{visibility:hidden}.modal{position:static;background:none;padding:0}.sheet,.sheet *{visibility:visible}.sheet{position:absolute;left:0;top:0;box-shadow:none}.sheet .btns{display:none}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo">BT</div>
+  <div><b>Brahmaputra Trails</b><small>Tour desk · Guwahati</small></div>
+  <div class="sp"></div>
+  <span class="by">Demo built by <a href="../">OPIIUS</a> · sample data</span>
+  <button class="reset" onclick="resetDemo()">Reset demo</button>
+</header>
+
+<div class="app">
+  <nav class="side" id="nav">
+    <button data-v="today" class="on">Today</button>
+    <button data-v="enq">Enquiries <span class="ct" id="ctEnq"></span></button>
+    <button data-v="quote">New quote</button>
+    <button data-v="trips">Trips</button>
+    <button data-v="fleet">Vehicles &amp; drivers</button>
+    <button data-v="pay">Payments</button>
+    <p class="hint">Everything here is live. Build a quote, confirm it, and watch the trip, the vehicle calendar and the payments update. Changes are saved in this browser.</p>
+  </nav>
+
+  <main>
+    <!-- TODAY -->
+    <section class="view on" id="v-today">
+      <h1 id="hello">Good morning</h1>
+      <p class="lead" id="todayLead"></p>
+      <div class="kpis" id="kpis"></div>
+      <div class="grid2">
+        <div class="stack">
+          <div class="card"><h2>Follow up today</h2><div id="fuList"></div></div>
+          <div class="card"><h2>Needs attention</h2><div id="alerts"></div></div>
+        </div>
+        <div class="stack">
+          <div class="card"><h2>On the road today</h2><div id="onRoad"></div></div>
+          <div class="card"><h2>Departing in the next 7 days</h2><div id="upcoming"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENQUIRIES -->
+    <section class="view" id="v-enq">
+      <h1>Enquiries</h1>
+      <p class="lead">Every enquiry from WhatsApp, calls and your website in one list, with the next follow-up date.</p>
+      <div class="chips" id="enqFilter"></div>
+      <div class="card tw"><table id="enqTable"></table></div>
+    </section>
+
+    <!-- QUOTE BUILDER -->
+    <section class="view" id="v-quote">
+      <h1>New quote</h1>
+      <p class="lead">Pick a package, adjust the days, and the price works itself out. Most quotes take under 2 minutes.</p>
+      <div class="qb">
+        <div class="stack">
+          <div class="card">
+            <h2>Customer</h2>
+            <div class="fgrid">
+              <div class="f"><label for="qName">Name</label><input id="qName" placeholder="Customer name"></div>
+              <div class="f"><label for="qPhone">Phone</label><input id="qPhone" placeholder="10-digit mobile" inputmode="numeric"></div>
+              <div class="f"><label for="qPax">Travellers</label><input id="qPax" type="number" min="1" max="12" value="4"></div>
+              <div class="f"><label for="qStart">Start date</label><input id="qStart" type="date"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+              <h2 style="margin:0">Itinerary</h2>
+              <div class="seg" id="catSeg"><button data-c="Standard">Standard</button><button data-c="Deluxe" class="on">Deluxe</button><button data-c="Premium">Premium</button></div>
+            </div>
+            <div class="fgrid c3" style="margin-bottom:10px">
+              <div class="f"><label for="qPkg">Package</label><select id="qPkg"></select></div>
+              <div class="f"><label for="qRooms">Rooms</label><input id="qRooms" type="number" min="1" max="8" value="2"></div>
+              <div class="f"><label for="qVeh">Vehicle</label><select id="qVeh"></select></div>
+            </div>
+            <div class="days" id="days"></div>
+            <div class="btns" style="margin-top:10px"><button class="btn sm" onclick="addDay()">+ Add a day</button></div>
+          </div>
+          <div class="card">
+            <h2>Pricing</h2>
+            <div class="fgrid c3e">
+              <div class="f"><label for="qExtra">Entry fees &amp; activities per person (₹)</label><input id="qExtra" type="number" min="0" step="100" value="600"></div>
+              <div class="f"><label for="qMarkup">Your markup (%)</label><input id="qMarkup" type="number" min="0" max="60" value="15"></div>
+              <div class="f"><label for="qGst">GST (%)</label><input id="qGst" type="number" min="0" max="18" value="5"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card sum" id="sum"></div>
+      </div>
+    </section>
+
+    <!-- TRIPS -->
+    <section class="view" id="v-trips">
+      <h1>Trips</h1>
+      <p class="lead">Confirmed bookings, with hotel confirmations, vehicle, driver and payment status.</p>
+      <div class="chips" id="tripFilter"></div>
+      <div class="stack" id="tripList"></div>
+    </section>
+
+    <!-- FLEET -->
+    <section class="view" id="v-fleet">
+      <h1>Vehicles &amp; drivers</h1>
+      <p class="lead">Who is driving what, day by day, for the next two weeks. Double bookings are blocked when you confirm a trip.</p>
+      <div class="card tw"><table class="fleet" id="fleetGrid"></table></div>
+    </section>
+
+    <!-- PAYMENTS -->
+    <section class="view" id="v-pay">
+      <h1>Payments</h1>
+      <p class="lead">What customers still owe you, what you owe hotels and drivers, and what each trip actually earned.</p>
+      <div class="kpis k4" id="payKpis"></div>
+      <div class="grid2">
+        <div class="card"><h2>Customers yet to pay</h2><div id="dueList"></div></div>
+        <div class="card"><h2>You owe hotels &amp; drivers</h2><div id="owe"></div></div>
+      </div>
+      <div class="card tw" style="margin-top:16px"><h2>Profit by trip</h2><table id="profit"></table></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeQuote()">
+  <div class="sheet" id="sheet"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ agency setup: edit this block to re-skin for any agency ============ */
+var AGENCY={name:"Brahmaputra Trails",city:"Guwahati",phone:"+91 90000 00000",gstin:"18AAAAA0000A1Z5",advancePct:30};
+var HOTELS={
+  "Guwahati":   {Standard:["Brahmaputra Inn",2200],  Deluxe:["Riverside Grand",3800],   Premium:["Luit Crown",6500]},
+  "Shillong":   {Standard:["Pine Crest",2400],       Deluxe:["Laitumkhrah Residency",4200], Premium:["Cloud Nine Resort",7200]},
+  "Cherrapunji":{Standard:["Sohra Stay",2000],       Deluxe:["Cherra Valley Resort",3900],  Premium:["Nohkalikai Retreat",6800]},
+  "Kaziranga":  {Standard:["Kohora Lodge",2300],     Deluxe:["Jungle Trail Resort",4500],   Premium:["Rhino Bend Resort",8000]},
+  "Dirang":     {Standard:["Dirang Valley Inn",1800],Deluxe:["Sangti Resort",3200],         Premium:["Dirang Boutique",5200]},
+  "Tawang":     {Standard:["Tawang Heights",2000],   Deluxe:["Monastery View",3600],        Premium:["Tawang Grand",6000]}
+};
+var VEH=[
+  {id:"V1",reg:"AS01 BC 4412",type:"Innova Crysta",seats:6,rate:4500,driver:"Bipul Das"},
+  {id:"V2",reg:"AS01 DF 7720",type:"Innova Crysta",seats:6,rate:4500,driver:"Hemanta Kalita"},
+  {id:"V3",reg:"AS01 EK 1934",type:"Ertiga",seats:5,rate:3300,driver:"Raju Bora"},
+  {id:"V4",reg:"AS01 GM 5081",type:"Swift Dzire",seats:4,rate:2700,driver:"Manoj Deka"},
+  {id:"V5",reg:"AS01 HT 2266",type:"Tempo Traveller",seats:12,rate:7200,driver:"Dipankar Nath"}
+];
+var PKG=[
+  {id:"P1",name:"Shillong – Cherrapunji – Dawki (4D/3N)",extra:600,days:[
+    ["Guwahati → Shillong, Umiam Lake","Shillong"],["Shillong → Cherrapunji: Nohkalikai, Mawsmai Cave","Cherrapunji"],
+    ["Dawki river & Mawlynnong village","Shillong"],["Shillong → Guwahati drop",""]]},
+  {id:"P2",name:"Kaziranga Safari (3D/2N)",extra:2800,days:[
+    ["Guwahati → Kaziranga","Kaziranga"],["Jeep safari, Central & Western range","Kaziranga"],["Kaziranga → Guwahati drop",""]]},
+  {id:"P3",name:"Assam & Meghalaya Explorer (6D/5N)",extra:3200,days:[
+    ["Guwahati → Shillong","Shillong"],["Shillong → Cherrapunji","Cherrapunji"],["Dawki & Mawlynnong","Shillong"],
+    ["Shillong → Kaziranga","Kaziranga"],["Jeep safari","Kaziranga"],["Kaziranga → Guwahati drop",""]]},
+  {id:"P4",name:"Tawang & Dirang (6D/5N)",extra:900,days:[
+    ["Guwahati → Dirang","Dirang"],["Dirang → Tawang via Sela Pass","Tawang"],["Tawang Monastery & local sightseeing","Tawang"],
+    ["Bumla Pass & Sangetsar Lake","Tawang"],["Tawang → Dirang","Dirang"],["Dirang → Guwahati drop",""]]},
+  {id:"P0",name:"Custom trip",extra:0,days:[["Day 1","Guwahati"],["Day 2",""]]}
+];
+var CITIES=Object.keys(HOTELS);
+var ENQ_ST=["New","Quoted","Follow-up","Won","Lost"];
+var RS="₹";
+
+/* ============ helpers ============ */
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function money(n){return (n<0?"-":"")+RS+Math.abs(Math.round(n||0)).toLocaleString("en-IN");}
+function d2(n){return n<10?"0"+n:""+n;}
+function iso(d){return d.getFullYear()+"-"+d2(d.getMonth()+1)+"-"+d2(d.getDate());}
+function today(){return iso(new Date());}
+function dt(s){return new Date(s+"T00:00:00");}
+function addD(s,n){var d=dt(s);d.setDate(d.getDate()+n);return iso(d);}
+function diff(a,b){return Math.round((dt(b)-dt(a))/864e5);}
+var MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],DAY=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+function fmt(s){var d=dt(s);return d.getDate()+" "+MON[d.getMonth()];}
+function fmtL(s){var d=dt(s);return DAY[d.getDay()]+" "+d.getDate()+" "+MON[d.getMonth()];}
+function rel(s){var n=diff(today(),s);return n===0?"today":n===1?"tomorrow":n===-1?"yesterday":n<0?(-n)+" days ago":"in "+n+" days";}
+function veh(id){for(var i=0;i<VEH.length;i++)if(VEH[i].id===id)return VEH[i];return null;}
+function toast(m){var t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("on");},2600);}
+function pill(st){var c={New:"p-blue",Quoted:"p-violet","Follow-up":"p-amber",Won:"p-green",Lost:"p-grey",
+  Confirmed:"p-blue","On trip":"p-green",Completed:"p-grey"}[st]||"p-grey";return '<span class="pill '+c+'">'+esc(st)+'</span>';}
+
+/* ============ pricing engine ============ */
+function price(q){
+  var hotel=0,lines=[];
+  for(var i=0;i<q.days.length;i++){var c=q.days[i][1];if(c&&HOTELS[c]){var h=HOTELS[c][q.cat];hotel+=h[1]*q.rooms;}}
+  var v=veh(q.veh), vehicle=v?v.rate*q.days.length:0, extras=(q.extra||0)*q.pax;
+  var cost=hotel+vehicle+extras, markup=Math.round(cost*(q.markup||0)/100), sub=cost+markup;
+  var gst=Math.round(sub*(q.gst||0)/100), total=sub+gst;
+  return {hotel:hotel,vehicle:vehicle,extras:extras,cost:cost,markup:markup,sub:sub,gst:gst,total:total,
+    pp:Math.round(total/Math.max(1,q.pax)),nights:q.days.filter(function(d){return d[1];}).length};
+}
+function tripEnd(t){return addD(t.start,t.days.length-1);}
+function vehFree(vid,start,n,ignore){
+  var end=addD(start,n-1);
+  for(var i=0;i<DB.trips.length;i++){var t=DB.trips[i];
+    if(t.id===ignore||t.veh!==vid||t.status==="Completed")continue;
+    if(!(end<t.start||start>tripEnd(t)))return t;}
+  return null;
+}
+function tripStatus(t){if(t.status==="Completed")return "Completed";var td=today();
+  if(td>=t.start&&td<=tripEnd(t))return "On trip"; if(td>tripEnd(t))return "Completed"; return "Confirmed";}
+
+/* ============ data ============ */
+var DB=null, SEQ={q:1041,t:2071,e:318};
+function mkTrip(name,phone,pax,startOff,pkgId,cat,vid,paidPct,hotelsOk,supplierPaid){
+  var p=PKG.filter(function(x){return x.id===pkgId;})[0];
+  var q={name:name,phone:phone,pax:pax,start:addD(today(),startOff),days:p.days.map(function(d){return d.slice();}),
+    cat:cat,rooms:Math.ceil(pax/2),veh:vid,extra:p.extra,markup:15,gst:5,pkg:p.name};
+  var pr=price(q);
+  return {id:"T-"+(SEQ.t++),name:name,phone:phone,pax:pax,start:q.start,days:q.days,cat:cat,rooms:q.rooms,veh:vid,
+    extra:q.extra,markup:15,gst:5,pkg:p.name,total:pr.total,cost:pr.cost,paid:Math.round(pr.total*paidPct/100/100)*100,
+    hotelsOk:hotelsOk,supplierPaid:supplierPaid,status:"Confirmed"};
+}
+function seed(){
+  SEQ={q:1041,t:2071,e:318};
+  var trips=[
+    mkTrip("Ankita Sharma","98xxxx4102",4,-1,"P1","Deluxe","V1",60,true,false),
+    mkTrip("Rohit & Priya Menon","99xxxx2231",2,2,"P2","Premium","V4",30,false,false),
+    mkTrip("Sen family","97xxxx8830",6,4,"P3","Deluxe","V2",30,true,false),
+    mkTrip("Gupta group","90xxxx1177",10,6,"P4","Standard","V5",30,false,false),
+    mkTrip("Farhan Ali","88xxxx6620",3,10,"P1","Standard","V3",0,false,false),
+    mkTrip("Das family","94xxxx5019",4,-9,"P2","Deluxe","V1",100,true,true)
+  ];
+  trips[5].status="Completed";
+  var e=function(name,phone,src,dest,pax,off,st,fu,note){return {id:"E-"+(SEQ.e++),name:name,phone:phone,src:src,dest:dest,pax:pax,
+    date:addD(today(),off),status:st,follow:fu===null?null:addD(today(),fu),note:note||""};};
+  var enq=[
+    e("Neha Kapoor","98xxxx7710","WhatsApp","Meghalaya, 4 days",5,0,"New",0,"Wants Dawki boating"),
+    e("Arjun Rao","99xxxx0342","Website","Kaziranga safari",2,0,"New",0,""),
+    e("Mitali Bose","90xxxx5561","WhatsApp","Tawang, 6 days",4,-2,"Quoted",0,"Quote Q-1038 sent, asked about snow"),
+    e("Karan Mehta","87xxxx2290","Call","Assam + Meghalaya",6,-4,"Follow-up",-1,"Comparing with 2 agencies"),
+    e("Sunita Iyer","96xxxx4418","Referral","Shillong, 3 days",3,-1,"Quoted",1,"Quote Q-1040 sent"),
+    e("Vikram Singh","93xxxx8805","WhatsApp","Kaziranga + Majuli",8,-6,"Lost",null,"Went with cheaper option"),
+    e("Rohit & Priya Menon","99xxxx2231","Instagram","Kaziranga honeymoon",2,-12,"Won",null,"Booked T-2072"),
+    e("Pooja Nair","91xxxx3326","WhatsApp","Meghalaya, 5 days",2,-3,"Follow-up",0,"Asked for cheaper hotels")
+  ];
+  DB={trips:trips,enq:enq,seq:SEQ};
+}
+function load(){try{var s=JSON.parse(localStorage.getItem("td_v1")||"null");if(s&&s.trips){DB=s;SEQ=s.seq;return;}}catch(e){} seed();}
+function save(){DB.seq=SEQ;try{localStorage.setItem("td_v1",JSON.stringify(DB));}catch(e){}}
+function resetDemo(){try{localStorage.removeItem("td_v1");}catch(e){} seed();save();newQuote("P1");renderAll();toast("Demo data reset");}
+
+/* ============ navigation ============ */
+var VIEW="today";
+function go(v){VIEW=v;document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v);});
+  document.querySelectorAll(".view").forEach(function(s){s.classList.toggle("on",s.id==="v-"+v);});
+  if(v==="quote"&&!Q.t0)Q.t0=Date.now(); renderAll(); window.scrollTo(0,0);}
+document.querySelectorAll("#nav button").forEach(function(b){b.onclick=function(){go(b.dataset.v);};});
+
+/* ============ TODAY ============ */
+function renderToday(){
+  var td=today(), h=new Date().getHours();
+  $("hello").textContent=(h<12?"Good morning":h<17?"Good afternoon":"Good evening");
+  var active=DB.trips.filter(function(t){return tripStatus(t)!=="Completed";});
+  var onRoad=DB.trips.filter(function(t){return tripStatus(t)==="On trip";});
+  var next7=DB.trips.filter(function(t){return tripStatus(t)==="Confirmed"&&diff(td,t.start)<=7;}).sort(function(a,b){return a.start<b.start?-1:1;});
+  var newE=DB.enq.filter(function(e){return e.status==="New";});
+  var fu=DB.enq.filter(function(e){return (e.status==="Quoted"||e.status==="Follow-up"||e.status==="New")&&e.follow&&e.follow<=td;});
+  var due=active.reduce(function(s,t){return s+(t.total-t.paid);},0);
+  var mo=td.slice(0,7), month=DB.trips.filter(function(t){return t.start.slice(0,7)===mo;}).reduce(function(s,t){return s+t.total;},0);
+  var al=alerts();
+  $("todayLead").textContent=fmtL(td)+" · "+onRoad.length+" group"+(onRoad.length===1?"":"s")+" on the road, "+fu.length+" follow-up"+(fu.length===1?"":"s")+" due.";
+  $("kpis").innerHTML=[
+    [newE.length,"New enquiries",newE.length>0],[fu.length,"Follow-ups due",fu.length>0],[onRoad.length,"Groups on the road"],
+    [next7.length,"Departures this week"],[money(month),"Booked this month"],[money(due),"Balance to collect"]
+  ].map(function(k){return '<div class="kpi'+(k[2]?" warn":"")+'"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>';}).join("");
+  $("fuList").innerHTML=fu.length?fu.map(function(e){return '<div class="row"><div class="m"><b>'+esc(e.name)+' · '+esc(e.dest)+'</b><span>'+
+    pill(e.status)+' '+esc(e.note||e.src)+(e.follow<td?' · <span class="inl" style="color:var(--red)">overdue '+rel(e.follow)+'</span>':'')+'</span></div>'+
+    '<div class="btns"><button class="btn sm" onclick="quoteFor(\''+e.id+'\')">Quote</button><button class="btn sm" onclick="followed(\''+e.id+'\')">Done</button></div></div>';}).join("")
+    :'<div class="empty">No follow-ups due. Nice.</div>';
+  $("alerts").innerHTML=al.length?al.map(function(a){return '<div class="alert '+a[0]+'">'+a[1]+'</div>';}).join(""):'<div class="alert g">Everything is on track.</div>';
+  $("onRoad").innerHTML=onRoad.length?onRoad.map(function(t){var n=diff(t.start,td),d=t.days[n]||["",""],v=veh(t.veh);
+    return '<div class="row"><div class="m"><b>'+esc(t.name)+' · Day '+(n+1)+' of '+t.days.length+'</b><span>'+esc(d[0])+(d[1]?' · night in '+esc(d[1])+' ('+esc(HOTELS[d[1]][t.cat][0])+')':'')+'</span><span>'+
+      (v?esc(v.type)+' '+esc(v.reg)+' · driver '+esc(v.driver):'No vehicle')+'</span></div>'+pill("On trip")+'</div>';}).join("")
+    :'<div class="empty">No groups on the road today.</div>';
+  $("upcoming").innerHTML=next7.length?next7.map(function(t){var v=veh(t.veh);return '<div class="row"><div class="m"><b>'+esc(t.name)+' · '+t.pax+' pax</b><span>'+
+    fmtL(t.start)+' ('+rel(t.start)+') · '+esc(t.pkg)+'</span><span>'+(v?esc(v.type)+' · '+esc(v.driver):'')+'</span></div>'+
+    (t.hotelsOk?'<span class="pill p-green">Hotels OK</span>':'<span class="pill p-red">Hotels pending</span>')+'</div>';}).join("")
+    :'<div class="empty">No departures in the next 7 days.</div>';
+}
+function alerts(){
+  var td=today(),out=[];
+  DB.trips.forEach(function(t){var st=tripStatus(t);if(st==="Completed")return;var n=diff(td,t.start);
+    if(!t.hotelsOk&&n<=5&&n>=0)out.push(["r","<div><b>Hotels not confirmed</b> for "+esc(t.name)+" ("+t.id+"), leaving "+rel(t.start)+".</div>"]);
+    if(t.total-t.paid>0&&n<=3&&n>=0)out.push(["a","<div><b>"+money(t.total-t.paid)+" balance</b> still due from "+esc(t.name)+" before departure "+rel(t.start)+".</div>"]);
+    if(t.paid<Math.round(t.total*AGENCY.advancePct/100)&&n>3)out.push(["a","<div><b>No advance yet</b> from "+esc(t.name)+" ("+t.id+"). Trip "+rel(t.start)+".</div>"]);
+  });
+  return out;
+}
+function followed(id){var e=DB.enq.filter(function(x){return x.id===id;})[0];if(!e)return;
+  e.status=e.status==="New"?"Follow-up":e.status; e.follow=addD(today(),2); e.note="Followed up "+fmt(today());save();renderAll();toast("Next follow-up set for "+fmtL(e.follow));}
+
+/* ============ ENQUIRIES ============ */
+var EF="Open";
+function renderEnq(){
+  var open=DB.enq.filter(function(e){return e.status!=="Won"&&e.status!=="Lost";});
+  $("ctEnq").textContent=DB.enq.filter(function(e){return e.status==="New";}).length||"";
+  $("enqFilter").innerHTML=["Open"].concat(ENQ_ST).map(function(s){var n=s==="Open"?open.length:DB.enq.filter(function(e){return e.status===s;}).length;
+    return '<button class="chip'+(EF===s?" on":"")+'" onclick="EF=\''+s+'\';renderEnq()">'+s+' · '+n+'</button>';}).join("");
+  var rows=DB.enq.filter(function(e){return EF==="Open"?(e.status!=="Won"&&e.status!=="Lost"):e.status===EF;})
+    .sort(function(a,b){return (a.follow||"9")<(b.follow||"9")?-1:1;});
+  $("enqTable").innerHTML='<tr><th>Customer</th><th>Trip wanted</th><th>Pax</th><th>Source</th><th>Received</th><th>Status</th><th>Next follow-up</th><th></th></tr>'+
+    (rows.length?rows.map(function(e){return '<tr><td><b>'+esc(e.name)+'</b><br><span style="color:var(--dim);font-size:12px">'+esc(e.phone)+'</span></td><td>'+esc(e.dest)+
+      (e.note?'<br><span style="color:var(--dim);font-size:12px">'+esc(e.note)+'</span>':'')+'</td><td>'+e.pax+'</td><td>'+esc(e.src)+'</td><td>'+fmt(e.date)+'</td><td>'+
+      '<select aria-label="Status" onchange="setEnq(\''+e.id+'\',this.value)">'+ENQ_ST.map(function(s){return '<option'+(s===e.status?" selected":"")+'>'+s+'</option>';}).join("")+'</select></td><td>'+
+      (e.follow?'<span'+(e.follow<today()?' style="color:var(--red);font-weight:600"':'')+'>'+fmt(e.follow)+'</span>':'—')+'</td><td>'+
+      (e.status==="Won"||e.status==="Lost"?'':'<button class="btn sm pri" onclick="quoteFor(\''+e.id+'\')">Build quote</button>')+'</td></tr>';}).join("")
+    :'<tr><td colspan="8" class="empty">Nothing here.</td></tr>');
+}
+function setEnq(id,st){var e=DB.enq.filter(function(x){return x.id===id;})[0];if(!e)return;e.status=st;
+  if(st==="Won"||st==="Lost")e.follow=null;else if(!e.follow)e.follow=addD(today(),1);save();renderAll();toast(e.name+" marked "+st);}
+
+/* ============ QUOTE BUILDER ============ */
+var Q={};
+function newQuote(pkgId,from){
+  var p=PKG.filter(function(x){return x.id===pkgId;})[0]||PKG[0];
+  Q={name:from?from.name:"",phone:from?from.phone:"",pax:from?from.pax:4,start:addD(today(),14),days:p.days.map(function(d){return d.slice();}),
+    cat:Q.cat||"Deluxe",rooms:Math.ceil((from?from.pax:4)/2),veh:null,extra:p.extra,markup:15,gst:5,pkg:p.name,pkgId:p.id,enq:from?from.id:null,t0:Date.now()};
+  Q.veh=pickVeh(Q.pax);
+  fillQuoteForm();
+}
+function pickVeh(pax){var ok=VEH.filter(function(v){return v.seats>=pax;}).sort(function(a,b){return a.rate-b.rate;});return ok.length?ok[0].id:VEH[VEH.length-1].id;}
+function guessPkg(dest){dest=(dest||"").toLowerCase();if(/tawang|arunachal/.test(dest))return "P4";if(/assam.*meghalaya|meghalaya.*assam|\+/.test(dest))return "P3";
+  if(/kaziranga|safari/.test(dest))return "P2";return "P1";}
+function quoteFor(id){var e=DB.enq.filter(function(x){return x.id===id;})[0];if(!e)return;newQuote(guessPkg(e.dest),e);go("quote");toast("Quote started for "+e.name);}
+function fillQuoteForm(){
+  $("qName").value=Q.name;$("qPhone").value=Q.phone;$("qPax").value=Q.pax;$("qStart").value=Q.start;$("qRooms").value=Q.rooms;
+  $("qExtra").value=Q.extra;$("qMarkup").value=Q.markup;$("qGst").value=Q.gst;
+  $("qPkg").innerHTML=PKG.map(function(p){return '<option value="'+p.id+'"'+(p.id===Q.pkgId?" selected":"")+'>'+esc(p.name)+'</option>';}).join("");
+  document.querySelectorAll("#catSeg button").forEach(function(b){b.classList.toggle("on",b.dataset.c===Q.cat);});
+  renderVehOpts();renderDays();renderSum();
+}
+function renderVehOpts(){$("qVeh").innerHTML=VEH.map(function(v){var fit=v.seats>=Q.pax;
+  return '<option value="'+v.id+'"'+(v.id===Q.veh?" selected":"")+(fit?"":" disabled")+'>'+esc(v.type)+' ('+v.seats+' seats) · '+money(v.rate)+'/day'+(fit?"":" – too small")+'</option>';}).join("");}
+function renderDays(){
+  $("days").innerHTML=Q.days.map(function(d,i){
+    var last=i===Q.days.length-1;
+    return '<div class="d"><span class="n">D'+(i+1)+'</span>'+
+      '<input class="dt" aria-label="Day '+(i+1)+' plan" value="'+esc(d[0])+'" oninput="Q.days['+i+'][0]=this.value">'+
+      '<select class="dc" aria-label="Day '+(i+1)+' overnight" onchange="Q.days['+i+'][1]=this.value;renderDays();renderSum()"><option value="">No hotel</option>'+
+        CITIES.map(function(c){return '<option'+(c===d[1]?" selected":"")+'>'+c+'</option>';}).join("")+'</select>'+
+      '<span class="dh" style="font-size:12.5px;color:var(--dim)">'+(d[1]?esc(HOTELS[d[1]][Q.cat][0])+' · '+money(HOTELS[d[1]][Q.cat][1])+'/room':'—')+'</span>'+
+      (Q.days.length>1?'<button class="x" title="Remove day" aria-label="Remove day '+(i+1)+'" onclick="Q.days.splice('+i+',1);renderDays();renderSum()">×</button>':'<span></span>')+'</div>';
+  }).join("");
+}
+function addDay(){var last=Q.days[Q.days.length-1];Q.days.push(["Day "+(Q.days.length+1),last&&last[1]?last[1]:"Guwahati"]);renderDays();renderSum();}
+function renderSum(){
+  var p=price(Q), v=veh(Q.veh), clash=v?vehFree(v.id,Q.start,Q.days.length):null;
+  var secs=Q.t0?Math.round((Date.now()-Q.t0)/1000):0;
+  $("sum").innerHTML='<h2>Price</h2>'+
+    '<div class="l"><span>Hotels · '+p.nights+' night'+(p.nights===1?"":"s")+' × '+Q.rooms+' room'+(Q.rooms===1?"":"s")+' · '+Q.cat+'</span><span>'+money(p.hotel)+'</span></div>'+
+    '<div class="l"><span>'+(v?esc(v.type):"Vehicle")+' · '+Q.days.length+' day'+(Q.days.length===1?"":"s")+'</span><span>'+money(p.vehicle)+'</span></div>'+
+    '<div class="l"><span>Entry fees &amp; activities · '+Q.pax+' pax</span><span>'+money(p.extras)+'</span></div>'+
+    '<div class="l"><span>Markup '+Q.markup+'%</span><span>'+money(p.markup)+'</span></div>'+
+    '<div class="l"><span>GST '+Q.gst+'%</span><span>'+money(p.gst)+'</span></div>'+
+    '<div class="l t"><span>Quote total</span><span>'+money(p.total)+'</span></div>'+
+    '<div class="l pp"><span>Per person</span><span>'+money(p.pp)+'</span></div>'+
+    '<div class="l pp"><span>Advance to confirm ('+AGENCY.advancePct+'%)</span><span>'+money(Math.round(p.total*AGENCY.advancePct/100/100)*100)+'</span></div>'+
+    '<div class="l pr"><span>Your margin on this trip</span><span>'+money(p.markup)+'</span></div>'+
+    (clash?'<div class="alert r"><div><b>'+esc(v.type)+' '+esc(v.reg)+'</b> is already on '+esc(clash.name)+'\'s trip ('+clash.id+') on these dates. Pick another vehicle.</div></div>':'')+
+    '<div class="btns" style="margin-top:14px"><button class="btn pri" onclick="previewQuote()">Preview quotation</button>'+
+    '<button class="btn" onclick="saveQuote()">Save as sent</button><button class="btn ok" onclick="confirmTrip()">Advance received: confirm trip</button></div>'+
+    '<div class="timer" id="qTimer">Quote built in '+(secs<60?secs+" sec":Math.floor(secs/60)+" min "+(secs%60)+" sec")+'.</div>';
+}
+function readForm(){Q.name=$("qName").value.trim();Q.phone=$("qPhone").value.trim();Q.pax=Math.max(1,Math.min(12,+$("qPax").value||1));
+  Q.start=$("qStart").value||addD(today(),14);Q.rooms=Math.max(1,+$("qRooms").value||1);Q.extra=Math.max(0,+$("qExtra").value||0);
+  Q.markup=Math.max(0,+$("qMarkup").value||0);Q.gst=Math.max(0,+$("qGst").value||0);Q.veh=$("qVeh").value;}
+["qName","qPhone","qStart","qRooms","qExtra","qMarkup","qGst"].forEach(function(id){$(id).addEventListener("input",function(){readForm();renderSum();});});
+$("qPax").addEventListener("input",function(){readForm();Q.rooms=Math.ceil(Q.pax/2);$("qRooms").value=Q.rooms;var v=veh(Q.veh);if(!v||v.seats<Q.pax){Q.veh=pickVeh(Q.pax);}renderVehOpts();renderSum();});
+$("qVeh").addEventListener("change",function(){Q.veh=this.value;renderSum();});
+$("qPkg").addEventListener("change",function(){readForm();var keep={name:Q.name,phone:Q.phone,pax:Q.pax,id:Q.enq},t0=Q.t0,st=Q.start,rooms=Q.rooms,mk=Q.markup,gst=Q.gst;
+  newQuote(this.value,keep);Q.enq=keep.id;Q.t0=t0;Q.start=st;Q.rooms=rooms;Q.markup=mk;Q.gst=gst;fillQuoteForm();});
+document.querySelectorAll("#catSeg button").forEach(function(b){b.onclick=function(){Q.cat=b.dataset.c;fillQuoteForm();};});
+
+function needName(){readForm();if(!Q.name){toast("Add the customer's name first");$("qName").focus();return false;}return true;}
+function previewQuote(){
+  if(!needName())return; var p=price(Q), no="Q-"+SEQ.q, adv=Math.round(p.total*AGENCY.advancePct/100/100)*100, v=veh(Q.veh);
+  $("sheet").innerHTML='<div class="hd"><div><b>'+esc(AGENCY.name)+'</b><small>'+esc(AGENCY.city)+' · '+esc(AGENCY.phone)+' · GSTIN '+esc(AGENCY.gstin)+'</small></div>'+
+    '<div style="text-align:right"><b style="font-size:15px">Quotation '+no+'</b><small>'+fmtL(today())+' · valid 7 days</small></div></div>'+
+    '<p style="margin:0 0 4px"><b>'+esc(Q.name)+'</b>'+(Q.phone?' · '+esc(Q.phone):'')+'</p>'+
+    '<p style="margin:0;color:#424245;font-size:13px">'+esc(Q.pkg)+' · '+Q.pax+' travellers · '+Q.rooms+' room'+(Q.rooms>1?"s":"")+' · '+fmtL(Q.start)+' to '+fmtL(addD(Q.start,Q.days.length-1))+'</p>'+
+    '<h3>Day by day</h3><table><tr><th>Day</th><th>Plan</th><th>Stay ('+Q.cat+')</th></tr>'+
+    Q.days.map(function(d,i){return '<tr><td>'+(i+1)+'<br><span style="color:#6e6e73;font-size:11px">'+fmt(addD(Q.start,i))+'</span></td><td>'+esc(d[0])+'</td><td>'+(d[1]?esc(HOTELS[d[1]][Q.cat][0])+', '+esc(d[1]):'—')+'</td></tr>';}).join("")+'</table>'+
+    '<h3>Included</h3><ul><li>'+p.nights+' nights in '+Q.cat.toLowerCase()+' hotels with breakfast, '+Q.rooms+' room'+(Q.rooms>1?"s":"")+'</li><li>'+(v?esc(v.type):"Vehicle")+' for all '+Q.days.length+' days, driver, fuel, tolls and parking</li>'+
+    (Q.extra?'<li>Entry fees and listed activities</li>':'')+'<li>Airport or railway station pickup and drop</li></ul>'+
+    '<h3>Not included</h3><ul><li>Lunch and dinner</li><li>Personal expenses, camera fees, tips</li><li>Anything not listed above</li></ul>'+
+    '<div class="tot"><span>Total (incl. '+Q.gst+'% GST)</span><span>'+money(p.total)+'</span></div>'+
+    '<p style="margin:6px 0 0;font-size:13px;color:#424245">'+money(p.pp)+' per person · '+money(adv)+' advance to confirm, balance 3 days before departure.</p>'+
+    '<div class="foot">Prices depend on hotel availability at the time of booking. Free date change up to 7 days before travel.</div>'+
+    '<div class="btns" style="margin-top:20px"><button class="btn" onclick="closeQuote()">Close</button><button class="btn" onclick="copyWA()">Copy WhatsApp text</button><button class="btn pri" onclick="window.print()">Print / save PDF</button></div>';
+  $("modal").classList.add("on");
+}
+function closeQuote(){$("modal").classList.remove("on");}
+function copyWA(){var p=price(Q);var txt="*"+AGENCY.name+" – Quotation Q-"+SEQ.q+"*\n"+Q.name+" · "+Q.pax+" pax · "+fmtL(Q.start)+"\n"+Q.pkg+"\n\n"+
+  Q.days.map(function(d,i){return "Day "+(i+1)+": "+d[0]+(d[1]?" (stay: "+HOTELS[d[1]][Q.cat][0]+")":"");}).join("\n")+
+  "\n\n*Total: "+money(p.total)+"* ("+money(p.pp)+"/person, incl. GST)\nAdvance to confirm: "+money(Math.round(p.total*AGENCY.advancePct/100/100)*100);
+  try{navigator.clipboard.writeText(txt).then(function(){toast("Copied. Paste it into WhatsApp");},function(){toast("Copy not allowed in this browser");});}catch(e){toast("Copy not allowed in this browser");}}
+function upsertEnq(st){
+  var e=Q.enq?DB.enq.filter(function(x){return x.id===Q.enq;})[0]:null;
+  if(!e){e={id:"E-"+(SEQ.e++),name:Q.name,phone:Q.phone||"—",src:"Walk-in",dest:Q.pkg,pax:Q.pax,date:today(),status:st,follow:null,note:""};DB.enq.unshift(e);Q.enq=e.id;}
+  e.status=st;return e;
+}
+function saveQuote(){if(!needName())return;var no="Q-"+(SEQ.q++),e=upsertEnq("Quoted"),p=price(Q);
+  e.follow=addD(today(),1);e.note="Quote "+no+" sent · "+money(p.total);save();closeQuote();renderAll();
+  toast(no+" saved. Follow-up reminder set for tomorrow");}
+function confirmTrip(){
+  if(!needName())return; var v=veh(Q.veh), clash=v?vehFree(v.id,Q.start,Q.days.length):null;
+  if(clash){toast(v.type+" is busy on those dates. Pick another vehicle");return;}
+  var p=price(Q), no="T-"+(SEQ.t++), adv=Math.round(p.total*AGENCY.advancePct/100/100)*100;
+  DB.trips.push({id:no,name:Q.name,phone:Q.phone||"—",pax:Q.pax,start:Q.start,days:Q.days.map(function(d){return d.slice();}),cat:Q.cat,rooms:Q.rooms,veh:Q.veh,
+    extra:Q.extra,markup:Q.markup,gst:Q.gst,pkg:Q.pkg,total:p.total,cost:p.cost,paid:adv,hotelsOk:false,supplierPaid:false,status:"Confirmed"});
+  var e=upsertEnq("Won");e.follow=null;e.note="Booked "+no;save();closeQuote();
+  newQuote(Q.pkgId);go("trips");toast(no+" confirmed with "+money(adv)+" advance. Vehicle blocked on the calendar");
+}
+
+/* ============ TRIPS ============ */
+var TF="Upcoming";
+function renderTrips(){
+  var groups={"Upcoming":function(t){return tripStatus(t)==="Confirmed";},"On trip":function(t){return tripStatus(t)==="On trip";},
+    "Completed":function(t){return tripStatus(t)==="Completed";},"All":function(){return true;}};
+  $("tripFilter").innerHTML=Object.keys(groups).map(function(g){return '<button class="chip'+(TF===g?" on":"")+'" onclick="TF=\''+g+'\';renderTrips()">'+g+' · '+DB.trips.filter(groups[g]).length+'</button>';}).join("");
+  var list=DB.trips.filter(groups[TF]).sort(function(a,b){return a.start<b.start?-1:1;});
+  $("tripList").innerHTML=list.length?list.map(function(t){
+    var st=tripStatus(t),v=veh(t.veh),bal=t.total-t.paid;
+    return '<div class="card"><div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">'+
+      '<div style="flex:1;min-width:220px"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b style="font-size:16px">'+esc(t.name)+'</b>'+pill(st)+'<span style="color:var(--dim);font-size:12px">'+t.id+'</span></div>'+
+      '<div style="color:var(--ink2);margin-top:4px">'+esc(t.pkg)+' · '+t.pax+' pax · '+t.cat+'</div>'+
+      '<div style="color:var(--dim);font-size:13px;margin-top:2px">'+fmtL(t.start)+' → '+fmtL(tripEnd(t))+' ('+rel(t.start)+')</div>'+
+      '<div style="color:var(--dim);font-size:13px;margin-top:2px">'+(v?esc(v.type)+' '+esc(v.reg)+' · driver '+esc(v.driver):'No vehicle')+'</div></div>'+
+      '<div style="min-width:220px"><div style="display:flex;justify-content:space-between;gap:16px"><span style="color:var(--dim)">Trip value</span><b>'+money(t.total)+'</b></div>'+
+      '<div style="display:flex;justify-content:space-between;gap:16px"><span style="color:var(--dim)">Received</span><span>'+money(t.paid)+'</span></div>'+
+      '<div style="display:flex;justify-content:space-between;gap:16px"><span style="color:var(--dim)">Balance</span><b style="color:'+(bal>0?"var(--red)":"var(--green)")+'">'+money(bal)+'</b></div></div></div>'+
+      '<div class="btns" style="margin-top:12px;align-items:center">'+
+      (st==="Completed"?'':'<label style="display:flex;gap:6px;align-items:center;margin:0;font-size:13px;color:var(--ink)"><input type="checkbox"'+(t.hotelsOk?" checked":"")+' onchange="setHotels(\''+t.id+'\',this.checked)"> All hotels confirmed</label>')+
+      (bal>0?'<span style="display:flex;gap:6px;align-items:center"><input id="pay-'+t.id+'" type="number" min="0" step="500" placeholder="Amount" style="width:110px" aria-label="Payment amount for '+t.id+'"><button class="btn sm" onclick="recordPay(\''+t.id+'\')">Record payment</button><button class="btn sm" onclick="recordPay(\''+t.id+'\',true)">Paid in full</button></span>':'<span class="pill p-green">Fully paid</span>')+
+      '</div></div>';}).join(""):'<div class="card empty">No trips here.</div>';
+}
+function tripById(id){return DB.trips.filter(function(t){return t.id===id;})[0];}
+function setHotels(id,v){var t=tripById(id);if(!t)return;t.hotelsOk=v;save();renderAll();toast(v?"Hotels marked confirmed for "+t.name:"Hotels marked pending");}
+function recordPay(id,full){var t=tripById(id);if(!t)return;var amt=full?t.total-t.paid:Math.round(+($("pay-"+id).value||0));
+  if(!(amt>0)){toast("Enter an amount");return;}t.paid=Math.min(t.total,t.paid+amt);save();renderAll();toast(money(amt)+" recorded for "+t.name);}
+
+/* ============ FLEET ============ */
+function renderFleet(){
+  var td=today(),N=14,days=[];for(var i=0;i<N;i++)days.push(addD(td,i));
+  var head='<tr><th>Vehicle</th><th>Driver</th>'+days.map(function(d,i){var x=dt(d);return '<th class="c'+(i===0?" today":"")+'" style="text-align:center">'+DAY[x.getDay()].slice(0,2)+'<br>'+x.getDate()+'</th>';}).join("")+'<th class="num">Busy</th></tr>';
+  $("fleetGrid").innerHTML=head+VEH.map(function(v){var busy=0;
+    var cells=days.map(function(d){var t=null;DB.trips.forEach(function(x){if(x.veh===v.id&&x.status!=="Completed"&&d>=x.start&&d<=tripEnd(x))t=x;});
+      if(t){busy++;return '<td class="c"><span class="busy'+(tripStatus(t)==="On trip"?" on":"")+'" title="'+esc(t.name)+'">'+esc(t.name.split(" ")[0])+'</span></td>';}
+      return '<td class="c"><span class="free">free</span></td>';}).join("");
+    return '<tr><td><b>'+esc(v.type)+'</b><br><span style="color:var(--dim);font-size:12px">'+esc(v.reg)+' · '+v.seats+' seats</span></td><td>'+esc(v.driver)+'</td>'+cells+'<td class="num">'+Math.round(busy/N*100)+'%</td></tr>';}).join("");
+}
+
+/* ============ PAYMENTS ============ */
+function renderPay(){
+  var td=today(),mo=td.slice(0,7);
+  var due=DB.trips.filter(function(t){return t.total-t.paid>0;}).sort(function(a,b){return a.start<b.start?-1:1;});
+  var owe=DB.trips.filter(function(t){return !t.supplierPaid&&t.start<=addD(td,7);}).sort(function(a,b){return a.start<b.start?-1:1;});
+  var collected=DB.trips.reduce(function(s,t){return s+t.paid;},0), toCollect=due.reduce(function(s,t){return s+t.total-t.paid;},0);
+  var payable=owe.reduce(function(s,t){return s+t.cost;},0);
+  var margin=DB.trips.filter(function(t){return t.start.slice(0,7)===mo;}).reduce(function(s,t){return s+(t.total-t.cost-Math.round((t.total-t.total/(1+t.gst/100))));},0);
+  $("payKpis").innerHTML=[[money(collected),"Collected so far"],[money(toCollect),"Still to collect",toCollect>0],[money(payable),"Due to hotels & drivers"],[money(margin),"Margin on this month's trips"]]
+    .map(function(k){return '<div class="kpi'+(k[2]?" warn":"")+'"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>';}).join("");
+  $("dueList").innerHTML=due.length?due.map(function(t){return '<div class="row"><div class="m"><b>'+esc(t.name)+' · '+money(t.total-t.paid)+'</b><span>'+t.id+' · trip '+rel(t.start)+' · paid '+money(t.paid)+' of '+money(t.total)+'</span></div>'+
+    '<button class="btn sm" onclick="recordPay(\''+t.id+'\',true)">Mark paid</button></div>';}).join(""):'<div class="empty">Everyone has paid.</div>';
+  $("owe").innerHTML=owe.length?owe.map(function(t){var v=veh(t.veh);return '<div class="row"><div class="m"><b>'+esc(t.name)+' · '+money(t.cost)+'</b><span>Hotels, '+(v?esc(v.driver)+"'s vehicle":"vehicle")+' and entry fees · trip '+rel(t.start)+'</span></div>'+
+    '<button class="btn sm" onclick="supPaid(\''+t.id+'\')">Mark settled</button></div>';}).join(""):'<div class="empty">Nothing due to suppliers this week.</div>';
+  $("profit").innerHTML='<tr><th>Trip</th><th>Customer</th><th>Dates</th><th class="num">Customer pays</th><th class="num">GST</th><th class="num">Hotels, car, fees</th><th class="num">You keep</th></tr>'+
+    DB.trips.slice().sort(function(a,b){return a.start<b.start?1:-1;}).map(function(t){var g=Math.round(t.total-t.total/(1+t.gst/100)),k=t.total-g-t.cost;
+      return '<tr><td>'+t.id+'</td><td>'+esc(t.name)+'</td><td>'+fmt(t.start)+'</td><td class="num">'+money(t.total)+'</td><td class="num">'+money(g)+'</td><td class="num">'+money(t.cost)+'</td><td class="num" style="color:var(--green);font-weight:600">'+money(k)+'</td></tr>';}).join("");
+}
+function supPaid(id){var t=tripById(id);if(!t)return;t.supplierPaid=true;save();renderAll();toast("Suppliers marked settled for "+t.name);}
+
+/* ============ boot ============ */
+function renderAll(){renderToday();renderEnq();renderTrips();renderFleet();renderPay();}
+load(); newQuote("P1"); renderAll();
+setInterval(function(){var el=$("qTimer");if(!el||VIEW!=="quote"||!Q.t0)return;var s=Math.round((Date.now()-Q.t0)/1000);
+  el.textContent="Quote built in "+(s<60?s+" sec":Math.floor(s/60)+" min "+(s%60)+" sec")+".";},1000);
+var mv=location.search.match(/[?&]view=(\w+)/);if(mv)go(mv[1]);
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeQuote();});
+</script>
+</body>
+</html>
