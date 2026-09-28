@@ -1,0 +1,954 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07070a">
+<title>OPIIUS</title>
+<style>
+:root{
+  --bg:#07070a; --s1:#101015; --s2:#16161d; --s3:#1d1d26; --line:rgba(255,255,255,.07); --line2:rgba(255,255,255,.12);
+  --ink:#f5f5f7; --dim:#a0a0ac; --dim2:#6f6f7b;
+  --brand:#b794ff; --accent:#b794ff; --accentInk:#120a24; --accentSoft:rgba(183,148,255,.14);
+  --good:#34d399; --goodSoft:rgba(52,211,153,.13); --warn:#fbbf24; --warnSoft:rgba(251,191,36,.13);
+  --bad:#f87171; --badSoft:rgba(248,113,113,.13); --info:#7cb4ff; --infoSoft:rgba(124,180,255,.13);
+  --r:18px; --top:env(safe-area-inset-top,0px); --bot:env(safe-area-inset-bottom,0px);
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+body.rent{--accent:#ffa94d;--accentInk:#231200;--accentSoft:rgba(255,169,77,.14)}
+body.tour{--accent:#2dd4bf;--accentInk:#00201c;--accentSoft:rgba(45,212,191,.14)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
+  font-family:Roboto,"SF Pro Text",-apple-system,"Segoe UI",Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  font-size:15px;user-select:none;-webkit-user-select:none}
+input,textarea{user-select:text;-webkit-user-select:text}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- screens ---------- */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.screen.hide{opacity:0;transform:scale(.97);pointer-events:none}
+
+/* splash */
+#splash{align-items:center;justify-content:center;text-align:center;padding:24px;overflow:hidden}
+.glow{position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(90px);opacity:.55;pointer-events:none}
+.glow.a{background:#6d3df5;top:-180px;left:-160px;animation:drift 12s ease-in-out infinite alternate}
+.glow.b{background:#1f9e8f;bottom:-220px;right:-180px;opacity:.35;animation:drift 14s ease-in-out infinite alternate-reverse}
+@keyframes drift{to{transform:translate(60px,40px) scale(1.1)}}
+.wordmark{font-size:54px;font-weight:800;letter-spacing:.18em;margin-right:-.18em;position:relative;
+  background:linear-gradient(170deg,#fff 30%,#c9a8ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:rise 1s var(--ease) both}
+.tagline{color:var(--dim);font-size:15px;line-height:1.6;margin-top:14px;max-width:300px;position:relative;animation:rise 1s .15s var(--ease) both}
+.enter{margin-top:44px;position:relative;animation:rise 1s .3s var(--ease) both}
+.madein{position:absolute;bottom:calc(26px + var(--bot));color:var(--dim2);font-size:12px;letter-spacing:.08em;animation:rise 1s .45s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:54px;padding:0 30px;border-radius:27px;
+  background:#fff;color:#0b0b10;font-weight:700;font-size:16px;transition:transform .15s var(--ease)}
+.cta:active,.press:active{transform:scale(.96)}
+
+/* picker */
+#pick{padding:calc(28px + var(--top)) 20px calc(24px + var(--bot));overflow-y:auto}
+.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--dim2);font-weight:700;text-transform:uppercase}
+.h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin:6px 0 6px;line-height:1.15}
+.sub{color:var(--dim);font-size:14.5px;line-height:1.55}
+.sys{position:relative;display:block;width:100%;text-align:left;margin-top:16px;border-radius:26px;padding:22px 20px 20px;
+  overflow:hidden;border:1px solid var(--line2);transition:transform .2s var(--ease);animation:rise .8s var(--ease) both}
+.sys:active{transform:scale(.98)}
+.sys.r{background:radial-gradient(120% 90% at 100% 0%,rgba(255,169,77,.28),transparent 60%),var(--s1)}
+.sys.t{background:radial-gradient(120% 90% at 100% 0%,rgba(45,212,191,.26),transparent 60%),var(--s1);animation-delay:.1s}
+.sys .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:26px}
+.sys.r .ic{background:rgba(255,169,77,.16)} .sys.t .ic{background:rgba(45,212,191,.16)}
+.sys h2{margin:16px 0 4px;font-size:22px;letter-spacing:-.01em}
+.sys p{margin:0;color:var(--dim);font-size:14px;line-height:1.55}
+.sys .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.sys .tags span{font-size:11.5px;padding:5px 10px;border-radius:20px;background:rgba(255,255,255,.06);color:#d6d6de}
+.sys .go{position:absolute;top:22px;right:20px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center}
+
+/* ---------- app shell ---------- */
+#app .bar{padding:calc(12px + var(--top)) 18px 10px;display:flex;align-items:center;gap:12px;flex:none;
+  background:linear-gradient(var(--bg) 70%,rgba(7,7,10,0))}
+.logo{width:40px;height:40px;border-radius:13px;background:var(--accentSoft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:15px}
+.bar .t b{display:block;font-size:17px;letter-spacing:-.01em}
+.bar .t span{display:block;color:var(--dim);font-size:12.5px;margin-top:1px}
+.iconbtn{width:40px;height:40px;border-radius:13px;background:var(--s2);display:grid;place-items:center;border:1px solid var(--line);position:relative}
+.iconbtn .pip{position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:var(--bad);box-shadow:0 0 0 2px var(--s2)}
+.ml{margin-left:auto}
+#main{flex:1;overflow-y:auto;overflow-x:hidden;padding:4px 16px calc(96px + var(--bot));-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+#main::-webkit-scrollbar{display:none}
+.page{animation:pageIn .38s var(--ease) both}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.nav{position:fixed;left:12px;right:12px;bottom:calc(12px + var(--bot));height:66px;border-radius:24px;display:flex;
+  background:rgba(22,22,29,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line2);
+  box-shadow:0 12px 40px rgba(0,0,0,.5);z-index:20}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--dim2);font-size:10.5px;font-weight:600;position:relative}
+.nav button svg{width:23px;height:23px;transition:transform .25s var(--ease)}
+.nav button.on{color:var(--accent)}
+.nav button.on svg{transform:translateY(-1px) scale(1.06)}
+.nav .badge{position:absolute;top:9px;left:calc(50% + 6px);min-width:17px;height:17px;border-radius:9px;background:var(--bad);color:#fff;font-size:10px;display:grid;place-items:center;padding:0 4px}
+
+/* ---------- building blocks ---------- */
+.hello{margin:6px 2px 16px}
+.hello .d{color:var(--dim);font-size:13px}
+.hello h1{margin:3px 0 0;font-size:26px;letter-spacing:-.02em}
+.hello.act{display:flex;align-items:flex-end;gap:12px}
+.hello.act .btn{margin-left:auto;flex:none}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin:22px 2px 10px}
+.sec h3{margin:0;font-size:16px;letter-spacing:-.01em}
+.sec a{color:var(--accent);font-size:13px;font-weight:600}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 13px}
+.kpi i{font-style:normal;color:var(--dim);font-size:12px}
+.kpi b{display:block;font-size:22px;margin-top:4px;letter-spacing:-.02em}
+.kpi small{display:block;color:var(--good);font-size:11.5px;margin-top:3px}
+.kpi.hero{grid-column:1/-1;background:radial-gradient(120% 140% at 100% 0%,var(--accentSoft),transparent 60%),var(--s1)}
+.kpi.hero b{font-size:32px}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.card+.card{margin-top:10px}
+.row{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--line);position:relative;transition:background .15s}
+.row:last-child{border-bottom:0}
+.row.tap:active{background:var(--s2)}
+.av{width:42px;height:42px;border-radius:14px;flex:none;display:grid;place-items:center;font-weight:700;font-size:14px;background:var(--s3);color:#e6e6ee}
+.av.acc{background:var(--accentSoft);color:var(--accent)}
+.av.good{background:var(--goodSoft);color:var(--good)} .av.warn{background:var(--warnSoft);color:var(--warn)}
+.av.bad{background:var(--badSoft);color:var(--bad)} .av.info{background:var(--infoSoft);color:var(--info)}
+.grow{flex:1;min-width:0}
+.grow b{display:block;font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grow span{display:block;color:var(--dim);font-size:12.5px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.end{text-align:right;flex:none}
+.end b{display:block;font-size:14px}
+.end span{display:block;color:var(--dim2);font-size:11.5px;margin-top:2px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:20px;white-space:nowrap}
+.chip.good{background:var(--goodSoft);color:var(--good)} .chip.warn{background:var(--warnSoft);color:var(--warn)}
+.chip.bad{background:var(--badSoft);color:var(--bad)} .chip.info{background:var(--infoSoft);color:var(--info)}
+.chip.acc{background:var(--accentSoft);color:var(--accent)} .chip.n{background:rgba(255,255,255,.07);color:var(--dim)}
+.btn{height:46px;padding:0 18px;border-radius:14px;font-weight:700;font-size:14.5px;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s var(--ease),opacity .2s}
+.btn:active{transform:scale(.96)}
+.btn.pri{background:var(--accent);color:var(--accentInk)}
+.btn.sec2{background:var(--s3);color:var(--ink);border:1px solid var(--line2)}
+.btn.sm{height:34px;padding:0 13px;border-radius:11px;font-size:13px}
+.btn.block{width:100%}
+.btn:disabled{opacity:.35}
+.alert{display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:var(--r);background:var(--badSoft);border:1px solid rgba(248,113,113,.22);margin-bottom:10px}
+.alert.warn{background:var(--warnSoft);border-color:rgba(251,191,36,.22)}
+.alert .grow b{white-space:normal} .alert .grow span{white-space:normal;line-height:1.45}
+.seg{display:flex;background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px;margin-bottom:14px}
+.seg button{flex:1;height:36px;border-radius:10px;font-size:13px;font-weight:600;color:var(--dim);transition:background .2s,color .2s}
+.seg button.on{background:var(--s3);color:var(--ink)}
+.filters{display:flex;gap:8px;overflow-x:auto;margin:0 -16px 14px;padding:0 16px}
+.filters::-webkit-scrollbar{display:none}
+.filters button{flex:none;height:34px;padding:0 14px;border-radius:17px;background:var(--s1);border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--dim)}
+.filters button.on{background:var(--accentSoft);border-color:transparent;color:var(--accent)}
+.empty{padding:34px 20px;text-align:center;color:var(--dim);font-size:14px}
+.fab{position:fixed;right:20px;bottom:calc(92px + var(--bot));height:54px;padding:0 20px 0 16px;border-radius:27px;background:var(--accent);color:var(--accentInk);
+  font-weight:800;display:flex;align-items:center;gap:8px;box-shadow:0 10px 30px rgba(0,0,0,.45);z-index:15;transition:transform .15s var(--ease)}
+.fab:active{transform:scale(.95)}
+.bars{display:flex;align-items:flex-end;gap:8px;height:130px;padding:16px 14px 0}
+.bars div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.bars i{display:block;width:100%;border-radius:8px 8px 4px 4px;background:var(--accent);background:linear-gradient(var(--accent),color-mix(in srgb,var(--accent) 40%,transparent));
+  transform-origin:bottom;animation:grow .7s var(--ease) both}
+.bars i.dim{background:var(--s3)}
+.bars span{font-size:11px;color:var(--dim2)}
+@keyframes grow{from{transform:scaleY(0)}}
+.meter{height:6px;border-radius:6px;background:var(--s3);overflow:hidden;margin-top:8px}
+.meter i{display:block;height:100%;border-radius:6px;background:var(--accent)}
+
+/* grid of bikes */
+.units{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.unit{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:14px;text-align:left;transition:transform .15s var(--ease)}
+.unit:active{transform:scale(.97)}
+.unit .em{font-size:24px}
+.unit b{display:block;font-size:13.5px;margin-top:10px}
+.unit .plate{font-family:"Roboto Mono",ui-monospace,monospace;font-size:12px;color:var(--dim);margin-top:2px;letter-spacing:.02em}
+.unit .chip{margin-top:10px}
+
+/* ---------- sheets ---------- */
+#scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .3s;z-index:40}
+#scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;max-height:92%;background:var(--s1);border-radius:26px 26px 0 0;z-index:41;
+  transform:translateY(105%);transition:transform .42s var(--ease);display:flex;flex-direction:column;border-top:1px solid var(--line2)}
+.sheet.on{transform:none}
+.sheet .grab{width:40px;height:5px;border-radius:3px;background:var(--line2);margin:10px auto 0;flex:none}
+.sheet .sh{padding:14px 20px 6px;display:flex;align-items:center;gap:12px;flex:none}
+.sheet .sh h2{margin:0;font-size:20px;letter-spacing:-.01em}
+.sheet .sh p{margin:2px 0 0;color:var(--dim);font-size:13px}
+#sheetIn{display:flex;flex-direction:column;min-height:0;flex:1 1 auto}
+.sheet .sb{overflow-y:auto;min-height:0;flex:1 1 auto;padding:8px 20px calc(22px + var(--bot));overscroll-behavior:contain}
+.close{width:34px;height:34px;border-radius:50%;background:var(--s3);display:grid;place-items:center;margin-left:auto;flex:none}
+.lbl{font-size:12px;color:var(--dim);font-weight:600;margin:16px 2px 8px;letter-spacing:.02em}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:9px 16px;font-size:14px;background:var(--s2);border-radius:16px;padding:14px}
+.kv dt{color:var(--dim)} .kv dd{margin:0;text-align:right;font-weight:600}
+.field{width:100%;height:50px;border-radius:14px;background:var(--s2);border:1px solid var(--line2);color:var(--ink);padding:0 14px;font-size:15px;outline:0;font-family:inherit}
+.field:focus{border-color:var(--accent)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts button{min-height:40px;padding:8px 14px;border-radius:12px;background:var(--s2);border:1px solid var(--line2);font-size:13.5px;font-weight:600;color:#d8d8e0;text-align:left;transition:all .15s}
+.opts button small{display:block;font-size:11px;color:var(--dim);font-weight:500;margin-top:1px}
+.opts button.on{background:var(--accentSoft);border-color:var(--accent);color:var(--accent)}
+.opts button:disabled{opacity:.35}
+.opts.grid5 button{flex:1;min-width:0;text-align:center;padding:8px 0}
+.checks button{display:flex;width:100%;align-items:center;gap:12px;padding:13px 14px;border-radius:14px;background:var(--s2);margin-bottom:8px;font-size:14px;font-weight:500;text-align:left}
+.checks .box{width:24px;height:24px;border-radius:8px;border:2px solid var(--line2);display:grid;place-items:center;transition:all .2s;flex:none}
+.checks button.on .box{background:var(--accent);border-color:var(--accent);color:var(--accentInk)}
+.stepper{display:flex;align-items:center;gap:0;background:var(--s2);border:1px solid var(--line2);border-radius:14px;height:50px;width:max-content}
+.stepper button{width:50px;height:48px;font-size:22px;color:var(--accent)}
+.stepper b{min-width:64px;text-align:center;font-size:15px}
+.bill{background:var(--s2);border-radius:16px;overflow:hidden;margin-top:6px}
+.bill div{display:flex;justify-content:space-between;padding:11px 14px;font-size:14px;border-bottom:1px solid var(--line)}
+.bill div:last-child{border-bottom:0}
+.bill .m{color:var(--bad)}
+.bill .tot{background:var(--accentSoft);color:var(--accent);font-weight:800;font-size:15.5px}
+.bill .tot.good{background:var(--goodSoft);color:var(--good)}
+.bill .tot.bad{background:var(--badSoft);color:var(--bad)}
+.actions{display:flex;gap:10px;margin-top:18px}
+.actions .btn{flex:1}
+.timeline{position:relative;padding-left:22px}
+.timeline:before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line2)}
+.tl{position:relative;padding:0 0 16px}
+.tl:before{content:"";position:absolute;left:-20px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--s3);border:2px solid var(--line2)}
+.tl.done:before{background:var(--accent);border-color:var(--accent)}
+.tl.now:before{background:var(--bg);border-color:var(--accent);box-shadow:0 0 0 4px var(--accentSoft)}
+.tl b{font-size:14px;display:block} .tl span{color:var(--dim);font-size:12.5px;display:block;margin-top:2px;line-height:1.45}
+
+/* chat */
+.thread{display:flex;flex-direction:column;gap:8px;padding:6px 0 10px}
+.bub{max-width:84%;padding:9px 12px;border-radius:16px;font-size:14px;line-height:1.45;white-space:pre-wrap;animation:rise .3s var(--ease) both}
+.bub.in{align-self:flex-start;background:var(--s3);border-top-left-radius:5px}
+.bub.out{align-self:flex-end;background:#2b2a2a;background:color-mix(in srgb,var(--accent) 22%,var(--s2));border-top-right-radius:5px}
+.bub.bot{align-self:flex-end;background:#1c2b27;border-top-right-radius:5px}
+.bub small{display:block;font-size:10.5px;color:var(--dim2);margin-top:4px;text-align:right}
+.bub.note{align-self:center;background:transparent;color:var(--dim2);font-size:12px;padding:2px}
+.typing{align-self:flex-end;background:#1c2b27;border-radius:16px;padding:12px 14px;display:flex;gap:4px}
+.typing i{width:6px;height:6px;border-radius:50%;background:#7fb8a8;animation:bnc 1.1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes bnc{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-3px)}}
+.reply{display:flex;gap:8px;margin-top:8px}
+.reply .field{height:46px;border-radius:23px}
+.send{width:46px;height:46px;border-radius:50%;background:var(--accent);color:var(--accentInk);flex:none;display:grid;place-items:center}
+.suggest{display:block;width:100%;text-align:left;padding:12px 14px;border-radius:14px;background:var(--accentSoft);color:var(--ink);font-size:13.5px;line-height:1.45;margin-top:8px;border:1px dashed var(--line2);border:1px dashed color-mix(in srgb,var(--accent) 50%,transparent)}
+.suggest em{font-style:normal;color:var(--accent);font-weight:700;font-size:11.5px;display:block;margin-bottom:3px;letter-spacing:.03em}
+
+/* toast */
+#toast{position:fixed;left:16px;right:16px;top:calc(14px + var(--top));z-index:60;display:flex;gap:12px;align-items:center;padding:13px 14px;
+  border-radius:18px;background:rgba(30,30,38,.94);backdrop-filter:blur(14px);border:1px solid var(--line2);box-shadow:0 16px 40px rgba(0,0,0,.5);
+  transform:translateY(calc(-100% - 40px));visibility:hidden;transition:transform .45s var(--ease),visibility 0s .45s}
+#toast.on{transform:none;visibility:visible;transition:transform .45s var(--ease)}
+#toast .grow b{white-space:normal} #toast .grow span{white-space:normal}
+</style>
+</head>
+<body>
+
+<!-- 1. brand splash -->
+<section class="screen" id="splash">
+  <div class="glow a"></div><div class="glow b"></div>
+  <div class="wordmark">OPIIUS</div>
+  <div class="tagline">Business systems that run themselves &mdash; bookings, payments and customers, handled from your phone.</div>
+  <button class="cta enter" data-act="enter">Get started <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  <div class="madein">MADE IN GUWAHATI</div>
+</section>
+
+<!-- 2. system picker -->
+<section class="screen hide" id="pick">
+  <div class="eyebrow">OPIIUS &middot; Live demos</div>
+  <div class="h1">Pick a business</div>
+  <div class="sub">Each one is the owner's app with real-looking data. Tap anything &mdash; it all works.</div>
+  <button class="sys r" data-act="open" data-sys="rent">
+    <div class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="ic">&#127949;&#65039;</div>
+    <h2>Rentals</h2>
+    <p>Bike &amp; scooty rental desk. See every bike, hand over keys, check bikes back in and settle deposits &mdash; while an AI answers WhatsApp.</p>
+    <div class="tags"><span>Fleet</span><span>Bookings</span><span>Handover</span><span>Deposits</span><span>AI WhatsApp</span></div>
+  </button>
+  <button class="sys t" data-act="open" data-sys="tour">
+    <div class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    <div class="ic">&#127956;&#65039;</div>
+    <h2>Tours</h2>
+    <p>Tour operator desk. Enquiries turn into quotes in seconds, trips run day by day, and no traveller's permit or payment slips through.</p>
+    <div class="tags"><span>Enquiries</span><span>Quote builder</span><span>Trips</span><span>Permits</span><span>Payments</span></div>
+  </button>
+  <div class="sub" style="text-align:center;margin-top:22px;font-size:12.5px;color:var(--dim2)">Demo data only &middot; works offline</div>
+</section>
+
+<!-- 3. the owner app -->
+<section class="screen hide" id="app">
+  <div class="bar">
+    <div class="logo" id="logo"></div>
+    <div class="t"><b id="bizName"></b><span id="bizSub"></span></div>
+    <button class="iconbtn ml press" data-act="switch" aria-label="Switch business">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>
+    </button>
+  </div>
+  <main id="main"></main>
+  <nav class="nav" id="nav"></nav>
+</section>
+
+<div id="scrim" data-act="closeSheet"></div>
+<div class="sheet" id="sheet"><div class="grab"></div><div id="sheetIn"></div></div>
+<div id="toast"></div>
+
+<script>
+/* =====================================================================
+   OPIIUS demo app: one page, two owner apps (Rentals, Tours), demo data.
+   Everything is local; state is kept in localStorage so taps persist.
+   ===================================================================== */
+var RS='₹';
+function money(n){return (n<0?'-':'')+RS+Math.abs(Math.round(n||0)).toLocaleString('en-IN');}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function d2(n){return n<10?'0'+n:''+n;}
+function iso(d){return d.getFullYear()+'-'+d2(d.getMonth()+1)+'-'+d2(d.getDate());}
+function dt(s){return new Date(s+'T00:00:00');}
+function today(){return iso(new Date());}
+function addD(s,n){var d=dt(s);d.setDate(d.getDate()+n);return iso(d);}
+function diffD(a,b){return Math.round((dt(b)-dt(a))/864e5);}
+var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],DAY=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function fmt(s){var d=dt(s);return DAY[d.getDay()]+' '+d.getDate()+' '+MON[d.getMonth()];}
+function relLow(s){var n=diffD(today(),s);return n===0?'today':n===1?'tomorrow':'on '+fmt(s);}
+function rel(s){var n=diffD(today(),s);return n===0?'Today':n===1?'Tomorrow':n===-1?'Yesterday':fmt(s);}
+function nextDow(dow){var d=new Date();while(d.getDay()!==dow)d.setDate(d.getDate()+1);return iso(d);}
+function initials(n){return n.split(/\s+|(?=[A-Z][a-z])/).filter(Boolean).map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();}
+function greet(){var h=new Date().getHours();return h<12?'Good morning':h<17?'Good afternoon':'Good evening';}
+function $(id){return document.getElementById(id);}
+var ICON={
+  home:'<path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/>',
+  bike:'<circle cx="6" cy="16" r="3.5"/><circle cx="18" cy="16" r="3.5"/><path d="M6 16l4-7h5l3 7M10 9l-1-3H7M15 9l1-3h2"/>',
+  list:'<path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
+  chat:'<path d="M4 5h16v11H9l-5 4z"/>',
+  chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  map:'<path d="M9 4l-6 2v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
+  inbox:'<path d="M4 13l2-8h12l2 8v6H4z"/><path d="M4 13h5l1 2h4l1-2h5"/>',
+  wallet:'<rect x="3" y="6" width="18" height="13" rx="3"/><path d="M16 12.5h2M3 10h18"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  check:'<path d="M5 12l5 5 9-10"/>',
+  send:'<path d="M4 12l16-8-6 16-2-7z"/>',
+  phone:'<path d="M5 4h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>'
+};
+function svg(name,w){return '<svg width="'+(w||22)+'" height="'+(w||22)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICON[name]+'</svg>';}
+
+/* =================================================================== */
+/* RENTALS demo data                                                    */
+/* =================================================================== */
+var BIKES={
+  activa:   {label:'Honda Activa 6G',           short:'Activa 6G',   em:'🛵', day:499,  wkend:599,  dep:2000, km:120, xkm:3},
+  classic:  {label:'Royal Enfield Classic 350', short:'Classic 350', em:'🏍️', day:1199, wkend:1399, dep:5000, km:200, xkm:5},
+  dominar:  {label:'Bajaj Dominar 400',         short:'Dominar 400', em:'🏍️', day:1499, wkend:1699, dep:5000, km:250, xkm:6},
+  himalayan:{label:'RE Himalayan 450',          short:'Himalayan 450',em:'🏔️', day:1799, wkend:1999, dep:8000, km:250, xkm:6}
+};
+function isWk(s){var g=dt(s).getDay();return g===0||g===6;}
+function rentFor(type,start,days){var s=0;for(var i=0;i<days;i++)s+=isWk(addD(start,i))?BIKES[type].wkend:BIKES[type].day;return s;}
+
+function seedRent(){
+  var t=today(), sat=nextDow(6); if(sat===t)sat=addD(t,7);
+  var units=[
+    ['AS01 FR 2214','activa',8120],['AS01 FR 2215','activa',9406],['AS01 GC 1180','activa',4411],
+    ['AS01 GK 3501','classic',12430],['AS01 GK 3502','classic',15872],['AS01 GK 3503','classic',7309],
+    ['AS01 GH 4410','dominar',21054],['AS01 GH 4411','dominar',18663],
+    ['AS01 HM 4501','himalayan',6120],['AS01 HM 4502','himalayan',5288]
+  ].map(function(u){return {reg:u[0],type:u[1],odo:u[2],fuel:5,svc:null};});
+  units[5].svc='Chain set replacement · ready tomorrow';
+  var seq=1040, bk=[];
+  function b(name,phone,reg,start,days,status,trip,extra){
+    seq++; var u=units.filter(function(x){return x.reg===reg;})[0], rent=rentFor(u.type,start,days);
+    var o={id:'WR-'+seq,name:name,phone:phone,reg:reg,type:u.type,start:start,days:days,rent:rent,adv:Math.round(rent*.3),
+      dep:BIKES[u.type].dep,status:status,trip:trip,src:extra&&extra.src||'WhatsApp AI'};
+    for(var k in extra)o[k]=extra[k];
+    bk.push(o); return o;
+  }
+  b('Kenny Lyngdoh','87210 90044','AS01 HM 4502',addD(t,-3),2,'active','Dawki',{out:{odo:5288,fuel:5}});
+  b('Nitin Kalita','70020 45519','AS01 GH 4410',addD(t,-2),3,'active','Kaziranga',{out:{odo:21054,fuel:5}});
+  b('Priya Baruah','98640 11873','AS01 FR 2215',addD(t,-1),3,'active','City',{out:{odo:9406,fuel:5},src:'Walk-in'});
+  b('Arjun Bora','98540 22301','AS01 HM 4501',t,2,'upcoming','Shillong');
+  b('Rituraj Das','60010 77231','AS01 GK 3502',addD(t,1),2,'upcoming','Sohra');
+  b('Sneha Gogoi','91010 33845','AS01 GC 1180',sat,2,'upcoming','City',{src:'Instagram'});
+  b('Manas Deka','97060 11290','AS01 GK 3501',addD(t,-6),2,'done','Shillong',{settle:{refund:4640,ded:360}});
+  b('Ayesha Khan','88110 42007','AS01 GH 4411',addD(t,-5),3,'done','Tawang',{settle:{refund:5000,ded:0}});
+  b('Bikram Rai','70990 13566','AS01 FR 2214',addD(t,-4),1,'done','City',{settle:{refund:1760,ded:240}});
+  units.forEach(function(u){bk.forEach(function(x){if(x.reg===u.reg&&x.status==='active')u.odo=x.out.odo;});});
+  return {units:units,bk:bk,seq:seq,week:[8400,11200,6900,13800,9700,15600,0],
+    inbox:[
+      {id:1,who:'+91 70023 55128',status:'need',time:'9:42',msgs:[
+        ['in','Hi, can I take the Himalayan to Tawang next week? 5 days'],
+        ['bot','Yes! The Himalayan is perfect for Tawang. It is free from Mon for 5 days: ₹9,395 rent, 1,250 km free, ₹8,000 deposit.'],
+        ['in','Do you arrange the ILP permit or do I? And is there a discount for 5 days?']],
+        ask:'Discount question — the assistant does not give discounts without you.',
+        suggest:'Hi! You apply for the ILP online (arunachalilp.com, takes a day) — we give you the bike papers for it. For 5 days I can do 10% off the rent: ₹8,455. Shall I block it?'},
+      {id:2,who:'Rahul Sharma',status:'booked',time:'Yesterday',msgs:[
+        ['in','Need a bike this weekend for Shillong'],['bot','Classic 350 is free Sat–Sun: ₹2,798, 400 km free. Book it?'],
+        ['in','yes'],['bot','Done ✅ Rental WR-1039 — advance ₹839 received on UPI. See you Saturday 9 AM!']]},
+      {id:3,who:'Meera Hazarika',status:'faq',time:'Yesterday',msgs:[
+        ['in','How much is the deposit for activa?'],['bot','₹2,000, fully refundable — we send it back on UPI the moment the scooty is checked in.'],
+        ['in','ok thanks'],['bot','Anytime! Reply here whenever you want to book.']]}
+    ]};
+}
+
+/* =================================================================== */
+/* TOURS demo data                                                      */
+/* =================================================================== */
+var PKG={
+  meg:{name:'Meghalaya Explorer',dur:'5N / 6D',pp:18500,em:'⛰️',route:'Shillong · Sohra · Dawki · Mawlynnong',
+    days:['Arrive Guwahati, drive to Shillong','Shillong: Ward’s Lake, Laitlum Canyon','Sohra: Double-decker root bridge trek','Dawki & Mawlynnong: river boating, cleanest village','Shillong Peak, Elephant Falls, cafe night','Drop at Guwahati airport']},
+  taw:{name:'Tawang Expedition',dur:'6N / 7D',pp:26000,em:'🏔️',route:'Bhalukpong · Dirang · Sela · Tawang',ilp:true,
+    days:['Guwahati to Bhalukpong','Bhalukpong to Dirang','Dirang to Tawang via Sela Pass (4,170 m)','Tawang Monastery, war memorial','Bum La / Madhuri Lake (weather)','Tawang to Dirang','Dirang to Guwahati']},
+  kaz:{name:'Kaziranga Wildlife',dur:'2N / 3D',pp:9800,em:'🦏',route:'Kaziranga · Kohora',
+    days:['Guwahati to Kaziranga, evening tea garden walk','Elephant + jeep safari, Central range','Morning birding, drop at Guwahati']},
+  maj:{name:'Majuli & Sivasagar',dur:'3N / 4D',pp:12500,em:'🛶',route:'Jorhat · Majuli · Sivasagar',
+    days:['Guwahati to Jorhat','Ferry to Majuli, satras & mask making','Majuli to Sivasagar: Rang Ghar, Talatal Ghar','Sivasagar to Guwahati']}
+};
+var TIER={std:{l:'Standard',m:1},dlx:{l:'Deluxe',m:1.35},prm:{l:'Premium',m:1.8}};
+function seedTour(){
+  var t=today();
+  var trips=[
+    {id:'NT-311',pkg:'meg',kind:'Private',start:addD(t,-2),lead:'Sharma family',pax:4,seats:4,driver:'Bipul Das',veh:'Innova Crysta · AS01 AB 4521',
+     people:[['Amit Sharma',1,0],['Neha Sharma',1,0],['Riya Sharma',1,0],['Kabir Sharma',1,0]],total:88800,paid:88800},
+    {id:'NT-312',pkg:'kaz',kind:'Private',start:t,lead:'Mehta couple',pax:2,seats:2,driver:'Hemanta Kalita',veh:'Dzire · AS01 CT 7710',
+     flight:'IndiGo 6E-2341 lands 11:40 AM',people:[['Rohan Mehta',1,0],['Isha Mehta',1,0]],total:19600,paid:9800},
+    {id:'NT-315',pkg:'taw',kind:'Group',start:addD(t,3),lead:'Group departure',pax:9,seats:12,driver:'Pranjal Bora',veh:'Tempo Traveller · AS01 DC 9034',
+     people:[['Vikram Singh',1,1],['Anjali Singh',1,1],['Deepak Joshi',1,0],['Sana Iqbal',1,1],['Tenzin Norbu',1,1],['Karthik R',1,0],['Pooja Nair',1,1],['Arnab Sen',1,1],['Mitali Sen',1,1]],total:234000,paid:174000},
+    {id:'NT-318',pkg:'meg',kind:'Group',start:addD(t,8),lead:'Group departure',pax:5,seats:12,driver:'Unassigned',veh:'Tempo Traveller',
+     people:[['Ritesh Kumar',1,0],['Shreya Kumar',1,0],['Farhan Ali',0,0],['Nisha Patel',1,0],['Gaurav Patel',1,0]],total:92500,paid:37000}
+  ];
+  var leads=[
+    {id:1,name:'Ananya Kulkarni',from:'Pune',pax:6,when:'20–25 Dec',want:'meg',budget:'₹15k / person',stage:'new',src:'Instagram',
+     note:'Family of 6 with two kids (8, 12). Wants a relaxed pace and one nice hotel night.'},
+    {id:2,name:'Rohit & Megha',from:'Bengaluru',pax:2,when:'Mid Nov',want:'taw',budget:'Open',stage:'new',src:'WhatsApp',
+     note:'Honeymoon. Asked "Tawang or Meghalaya?" — want snow if possible.'},
+    {id:3,name:'Northwind Tech',from:'Guwahati',pax:18,when:'7–9 Nov',want:'kaz',budget:'₹12k / person',stage:'quoted',src:'Referral',
+     note:'Company offsite. Quote sent 2 days ago — follow up.',quote:198450},
+    {id:4,name:'Sourav Ghosh',from:'Kolkata',pax:3,when:'Oct',want:'maj',budget:'₹10k / person',stage:'won',src:'Google',note:'Booked Majuli trip.',quote:37500},
+    {id:5,name:'Pallavi R',from:'Delhi',pax:2,when:'Sep',want:'meg',budget:'Low',stage:'lost',src:'Website',note:'Went with a cheaper operator.'}
+  ];
+  return {trips:trips,leads:leads,seq:318,week:[42000,18500,0,96000,37000,52000,0]};
+}
+
+/* =================================================================== */
+/* state                                                                */
+/* =================================================================== */
+var ST;
+function fresh(){return {rent:seedRent(),tour:seedTour(),names:{rent:'Weekend Rides',tour:'NE Trails'},owner:'Owner',day:today()};}
+function load(){try{ST=JSON.parse(localStorage.getItem('opiius_demo')||'null');}catch(e){}
+  if(!ST||ST.day!==today()){var keep=ST;ST=fresh();          /* demo data is re-dated every day so "today" always has work */
+    if(keep&&keep.names){ST.names=keep.names;ST.owner=keep.owner;}}}
+function save(){try{localStorage.setItem('opiius_demo',JSON.stringify(ST));}catch(e){}}
+load();
+
+var SYS=null, TAB='home', SUBTAB={}, FILTER={};
+var R=function(){return ST.rent;}, T=function(){return ST.tour;};
+
+/* ---------- navigation ---------- */
+function showScreen(id){['splash','pick','app'].forEach(function(s){$(s).classList.toggle('hide',s!==id);});
+}
+function openSys(sys){
+  SYS=sys; TAB='home'; document.body.className=sys; $('logo').textContent=initials(ST.names[sys]);
+  $('bizName').textContent=ST.names[sys];
+  $('bizSub').textContent=sys==='rent'?'Rental desk · Guwahati':'Tour desk · Guwahati';
+  renderNav(); renderTab(); showScreen('app');
+}
+function tabs(){return SYS==='rent'
+  ?[['home','Today','home'],['fleet','Fleet','bike'],['book','Bookings','list'],['inbox','Inbox','chat'],['more','Reports','chart']]
+  :[['home','Today','home'],['trips','Trips','map'],['leads','Enquiries','inbox'],['pay','Payments','wallet'],['more','Reports','chart']];}
+function renderNav(){
+  var need=SYS==='rent'?R().inbox.filter(function(x){return x.status==='need';}).length:T().leads.filter(function(x){return x.stage==='new';}).length;
+  $('nav').innerHTML=tabs().map(function(t){
+    var badge=(t[0]==='inbox'||t[0]==='leads')&&need?'<span class="badge">'+need+'</span>':'';
+    return '<button class="'+(t[0]===TAB?'on':'')+'" data-act="tab" data-tab="'+t[0]+'">'+svg(t[2])+t[1]+badge+'</button>';}).join('');
+}
+function newBtn(){var f=fabFor();return f?'<button class="btn sm pri" data-act="'+f[1]+'">'+svg('plus',16)+f[0]+'</button>':'';}
+function hello(sub,title){return '<div class="hello act"><div><div class="d">'+sub+'</div><h1>'+title+'</h1></div>'+newBtn()+'</div>';}
+function fabFor(){
+  if(SYS==='rent'&&TAB==='book')return ['New','newRent'];
+  if(SYS==='tour'&&TAB==='leads')return ['New','newLead'];
+  return null;
+}
+function renderTab(keepScroll){
+  var m=$('main'), top=m.scrollTop;
+  var html=(SYS==='rent'?RENT_VIEWS:TOUR_VIEWS)[TAB]();
+  m.innerHTML='<div class="'+(keepScroll?'':'page')+'">'+html+'</div>';
+  m.scrollTop=keepScroll?top:0;
+  renderNav();
+}
+function refresh(){renderTab(true);save();}
+
+/* ---------- sheet + toast ---------- */
+var sheetFn=null;
+function openSheet(fn){sheetFn=fn;drawSheet();$('scrim').classList.add('on');$('sheet').classList.add('on');}
+function drawSheet(){if(!sheetFn)return;var sb=document.querySelector('#sheet .sb'),top=sb?sb.scrollTop:0;
+  $('sheetIn').innerHTML=sheetFn();var nb=document.querySelector('#sheet .sb');if(nb)nb.scrollTop=top;}
+function closeSheet(){sheetFn=null;$('scrim').classList.remove('on');$('sheet').classList.remove('on');}
+function sheetHead(title,sub,av){return '<div class="sh">'+(av||'')+'<div><h2>'+title+'</h2>'+(sub?'<p>'+sub+'</p>':'')+'</div><button class="close" data-act="closeSheet">'+svg('x',16)+'</button></div>';}
+var toastT;
+function toast(title,sub,kind){
+  var el=$('toast');
+  el.innerHTML='<div class="av '+(kind||'good')+'">'+svg(kind==='bad'?'x':'check',20)+'</div><div class="grow"><b>'+title+'</b>'+(sub?'<span>'+sub+'</span>':'')+'</div>';
+  el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('on');},3200);
+}
+
+/* Android back button: close sheet, then leave the app screen, then the picker */
+window.appBack=function(){
+  if(sheetFn){closeSheet();return true;}
+  if(!$('app').classList.contains('hide')){if(TAB!=='home'){TAB='home';renderTab();}else showScreen('pick');return true;}
+  if(!$('pick').classList.contains('hide')){showScreen('splash');return true;}
+  return false;
+};
+
+/* =================================================================== */
+/* RENTALS views                                                        */
+/* =================================================================== */
+function endOf(b){return addD(b.start,b.days-1);}
+function unit(reg){return R().units.filter(function(u){return u.reg===reg;})[0];}
+function bk(id){return R().bk.filter(function(b){return b.id===id;})[0];}
+function overdue(b){return b.status==='active'&&endOf(b)<today();}
+function dueToday(b){return b.status==='active'&&endOf(b)===today();}
+function unitState(u){
+  if(u.svc)return ['bad','Service'];
+  var t=today();
+  var a=R().bk.filter(function(b){return b.reg===u.reg&&b.status==='active';})[0];
+  if(a)return overdue(a)?['bad','Overdue']:['warn','On ride'];
+  var up=R().bk.filter(function(b){return b.reg===u.reg&&b.status==='upcoming'&&b.start===t;})[0];
+  if(up)return ['info','Pickup today'];
+  return ['good','Free'];
+}
+function freeUnits(type,start,days){
+  var end=addD(start,days);
+  return R().units.filter(function(u){
+    if(u.type!==type||u.svc)return false;
+    return !R().bk.some(function(b){return b.reg===u.reg&&(b.status==='active'||b.status==='upcoming')&&b.start<end&&start<addD(b.start,b.days);});
+  });
+}
+function bRow(b){
+  var st=b.status==='upcoming'?(b.start===today()?['info','Pickup today']:['n',rel(b.start)])
+    :b.status==='active'?(overdue(b)?['bad','Overdue']:dueToday(b)?['warn','Due today']:['warn','On ride']):['good','Closed'];
+  return '<div class="row tap" data-act="openBk" data-id="'+b.id+'"><div class="av acc">'+initials(b.name)+'</div>'
+    +'<div class="grow"><b>'+esc(b.name)+'</b><span>'+BIKES[b.type].short+' · '+b.reg+'</span></div>'
+    +'<div class="end"><span class="chip '+st[0]+'">'+st[1]+'</span><span>'+fmt(b.start)+' · '+b.days+'d</span></div></div>';
+}
+var RENT_VIEWS={
+  home:function(){
+    var d=R(), t=today();
+    var act=d.bk.filter(function(b){return b.status==='active';});
+    var pick=d.bk.filter(function(b){return b.status==='upcoming'&&b.start===t;});
+    var ret=act.filter(dueToday), od=act.filter(overdue);
+    var rev=d.week.slice(); rev[6]=d.bk.filter(function(b){return b.today;}).reduce(function(a,b){return a+b.rent;},0);
+    var held=act.reduce(function(a,b){return a+b.dep;},0);
+    var need=d.inbox.filter(function(x){return x.status==='need';});
+    var h='<div class="hello"><div class="d">'+fmt(t)+'</div><h1>'+greet()+', '+esc(ST.owner)+'</h1></div>';
+    od.forEach(function(b){h+='<div class="alert"><div class="av bad">!</div><div class="grow"><b>'+esc(b.name)+' is '+(-diffD(t,endOf(b)))+' day'+(-diffD(t,endOf(b))>1?'s':'')+' late</b>'
+      +'<span>'+BIKES[b.type].short+' · '+b.reg+' was due back '+fmt(endOf(b))+'. Late fees are adding up on the deposit.</span>'
+      +'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn sm pri" data-act="call" data-who="'+esc(b.name)+'">'+svg('phone',15)+'Call</button>'
+      +'<button class="btn sm sec2" data-act="return" data-id="'+b.id+'">Check in</button></div></div></div>';});
+    need.forEach(function(x){h+='<div class="alert warn"><div class="av warn">?</div><div class="grow"><b>The assistant needs you</b><span>'+esc(x.who)+': '+esc(x.ask)+'</span>'
+      +'<div style="margin-top:10px"><button class="btn sm pri" data-act="openChat" data-id="'+x.id+'">Reply</button></div></div></div>';});
+    h+='<div class="kpis"><div class="kpi hero"><i>Bookings this week</i><b class="num">'+money(rev.reduce(function(a,b){return a+b;},0))+'</b><small>↑ 18% vs last week</small></div>'
+      +'<div class="kpi"><i>Bikes on the road</i><b class="num">'+act.length+' / '+d.units.length+'</b></div>'
+      +'<div class="kpi"><i>Deposits held</i><b class="num">'+money(held)+'</b></div></div>';
+    h+='<div class="actions" style="margin-top:12px"><button class="btn pri" data-act="newRent">'+svg('plus',18)+'New booking</button><button class="btn sec2" data-act="tab" data-tab="fleet">'+svg('bike',18)+'Fleet</button></div>';
+    h+='<div class="sec"><h3>Pickups today</h3><a data-act="tab" data-tab="book">All</a></div>';
+    h+=pick.length?'<div class="card">'+pick.map(function(b){return '<div class="row"><div class="av info">'+initials(b.name)+'</div><div class="grow"><b>'+esc(b.name)+'</b><span>'+BIKES[b.type].short+' · 9:00 AM · '+esc(b.trip)+'</span></div><button class="btn sm pri" data-act="handover" data-id="'+b.id+'">Hand over</button></div>';}).join('')+'</div>'
+      :'<div class="card"><div class="empty">No more pickups today</div></div>';
+    h+='<div class="sec"><h3>Returns due today</h3></div>';
+    h+=ret.length?'<div class="card">'+ret.map(function(b){return '<div class="row"><div class="av warn">'+initials(b.name)+'</div><div class="grow"><b>'+esc(b.name)+'</b><span>'+BIKES[b.type].short+' · by 8:00 PM</span></div><button class="btn sm sec2" data-act="return" data-id="'+b.id+'">Check in</button></div>';}).join('')+'</div>'
+      :'<div class="card"><div class="empty">Nothing else due back today</div></div>';
+    return h;
+  },
+  fleet:function(){
+    var d=R(), f=FILTER.fleet||'all';
+    var list=d.units.filter(function(u){var s=unitState(u)[1];
+      return f==='all'||(f==='free'&&s==='Free')||(f==='out'&&(s==='On ride'||s==='Overdue'))||(f==='svc'&&s==='Service');});
+    var cnt=function(k){return d.units.filter(function(u){var s=unitState(u)[1];return k==='free'?s==='Free':k==='out'?(s==='On ride'||s==='Overdue'):s==='Service';}).length;};
+    var h='<div class="hello"><div class="d">'+d.units.length+' vehicles</div><h1>Fleet</h1></div>';
+    h+='<div class="filters">'+[['all','All '+d.units.length],['free','Free '+cnt('free')],['out','Out '+cnt('out')],['svc','Service '+cnt('svc')]]
+      .map(function(x){return '<button class="'+(f===x[0]?'on':'')+'" data-act="filter" data-k="fleet" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div>';
+    h+='<div class="units">'+list.map(function(u){var s=unitState(u);
+      return '<button class="unit" data-act="openUnit" data-reg="'+u.reg+'"><div class="em">'+BIKES[u.type].em+'</div><b>'+BIKES[u.type].short+'</b><div class="plate">'+u.reg+'</div><span class="chip '+s[0]+'">'+s[1]+'</span></button>';}).join('')+'</div>';
+    return list.length?h:h+'<div class="empty">Nothing here</div>';
+  },
+  book:function(){
+    var d=R(), f=SUBTAB.book||'up';
+    var list=d.bk.filter(function(b){return f==='up'?b.status==='upcoming':f==='act'?b.status==='active':b.status==='done';})
+      .sort(function(a,b){return f==='done'?(a.start<b.start?1:-1):(a.start<b.start?-1:1);});
+    var h=hello(d.bk.length+' rentals','Bookings');
+    h+='<div class="seg">'+[['up','Upcoming'],['act','On ride'],['done','Closed']].map(function(x){return '<button class="'+(f===x[0]?'on':'')+'" data-act="sub" data-k="book" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div>';
+    return h+(list.length?'<div class="card">'+list.map(bRow).join('')+'</div>':'<div class="card"><div class="empty">No rentals here</div></div>');
+  },
+  inbox:function(){
+    var d=R();
+    var h='<div class="hello"><div class="d">AI assistant on WhatsApp</div><h1>Inbox</h1></div>';
+    var auto=d.inbox.filter(function(x){return x.status!=='need';}).length;
+    h+='<div class="kpis" style="margin-bottom:14px"><div class="kpi"><i>Handled by AI</i><b class="num">'+Math.round(auto/d.inbox.length*100)+'%</b></div><div class="kpi"><i>Avg reply time</i><b>4 sec</b></div></div>';
+    h+='<button class="btn pri block" data-act="simulate" style="margin-bottom:14px">▶ Watch the AI take a booking</button>';
+    var lab={need:['warn','Needs you'],booked:['good','Booked by AI'],faq:['n','Answered']};
+    h+='<div class="card">'+d.inbox.map(function(x){var l=x.msgs[x.msgs.length-1];
+      return '<div class="row tap" data-act="openChat" data-id="'+x.id+'"><div class="av '+(x.status==='need'?'warn':'acc')+'">'+(/^\+/.test(x.who)?'#':initials(x.who))+'</div>'
+        +'<div class="grow"><b>'+esc(x.who)+'</b><span>'+(l[0]==='in'?'':'AI: ')+esc(l[1])+'</span></div>'
+        +'<div class="end"><span>'+x.time+'</span><span class="chip '+lab[x.status][0]+'" style="margin-top:6px">'+lab[x.status][1]+'</span></div></div>';}).join('')+'</div>';
+    return h;
+  },
+  more:function(){
+    var d=R(), days=[];for(var i=6;i>=0;i--)days.push(DAY[dt(addD(today(),-i)).getDay()].slice(0,2));
+    var wk=d.week.slice(); wk[6]=d.bk.filter(function(b){return b.today;}).reduce(function(a,b){return a+b.rent;},0);
+    var mx=Math.max.apply(null,wk.concat([1]));
+    var h='<div class="hello"><div class="d">Last 7 days</div><h1>Reports</h1></div>';
+    h+='<div class="card"><div style="padding:14px 14px 0"><div style="color:var(--dim);font-size:12.5px">Bookings value</div><div style="font-size:26px;font-weight:800;margin-top:2px" class="num">'+money(wk.reduce(function(a,b){return a+b;},0))+'</div></div>'
+      +'<div class="bars">'+wk.map(function(v,i){return '<div><i style="height:'+Math.max(4,v/mx*100)+'%;animation-delay:'+(i*60)+'ms" class="'+(v?'':'dim')+'"></i><span>'+days[i]+'</span></div>';}).join('')+'</div><div style="height:14px"></div></div>';
+    h+='<div class="sec"><h3>Earnings by bike type</h3></div><div class="card">';
+    var by={};d.bk.forEach(function(b){by[b.type]=(by[b.type]||0)+b.rent;});var tot=0;for(var k in by)tot+=by[k];
+    Object.keys(BIKES).forEach(function(k){var v=by[k]||0;
+      h+='<div class="row"><div class="av">'+BIKES[k].em+'</div><div class="grow"><b>'+BIKES[k].short+'</b><div class="meter"><i style="width:'+(tot?v/tot*100:0)+'%"></i></div></div><div class="end"><b class="num">'+money(v)+'</b></div></div>';});
+    h+='</div>'+settingsBlock();
+    return h;
+  }
+};
+
+/* ---------- rentals sheets ---------- */
+var FORM={};
+function bkSheet(id){
+  var b=bk(id), u=unit(b.reg), B=BIKES[b.type];
+  var steps=[['Booked',b.src+' · advance '+money(b.adv)+' paid','done'],
+    ['Pickup',fmt(b.start)+', 9:00 AM',b.status==='upcoming'?'now':'done'],
+    ['On ride','Return by '+fmt(endOf(b))+', 8:00 PM',b.status==='active'?'now':b.status==='done'?'done':''],
+    ['Returned & deposit settled',b.settle?('Refund '+money(b.settle.refund)+(b.settle.ded?' · deductions '+money(b.settle.ded):'')):'',b.status==='done'?'done':'']];
+  var h=sheetHead(esc(b.name),b.id+' · '+b.phone,'<div class="av acc">'+initials(b.name)+'</div>')+'<div class="sb">';
+  h+='<dl class="kv"><dt>Bike</dt><dd>'+B.short+'</dd><dt>Plate</dt><dd>'+b.reg+'</dd><dt>Dates</dt><dd>'+fmt(b.start)+' → '+fmt(endOf(b))+'</dd>'
+    +'<dt>Trip</dt><dd>'+esc(b.trip)+'</dd><dt>Rent</dt><dd>'+money(b.rent)+'</dd><dt>Deposit</dt><dd>'+money(b.dep)+'</dd>'
+    +(b.out?'<dt>Went out at</dt><dd>'+b.out.odo.toLocaleString('en-IN')+' km</dd>':'')+'</dl>';
+  h+='<div class="lbl">PROGRESS</div><div class="timeline">'+steps.map(function(s){return '<div class="tl '+s[2]+'"><b>'+s[0]+'</b>'+(s[1]?'<span>'+s[1]+'</span>':'')+'</div>';}).join('')+'</div>';
+  h+='<div class="actions"><button class="btn sec2" data-act="call" data-who="'+esc(b.name)+'">'+svg('phone',16)+'Call</button>';
+  if(b.status==='upcoming')h+='<button class="btn pri" data-act="handover" data-id="'+b.id+'">Hand over keys</button>';
+  if(b.status==='active')h+='<button class="btn pri" data-act="return" data-id="'+b.id+'">Check in bike</button>';
+  return h+'</div></div>';
+}
+function handoverSheet(){
+  var b=bk(FORM.id), u=unit(b.reg), bal=b.rent-b.adv;
+  var items=['Original driving licence seen','Photo ID (Aadhaar) seen','4-side photos of the bike','Helmet issued','Papers + PUC in the box','Tyres and brakes checked'];
+  var all=items.every(function(x,i){return FORM.c[i];});
+  var h=sheetHead('Hand over keys',esc(b.name)+' · '+b.reg)+'<div class="sb">';
+  h+='<div class="lbl">CHECKLIST</div><div class="checks">'+items.map(function(x,i){return '<button class="'+(FORM.c[i]?'on':'')+'" data-act="chk" data-i="'+i+'"><span class="box">'+(FORM.c[i]?svg('check',15):'')+'</span>'+x+'</button>';}).join('')+'</div>';
+  h+='<div class="lbl">ODOMETER OUT (KM)</div><input class="field num" inputmode="numeric" id="fOdo" value="'+FORM.odo+'">';
+  h+='<div class="lbl">FUEL</div><div class="opts grid5">'+[1,2,3,4,5].map(function(n){return '<button class="'+(FORM.fuel===n?'on':'')+'" data-act="set" data-f="fuel" data-v="'+n+'">'+n+'/5</button>';}).join('')+'</div>';
+  h+='<div class="lbl">COLLECT NOW</div><div class="bill"><div><span>Balance rent</span><span>'+money(bal)+'</span></div><div><span>Refundable deposit</span><span>'+money(b.dep)+'</span></div><div class="tot"><span>Total</span><span>'+money(bal+b.dep)+'</span></div></div>';
+  h+='<div class="actions"><button class="btn pri" data-act="doHandover" '+(all?'':'disabled')+'>'+(all?'Confirm handover':'Tick all '+items.length+' checks')+'</button></div>';
+  return h+'</div>';
+}
+function settle(){
+  var b=bk(FORM.id), B=BIKES[b.type];
+  var used=Math.max(0,(+FORM.odo||0)-b.out.odo), allow=B.km*b.days, xk=Math.max(0,used-allow);
+  var late=FORM.late==='day'?B.day:FORM.late==='3h'?450:FORM.late==='1h'?150:0;
+  var lateAuto=overdue(b)?B.day*(-diffD(today(),endOf(b))):0;
+  var fuel=Math.max(0,b.out.fuel-FORM.fuel)*120, dmg=FORM.dmg||0;
+  var ded=xk*B.xkm+late+lateAuto+fuel+dmg;
+  return {used:used,allow:allow,xk:xk,xkFee:xk*B.xkm,late:late+lateAuto,fuel:fuel,dmg:dmg,ded:ded,refund:b.dep-ded,dep:b.dep};
+}
+function returnSheet(){
+  var b=bk(FORM.id), s=settle();
+  var h=sheetHead('Check in bike',esc(b.name)+' · '+b.reg)+'<div class="sb">';
+  h+='<dl class="kv"><dt>Went out at</dt><dd>'+b.out.odo.toLocaleString('en-IN')+' km · fuel '+b.out.fuel+'/5</dd><dt>Free km</dt><dd>'+s.allow+' km</dd><dt>Due back</dt><dd>'+fmt(endOf(b))+', 8 PM</dd></dl>';
+  h+='<div class="lbl">ODOMETER IN (KM)</div><input class="field num" inputmode="numeric" id="fOdo" value="'+FORM.odo+'">';
+  h+='<div class="lbl">FUEL</div><div class="opts grid5">'+[0,1,2,3,4,5].map(function(n){return '<button class="'+(FORM.fuel===n?'on':'')+'" data-act="set" data-f="fuel" data-v="'+n+'">'+n+'/5</button>';}).join('')+'</div>';
+  if(!overdue(b))h+='<div class="lbl">RETURNED</div><div class="opts">'+[['0','On time'],['1h','~1 hr late'],['3h','3 hrs late'],['day','Next day']].map(function(x){return '<button class="'+(FORM.late===x[0]?'on':'')+'" data-act="set" data-f="late" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div>';
+  h+='<div class="lbl">DAMAGE</div><div class="opts">'+[[0,'None'],[350,'Brake lever'],[450,'Mirror'],[900,'Tank scratch'],[2500,'Crash guard']].map(function(x){return '<button class="'+(FORM.dmg===x[0]?'on':'')+'" data-act="set" data-f="dmg" data-v="'+x[0]+'">'+x[1]+(x[0]?'<small>'+money(x[0])+'</small>':'')+'</button>';}).join('')+'</div>';
+  h+='<div class="lbl">SETTLEMENT</div><div class="bill"><div><span>Ridden</span><span>'+s.used.toLocaleString('en-IN')+' km</span></div><div><span>Deposit held</span><span>'+money(s.dep)+'</span></div>'
+    +(s.xkFee?'<div class="m"><span>Extra '+s.xk+' km</span><span>-'+money(s.xkFee)+'</span></div>':'')
+    +(s.late?'<div class="m"><span>Late return</span><span>-'+money(s.late)+'</span></div>':'')
+    +(s.fuel?'<div class="m"><span>Fuel short</span><span>-'+money(s.fuel)+'</span></div>':'')
+    +(s.dmg?'<div class="m"><span>Damage</span><span>-'+money(s.dmg)+'</span></div>':'')
+    +(s.refund>=0?'<div class="tot good"><span>Refund to rider</span><span>'+money(s.refund)+'</span></div>':'<div class="tot bad"><span>Rider owes</span><span>'+money(-s.refund)+'</span></div>')+'</div>';
+  h+='<div class="actions"><button class="btn pri" data-act="doReturn">'+(s.refund>=0?'Check in & refund '+money(s.refund):'Check in & collect '+money(-s.refund))+'</button></div>';
+  return h+'</div>';
+}
+function unitSheet(reg){
+  var u=unit(reg), B=BIKES[u.type], s=unitState(u);
+  var next=R().bk.filter(function(b){return b.reg===reg&&(b.status==='upcoming'||b.status==='active');}).sort(function(a,b){return a.start<b.start?-1:1;});
+  var earned=R().bk.filter(function(b){return b.reg===reg;}).reduce(function(a,b){return a+b.rent;},0);
+  var h=sheetHead(B.short,reg,'<div class="av acc" style="font-size:22px">'+B.em+'</div>')+'<div class="sb">';
+  h+='<dl class="kv"><dt>Status</dt><dd><span class="chip '+s[0]+'">'+s[1]+'</span></dd><dt>Odometer</dt><dd>'+u.odo.toLocaleString('en-IN')+' km</dd>'
+    +'<dt>Rate</dt><dd>'+money(B.day)+' / '+money(B.wkend)+' wknd</dd><dt>Earned (shown)</dt><dd>'+money(earned)+'</dd>'
+    +(u.svc?'<dt>Service</dt><dd>'+esc(u.svc)+'</dd>':'')+'</dl>';
+  h+='<div class="lbl">SCHEDULE</div>'+(next.length?'<div class="card">'+next.map(bRow).join('')+'</div>':'<div class="card"><div class="empty">No bookings — free to rent</div></div>');
+  h+='<div class="actions">'+(u.svc?'<button class="btn pri" data-act="svcDone" data-reg="'+reg+'">Back from service</button>'
+    :'<button class="btn sec2" data-act="svc" data-reg="'+reg+'">Send to service</button>')+'</div>';
+  return h+'</div>';
+}
+function newRentSheet(){
+  var F=FORM, t=today(), sat=nextDow(6);
+  var starts=[[t,'Today'],[addD(t,1),'Tomorrow'],[sat===t?addD(t,7):sat,'This Sat']];
+  var h=sheetHead('New booking','Walk-in or phone booking')+'<div class="sb">';
+  h+='<div class="lbl">RIDER</div><input class="field" id="fName" placeholder="Full name" value="'+esc(F.name||'')+'"><div style="height:8px"></div><input class="field num" id="fPhone" inputmode="tel" placeholder="Mobile number" value="'+esc(F.phone||'')+'">';
+  h+='<div class="lbl">PICKUP</div><div class="opts">'+starts.map(function(s){return '<button class="'+(F.start===s[0]?'on':'')+'" data-act="set" data-f="start" data-v="'+s[0]+'">'+s[1]+'<small>'+fmt(s[0])+'</small></button>';}).join('')+'</div>';
+  h+='<div class="lbl">DAYS</div><div class="stepper"><button data-act="days" data-v="-1">−</button><b>'+F.days+' day'+(F.days>1?'s':'')+'</b><button data-act="days" data-v="1">+</button></div>';
+  h+='<div class="lbl">BIKE</div><div class="opts">'+Object.keys(BIKES).map(function(k){var n=freeUnits(k,F.start,F.days).length;
+    return '<button class="'+(F.type===k?'on':'')+'" data-act="set" data-f="type" data-v="'+k+'" '+(n?'':'disabled')+'>'+BIKES[k].short+'<small>'+(n?n+' free':'Fully booked')+'</small></button>';}).join('')+'</div>';
+  var ok=F.type&&freeUnits(F.type,F.start,F.days).length;
+  if(ok){var rent=rentFor(F.type,F.start,F.days);
+    h+='<div class="lbl">QUOTE</div><div class="bill"><div><span>Rent · '+F.days+' day'+(F.days>1?'s':'')+'</span><span>'+money(rent)+'</span></div><div><span>Free km</span><span>'+BIKES[F.type].km*F.days+' km</span></div><div><span>Deposit at pickup</span><span>'+money(BIKES[F.type].dep)+'</span></div><div class="tot"><span>Advance now (30%)</span><span>'+money(rent*.3)+'</span></div></div>';}
+  h+='<div class="actions"><button class="btn pri" data-act="doNewRent" '+(ok?'':'disabled')+'>Create booking</button></div>';
+  return h+'</div>';
+}
+function chatSheet(id){
+  var x=R().inbox.filter(function(i){return i.id===id;})[0];
+  var h=sheetHead(esc(x.who),x.status==='need'?'Waiting for your reply':'Handled by the AI assistant','<div class="av acc">'+(/^\+/.test(x.who)?'#':initials(x.who))+'</div>')+'<div class="sb"><div class="thread" id="thread">';
+  h+=x.msgs.map(function(m){return '<div class="bub '+m[0]+'">'+esc(m[1])+(m[0]==='bot'?'<small>AI assistant</small>':m[0]==='out'?'<small>You</small>':'')+'</div>';}).join('');
+  h+='</div>';
+  if(x.status==='need'){
+    h+='<button class="suggest" data-act="useSuggest" data-id="'+x.id+'"><em>SUGGESTED REPLY · TAP TO USE</em>'+esc(x.suggest)+'</button>';
+    h+='<div class="reply"><input class="field" id="fReply" placeholder="Type a reply…"><button class="send" data-act="sendReply" data-id="'+x.id+'">'+svg('send',18)+'</button></div>';
+  }else h+='<div class="bub note" style="text-align:center;width:100%">No action needed — the assistant closed this chat</div>';
+  return h+'</div>';
+}
+
+/* the AI takes a booking on its own, live */
+var SIM=null;
+function simulate(){
+  var t=today(), sat=nextDow(6); if(sat===t)sat=addD(t,7);
+  var free=freeUnits('classic',sat,2), type=free.length?'classic':'dominar'; free=freeUnits(type,sat,2);
+  if(!free.length){toast('Fleet is full for Saturday','Free a bike to run the demo again','bad');return;}
+  var rent=rentFor(type,sat,2), id=Date.now();
+  var x={id:id,who:'Ankur Baishya',status:'faq',time:'Now',msgs:[]};
+  R().inbox.unshift(x);
+  var script=[['in','Hi, need a bike for Shillong this Saturday, 2 days'],
+    ['bot','Hi Ankur! For Sat–Sun I have the '+BIKES[type].short+' free: '+money(rent)+' for 2 days, '+(BIKES[type].km*2)+' km free (Shillong is ~200 km). Deposit '+money(BIKES[type].dep)+' at pickup. Shall I book it?'],
+    ['in','Yes please. Ankur Baishya, 94350 66120, DL AS01 20210034517'],
+    ['bot','Licence verified ✅ Pay the '+money(rent*.3)+' advance here to block the bike: upi://pay (demo)'],
+    ['in','paid'],
+    ['bot','Booked! 🎉 Your rental is confirmed for '+fmt(sat)+', 9 AM. Location pin and checklist sent.']];
+  openChat(id);
+  var i=0, on=function(){return sheetFn&&sheetFn.chatId===id;};
+  (function next(){
+    if(i>=script.length){
+      x.status='booked';
+      ST.rent.seq++; var b={id:'WR-'+ST.rent.seq,name:'Ankur Baishya',phone:'94350 66120',reg:free[0].reg,type:type,start:sat,days:2,rent:rent,adv:Math.round(rent*.3),
+        dep:BIKES[type].dep,status:'upcoming',trip:'Shillong',src:'WhatsApp AI',today:true};
+      R().bk.push(b); save(); refresh(); if(on())drawSheet();
+      toast('New booking by the AI','Ankur Baishya · '+BIKES[type].short+' · '+money(b.adv)+' advance paid');
+      return;
+    }
+    var m=script[i++], th=$('thread');
+    if(m[0]==='bot'&&th&&on()){th.insertAdjacentHTML('beforeend','<div class="typing" id="typ"><i></i><i></i><i></i></div>');scrollSheet();}
+    setTimeout(function(){
+      x.msgs.push(m); if(on()){drawSheet();scrollSheet();}
+      setTimeout(next,m[0]==='in'?900:1600);
+    },m[0]==='bot'?1300:700);
+  })();
+}
+function openChat(id){var fn=function(){return chatSheet(id);};fn.chatId=id;openSheet(fn);setTimeout(scrollSheet,50);}
+function scrollSheet(){var sb=document.querySelector('#sheet .sb');if(sb)sb.scrollTop=sb.scrollHeight;}
+
+/* =================================================================== */
+/* TOURS views                                                          */
+/* =================================================================== */
+function trip(id){return T().trips.filter(function(x){return x.id===id;})[0];}
+function lead(id){return T().leads.filter(function(x){return x.id===+id;})[0];}
+function tripEnd(x){return addD(x.start,PKG[x.pkg].days.length-1);}
+function tripState(x){var t=today();return x.start>t?'upcoming':tripEnd(x)<t?'done':'live';}
+function ilpPending(x){return PKG[x.pkg].ilp?x.people.filter(function(p){return !p[2];}).length:0;}
+function idPending(x){return x.people.filter(function(p){return !p[1];}).length;}
+function tRow(x){
+  var P=PKG[x.pkg], s=tripState(x), day=diffD(x.start,today())+1;
+  var chip=s==='live'?['good','Day '+day+' of '+P.days.length]:s==='done'?['n','Completed']:['n',rel(x.start)];
+  var warn=ilpPending(x)+idPending(x);
+  return '<div class="row tap" data-act="openTrip" data-id="'+x.id+'"><div class="av acc" style="font-size:20px">'+P.em+'</div>'
+    +'<div class="grow"><b>'+P.name+'</b><span>'+esc(x.lead)+' · '+x.pax+(x.kind==='Group'?' / '+x.seats:'')+' pax</span></div>'
+    +'<div class="end"><span class="chip '+chip[0]+'">'+chip[1]+'</span>'+(warn?'<span style="color:var(--warn)">'+warn+' docs pending</span>':'<span>'+x.id+'</span>')+'</div></div>';
+}
+function quoteFor(L){var P=PKG[L.q.pkg], base=P.pp*TIER[L.q.tier].m*L.q.pax, disc=L.q.pax>=6?Math.round(base*.05):0;return {base:Math.round(base),disc:disc,total:Math.round(base-disc),pp:Math.round((base-disc)/L.q.pax)};}
+var TOUR_VIEWS={
+  home:function(){
+    var d=T(), t=today();
+    var live=d.trips.filter(function(x){return tripState(x)==='live';});
+    var soon=d.trips.filter(function(x){return tripState(x)==='upcoming';}).sort(function(a,b){return a.start<b.start?-1:1;});
+    var due=d.trips.reduce(function(a,x){return a+(x.total-x.paid);},0);
+    var newL=d.leads.filter(function(l){return l.stage==='new';});
+    var h='<div class="hello"><div class="d">'+fmt(t)+'</div><h1>'+greet()+', '+esc(ST.owner)+'</h1></div>';
+    d.trips.forEach(function(x){var n=ilpPending(x);if(n&&tripState(x)==='upcoming')
+      h+='<div class="alert"><div class="av bad">!</div><div class="grow"><b>'+n+' Inner Line Permit'+(n>1?'s':'')+' missing</b><span>'+PKG[x.pkg].name+' leaves '+relLow(x.start)+'. Travellers can’t cross into Arunachal without it.</span><div style="margin-top:10px"><button class="btn sm pri" data-act="openTrip" data-id="'+x.id+'">Open trip</button></div></div></div>';});
+    if(newL.length)h+='<div class="alert warn"><div class="av warn">'+newL.length+'</div><div class="grow"><b>New enquiries waiting</b><span>The AI has already drafted a quote for each one.</span><div style="margin-top:10px"><button class="btn sm pri" data-act="tab" data-tab="leads">Review</button></div></div></div>';
+    h+='<div class="kpis"><div class="kpi hero"><i>Booked this month</i><b class="num">'+money(d.trips.reduce(function(a,x){return a+x.total;},0))+'</b><small>↑ 24% vs last month</small></div>'
+      +'<div class="kpi"><i>Travellers on trip now</i><b class="num">'+live.reduce(function(a,x){return a+x.pax;},0)+'</b></div>'
+      +'<div class="kpi"><i>Balance to collect</i><b class="num" style="color:var(--warn)">'+money(due)+'</b></div></div>';
+    h+='<div class="sec"><h3>Today</h3></div><div class="card">';
+    live.forEach(function(x){var P=PKG[x.pkg],day=diffD(x.start,t);
+      h+='<div class="row tap" data-act="openTrip" data-id="'+x.id+'"><div class="av good" style="font-size:20px">'+P.em+'</div><div class="grow"><b>'+esc(x.lead)+' · Day '+(day+1)+'</b><span>'+esc(P.days[day])+'</span></div><span class="chip good">Live</span></div>';});
+    if(!live.length)h+='<div class="empty">No trips running today</div>';
+    h+='</div><div class="sec"><h3>Coming up</h3><a data-act="tab" data-tab="trips">All trips</a></div>';
+    return h+'<div class="card">'+soon.slice(0,3).map(tRow).join('')+'</div>';
+  },
+  trips:function(){
+    var d=T(), f=SUBTAB.trips||'up';
+    var list=d.trips.filter(function(x){var s=tripState(x);return f==='up'?s==='upcoming':f==='live'?s==='live':s==='done';}).sort(function(a,b){return a.start<b.start?-1:1;});
+    var h='<div class="hello"><div class="d">'+d.trips.length+' departures</div><h1>Trips</h1></div>';
+    h+='<div class="seg">'+[['live','On trip'],['up','Upcoming'],['done','Done']].map(function(x){return '<button class="'+(f===x[0]?'on':'')+'" data-act="sub" data-k="trips" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div>';
+    return h+(list.length?'<div class="card">'+list.map(tRow).join('')+'</div>':'<div class="card"><div class="empty">No trips here</div></div>');
+  },
+  leads:function(){
+    var d=T(), f=SUBTAB.leads||'new';
+    var list=d.leads.filter(function(l){return f==='new'?l.stage==='new':f==='quoted'?l.stage==='quoted':(l.stage==='won'||l.stage==='lost');});
+    var h=hello('WhatsApp, Instagram, website','Enquiries');
+    var c=function(k){return d.leads.filter(function(l){return l.stage===k;}).length;};
+    h+='<div class="seg">'+[['new','New '+c('new')],['quoted','Quoted '+c('quoted')],['closed','Closed']].map(function(x){return '<button class="'+(f===x[0]?'on':'')+'" data-act="sub" data-k="leads" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div>';
+    var lab={new:['acc','New'],quoted:['info','Quoted'],won:['good','Won'],lost:['n','Lost']};
+    return h+(list.length?'<div class="card">'+list.map(function(l){
+      return '<div class="row tap" data-act="openLead" data-id="'+l.id+'"><div class="av acc">'+initials(l.name)+'</div><div class="grow"><b>'+esc(l.name)+'</b><span>'+PKG[l.want].name+' · '+l.pax+' pax · '+esc(l.when)+'</span></div>'
+        +'<div class="end"><span class="chip '+lab[l.stage][0]+'">'+lab[l.stage][1]+'</span><span>'+esc(l.src)+'</span></div></div>';}).join('')+'</div>':'<div class="card"><div class="empty">Nothing here — you’re all caught up</div></div>');
+  },
+  pay:function(){
+    var d=T();
+    var due=d.trips.filter(function(x){return x.paid<x.total;}), done=d.trips.filter(function(x){return x.paid>=x.total;});
+    var h='<div class="hello"><div class="d">Across '+d.trips.length+' trips</div><h1>Payments</h1></div>';
+    var tot=d.trips.reduce(function(a,x){return a+x.total;},0), paid=d.trips.reduce(function(a,x){return a+x.paid;},0);
+    h+='<div class="card" style="padding:16px"><div style="display:flex;justify-content:space-between"><div><div style="color:var(--dim);font-size:12.5px">Collected</div><div style="font-size:24px;font-weight:800" class="num">'+money(paid)+'</div></div>'
+      +'<div style="text-align:right"><div style="color:var(--dim);font-size:12.5px">Pending</div><div style="font-size:24px;font-weight:800;color:var(--warn)" class="num">'+money(tot-paid)+'</div></div></div><div class="meter" style="height:8px;margin-top:14px"><i style="width:'+(paid/tot*100)+'%"></i></div></div>';
+    h+='<div class="sec"><h3>Balance due</h3></div>';
+    h+=due.length?'<div class="card">'+due.map(function(x){var P=PKG[x.pkg];
+      return '<div class="row"><div class="av warn">'+initials(x.lead)+'</div><div class="grow"><b>'+esc(x.lead)+'</b><span>'+P.name+' · leaves '+relLow(x.start)+'</span><div class="meter"><i style="width:'+(x.paid/x.total*100)+'%"></i></div></div>'
+        +'<div class="end"><b class="num" style="color:var(--warn)">'+money(x.total-x.paid)+'</b><button class="btn sm sec2" style="margin-top:6px" data-act="payTrip" data-id="'+x.id+'">Collect</button></div></div>';}).join('')+'</div>'
+      :'<div class="card"><div class="empty">Everything is paid 🎉</div></div>';
+    h+='<div class="sec"><h3>Fully paid</h3></div><div class="card">'+done.map(function(x){return '<div class="row"><div class="av good">'+svg('check',18)+'</div><div class="grow"><b>'+esc(x.lead)+'</b><span>'+PKG[x.pkg].name+'</span></div><div class="end"><b class="num">'+money(x.total)+'</b></div></div>';}).join('')+'</div>';
+    return h;
+  },
+  more:function(){
+    var d=T(), days=[];for(var i=6;i>=0;i--)days.push(DAY[dt(addD(today(),-i)).getDay()].slice(0,2));
+    var wk=d.week.slice(); var mx=Math.max.apply(null,wk.concat([1]));
+    var h='<div class="hello"><div class="d">Last 7 days</div><h1>Reports</h1></div>';
+    h+='<div class="card"><div style="padding:14px 14px 0"><div style="color:var(--dim);font-size:12.5px">New bookings value</div><div style="font-size:26px;font-weight:800;margin-top:2px" class="num">'+money(wk.reduce(function(a,b){return a+b;},0))+'</div></div>'
+      +'<div class="bars">'+wk.map(function(v,i){return '<div><i style="height:'+Math.max(4,v/mx*100)+'%;animation-delay:'+(i*60)+'ms" class="'+(v?'':'dim')+'"></i><span>'+days[i]+'</span></div>';}).join('')+'</div><div style="height:14px"></div></div>';
+    var won=d.leads.filter(function(l){return l.stage==='won';}).length, closed=d.leads.filter(function(l){return l.stage==='won'||l.stage==='lost';}).length;
+    h+='<div class="kpis" style="margin-top:10px"><div class="kpi"><i>Enquiry → booking</i><b class="num">'+(closed?Math.round(won/closed*100):0)+'%</b></div><div class="kpi"><i>Avg quote time</i><b>2 min</b></div></div>';
+    h+='<div class="sec"><h3>Popular packages</h3></div><div class="card">';
+    var cnt={};d.trips.forEach(function(x){cnt[x.pkg]=(cnt[x.pkg]||0)+x.pax;});
+    Object.keys(PKG).forEach(function(k){h+='<div class="row"><div class="av" style="font-size:20px">'+PKG[k].em+'</div><div class="grow"><b>'+PKG[k].name+'</b><span>'+PKG[k].dur+' · from '+money(PKG[k].pp)+' pp</span></div><div class="end"><b>'+(cnt[k]||0)+'</b><span>travellers</span></div></div>';});
+    return h+'</div>'+settingsBlock();
+  }
+};
+
+/* ---------- tours sheets ---------- */
+function tripSheet(id){
+  var x=trip(id), P=PKG[x.pkg], s=tripState(x), cur=diffD(x.start,today());
+  var h=sheetHead(P.name,x.id+' · '+esc(x.lead),'<div class="av acc" style="font-size:22px">'+P.em+'</div>')+'<div class="sb">';
+  h+='<dl class="kv"><dt>Dates</dt><dd>'+fmt(x.start)+' → '+fmt(tripEnd(x))+'</dd><dt>Travellers</dt><dd>'+x.pax+(x.kind==='Group'?' of '+x.seats+' seats':'')+'</dd>'
+    +'<dt>Driver</dt><dd>'+esc(x.driver)+'</dd><dt>Vehicle</dt><dd>'+esc(x.veh)+'</dd>'+(x.flight?'<dt>Arrival</dt><dd>'+esc(x.flight)+'</dd>':'')
+    +'<dt>Paid</dt><dd>'+money(x.paid)+' / '+money(x.total)+'</dd></dl>';
+  h+='<div class="lbl">TRAVELLERS · TAP TO MARK DOCUMENTS</div><div class="card">'+x.people.map(function(p,i){
+    return '<div class="row"><div class="av">'+initials(p[0])+'</div><div class="grow"><b>'+esc(p[0])+'</b></div>'
+      +'<button class="chip '+(p[1]?'good':'bad')+'" data-act="doc" data-id="'+x.id+'" data-i="'+i+'" data-k="1">'+(p[1]?'✓ ID':'ID missing')+'</button>'
+      +(P.ilp?'<button class="chip '+(p[2]?'good':'bad')+'" data-act="doc" data-id="'+x.id+'" data-i="'+i+'" data-k="2">'+(p[2]?'✓ ILP':'ILP missing')+'</button>':'')+'</div>';}).join('')+'</div>';
+  h+='<div class="lbl">ITINERARY</div><div class="timeline">'+P.days.map(function(d,i){var cls=s==='done'||(s==='live'&&i<cur)?'done':(s==='live'&&i===cur?'now':'');
+    return '<div class="tl '+cls+'"><b>Day '+(i+1)+' · '+fmt(addD(x.start,i))+'</b><span>'+esc(d)+'</span></div>';}).join('')+'</div>';
+  h+='<div class="actions">'+(x.driver==='Unassigned'?'<button class="btn sec2" data-act="assign" data-id="'+x.id+'">Assign driver</button>':'<button class="btn sec2" data-act="call" data-who="'+esc(x.driver)+'">'+svg('phone',16)+'Driver</button>')
+    +'<button class="btn pri" data-act="sendItin" data-id="'+x.id+'">'+svg('send',16)+'Send itinerary</button></div>';
+  return h+'</div>';
+}
+function leadSheet(id){
+  var L=lead(id);
+  if(!L.q)L.q={pkg:L.want,pax:L.pax,tier:'std'};
+  var q=quoteFor(L), P=PKG[L.q.pkg];
+  var h=sheetHead(esc(L.name),esc(L.from)+' · via '+esc(L.src),'<div class="av acc">'+initials(L.name)+'</div>')+'<div class="sb">';
+  h+='<dl class="kv"><dt>Wants</dt><dd>'+PKG[L.want].name+'</dd><dt>When</dt><dd>'+esc(L.when)+'</dd><dt>Budget</dt><dd>'+esc(L.budget)+'</dd></dl>';
+  h+='<div class="suggest" style="border-style:solid"><em>AI NOTES FROM THE CHAT</em>'+esc(L.note)+'</div>';
+  if(L.stage==='won'||L.stage==='lost')return h+'<div class="lbl">OUTCOME</div><div class="card"><div class="empty">'+(L.stage==='won'?'Won · '+money(L.quote):'Lost')+'</div></div></div>';
+  h+='<div class="lbl">QUOTE BUILDER</div><div class="opts">'+Object.keys(PKG).map(function(k){return '<button class="'+(L.q.pkg===k?'on':'')+'" data-act="q" data-f="pkg" data-v="'+k+'" data-id="'+L.id+'">'+PKG[k].name+'<small>'+PKG[k].dur+'</small></button>';}).join('')+'</div>';
+  h+='<div class="lbl">TRAVELLERS</div><div class="stepper"><button data-act="qpax" data-v="-1" data-id="'+L.id+'">−</button><b>'+L.q.pax+' pax</b><button data-act="qpax" data-v="1" data-id="'+L.id+'">+</button></div>';
+  h+='<div class="lbl">HOTELS</div><div class="opts">'+Object.keys(TIER).map(function(k){return '<button class="'+(L.q.tier===k?'on':'')+'" data-act="q" data-f="tier" data-v="'+k+'" data-id="'+L.id+'">'+TIER[k].l+'</button>';}).join('')+'</div>';
+  h+='<div class="lbl">PRICE</div><div class="bill"><div><span>'+P.name+' · '+TIER[L.q.tier].l+'</span><span>'+money(q.base)+'</span></div>'
+    +(q.disc?'<div class="m"><span>Group discount 5%</span><span>-'+money(q.disc)+'</span></div>':'')
+    +'<div><span>Per person</span><span>'+money(q.pp)+'</span></div><div class="tot"><span>Total</span><span>'+money(q.total)+'</span></div></div>';
+  h+='<div class="actions">'+(L.stage==='quoted'?'<button class="btn sec2" data-act="lost" data-id="'+L.id+'">Mark lost</button><button class="btn pri" data-act="won" data-id="'+L.id+'">Mark won</button>'
+    :'<button class="btn pri" data-act="sendQuote" data-id="'+L.id+'">'+svg('send',16)+'Send quote on WhatsApp</button>')+'</div>';
+  return h+'</div>';
+}
+function paySheet(id){
+  var x=trip(id), due=x.total-x.paid;
+  var opts=[[due,'Full balance'],[Math.round(due/2),'Half']];
+  var h=sheetHead('Collect payment',esc(x.lead)+' · '+PKG[x.pkg].name)+'<div class="sb">';
+  h+='<div class="bill"><div><span>Trip total</span><span>'+money(x.total)+'</span></div><div><span>Paid so far</span><span>'+money(x.paid)+'</span></div><div class="tot"><span>Balance</span><span>'+money(due)+'</span></div></div>';
+  h+='<div class="lbl">AMOUNT</div><div class="opts">'+opts.map(function(o){return '<button class="'+(FORM.amt===o[0]?'on':'')+'" data-act="set" data-f="amt" data-v="'+o[0]+'">'+money(o[0])+'<small>'+o[1]+'</small></button>';}).join('')+'</div>';
+  h+='<div class="lbl">METHOD</div><div class="opts">'+['UPI link','Cash','Bank transfer'].map(function(m){return '<button class="'+(FORM.how===m?'on':'')+'" data-act="set" data-f="how" data-v="'+m+'">'+m+'</button>';}).join('')+'</div>';
+  h+='<div class="actions"><button class="btn sec2" data-act="remind" data-id="'+x.id+'">Send reminder</button><button class="btn pri" data-act="doPay" data-id="'+x.id+'">'+(FORM.how==='UPI link'?'Send UPI link':'Record '+money(FORM.amt))+'</button></div>';
+  return h+'</div>';
+}
+
+/* ---------- shared: settings ---------- */
+function settingsBlock(){
+  return '<div class="sec"><h3>Settings</h3></div><div class="card" style="padding:14px"><div class="lbl" style="margin-top:0">BUSINESS NAME</div>'
+    +'<input class="field" id="fBiz" value="'+esc(ST.names[SYS])+'"><div class="lbl">YOUR NAME</div><input class="field" id="fOwner" value="'+esc(ST.owner)+'">'
+    +'<div class="actions"><button class="btn sec2" data-act="resetDemo">Reset demo data</button><button class="btn pri" data-act="saveBiz">Save</button></div></div>'
+    +'<div style="text-align:center;color:var(--dim2);font-size:12px;margin:22px 0 4px">Built by OPIIUS · Guwahati</div>';
+}
+
+/* =================================================================== */
+/* one click handler for the whole app                                  */
+/* =================================================================== */
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-act]'); if(!el||el.disabled)return;
+  var a=el.getAttribute('data-act'), id=el.getAttribute('data-id'), v=el.getAttribute('data-v');
+  var A={
+    enter:function(){showScreen('pick');},
+    open:function(){openSys(el.getAttribute('data-sys'));},
+    'switch':function(){closeSheet();showScreen('pick');},
+    tab:function(){TAB=el.getAttribute('data-tab');renderTab();},
+    sub:function(){SUBTAB[el.getAttribute('data-k')]=v;renderTab(true);},
+    filter:function(){FILTER[el.getAttribute('data-k')]=v;renderTab(true);},
+    closeSheet:closeSheet,
+    call:function(){toast('Calling '+el.getAttribute('data-who')+'…','In the live app this opens your phone dialler','info');},
+    /* rentals */
+    openBk:function(){openSheet(function(){return bkSheet(id);});},
+    openUnit:function(){openSheet(function(){return unitSheet(el.getAttribute('data-reg'));});},
+    handover:function(){var b=bk(id);FORM={id:id,c:{},odo:unit(b.reg).odo,fuel:5};openSheet(handoverSheet);},
+    chk:function(){var i=el.getAttribute('data-i');FORM.c[i]=!FORM.c[i];drawSheet();},
+    set:function(){var f=el.getAttribute('data-f');FORM[f]=(f==='fuel'||f==='dmg'||f==='amt')?+v:v;keepInputs();drawSheet();},
+    doHandover:function(){keepInputs();var b=bk(FORM.id),u=unit(b.reg);
+      b.status='active';b.out={odo:+FORM.odo||u.odo,fuel:FORM.fuel};u.odo=b.out.odo;closeSheet();refresh();
+      toast('Ride started','WhatsApp sent to '+b.name+' with return time and roadside help');},
+    'return':function(){var b=bk(id);FORM={id:id,odo:b.out.odo+Math.round(BIKES[b.type].km*b.days*.85),fuel:4,late:'0',dmg:0};openSheet(returnSheet);},
+    doReturn:function(){keepInputs();var b=bk(FORM.id),s=settle(),u=unit(b.reg);
+      b.status='done';b.settle={refund:s.refund,ded:s.ded};u.odo=+FORM.odo;if(s.dmg)u.svc='Damage repair after '+b.id;closeSheet();refresh();
+      toast(s.refund>=0?'Refund of '+money(s.refund)+' sent':'Collect '+money(-s.refund)+' from rider',b.name+' · receipt sent on WhatsApp');},
+    svc:function(){unit(el.getAttribute('data-reg')).svc='General service · in workshop';drawSheet();refresh();toast('Sent to service','It won’t be offered to riders until it’s back','info');},
+    svcDone:function(){unit(el.getAttribute('data-reg')).svc=null;drawSheet();refresh();toast('Back in the fleet','Available for bookings again');},
+    newRent:function(){FORM={start:today(),days:1,type:null};openSheet(newRentSheet);},
+    days:function(){keepInputs();FORM.days=Math.max(1,Math.min(14,FORM.days+(+v)));drawSheet();},
+    doNewRent:function(){keepInputs();if(!FORM.name){toast('Add the rider’s name','','bad');return;}
+      var u=freeUnits(FORM.type,FORM.start,FORM.days)[0],rent=rentFor(FORM.type,FORM.start,FORM.days);ST.rent.seq++;
+      var b={id:'WR-'+ST.rent.seq,name:FORM.name,phone:FORM.phone||'—',reg:u.reg,type:FORM.type,start:FORM.start,days:FORM.days,rent:rent,adv:Math.round(rent*.3),
+        dep:BIKES[FORM.type].dep,status:'upcoming',trip:'City',src:'Walk-in',today:true};
+      R().bk.push(b);closeSheet();refresh();toast('Booking '+b.id+' created',b.reg+' blocked for '+fmt(b.start)+' · confirmation sent');},
+    openChat:function(){openChat(+id);},
+    useSuggest:function(){var x=R().inbox.filter(function(i){return i.id===+id;})[0];$('fReply').value=x.suggest;},
+    sendReply:function(){var x=R().inbox.filter(function(i){return i.id===+id;})[0],t=$('fReply').value.trim();if(!t)return;
+      x.msgs.push(['out',t]);x.status='faq';x.time='Now';drawSheet();scrollSheet();refresh();toast('Reply sent','The assistant takes the chat from here');},
+    simulate:simulate,
+    /* tours */
+    openTrip:function(){openSheet(function(){return tripSheet(id);});},
+    doc:function(){var x=trip(id),i=+el.getAttribute('data-i'),k=+el.getAttribute('data-k');x.people[i][k]=x.people[i][k]?0:1;drawSheet();refresh();},
+    assign:function(){trip(id).driver='Dipankar Nath';drawSheet();refresh();toast('Driver assigned','Dipankar Nath · details sent to the group');},
+    sendItin:function(){var x=trip(id);toast('Itinerary sent to '+x.pax+' traveller'+(x.pax>1?'s':''),'Day-by-day plan, driver number and hotel list on WhatsApp');},
+    openLead:function(){openSheet(function(){return leadSheet(id);});},
+    q:function(){var L=lead(id);L.q[el.getAttribute('data-f')]=v;drawSheet();},
+    qpax:function(){var L=lead(id);L.q.pax=Math.max(1,Math.min(40,L.q.pax+(+v)));drawSheet();},
+    sendQuote:function(){var L=lead(id);L.quote=quoteFor(L).total;L.stage='quoted';closeSheet();refresh();toast('Quote sent to '+L.name,money(L.quote)+' · follow-up reminder set for 2 days');},
+    won:function(){var L=lead(id),q=quoteFor(L);L.stage='won';L.quote=q.total;T().seq++;
+      var ppl=[];for(var i=0;i<L.q.pax;i++)ppl.push([i?L.name.split(' ')[0]+' +'+i:L.name,0,0]);
+      T().trips.push({id:'NT-'+T().seq,pkg:L.q.pkg,kind:'Private',start:addD(today(),21),lead:L.name,pax:L.q.pax,seats:L.q.pax,driver:'Unassigned',veh:'To assign',people:ppl,total:q.total,paid:Math.round(q.total*.3)});
+      T().week[6]+=q.total;closeSheet();refresh();toast('Won! Trip NT-'+T().seq+' created','30% advance recorded · documents requested from travellers');},
+    lost:function(){lead(id).stage='lost';closeSheet();refresh();toast('Marked as lost','We’ll ask them why in a week','info');},
+    newLead:function(){T().leads.unshift({id:Date.now(),name:'Walk-in enquiry',from:'Guwahati',pax:2,when:'Next month',want:'kaz',budget:'Open',stage:'new',src:'Phone',note:'Added by you. The AI will fill in details from the chat.'});
+      SUBTAB.leads='new';refresh();toast('Enquiry added','Open it to build a quote','info');},
+    payTrip:function(){var x=trip(id);FORM={amt:x.total-x.paid,how:'UPI link'};openSheet(function(){return paySheet(id);});},
+    remind:function(){var x=trip(id);closeSheet();toast('Reminder sent to '+x.lead,'Polite WhatsApp nudge with a UPI link');},
+    doPay:function(){var x=trip(id);if(FORM.how==='UPI link'){closeSheet();toast('UPI link sent',money(FORM.amt)+' requested from '+x.lead);return;}
+      x.paid=Math.min(x.total,x.paid+FORM.amt);closeSheet();refresh();toast(money(FORM.amt)+' recorded',x.lead+' · receipt sent on WhatsApp');},
+    /* settings */
+    saveBiz:function(){var n=$('fBiz').value.trim(),o=$('fOwner').value.trim();if(n)ST.names[SYS]=n;if(o)ST.owner=o;save();
+      $('bizName').textContent=ST.names[SYS];$('logo').textContent=initials(ST.names[SYS]);refresh();toast('Saved','The app now shows '+ST.names[SYS]);},
+    resetDemo:function(){var n=ST.names,o=ST.owner;ST=fresh();ST.names=n;ST.owner=o;save();renderTab();toast('Demo data reset','Everything is back to the start');}
+  };
+  if(sheetFn&&a!=='closeSheet')keepInputs();
+  if(A[a])A[a]();
+});
+/* keep typed values when a sheet redraws */
+function keepInputs(){['fOdo','fName','fPhone'].forEach(function(k){var el=$(k);if(el){var f={fOdo:'odo',fName:'name',fPhone:'phone'}[k];FORM[f]=el.value;}});}
+document.addEventListener('input',function(e){if(e.target.id==='fOdo'&&FORM.id&&bk(FORM.id)&&bk(FORM.id).status==='active'){FORM.odo=e.target.value;
+  var pos=e.target.selectionStart;drawSheet();var n=$('fOdo');n.focus();try{n.setSelectionRange(pos,pos);}catch(x){}}});
+
+/* open straight into a system for testing: #rent or #tour */
+if(/^#(rent|tour)$/.test(location.hash))openSys(location.hash.slice(1));
+</script>
+</body>
+</html>
