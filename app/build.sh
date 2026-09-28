@@ -19,7 +19,7 @@ O=$T/out; rm -rf $O; mkdir -p $O/classes $O/signer $O/assets
 cp web/index.html $O/assets/index.html
 $T/aapt2 compile --dir android/res -o $O/res.zip
 $T/aapt2 link -I $AJ --manifest android/AndroidManifest.xml --min-sdk-version 24 --target-sdk-version 34 \
-  --version-code ${VC:-1} --version-name ${VN:-1.0} -A $O/assets -o $O/base.apk $O/res.zip
+  --version-code ${VC:-1} --version-name ${VN:-1.0} --replace-version -A $O/assets -o $O/base.apk $O/res.zip
 javac -nowarn --release 8 -cp $AJ -d $O/classes $(find android/src -name '*.java') 2>&1 | grep -v 'warning: \[options\]' || true
 java -cp $T/dx.jar com.android.dx.command.Main --dex --min-sdk-version=24 --output=$O/classes.dex $O/classes
 cp $O/base.apk $O/unsigned.apk && (cd $O && zip -q unsigned.apk classes.dex)
