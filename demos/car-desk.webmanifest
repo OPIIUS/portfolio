@@ -1,0 +1,22 @@
+{
+ "name": "Car rental \u00b7 OPIIUS",
+ "short_name": "Car Desk",
+ "start_url": "./car-desk.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#f5f5f7",
+ "theme_color": "#0071e3",
+ "icons": [
+  {
+   "src": "icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  }
+ ]
+}
