@@ -154,12 +154,38 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .meter{height:6px;border-radius:6px;background:var(--s3);overflow:hidden;margin-top:8px}
 .meter i{display:block;height:100%;border-radius:6px;background:var(--accent)}
 
+/* photos: a real photo loads over a tinted placeholder; offline, the placeholder stays */
+.ph{position:relative;overflow:hidden;background:radial-gradient(120% 120% at 100% 0%,var(--accentSoft),transparent 60%),var(--s3);
+  display:grid;place-items:center;flex:none}
+.ph>span{font-size:28px;opacity:.9}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s var(--ease)}
+.ph img.ok{opacity:1}
+.ph.thumb{width:48px;height:48px;border-radius:14px}
+.ph.thumb>span{font-size:20px}
+.ph.tile{width:100%;aspect-ratio:4/3;border-radius:14px;margin-bottom:10px}
+.ph.hero{width:100%;height:190px;border-radius:20px;margin:4px 0 14px}
+.ph.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,rgba(0,0,0,.55))}
+.ph.hero .cap{position:absolute;left:14px;bottom:12px;z-index:1;font-weight:700;font-size:15px;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.sys .bg{position:absolute;inset:0;opacity:.34;background-size:cover;background-position:center}
+.sys .bg:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,16,21,.2),var(--s1) 85%)}
+.sys>*:not(.bg){position:relative}
+.sys .go{position:absolute}
+.vopts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vopt{background:var(--s2);border:1px solid var(--line2);border-radius:16px;padding:8px;text-align:left;transition:all .15s}
+.vopt .ph.tile{margin-bottom:8px;border-radius:11px}
+.vopt b{display:block;font-size:13.5px;padding:0 4px} .vopt small{display:block;color:var(--dim);font-size:11.5px;padding:2px 4px 2px}
+.vopt.on{border-color:var(--accent);background:var(--accentSoft)} .vopt.on b{color:var(--accent)}
+.vopt:disabled{opacity:.35}
+.credits{font-size:12px;color:var(--dim2);line-height:1.6;padding:14px;word-break:break-word}
+
 /* grid of bikes */
 .units{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .unit{background:var(--s1);border:1px solid var(--line);border-radius:var(--r);padding:14px;text-align:left;transition:transform .15s var(--ease)}
 .unit:active{transform:scale(.97)}
 .unit .em{font-size:24px}
-.unit b{display:block;font-size:13.5px;margin-top:10px}
+.unit{padding:8px 8px 12px}
+.unit b,.unit .plate,.unit .chip{margin-left:6px}
+.unit b{display:block;font-size:13.5px;margin-top:2px}
 .unit .plate{font-family:"Roboto Mono",ui-monospace,monospace;font-size:12px;color:var(--dim);margin-top:2px;letter-spacing:.02em}
 .unit .chip{margin-top:10px}
 
@@ -252,21 +278,21 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
   <div class="eyebrow">OPIIUS &middot; Live demos</div>
   <div class="h1">Pick a business</div>
   <div class="sub">Each one is the owner's app with real-looking data. Tap anything &mdash; it all works.</div>
-  <button class="sys r" data-act="open" data-sys="rent">
+  <button class="sys r" data-act="open" data-sys="rent"><div class="bg" data-photo="classic"></div>
     <div class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     <div class="ic">&#127949;&#65039;</div>
     <h2>Rentals</h2>
-    <p>Bike &amp; scooty rental desk. See every bike, hand over keys, check bikes back in and settle deposits &mdash; while an AI answers WhatsApp.</p>
+    <p>Bike &amp; car rental desk. See every vehicle, hand over keys, check them back in and settle deposits &mdash; while an AI answers WhatsApp.</p>
     <div class="tags"><span>Fleet</span><span>Bookings</span><span>Handover</span><span>Deposits</span><span>AI WhatsApp</span></div>
   </button>
-  <button class="sys t" data-act="open" data-sys="tour">
+  <button class="sys t" data-act="open" data-sys="tour"><div class="bg" data-photo="meg"></div>
     <div class="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     <div class="ic">&#127956;&#65039;</div>
     <h2>Tours</h2>
     <p>Tour operator desk. Enquiries turn into quotes in seconds, trips run day by day, and no traveller's permit or payment slips through.</p>
     <div class="tags"><span>Enquiries</span><span>Quote builder</span><span>Trips</span><span>Permits</span><span>Payments</span></div>
   </button>
-  <div class="sub" style="text-align:center;margin-top:22px;font-size:12.5px;color:var(--dim2)">Demo data only &middot; works offline</div>
+  <div class="sub" style="text-align:center;margin-top:22px;font-size:12.5px;color:var(--dim2)">Demo data &middot; photos load when you&rsquo;re online</div>
 </section>
 
 <!-- 3. the owner app -->
@@ -328,11 +354,31 @@ function svg(name,w){return '<svg width="'+(w||22)+'" height="'+(w||22)+'" viewB
 /* =================================================================== */
 /* RENTALS demo data                                                    */
 /* =================================================================== */
+/* Real photos from Wikimedia Commons (Creative Commons licences), loaded when online */
+var PHOTO={
+  activa:'Honda_Activa_6G.jpg',
+  classic:'Royal_Enfield_Classic_350_(2017_Model_Year).jpg',
+  dominar:'Dominar_400.jpg',
+  himalayan:'Royal_Enfield_Himalayan_450_Mana_Black.jpg',
+  swift:'Maruti_Suzuki_Swift_LXi.jpg',
+  thar:'Mahindra_Thar_CRDi_(16183560860).jpg',
+  innova:'Toyota_Innova_Crysta.jpg',
+  meg:'Double_Decker_Living_Tree_Root_Bridges,_Meghalaya.jpg',
+  taw:'Sela_Pass,_Arunachal_Pradesh.JPG',
+  kaz:'One-Horned_Rhino_at_the_Kaziranga_National_Park,_Assam.jpg',
+  maj:'Ferry_service_connecting_Majuli_island.jpg'
+};
+function photoUrl(k,w){return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(PHOTO[k])+'?width='+(w||640);}
+function ph(k,cls,em,w,cap){return '<div class="ph '+cls+'"><span>'+(em||'')+'</span>'+(PHOTO[k]?'<img alt="" src="'+photoUrl(k,w)+'" onload="this.classList.add(\'ok\')" onerror="this.remove()">':'')+(cap?'<div class="cap">'+cap+'</div>':'')+'</div>';}
+
 var BIKES={
   activa:   {label:'Honda Activa 6G',           short:'Activa 6G',   em:'🛵', day:499,  wkend:599,  dep:2000, km:120, xkm:3},
   classic:  {label:'Royal Enfield Classic 350', short:'Classic 350', em:'🏍️', day:1199, wkend:1399, dep:5000, km:200, xkm:5},
   dominar:  {label:'Bajaj Dominar 400',         short:'Dominar 400', em:'🏍️', day:1499, wkend:1699, dep:5000, km:250, xkm:6},
-  himalayan:{label:'RE Himalayan 450',          short:'Himalayan 450',em:'🏔️', day:1799, wkend:1999, dep:8000, km:250, xkm:6}
+  himalayan:{label:'RE Himalayan 450',          short:'Himalayan 450',em:'🏔️', day:1799, wkend:1999, dep:8000, km:250, xkm:6},
+  swift:    {label:'Maruti Swift',              short:'Swift',        em:'🚗', day:1999, wkend:2299, dep:5000, km:250, xkm:8, car:1},
+  thar:     {label:'Mahindra Thar 4x4',         short:'Thar 4x4',     em:'🚙', day:3499, wkend:3999, dep:10000,km:250, xkm:12,car:1},
+  innova:   {label:'Toyota Innova Crysta',      short:'Innova Crysta',em:'🚐', day:3999, wkend:4499, dep:10000,km:300, xkm:14,car:1}
 };
 function isWk(s){var g=dt(s).getDay();return g===0||g===6;}
 function rentFor(type,start,days){var s=0;for(var i=0;i<days;i++)s+=isWk(addD(start,i))?BIKES[type].wkend:BIKES[type].day;return s;}
@@ -343,7 +389,8 @@ function seedRent(){
     ['AS01 FR 2214','activa',8120],['AS01 FR 2215','activa',9406],['AS01 GC 1180','activa',4411],
     ['AS01 GK 3501','classic',12430],['AS01 GK 3502','classic',15872],['AS01 GK 3503','classic',7309],
     ['AS01 GH 4410','dominar',21054],['AS01 GH 4411','dominar',18663],
-    ['AS01 HM 4501','himalayan',6120],['AS01 HM 4502','himalayan',5288]
+    ['AS01 HM 4501','himalayan',6120],['AS01 HM 4502','himalayan',5288],
+    ['AS01 KC 7721','swift',23410],['AS01 KC 7722','swift',19877],['AS01 TH 0909','thar',14502],['AS01 IN 5151','innova',38120]
   ].map(function(u){return {reg:u[0],type:u[1],odo:u[2],fuel:5,svc:null};});
   units[5].svc='Chain set replacement · ready tomorrow';
   var seq=1040, bk=[];
@@ -360,6 +407,8 @@ function seedRent(){
   b('Arjun Bora','98540 22301','AS01 HM 4501',t,2,'upcoming','Shillong');
   b('Rituraj Das','60010 77231','AS01 GK 3502',addD(t,1),2,'upcoming','Sohra');
   b('Sneha Gogoi','91010 33845','AS01 GC 1180',sat,2,'upcoming','City',{src:'Instagram'});
+  b('Rahul Jain','98100 44721','AS01 TH 0909',addD(t,-1),5,'active','Tawang',{out:{odo:14502,fuel:5}});
+  b('Borah family','94350 20118','AS01 IN 5151',addD(t,1),3,'upcoming','Kaziranga',{src:'Phone'});
   b('Manas Deka','97060 11290','AS01 GK 3501',addD(t,-6),2,'done','Shillong',{settle:{refund:4640,ded:360}});
   b('Ayesha Khan','88110 42007','AS01 GH 4411',addD(t,-5),3,'done','Tawang',{settle:{refund:5000,ded:0}});
   b('Bikram Rai','70990 13566','AS01 FR 2214',addD(t,-4),1,'done','City',{settle:{refund:1760,ded:240}});
@@ -424,9 +473,9 @@ function seedTour(){
 /* state                                                                */
 /* =================================================================== */
 var ST;
-function fresh(){return {rent:seedRent(),tour:seedTour(),names:{rent:'Weekend Rides',tour:'NE Trails'},owner:'Owner',day:today()};}
+function fresh(){return {v:2,rent:seedRent(),tour:seedTour(),names:{rent:'Weekend Rides',tour:'NE Trails'},owner:'Owner',day:today()};}
 function load(){try{ST=JSON.parse(localStorage.getItem('opiius_demo')||'null');}catch(e){}
-  if(!ST||ST.day!==today()){var keep=ST;ST=fresh();          /* demo data is re-dated every day so "today" always has work */
+  if(!ST||ST.day!==today()||ST.v!==2){var keep=ST;ST=fresh();          /* demo data is re-dated every day so "today" always has work */
     if(keep&&keep.names){ST.names=keep.names;ST.owner=keep.owner;}}}
 function save(){try{localStorage.setItem('opiius_demo',JSON.stringify(ST));}catch(e){}}
 load();
@@ -440,7 +489,7 @@ function showScreen(id){['splash','pick','app'].forEach(function(s){$(s).classLi
 function openSys(sys){
   SYS=sys; TAB='home'; document.body.className=sys; $('logo').textContent=initials(ST.names[sys]);
   $('bizName').textContent=ST.names[sys];
-  $('bizSub').textContent=sys==='rent'?'Rental desk · Guwahati':'Tour desk · Guwahati';
+  $('bizSub').textContent=sys==='rent'?'Bike & car rentals · Guwahati':'Tour desk · Guwahati';
   renderNav(); renderTab(); showScreen('app');
 }
 function tabs(){return SYS==='rent'
@@ -470,7 +519,7 @@ function refresh(){renderTab(true);save();}
 
 /* ---------- sheet + toast ---------- */
 var sheetFn=null;
-function openSheet(fn){sheetFn=fn;drawSheet();$('scrim').classList.add('on');$('sheet').classList.add('on');}
+function openSheet(fn){sheetFn=fn;$('sheetIn').innerHTML='';drawSheet();$('scrim').classList.add('on');$('sheet').classList.add('on');}
 function drawSheet(){if(!sheetFn)return;var sb=document.querySelector('#sheet .sb'),top=sb?sb.scrollTop:0;
   $('sheetIn').innerHTML=sheetFn();var nb=document.querySelector('#sheet .sb');if(nb)nb.scrollTop=top;}
 function closeSheet(){sheetFn=null;$('scrim').classList.remove('on');$('sheet').classList.remove('on');}
@@ -517,7 +566,7 @@ function freeUnits(type,start,days){
 function bRow(b){
   var st=b.status==='upcoming'?(b.start===today()?['info','Pickup today']:['n',rel(b.start)])
     :b.status==='active'?(overdue(b)?['bad','Overdue']:dueToday(b)?['warn','Due today']:['warn','On ride']):['good','Closed'];
-  return '<div class="row tap" data-act="openBk" data-id="'+b.id+'"><div class="av acc">'+initials(b.name)+'</div>'
+  return '<div class="row tap" data-act="openBk" data-id="'+b.id+'">'+ph(b.type,'thumb',BIKES[b.type].em,160)
     +'<div class="grow"><b>'+esc(b.name)+'</b><span>'+BIKES[b.type].short+' · '+b.reg+'</span></div>'
     +'<div class="end"><span class="chip '+st[0]+'">'+st[1]+'</span><span>'+fmt(b.start)+' · '+b.days+'d</span></div></div>';
 }
@@ -538,14 +587,14 @@ var RENT_VIEWS={
     need.forEach(function(x){h+='<div class="alert warn"><div class="av warn">?</div><div class="grow"><b>The assistant needs you</b><span>'+esc(x.who)+': '+esc(x.ask)+'</span>'
       +'<div style="margin-top:10px"><button class="btn sm pri" data-act="openChat" data-id="'+x.id+'">Reply</button></div></div></div>';});
     h+='<div class="kpis"><div class="kpi hero"><i>Bookings this week</i><b class="num">'+money(rev.reduce(function(a,b){return a+b;},0))+'</b><small>↑ 18% vs last week</small></div>'
-      +'<div class="kpi"><i>Bikes on the road</i><b class="num">'+act.length+' / '+d.units.length+'</b></div>'
+      +'<div class="kpi"><i>Vehicles on the road</i><b class="num">'+act.length+' / '+d.units.length+'</b></div>'
       +'<div class="kpi"><i>Deposits held</i><b class="num">'+money(held)+'</b></div></div>';
     h+='<div class="actions" style="margin-top:12px"><button class="btn pri" data-act="newRent">'+svg('plus',18)+'New booking</button><button class="btn sec2" data-act="tab" data-tab="fleet">'+svg('bike',18)+'Fleet</button></div>';
     h+='<div class="sec"><h3>Pickups today</h3><a data-act="tab" data-tab="book">All</a></div>';
-    h+=pick.length?'<div class="card">'+pick.map(function(b){return '<div class="row"><div class="av info">'+initials(b.name)+'</div><div class="grow"><b>'+esc(b.name)+'</b><span>'+BIKES[b.type].short+' · 9:00 AM · '+esc(b.trip)+'</span></div><button class="btn sm pri" data-act="handover" data-id="'+b.id+'">Hand over</button></div>';}).join('')+'</div>'
+    h+=pick.length?'<div class="card">'+pick.map(function(b){return '<div class="row">'+ph(b.type,'thumb',BIKES[b.type].em,160)+'<div class="grow"><b>'+esc(b.name)+'</b><span>'+BIKES[b.type].short+' · 9:00 AM · '+esc(b.trip)+'</span></div><button class="btn sm pri" data-act="handover" data-id="'+b.id+'">Hand over</button></div>';}).join('')+'</div>'
       :'<div class="card"><div class="empty">No more pickups today</div></div>';
     h+='<div class="sec"><h3>Returns due today</h3></div>';
-    h+=ret.length?'<div class="card">'+ret.map(function(b){return '<div class="row"><div class="av warn">'+initials(b.name)+'</div><div class="grow"><b>'+esc(b.name)+'</b><span>'+BIKES[b.type].short+' · by 8:00 PM</span></div><button class="btn sm sec2" data-act="return" data-id="'+b.id+'">Check in</button></div>';}).join('')+'</div>'
+    h+=ret.length?'<div class="card">'+ret.map(function(b){return '<div class="row">'+ph(b.type,'thumb',BIKES[b.type].em,160)+'<div class="grow"><b>'+esc(b.name)+'</b><span>'+BIKES[b.type].short+' · by 8:00 PM</span></div><button class="btn sm sec2" data-act="return" data-id="'+b.id+'">Check in</button></div>';}).join('')+'</div>'
       :'<div class="card"><div class="empty">Nothing else due back today</div></div>';
     return h;
   },
@@ -558,7 +607,7 @@ var RENT_VIEWS={
     h+='<div class="filters">'+[['all','All '+d.units.length],['free','Free '+cnt('free')],['out','Out '+cnt('out')],['svc','Service '+cnt('svc')]]
       .map(function(x){return '<button class="'+(f===x[0]?'on':'')+'" data-act="filter" data-k="fleet" data-v="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div>';
     h+='<div class="units">'+list.map(function(u){var s=unitState(u);
-      return '<button class="unit" data-act="openUnit" data-reg="'+u.reg+'"><div class="em">'+BIKES[u.type].em+'</div><b>'+BIKES[u.type].short+'</b><div class="plate">'+u.reg+'</div><span class="chip '+s[0]+'">'+s[1]+'</span></button>';}).join('')+'</div>';
+      return '<button class="unit" data-act="openUnit" data-reg="'+u.reg+'">'+ph(u.type,'tile',BIKES[u.type].em,480)+'<b>'+BIKES[u.type].short+'</b><div class="plate">'+u.reg+'</div><span class="chip '+s[0]+'">'+s[1]+'</span></button>';}).join('')+'</div>';
     return list.length?h:h+'<div class="empty">Nothing here</div>';
   },
   book:function(){
@@ -589,10 +638,10 @@ var RENT_VIEWS={
     var h='<div class="hello"><div class="d">Last 7 days</div><h1>Reports</h1></div>';
     h+='<div class="card"><div style="padding:14px 14px 0"><div style="color:var(--dim);font-size:12.5px">Bookings value</div><div style="font-size:26px;font-weight:800;margin-top:2px" class="num">'+money(wk.reduce(function(a,b){return a+b;},0))+'</div></div>'
       +'<div class="bars">'+wk.map(function(v,i){return '<div><i style="height:'+Math.max(4,v/mx*100)+'%;animation-delay:'+(i*60)+'ms" class="'+(v?'':'dim')+'"></i><span>'+days[i]+'</span></div>';}).join('')+'</div><div style="height:14px"></div></div>';
-    h+='<div class="sec"><h3>Earnings by bike type</h3></div><div class="card">';
+    h+='<div class="sec"><h3>Earnings by vehicle</h3></div><div class="card">';
     var by={};d.bk.forEach(function(b){by[b.type]=(by[b.type]||0)+b.rent;});var tot=0;for(var k in by)tot+=by[k];
     Object.keys(BIKES).forEach(function(k){var v=by[k]||0;
-      h+='<div class="row"><div class="av">'+BIKES[k].em+'</div><div class="grow"><b>'+BIKES[k].short+'</b><div class="meter"><i style="width:'+(tot?v/tot*100:0)+'%"></i></div></div><div class="end"><b class="num">'+money(v)+'</b></div></div>';});
+      h+='<div class="row">'+ph(k,'thumb',BIKES[k].em,160)+'<div class="grow"><b>'+BIKES[k].short+'</b><div class="meter"><i style="width:'+(tot?v/tot*100:0)+'%"></i></div></div><div class="end"><b class="num">'+money(v)+'</b></div></div>';});
     h+='</div>'+settingsBlock();
     return h;
   }
@@ -606,8 +655,8 @@ function bkSheet(id){
     ['Pickup',fmt(b.start)+', 9:00 AM',b.status==='upcoming'?'now':'done'],
     ['On ride','Return by '+fmt(endOf(b))+', 8:00 PM',b.status==='active'?'now':b.status==='done'?'done':''],
     ['Returned & deposit settled',b.settle?('Refund '+money(b.settle.refund)+(b.settle.ded?' · deductions '+money(b.settle.ded):'')):'',b.status==='done'?'done':'']];
-  var h=sheetHead(esc(b.name),b.id+' · '+b.phone,'<div class="av acc">'+initials(b.name)+'</div>')+'<div class="sb">';
-  h+='<dl class="kv"><dt>Bike</dt><dd>'+B.short+'</dd><dt>Plate</dt><dd>'+b.reg+'</dd><dt>Dates</dt><dd>'+fmt(b.start)+' → '+fmt(endOf(b))+'</dd>'
+  var h=sheetHead(esc(b.name),b.id+' · '+b.phone,'<div class="av acc">'+initials(b.name)+'</div>')+'<div class="sb">'+ph(b.type,'hero',B.em,900,B.label);
+  h+='<dl class="kv"><dt>Vehicle</dt><dd>'+B.short+'</dd><dt>Plate</dt><dd>'+b.reg+'</dd><dt>Dates</dt><dd>'+fmt(b.start)+' → '+fmt(endOf(b))+'</dd>'
     +'<dt>Trip</dt><dd>'+esc(b.trip)+'</dd><dt>Rent</dt><dd>'+money(b.rent)+'</dd><dt>Deposit</dt><dd>'+money(b.dep)+'</dd>'
     +(b.out?'<dt>Went out at</dt><dd>'+b.out.odo.toLocaleString('en-IN')+' km</dd>':'')+'</dl>';
   h+='<div class="lbl">PROGRESS</div><div class="timeline">'+steps.map(function(s){return '<div class="tl '+s[2]+'"><b>'+s[0]+'</b>'+(s[1]?'<span>'+s[1]+'</span>':'')+'</div>';}).join('')+'</div>';
@@ -618,7 +667,8 @@ function bkSheet(id){
 }
 function handoverSheet(){
   var b=bk(FORM.id), u=unit(b.reg), bal=b.rent-b.adv;
-  var items=['Original driving licence seen','Photo ID (Aadhaar) seen','4-side photos of the bike','Helmet issued','Papers + PUC in the box','Tyres and brakes checked'];
+  var car=BIKES[b.type].car;
+  var items=['Original driving licence seen','Photo ID (Aadhaar) seen','4-side photos of the '+(car?'car':'bike'),car?'Spare tyre + jack in the boot':'Helmet issued','Papers + PUC in the '+(car?'glovebox':'box'),'Tyres and brakes checked'];
   var all=items.every(function(x,i){return FORM.c[i];});
   var h=sheetHead('Hand over keys',esc(b.name)+' · '+b.reg)+'<div class="sb">';
   h+='<div class="lbl">CHECKLIST</div><div class="checks">'+items.map(function(x,i){return '<button class="'+(FORM.c[i]?'on':'')+'" data-act="chk" data-i="'+i+'"><span class="box">'+(FORM.c[i]?svg('check',15):'')+'</span>'+x+'</button>';}).join('')+'</div>';
@@ -658,7 +708,7 @@ function unitSheet(reg){
   var u=unit(reg), B=BIKES[u.type], s=unitState(u);
   var next=R().bk.filter(function(b){return b.reg===reg&&(b.status==='upcoming'||b.status==='active');}).sort(function(a,b){return a.start<b.start?-1:1;});
   var earned=R().bk.filter(function(b){return b.reg===reg;}).reduce(function(a,b){return a+b.rent;},0);
-  var h=sheetHead(B.short,reg,'<div class="av acc" style="font-size:22px">'+B.em+'</div>')+'<div class="sb">';
+  var h=sheetHead(B.short,reg)+'<div class="sb">'+ph(u.type,'hero',B.em,900,B.label);
   h+='<dl class="kv"><dt>Status</dt><dd><span class="chip '+s[0]+'">'+s[1]+'</span></dd><dt>Odometer</dt><dd>'+u.odo.toLocaleString('en-IN')+' km</dd>'
     +'<dt>Rate</dt><dd>'+money(B.day)+' / '+money(B.wkend)+' wknd</dd><dt>Earned (shown)</dt><dd>'+money(earned)+'</dd>'
     +(u.svc?'<dt>Service</dt><dd>'+esc(u.svc)+'</dd>':'')+'</dl>';
@@ -674,8 +724,8 @@ function newRentSheet(){
   h+='<div class="lbl">RIDER</div><input class="field" id="fName" placeholder="Full name" value="'+esc(F.name||'')+'"><div style="height:8px"></div><input class="field num" id="fPhone" inputmode="tel" placeholder="Mobile number" value="'+esc(F.phone||'')+'">';
   h+='<div class="lbl">PICKUP</div><div class="opts">'+starts.map(function(s){return '<button class="'+(F.start===s[0]?'on':'')+'" data-act="set" data-f="start" data-v="'+s[0]+'">'+s[1]+'<small>'+fmt(s[0])+'</small></button>';}).join('')+'</div>';
   h+='<div class="lbl">DAYS</div><div class="stepper"><button data-act="days" data-v="-1">−</button><b>'+F.days+' day'+(F.days>1?'s':'')+'</b><button data-act="days" data-v="1">+</button></div>';
-  h+='<div class="lbl">BIKE</div><div class="opts">'+Object.keys(BIKES).map(function(k){var n=freeUnits(k,F.start,F.days).length;
-    return '<button class="'+(F.type===k?'on':'')+'" data-act="set" data-f="type" data-v="'+k+'" '+(n?'':'disabled')+'>'+BIKES[k].short+'<small>'+(n?n+' free':'Fully booked')+'</small></button>';}).join('')+'</div>';
+  h+='<div class="lbl">VEHICLE</div><div class="vopts">'+Object.keys(BIKES).map(function(k){var n=freeUnits(k,F.start,F.days).length;
+    return '<button class="vopt'+(F.type===k?' on':'')+'" data-act="set" data-f="type" data-v="'+k+'" '+(n?'':'disabled')+'>'+ph(k,'tile',BIKES[k].em,480)+'<b>'+BIKES[k].short+'</b><small>'+money(BIKES[k].day)+'/day · '+(n?n+' free':'Fully booked')+'</small></button>';}).join('')+'</div>';
   var ok=F.type&&freeUnits(F.type,F.start,F.days).length;
   if(ok){var rent=rentFor(F.type,F.start,F.days);
     h+='<div class="lbl">QUOTE</div><div class="bill"><div><span>Rent · '+F.days+' day'+(F.days>1?'s':'')+'</span><span>'+money(rent)+'</span></div><div><span>Free km</span><span>'+BIKES[F.type].km*F.days+' km</span></div><div><span>Deposit at pickup</span><span>'+money(BIKES[F.type].dep)+'</span></div><div class="tot"><span>Advance now (30%)</span><span>'+money(rent*.3)+'</span></div></div>';}
@@ -744,7 +794,7 @@ function tRow(x){
   var P=PKG[x.pkg], s=tripState(x), day=diffD(x.start,today())+1;
   var chip=s==='live'?['good','Day '+day+' of '+P.days.length]:s==='done'?['n','Completed']:['n',rel(x.start)];
   var warn=ilpPending(x)+idPending(x);
-  return '<div class="row tap" data-act="openTrip" data-id="'+x.id+'"><div class="av acc" style="font-size:20px">'+P.em+'</div>'
+  return '<div class="row tap" data-act="openTrip" data-id="'+x.id+'">'+ph(x.pkg,'thumb',P.em,160)
     +'<div class="grow"><b>'+P.name+'</b><span>'+esc(x.lead)+' · '+x.pax+(x.kind==='Group'?' / '+x.seats:'')+' pax</span></div>'
     +'<div class="end"><span class="chip '+chip[0]+'">'+chip[1]+'</span>'+(warn?'<span style="color:var(--warn)">'+warn+' docs pending</span>':'<span>'+x.id+'</span>')+'</div></div>';
 }
@@ -765,7 +815,7 @@ var TOUR_VIEWS={
       +'<div class="kpi"><i>Balance to collect</i><b class="num" style="color:var(--warn)">'+money(due)+'</b></div></div>';
     h+='<div class="sec"><h3>Today</h3></div><div class="card">';
     live.forEach(function(x){var P=PKG[x.pkg],day=diffD(x.start,t);
-      h+='<div class="row tap" data-act="openTrip" data-id="'+x.id+'"><div class="av good" style="font-size:20px">'+P.em+'</div><div class="grow"><b>'+esc(x.lead)+' · Day '+(day+1)+'</b><span>'+esc(P.days[day])+'</span></div><span class="chip good">Live</span></div>';});
+      h+='<div class="row tap" data-act="openTrip" data-id="'+x.id+'">'+ph(x.pkg,'thumb',P.em,160)+'<div class="grow"><b>'+esc(x.lead)+' · Day '+(day+1)+'</b><span>'+esc(P.days[day])+'</span></div><span class="chip good">Live</span></div>';});
     if(!live.length)h+='<div class="empty">No trips running today</div>';
     h+='</div><div class="sec"><h3>Coming up</h3><a data-act="tab" data-tab="trips">All trips</a></div>';
     return h+'<div class="card">'+soon.slice(0,3).map(tRow).join('')+'</div>';
@@ -813,7 +863,7 @@ var TOUR_VIEWS={
     h+='<div class="kpis" style="margin-top:10px"><div class="kpi"><i>Enquiry → booking</i><b class="num">'+(closed?Math.round(won/closed*100):0)+'%</b></div><div class="kpi"><i>Avg quote time</i><b>2 min</b></div></div>';
     h+='<div class="sec"><h3>Popular packages</h3></div><div class="card">';
     var cnt={};d.trips.forEach(function(x){cnt[x.pkg]=(cnt[x.pkg]||0)+x.pax;});
-    Object.keys(PKG).forEach(function(k){h+='<div class="row"><div class="av" style="font-size:20px">'+PKG[k].em+'</div><div class="grow"><b>'+PKG[k].name+'</b><span>'+PKG[k].dur+' · from '+money(PKG[k].pp)+' pp</span></div><div class="end"><b>'+(cnt[k]||0)+'</b><span>travellers</span></div></div>';});
+    Object.keys(PKG).forEach(function(k){h+='<div class="row">'+ph(k,'thumb',PKG[k].em,160)+'<div class="grow"><b>'+PKG[k].name+'</b><span>'+PKG[k].dur+' · from '+money(PKG[k].pp)+' pp</span></div><div class="end"><b>'+(cnt[k]||0)+'</b><span>travellers</span></div></div>';});
     return h+'</div>'+settingsBlock();
   }
 };
@@ -821,7 +871,7 @@ var TOUR_VIEWS={
 /* ---------- tours sheets ---------- */
 function tripSheet(id){
   var x=trip(id), P=PKG[x.pkg], s=tripState(x), cur=diffD(x.start,today());
-  var h=sheetHead(P.name,x.id+' · '+esc(x.lead),'<div class="av acc" style="font-size:22px">'+P.em+'</div>')+'<div class="sb">';
+  var h=sheetHead(P.name,x.id+' · '+esc(x.lead))+'<div class="sb">'+ph(x.pkg,'hero',P.em,900,P.route);
   h+='<dl class="kv"><dt>Dates</dt><dd>'+fmt(x.start)+' → '+fmt(tripEnd(x))+'</dd><dt>Travellers</dt><dd>'+x.pax+(x.kind==='Group'?' of '+x.seats+' seats':'')+'</dd>'
     +'<dt>Driver</dt><dd>'+esc(x.driver)+'</dd><dt>Vehicle</dt><dd>'+esc(x.veh)+'</dd>'+(x.flight?'<dt>Arrival</dt><dd>'+esc(x.flight)+'</dd>':'')
     +'<dt>Paid</dt><dd>'+money(x.paid)+' / '+money(x.total)+'</dd></dl>';
@@ -843,7 +893,7 @@ function leadSheet(id){
   h+='<dl class="kv"><dt>Wants</dt><dd>'+PKG[L.want].name+'</dd><dt>When</dt><dd>'+esc(L.when)+'</dd><dt>Budget</dt><dd>'+esc(L.budget)+'</dd></dl>';
   h+='<div class="suggest" style="border-style:solid"><em>AI NOTES FROM THE CHAT</em>'+esc(L.note)+'</div>';
   if(L.stage==='won'||L.stage==='lost')return h+'<div class="lbl">OUTCOME</div><div class="card"><div class="empty">'+(L.stage==='won'?'Won · '+money(L.quote):'Lost')+'</div></div></div>';
-  h+='<div class="lbl">QUOTE BUILDER</div><div class="opts">'+Object.keys(PKG).map(function(k){return '<button class="'+(L.q.pkg===k?'on':'')+'" data-act="q" data-f="pkg" data-v="'+k+'" data-id="'+L.id+'">'+PKG[k].name+'<small>'+PKG[k].dur+'</small></button>';}).join('')+'</div>';
+  h+='<div class="lbl">QUOTE BUILDER</div><div class="vopts">'+Object.keys(PKG).map(function(k){return '<button class="vopt'+(L.q.pkg===k?' on':'')+'" data-act="q" data-f="pkg" data-v="'+k+'" data-id="'+L.id+'">'+ph(k,'tile',PKG[k].em,480)+'<b>'+PKG[k].name+'</b><small>'+PKG[k].dur+' · '+money(PKG[k].pp)+' pp</small></button>';}).join('')+'</div>';
   h+='<div class="lbl">TRAVELLERS</div><div class="stepper"><button data-act="qpax" data-v="-1" data-id="'+L.id+'">−</button><b>'+L.q.pax+' pax</b><button data-act="qpax" data-v="1" data-id="'+L.id+'">+</button></div>';
   h+='<div class="lbl">HOTELS</div><div class="opts">'+Object.keys(TIER).map(function(k){return '<button class="'+(L.q.tier===k?'on':'')+'" data-act="q" data-f="tier" data-v="'+k+'" data-id="'+L.id+'">'+TIER[k].l+'</button>';}).join('')+'</div>';
   h+='<div class="lbl">PRICE</div><div class="bill"><div><span>'+P.name+' · '+TIER[L.q.tier].l+'</span><span>'+money(q.base)+'</span></div>'
@@ -869,6 +919,8 @@ function settingsBlock(){
   return '<div class="sec"><h3>Settings</h3></div><div class="card" style="padding:14px"><div class="lbl" style="margin-top:0">BUSINESS NAME</div>'
     +'<input class="field" id="fBiz" value="'+esc(ST.names[SYS])+'"><div class="lbl">YOUR NAME</div><input class="field" id="fOwner" value="'+esc(ST.owner)+'">'
     +'<div class="actions"><button class="btn sec2" data-act="resetDemo">Reset demo data</button><button class="btn pri" data-act="saveBiz">Save</button></div></div>'
+    +'<div class="sec"><h3>Photo credits</h3></div><div class="card credits">Photos load from Wikimedia Commons and are used under their Creative Commons licences. '
+    +'Files: '+Object.keys(PHOTO).map(function(k){return PHOTO[k].replace(/_/g,' ');}).join(' · ')+'. Demo prices, bookings and people are made up.</div>'
     +'<div style="text-align:center;color:var(--dim2);font-size:12px;margin:22px 0 4px">Built by OPIIUS · Guwahati</div>';
 }
 
@@ -947,6 +999,7 @@ function keepInputs(){['fOdo','fName','fPhone'].forEach(function(k){var el=$(k);
 document.addEventListener('input',function(e){if(e.target.id==='fOdo'&&FORM.id&&bk(FORM.id)&&bk(FORM.id).status==='active'){FORM.odo=e.target.value;
   var pos=e.target.selectionStart;drawSheet();var n=$('fOdo');n.focus();try{n.setSelectionRange(pos,pos);}catch(x){}}});
 
+[].forEach.call(document.querySelectorAll('[data-photo]'),function(el){el.style.backgroundImage='url("'+photoUrl(el.getAttribute('data-photo'),900)+'")';});
 /* open straight into a system for testing: #rent or #tour */
 if(/^#(rent|tour)$/.test(location.hash))openSys(location.hash.slice(1));
 </script>
