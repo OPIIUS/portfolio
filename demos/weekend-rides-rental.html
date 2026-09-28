@@ -237,14 +237,25 @@ body.tour .stats.win.focus{display:grid}
 body.tour #sub{display:block}
 #sub.swap{animation:fade .35s ease}
 #sub small{display:block;color:var(--gold);font-size:11px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px}
-@media(max-width:600px){#sub{font-size:15px;padding:11px 14px}}
+@media(max-width:700px){
+  #sub{font-size:15px;padding:11px 14px;bottom:12px}
+  body.tour{padding-bottom:118px}
+  body.tour .flow,body.tour .flowcap,body.tour .hdr .ttl > span,body.tour:not(.idle) #view,body.tour .live,body.tour #reset,body.tour .back{display:none}
+  body.tour .hdr{padding:10px 12px;gap:8px}
+  body.tour .hdr .btn{padding:7px 10px;font-size:12px}
+  body.tour .wrap{padding:10px 10px 0}
+  body.tour .stats{padding:10px}
+  body.tour #chat{height:max(280px,calc(100dvh - 330px))}
+  body.tour .log{max-height:calc(100dvh - 300px)}
+  body.tour .msg{font-size:13.5px}
+}
 </style>
 </head>
 <body>
 
 <div class="hdr">
-  <div class="mark wr">WR</div>
-  <div class="ttl"><b>Weekend Rides &middot; Rental Desk</b>
+  <div class="mark wr" id="shopMark">WR</div>
+  <div class="ttl"><b><span id="shopName">Weekend Rides</span> &middot; Rental Desk</b>
     <span>Bike rentals in Guwahati &mdash; from the first WhatsApp message to the deposit refund, one flow</span></div>
   <div class="spacer"></div>
   <div class="live"><span class="dot pulse"></span> ONLINE &middot; replies in ~1s</div>
@@ -268,7 +279,7 @@ body.tour #sub{display:block}
 <div class="wrap cols-3">
 
   <div class="card win" id="wChat">
-    <h3>&#128241; Rider on WhatsApp <em>Weekend Rides</em></h3>
+    <h3>&#128241; Rider on WhatsApp <em id="shopName2">Weekend Rides</em></h3>
     <div class="chat" id="chat"></div>
     <div class="quick" id="quick"></div>
     <div class="compose">
@@ -947,6 +958,7 @@ var WINS=['wStats','wChat','wLog','wFleet','wReg','wCounter'];
 function show(id){WINS.forEach(function(w){$(w).classList.toggle('focus',w===id);});window.scrollTo({top:0,behavior:'smooth'});
   if(id==='wChat')chat.scrollTop=chat.scrollHeight;   /* messages may have arrived while it was hidden */
   if(id==='wLog')logEl.scrollTop=logEl.scrollHeight;}
+function into(el){if(el)el.scrollIntoView({behavior:'smooth',block:'center'});}
 function sub(label,text){var el=$('sub');el.innerHTML=(label?'<small>'+label+'</small>':'')+text;
   el.classList.remove('swap');void el.offsetWidth;el.classList.add('swap');}
 function readTime(text){return Math.max(2600,text.length*48);}
@@ -964,7 +976,7 @@ async function playAll(){
   var chatStep=async function(label,text,msg){show('wChat');sub(label,text);var t0=Date.now();
     await typeOut(msg);await wait(Math.max(1400,readTime(text)-(Date.now()-t0)));};
 
-  await say('1 &middot; Enquiry','A rider messages Weekend Rides on WhatsApp. The assistant answers straight away, day or night.','wChat');
+  await say('1 &middot; Enquiry','A rider messages '+SHOP.name+' on WhatsApp. The assistant answers straight away, day or night.','wChat');
   await chatStep('1 &middot; Enquiry','They say hi&hellip;','Hi');
   await chatStep('1 &middot; Enquiry','&hellip;and ask for a bike this weekend, for a Shillong and Cherrapunji trip.',SCRIPT[1]);
   await say('What the assistant understood','From one casual message it picks out the dates (Sat + Sun), the destination and the distance: about 340 km.','wLog');
@@ -984,14 +996,15 @@ async function playAll(){
     await say('Rentals register','The rental lands in the register on its own. Nobody typed anything, and no WhatsApp got missed.','wReg');
     await say('5 &middot; Handover','Pickup day. Staff open the rental at the counter. It shows exactly what to collect.','wCounter');
     sub('5 &middot; Handover','They tick the handover checklist: licence seen, bike photos, helmet, papers, tyres and brakes.');
+    await wait(500); into(document.querySelector('.checks'));
     var cs=document.querySelectorAll('.hc');
     for(var c=0;c<cs.length;c++){cs[c].checked=true;await wait(420);}
-    await wait(1400); $('hGo').click(); await wait(600);
+    into($('hGo')); await wait(1400); $('hGo').click(); await wait(600);
     await say('6 &middot; On ride','The rider gets a "ride started" message with the odometer, fuel level and return time.','wChat');
     await say('7 &middot; Return check','Two days later the bike comes back. Staff enter the odometer, fuel and return time.','wCounter');
     setVal('rOdo',r.out.odo+436); await wait(1100);
     setVal('rFuel',3); await wait(1100);
-    setVal('rLate',1); await wait(1200);
+    setVal('rLate',1); await wait(900); into($('bill')); await wait(700);
     await say('8 &middot; Deposit settled','The settlement works itself out: 36 extra km, 45 minutes late, 2 bars of fuel short. Refund: '+money(settle(r).refund)+'.');
     $('rGo').click(); await wait(600);
     await say('8 &middot; Deposit settled','The rider gets a receipt and the refund on UPI. Rental closed.','wChat');
@@ -1013,9 +1026,15 @@ function boot(){
   bubble("Hey! Welcome to <b>"+SHOP.name+"</b>, "+SHOP.city+" 🏍️\nI can check which bikes are free, quote your rental and book it right here - any time.\n\nWhere are you riding, and when?",'in');
   logAdd('SYS','sys','Assistant online &middot; WhatsApp channel connected &middot; '+Object.keys(UNITS).length+' bikes in fleet');
 }
+/* ?shop=Name re-brands the demo for whichever shop you are showing it to */
+(function(){var m=location.search.match(/[?&]shop=([^&]+)/);if(!m)return;
+  var n=decodeURIComponent(m[1].replace(/\+/g,' ')).replace(/[<>&"]/g,'').trim().slice(0,32);if(!n)return;
+  SHOP.name=n;$('shopName').textContent=n;$('shopName2').textContent=n;
+  $('shopMark').textContent=n.split(/\s+|(?=[A-Z][a-z])/).filter(Boolean).map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+  document.title='Rental Desk - '+n;})();
 load(); S=newS(); render(false); boot();
 setTour(true); document.body.classList.add('idle');
-sub('Weekend Rides &middot; rental demo','Press <b>&#9654; Play a full rental</b> to watch one booking from first message to deposit refund.');
+sub(SHOP.name+' &middot; rental demo','Press <b>&#9654; Play a full rental</b> to watch one booking from first message to deposit refund.');
 /* ?auto=1 plays the whole rental on its own - handy for a shareable link or a recording */
 if(/auto/.test(location.search))setTimeout(playAll,600);
 </script>
