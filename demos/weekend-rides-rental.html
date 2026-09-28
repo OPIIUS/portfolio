@@ -217,6 +217,27 @@ input[type=number]{background:#11161a;border:1px solid var(--line2);color:var(--
 .hint{font-size:11px;color:var(--dim);margin-top:4px}
 .fill{animation:flash 1.2s ease}
 .wrap > *{min-width:0}
+
+/* guided view: one window at a time, with subtitles */
+body.tour{padding-bottom:130px}
+body.tour .wrap{display:block;max-width:760px;margin:0 auto}
+body.tour .stats{max-width:760px;margin:0 auto}
+body.tour .win{display:none}
+body.tour .win.focus{display:block;animation:fade .45s ease}
+body.tour #chat{height:max(360px,calc(100vh - 360px))}
+body.tour .quick{display:none}
+body.tour.idle .quick{display:flex}
+body.tour .log{height:auto;max-height:max(300px,calc(100vh - 380px))}
+body.tour .reg{max-height:none}
+body.tour .stats.win.focus{display:grid}
+#sub{position:fixed;left:16px;right:16px;bottom:22px;margin:0 auto;max-width:860px;
+  background:rgba(6,8,10,.9);color:#fff;border:1px solid #2a3136;border-radius:12px;padding:14px 20px;
+  font-size:18px;line-height:1.5;text-align:center;z-index:30;box-shadow:0 10px 40px rgba(0,0,0,.5);
+  display:none}
+body.tour #sub{display:block}
+#sub.swap{animation:fade .35s ease}
+#sub small{display:block;color:var(--gold);font-size:11px;letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px}
+@media(max-width:600px){#sub{font-size:15px;padding:11px 14px}}
 </style>
 </head>
 <body>
@@ -228,6 +249,7 @@ input[type=number]{background:#11161a;border:1px solid var(--line2);color:var(--
   <div class="spacer"></div>
   <div class="live"><span class="dot pulse"></span> ONLINE &middot; replies in ~1s</div>
   <button class="btn primary" id="play">&#9654; Play a full rental</button>
+  <button class="btn" id="view">Full dashboard</button>
   <button class="btn" id="reset">Reset</button>
   <a class="back" href="index.html">&larr; All systems</a>
 </div>
@@ -235,7 +257,7 @@ input[type=number]{background:#11161a;border:1px solid var(--line2);color:var(--
 <div class="flow" id="flow"></div>
 <div class="flowcap" id="flowcap"></div>
 
-<div class="stats">
+<div class="stats win" id="wStats">
   <div class="stat"><i>Messages handled</i><b id="s1">0</b></div>
   <div class="stat g"><i>Rentals booked</i><b id="s2">0</b></div>
   <div class="stat b"><i>Bikes on the road</i><b id="s3">0</b></div>
@@ -245,7 +267,7 @@ input[type=number]{background:#11161a;border:1px solid var(--line2);color:var(--
 
 <div class="wrap cols-3">
 
-  <div class="card">
+  <div class="card win" id="wChat">
     <h3>&#128241; Rider on WhatsApp <em>Weekend Rides</em></h3>
     <div class="chat" id="chat"></div>
     <div class="quick" id="quick"></div>
@@ -256,18 +278,18 @@ input[type=number]{background:#11161a;border:1px solid var(--line2);color:var(--
   </div>
 
   <div>
-    <div class="card">
+    <div class="card win" id="wLog">
       <h3>&#129504; What the assistant understood <em id="lgc">0 events</em></h3>
       <div class="log" id="log"></div>
     </div>
-    <div class="card">
+    <div class="card win" id="wFleet">
       <h3>&#127949; Fleet board <em id="fdate"></em></h3>
       <div class="fleet" id="fleet"></div>
     </div>
   </div>
 
   <div>
-    <div class="card">
+    <div class="card win" id="wReg">
       <h3>&#128203; Rentals register <em id="rc">0 rentals</em></h3>
       <div class="reg">
         <table><thead><tr><th>ID</th><th>Rider</th><th>Bike</th><th>Dates</th><th>Status</th></tr></thead>
@@ -276,13 +298,15 @@ input[type=number]{background:#11161a;border:1px solid var(--line2);color:var(--
       <div class="note">Click a rental to open it at the counter. Saved on this device &middot; in the live
         version this is a Google Sheet or the shop's own database.</div>
     </div>
-    <div class="card counter">
+    <div class="card counter win" id="wCounter">
       <h3>&#128273; Counter &mdash; handover &amp; return <em id="ctag"></em></h3>
       <div class="pad" id="counter"></div>
     </div>
   </div>
 
 </div>
+
+<div id="sub"></div>
 
 <script>
 /* ================= shop setup (edit this block with the real fleet and prices) ================= */
@@ -918,24 +942,64 @@ function typeOut(text){
   });
 }
 function setVal(id,v){var el=$(id);el.value=v;el.classList.remove('fill');void el.offsetWidth;el.classList.add('fill');if(el.oninput)el.oninput();}
+/* guided view helpers */
+var WINS=['wStats','wChat','wLog','wFleet','wReg','wCounter'];
+function show(id){WINS.forEach(function(w){$(w).classList.toggle('focus',w===id);});window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='wChat')chat.scrollTop=chat.scrollHeight;   /* messages may have arrived while it was hidden */
+  if(id==='wLog')logEl.scrollTop=logEl.scrollHeight;}
+function sub(label,text){var el=$('sub');el.innerHTML=(label?'<small>'+label+'</small>':'')+text;
+  el.classList.remove('swap');void el.offsetWidth;el.classList.add('swap');}
+function readTime(text){return Math.max(2600,text.length*48);}
+async function say(label,text,win){if(win)show(win);sub(label,text);await wait(readTime(text));}
+function setTour(on){
+  document.body.classList.toggle('tour',on);
+  $('view').textContent=on?'Full dashboard':'Guided view';
+  if(on){show('wChat');}
+}
+$('view').onclick=function(){setTour(!document.body.classList.contains('tour'));};
+
 async function playAll(){
   var btn=$('play'); btn.disabled=true; btn.textContent='Playing...';
-  for(var i=0;i<SCRIPT.length;i++){await typeOut(SCRIPT[i]);await wait(1300);}
+  $('reset').onclick(); setTour(true); document.body.classList.remove('idle');
+  var chatStep=async function(label,text,msg){show('wChat');sub(label,text);var t0=Date.now();
+    await typeOut(msg);await wait(Math.max(1400,readTime(text)-(Date.now()-t0)));};
+
+  await say('1 &middot; Enquiry','A rider messages Weekend Rides on WhatsApp. The assistant answers straight away, day or night.','wChat');
+  await chatStep('1 &middot; Enquiry','They say hi&hellip;','Hi');
+  await chatStep('1 &middot; Enquiry','&hellip;and ask for a bike this weekend, for a Shillong and Cherrapunji trip.',SCRIPT[1]);
+  await say('What the assistant understood','From one casual message it picks out the dates (Sat + Sun), the destination and the distance: about 340 km.','wLog');
+  await say('Live fleet check','It checks the fleet for those exact dates. Both Himalayans are already booked this weekend.','wFleet');
+  await chatStep('2 &middot; Quote','The rider asks for a Himalayan. It is taken, so the assistant offers only bikes whose free km cover the trip.','Himalayan');
+  await chatStep('2 &middot; Quote','They pick the Classic 350 and get an exact quote: weekend rates, free km, deposit and advance.','ok Classic 350 then');
+  await wait(1200);
+  await chatStep('2 &middot; Quote','A side question gets answered, then the assistant brings them back to the booking.','is helmet included?');
+  await chatStep('3 &middot; KYC','The rider says yes. The assistant asks for the details needed for the rental agreement.','yes book it');
+  await chatStep('3 &middot; KYC','Name, mobile and driving licence in one message. The licence number is checked before the bike is held.',SCRIPT[6]);
+  await chatStep('4 &middot; Advance paid','The advance is paid on UPI. The booking is confirmed with a rental ID and a list of what to bring.','paid');
+  await wait(1500);
+
   var r=RENT[0];
   if(r&&r.type&&r.status==='Booked'){
-    bubble('Pickup day at the counter','sys'); await wait(900);
-    SEL=r.id; render(false); $('counter').scrollIntoView({behavior:'smooth',block:'center'}); await wait(1200);
+    SEL=r.id; render(false);
+    await say('Rentals register','The rental lands in the register on its own. Nobody typed anything, and no WhatsApp got missed.','wReg');
+    await say('5 &middot; Handover','Pickup day. Staff open the rental at the counter. It shows exactly what to collect.','wCounter');
+    sub('5 &middot; Handover','They tick the handover checklist: licence seen, bike photos, helmet, papers, tyres and brakes.');
     var cs=document.querySelectorAll('.hc');
-    for(var c=0;c<cs.length;c++){cs[c].checked=true;await wait(260);}
-    await wait(700); $('hGo').click(); await wait(2200);
-    bubble('Two days later - the bike comes back','sys'); await wait(900);
-    $('counter').scrollIntoView({behavior:'smooth',block:'center'}); await wait(900);
-    setVal('rOdo',r.out.odo+436); await wait(800);
-    setVal('rFuel',3); await wait(800);
-    setVal('rLate',1); await wait(1100);
-    $('rGo').click();
+    for(var c=0;c<cs.length;c++){cs[c].checked=true;await wait(420);}
+    await wait(1400); $('hGo').click(); await wait(600);
+    await say('6 &middot; On ride','The rider gets a "ride started" message with the odometer, fuel level and return time.','wChat');
+    await say('7 &middot; Return check','Two days later the bike comes back. Staff enter the odometer, fuel and return time.','wCounter');
+    setVal('rOdo',r.out.odo+436); await wait(1100);
+    setVal('rFuel',3); await wait(1100);
+    setVal('rLate',1); await wait(1200);
+    await say('8 &middot; Deposit settled','The settlement works itself out: 36 extra km, 45 minutes late, 2 bars of fuel short. Refund: '+money(settle(r).refund)+'.');
+    $('rGo').click(); await wait(600);
+    await say('8 &middot; Deposit settled','The rider gets a receipt and the refund on UPI. Rental closed.','wChat');
+    await say('The result','Enquiry to refund in one flow, without the owner making a single phone call.','wStats');
   }
-  btn.disabled=false; btn.innerHTML='&#9654; Play a full rental';
+  sub('','That was a full rental. Type in the chat to try it yourself, or open the full dashboard.');
+  show('wChat'); document.body.classList.add('idle');
+  btn.disabled=false; btn.innerHTML='&#9654; Play again';
 }
 $('play').onclick=playAll;
 $('reset').onclick=function(){
@@ -950,6 +1014,8 @@ function boot(){
   logAdd('SYS','sys','Assistant online &middot; WhatsApp channel connected &middot; '+Object.keys(UNITS).length+' bikes in fleet');
 }
 load(); S=newS(); render(false); boot();
+setTour(true); document.body.classList.add('idle');
+sub('Weekend Rides &middot; rental demo','Press <b>&#9654; Play a full rental</b> to watch one booking from first message to deposit refund.');
 /* ?auto=1 plays the whole rental on its own - handy for a shareable link or a recording */
 if(/auto/.test(location.search))setTimeout(playAll,600);
 </script>
