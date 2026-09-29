@@ -163,6 +163,15 @@ select,input{background:var(--solid)}
   transition:transform .8s var(--ease),opacity .6s;opacity:0}
 .vstage img.on{opacity:1}
 .vcard:hover .vstage img{transform:translateZ(40px) scale(1.06) translateY(-4px)}
+.vstage img.photo{object-fit:cover;object-position:50% 88%;transform:translateZ(0) scale(1.02)}
+.vcard:hover .vstage img.photo{transform:translateZ(0) scale(1.09)}
+.vstage:has(img.photo)::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.35),transparent 30%,transparent 70%,rgba(0,0,0,.25))}
+.vstage .real{position:absolute;left:12px;bottom:10px;z-index:2;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#fff;
+  background:rgba(0,0,0,.45);backdrop-filter:blur(6px);padding:3px 8px;border-radius:999px}
+.viewer .phbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(22px) saturate(1.2);transform:scale(1.25);opacity:.55}
+.viewer img.photo{position:relative;object-fit:contain;animation:viewin .6s var(--ease) both}
+.viewer .to3d{position:absolute;right:14px;bottom:12px;background:rgba(0,0,0,.5);color:#fff;border-color:rgba(255,255,255,.3);backdrop-filter:blur(6px)}
+.founding{background:var(--accent);color:var(--onaccent)}
 .vstage .sk{position:absolute;inset:18% 14%;border-radius:14px;background:linear-gradient(100deg,transparent 30%,var(--glass2) 50%,transparent 70%) 0 0/200% 100%;animation:shim 1.4s linear infinite}
 @keyframes shim{to{background-position:-200% 0}}
 .vstage .badge{position:absolute;left:12px;top:12px;z-index:2;font-size:11px;font-weight:700;letter-spacing:.4px;padding:3px 8px;border-radius:999px;background:var(--goodbg);color:var(--good);backdrop-filter:blur(8px)}
@@ -292,7 +301,8 @@ tr.flash td{animation:flash 2.4s var(--ease)}
 @keyframes flash{0%{background:var(--warnbg)}100%{background:transparent}}
 .fleetrow{display:flex;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--line);font-size:13.5px}
 .fleetrow:first-child{border-top:0}
-.fleetrow img{width:64px;height:43px;object-fit:contain;flex:none}
+.fleetrow img{width:64px;height:43px;object-fit:contain;flex:none;border-radius:6px}
+.fleetrow img.photo{object-fit:cover}
 .fleetrow .mono{color:var(--dim)}
 .sw{position:relative;width:42px;height:24px;border-radius:999px;border:0;background:var(--line2);flex:none;transition:background .3s}
 .sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .4s var(--ease);box-shadow:0 2px 6px rgba(0,0,0,.3)}
@@ -589,7 +599,8 @@ main{animation:viewin .55s var(--ease) both}
   </div>
 </main>
 
-<footer class="foot"><div class="wrap">RideMe is a concept demo. All rental companies, riders and bookings shown are sample data. Vehicles are real-time 3D models, not photographs.</div></footer>
+<footer class="foot"><div class="wrap">RideMe is a concept demo. Riders, bookings and every rental company except Real Drive Ghy are sample data; Real Drive Ghy's cars, photos and day prices come from their WhatsApp catalog.
+  Vehicles without a photo are real-time 3D models. Other photos load from Wikimedia Commons under Creative Commons licences: <span id="credits"></span>.</div></footer>
 
 <div id="sheet-root"></div>
 <div class="toast" id="toast" role="status"></div>
@@ -606,14 +617,26 @@ const CFG = {
   oneway: {bike: 600, car: 1500},
   gateway: 0.02              // payment gateway cost on everything collected
 };
-/* Real photos: put files next to this page (e.g. img/classic.jpg) and map them here.
-   A mapped photo replaces the 3D render on cards and in the vehicle sheet. */
+/* Real photos. A mapped photo replaces the 3D render on cards and in the vehicle sheet;
+   if it fails to load, the 3D render is shown instead.
+   img/*.jpg: Real Drive Ghy's own cars, from their WhatsApp catalog.
+   Wikimedia Commons files load in the viewer's browser (Creative Commons licences, credited in the footer). */
+const WIKI = f=>"https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(f)+"?width=900";
 const PHOTOS = {
-  // classic: "img/classic.jpg",
+  i20:"img/i20.jpg", punch:"img/punch.jpg", brezza:"img/breeza.jpg", xl6:"img/xl6.jpg", carens:"img/carens.jpg", innova:"img/innova.jpg",
+  activa:WIKI("Honda_Activa_6G.jpg"),
+  classic:WIKI("Royal_Enfield_Classic_350_(2017_Model_Year).jpg"),
+  himalayan:WIKI("Royal_Enfield_Himalayan_450_Mana_Black.jpg"),
+  swift:WIKI("Maruti_Suzuki_Swift_LXi.jpg"),
+  thar:WIKI("Mahindra_Thar_CRDi_(16183560860).jpg")
 };
+const WIKI_CREDITS = ["Honda Activa 6G","Royal Enfield Classic 350 (2017 Model Year)","Royal Enfield Himalayan 450 Mana Black","Maruti Suzuki Swift LXi","Mahindra Thar CRDi (16183560860)"];
 
-/* =================== SAMPLE DATA (fictional companies) =================== */
+/* =================== SAMPLE DATA ===================
+   Real Drive Ghy: cars, photos and day prices from their WhatsApp catalog; everything else about them here is sample data.
+   All other companies are fictional. */
 const OPS = [
+  {id:"rd", name:"Real Drive Ghy", area:"Guwahati · founding partner", city:"Guwahati", rating:4.9, trips:0, assured:true, deliv:true, oneway:true, km:{bike:0,car:250}, hue:48, founding:true},
   {id:"nb", name:"Northbound Rentals", area:"Paltan Bazar, near railway station", city:"Guwahati", rating:4.7, trips:1240, assured:true, deliv:true, oneway:true, km:{bike:150,car:250}, hue:152},
   {id:"hr", name:"Hillroad Bikes", area:"Zoo Road Tiniali", city:"Guwahati", rating:4.5, trips:860, assured:true, deliv:true, oneway:false, km:{bike:120,car:0}, hue:28},
   {id:"rl", name:"Riverline Self-Drive", area:"Fancy Bazar", city:"Guwahati", rating:4.3, trips:540, assured:false, deliv:false, oneway:true, km:{bike:0,car:300}, hue:205},
@@ -633,7 +656,12 @@ const MODELS = [
   {id:"nexonev", name:"Tata Nexon EV", kind:"car", sub:"Compact SUV", cc:"30 kWh", seats:5, fuel:"Electric", gear:"Automatic", dep:8000, build:"ev", paint:"#157a8a"},
   {id:"creta", name:"Hyundai Creta", kind:"car", sub:"SUV", cc:"1.5 L", seats:5, fuel:"Diesel", gear:"Automatic", dep:10000, build:"suv", paint:"#e9e9e6"},
   {id:"thar", name:"Mahindra Thar 4x4", kind:"car", sub:"Off-roader", cc:"2.2 L", seats:4, fuel:"Diesel", gear:"Manual", dep:15000, build:"thar", paint:"#9a2a1a"},
-  {id:"innova", name:"Toyota Innova Crysta", kind:"car", sub:"MPV", cc:"2.4 L", seats:7, fuel:"Diesel", gear:"Manual", dep:10000, build:"mpv", paint:"#a9adb2"}
+  {id:"innova", name:"Toyota Innova Crysta", kind:"car", sub:"MPV", cc:"2.4 L", seats:7, fuel:"Diesel", gear:"Manual", dep:10000, build:"mpv", paint:"#a9adb2"},
+  {id:"i20", name:"Hyundai Elite i20", kind:"car", sub:"Hatchback", cc:"1.2 L", seats:5, fuel:"Petrol", gear:"Manual", dep:5000, build:"hatch", paint:"#e8e8e6"},
+  {id:"punch", name:"Tata Punch", kind:"car", sub:"Compact SUV", cc:"1.2 L", seats:5, fuel:"Petrol", gear:"Manual", dep:5000, build:"ev", paint:"#e8e8e6"},
+  {id:"brezza", name:"Maruti Suzuki Brezza", kind:"car", sub:"Compact SUV", cc:"1.5 L", seats:5, fuel:"Petrol", gear:"Manual", dep:6000, build:"suv", paint:"#e8e8e6"},
+  {id:"xl6", name:"Maruti Suzuki XL6", kind:"car", sub:"MPV", cc:"1.5 L", seats:6, fuel:"Petrol", gear:"Manual", dep:8000, build:"mpv", paint:"#e8e8e6"},
+  {id:"carens", name:"Kia Carens", kind:"car", sub:"MPV", cc:"1.5 L", seats:7, fuel:"Diesel", gear:"Manual", dep:8000, build:"mpv", paint:"#e8e8e6"}
 ];
 // [operator, model, price per day, units]
 const LISTINGS = [
@@ -648,6 +676,9 @@ const LISTINGS = [
   ["nb","creta",3200,2],["rl","creta",3000,3],["tl","creta",3400,2],
   ["tl","thar",3900,2],["rl","thar",3700,1],
   ["rl","innova",4500,2],["nb","innova",4700,1],
+  ["rd","i20",1500,2],["rd","punch",1900,2],["rd","brezza",2400,2],["rd","xl6",3100,1],["rd","carens",3300,1],["rd","innova",3500,1],
+  ["eg","i20",1450,2],["nb","i20",1600,2],["rl","punch",2000,2],["tl","punch",1950,1],["nb","brezza",2500,2],["tl","brezza",2600,1],
+  ["tl","carens",3400,1],["rl","xl6",3000,1],
   ["pw","activa",500,6],["cl","activa",470,4],["pw","classic",1350,3],["cl","classic",1250,2],
   ["pw","himalayan",2200,2],["pw","swift",2000,2],["cl","swift",1900,2],["pw","thar",4200,1],["cl","creta",3300,1]
 ];
@@ -985,14 +1016,24 @@ const G3 = (()=>{
 
 /* rendered images, filled progressively after first paint */
 const IMG={};
-function imgFor(id){return PHOTOS[id]||IMG[id]||""}
+const PHOTO_FAIL=new Set();
+function hasPhoto(id){return !!PHOTOS[id]&&!PHOTO_FAIL.has(id)}
+function imgFor(id){return hasPhoto(id)?PHOTOS[id]:(IMG[id]||"")}
+// A photo that fails to load (offline, blocked host) falls back to the 3D render.
+document.addEventListener("error",e=>{
+  const el=e.target; if(!(el instanceof HTMLImageElement)||!el.dataset.photo)return;
+  const id=el.dataset.photo; PHOTO_FAIL.add(id); delete el.dataset.photo; el.classList.remove("photo");
+  if(IMG[id]){el.src=IMG[id]} else {el.removeAttribute("src");el.classList.remove("on");el.dataset.img=id}
+  el.closest(".vstage")?.querySelector(".real")?.remove();
+  if(el.closest("#d-viewer")&&G3) $("#d-3d")?.click();
+},true);
 function renderSnapshots(){
   if(!G3) return;
-  const todo=MODELS.filter(m=>!PHOTOS[m.id]).map(m=>m.id);
+  const todo=MODELS.map(m=>m.id).sort((a,b)=>hasPhoto(a)-hasPhoto(b));
   (function step(){
     const id=todo.shift(); if(!id)return;
     try{IMG[id]=G3.snapshot(modelById[id])}catch(e){console.warn(e)}
-    document.querySelectorAll(`img[data-img="${id}"]`).forEach(el=>{el.src=IMG[id];el.onload=()=>{el.classList.add("on");el.previousElementSibling?.classList.contains("sk")&&el.previousElementSibling.remove()}});
+    document.querySelectorAll(`img[data-img="${id}"]:not([data-photo])`).forEach(el=>{if(hasPhoto(id))return;el.src=IMG[id];el.onload=()=>{el.classList.add("on");el.previousElementSibling?.classList.contains("sk")&&el.previousElementSibling.remove()}});
     setTimeout(step,16);
   })();
 }
@@ -1001,6 +1042,7 @@ const FALLBACK_SVG={bike:'<svg viewBox="0 0 120 80" width="60%" aria-hidden="tru
 function stageImg(m){
   const src=imgFor(m.id);
   if(!src && !G3) return `<div style="position:absolute;inset:0;display:grid;place-items:center;color:var(--dim)">${FALLBACK_SVG[m.kind]}</div>`;
+  if(hasPhoto(m.id)) return `<img class="on photo" data-img="${m.id}" data-photo="${m.id}" src="${src}" alt="${esc(m.name)}" loading="lazy"><span class="real">Real photo</span>`;
   return src?`<img class="on" data-img="${m.id}" src="${src}" alt="${esc(m.name)}">`:`<span class="sk"></span><img data-img="${m.id}" alt="${esc(m.name)}">`;
 }
 
@@ -1010,7 +1052,7 @@ const now=new Date(); now.setMinutes(0,0,0);
 const S={
   city:"Guwahati", kind:"all", type:new Set(), max:5000, ops:new Set(), deliv:false, assured:false, oneway:false, sort:"price",
   from:new Date(now.getTime()+24*3600e3), to:new Date(now.getTime()+3*24*3600e3),
-  view:"rent", partner:"nb", sync:store.get("sync",{nb:"api"}),
+  view:"rent", partner:"rd", sync:store.get("sync",{nb:"api"}),
   offline:new Set(store.get("offline",[])), bookings:[]
 };
 S.from.setHours(9); S.to.setHours(18);
@@ -1139,7 +1181,7 @@ function mountSheet(){
       <footer id="d-foot"></footer></aside>`;
   document.body.style.overflow="hidden";
   const v=$("#d-viewer"), m=D.m;
-  if(PHOTOS[m.id]) v.innerHTML=`<img src="${PHOTOS[m.id]}" alt="${esc(m.name)}">`;
+  if(hasPhoto(m.id)) { v.innerHTML=`<img class="phbg" src="${PHOTOS[m.id]}" alt=""><img class="photo" data-photo="${m.id}" src="${PHOTOS[m.id]}" alt="${esc(m.name)}">${G3?`<button type="button" class="btn sm to3d" id="d-3d">Rotate in 3D</button>`:""}`; }
   else if(G3){ v.innerHTML=`<canvas aria-label="3D model of ${esc(m.name)}. Drag to rotate."></canvas><small>Drag to rotate 360°</small>`;
     try{ if(sheetViewer) sheetViewer.dispose(); sheetViewer=G3.viewer(v.querySelector("canvas"),{auto:.35,camDist:8,camY:2,lookY:.6}); sheetViewer.set(m); sheetViewer.start() }catch(e){console.warn(e)} }
   else v.innerHTML=`<div style="height:100%;display:grid;place-items:center;color:var(--dim)">${FALLBACK_SVG[m.kind]}</div>`;
@@ -1164,9 +1206,9 @@ function drawSheet(){
     body=`<div><div class="sect-l">${offers.length} rental compan${offers.length>1?"ies":"y"} in ${S.city} · ${d} day${d>1?"s":""}</div>
       ${offers.map((o,i)=>{const km=o.op.km[m.kind];
         return `<button type="button" class="offer" data-pick="${o.op.id}" style="animation:panein .5s ${i*60}ms var(--ease) both">
-          <div class="op"><span class="av" style="background:${avColor(o.op)}">${initials(o.op.name)}</span><div><b>${esc(o.op.name)} ${o.op.assured?'<span class="tag good">Assured</span>':""}</b><span>${esc(o.op.area)}</span></div></div>
+          <div class="op"><span class="av" style="background:${avColor(o.op)}">${initials(o.op.name)}</span><div><b>${esc(o.op.name)} ${o.op.founding?'<span class="tag founding">Founding partner</span>':o.op.assured?'<span class="tag good">Assured</span>':""}</b><span>${esc(o.op.area)}</span></div></div>
           <div class="pr">${i===0&&offers.length>1?'<span class="best">Lowest</span><br>':""}<b class="num">${inr(o.price)}</b><span class="kv">/day</span></div>
-          <div class="meta"><span class="stars">★ ${o.op.rating}</span><span>${o.op.trips.toLocaleString("en-IN")} trips</span><span>${km?km+" km/day free":"Unlimited km"}</span><span>${o.op.deliv?"Delivers":"Pick-up only"}</span><span>${o.avail} free</span><span>Total ${inr(o.price*d)}</span></div>
+          <div class="meta">${o.op.founding?'<span class="stars">New on RideMe</span>':`<span class="stars">★ ${o.op.rating}</span><span>${o.op.trips.toLocaleString("en-IN")} trips</span>`}<span>${km?km+" km/day free":"Unlimited km"}</span><span>${o.op.deliv?"Delivers":"Pick-up only"}</span><span>${o.avail} free</span><span>Total ${inr(o.price*d)}</span></div>
         </button>`}).join("")||`<div class="empty">None free for these dates in ${S.city}.</div>`}</div>`;
     foot=`<span class="kv">Deposit ${inr(m.dep)} · halved with Protect</span>`;
   } else if(D.step===1){
@@ -1269,8 +1311,8 @@ function renderPartner(){
       <td>${b.status==="new"?`<button class="btn sm acc" data-accept="${b.id}">Accept</button>`:`<span class="pill ${b.status==="done"?"done":"conf"}">${lbl[b.status]}</span>`}</td></tr>`}).join("")
     || `<tr><td colspan="8" style="color:var(--dim)">No bookings yet. Book one of this company's vehicles on the Rent tab and it appears here.</td></tr>`;
   bs.forEach(b=>b.fresh=false);
-  $("#p-fleet").innerHTML=vs.map(v=>{const m=modelById[v.model], src=imgFor(v.model);
-    return `<div class="fleetrow">${src?`<img src="${src}" alt="">`:""}<div>${esc(m.name)}<br><span class="mono">${v.plate}</span></div>
+  $("#p-fleet").innerHTML=vs.map(v=>{const m=modelById[v.model], src=imgFor(v.model), ph=hasPhoto(v.model);
+    return `<div class="fleetrow">${src?`<img src="${src}" alt="" ${ph?`class="photo" data-photo="${v.model}"`:""}>`:""}<div>${esc(m.name)}<br><span class="mono">${v.plate}</span></div>
     <span class="kv num" style="margin-left:auto">${inr(v.price)}/day</span>
     <button class="sw" role="switch" aria-checked="${v.online}" aria-label="Show ${esc(v.plate)} on RideMe" data-veh="${v.id}"></button></div>`}).join("");
   const cur=S.sync[op.id]||"free";
@@ -1328,7 +1370,7 @@ function go(view){
   if(document.startViewTransition&&!reduced&&S.view!==view) document.startViewTransition(apply); else apply();
 }
 document.addEventListener("click",e=>{
-  const t=e.target.closest("[data-go],[data-t],[data-model],[data-pick],[data-hero],[data-close],[data-accept],[data-veh],#d-next,#d-back,#d-back0,#d-pay,#d-partner");
+  const t=e.target.closest("[data-go],[data-t],[data-model],[data-pick],[data-hero],[data-close],[data-accept],[data-veh],#d-next,#d-back,#d-back0,#d-pay,#d-partner,#d-3d");
   if(!t)return;
   if(t.dataset.go){e.preventDefault();go(t.dataset.go);return}
   if(t.dataset.t){S.type.has(t.dataset.t)?S.type.delete(t.dataset.t):S.type.add(t.dataset.t);renderFilters();renderResults();return}
@@ -1341,6 +1383,8 @@ document.addEventListener("click",e=>{
   if(t.id==="d-next"){D.step=2;drawSheet();return}
   if(t.id==="d-back"){D.rider=$("#d-name").value;D.phone=$("#d-phone").value;D.dl=$("#d-dl").value;D.step=1;drawSheet();return}
   if(t.id==="d-pay"){confirmBooking();return}
+  if(t.id==="d-3d"){const v=$("#d-viewer"), m=D.m; v.innerHTML=`<canvas aria-label="3D model of ${esc(m.name)}. Drag to rotate."></canvas><small>3D preview · drag to rotate</small>`;
+    try{ if(sheetViewer) sheetViewer.dispose(); sheetViewer=G3.viewer(v.querySelector("canvas"),{auto:.35,camDist:8,camY:2,lookY:.6}); sheetViewer.set(m); sheetViewer.start() }catch(e){console.warn(e)} return}
   if(t.id==="d-partner"){S.partner=D.op.id;closeSheet();go("partner");return}
   if(t.dataset.accept){const b=S.bookings.find(x=>x.id===t.dataset.accept);b.status="conf";
     store.set("mine",S.bookings.filter(x=>x.mine));renderPartner();toast(`${b.id} accepted. The rider has been sent pick-up details.`);return}
@@ -1386,6 +1430,7 @@ $("#search").addEventListener("submit",e=>{e.preventDefault();readDates();
   $("#market").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"})});
 
 /* =================== boot =================== */
+$("#credits").textContent=WIKI_CREDITS.join(" · ");
 $("#s-from").value=toLocalInput(S.from);$("#s-to").value=toLocalInput(S.to);
 renderCalcInputs();
 const start=(location.hash||"").slice(1);
