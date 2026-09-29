@@ -2,301 +2,1200 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>OPIIUS — Run your rental, tour or tent house business from your phone | Guwahati</title>
-<meta name="description" content="A simple app for bike and car rentals, tour operators and tent houses in the Northeast: every booking, vehicle or item and every rupee owed, on your phone. Set up for you. ₹6,000 + ₹3,000/month.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OPIIUS</title>
+<meta name="description" content="Compare self-drive cars, bikes and scooters from verified rental companies in Guwahati and Shillong, and book in one payment.">
 <link rel="canonical" href="https://opiius.online/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="OPIIUS: run your business from your phone">
-<meta property="og:description" content="Bookings, vehicles, stock and money owed, on one screen. Watch a 30-second demo.">
+<meta property="og:title" content="OPIIUS: every rental company, one search">
+<meta property="og:description" content="Compare self-drive cars, bikes and scooters from verified rental companies in Guwahati and Shillong.">
 <meta property="og:url" content="https://opiius.online/">
-<meta property="og:image" content="https://opiius.online/shots/demos-home.png">
+<meta property="og:image" content="https://opiius.online/rideme/img/xl6.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "OPIIUS",
-  "description": "Simple business apps for bike and car rentals, tour operators and tent houses: bookings, availability, deposits and payments.",
-  "url": "https://opiius.online/",
-  "telephone": "+91-86388-30682",
-  "email": "priyangshunath190@gmail.com",
-  "founder": {"@type": "Person", "name": "Priyangshu Nath"},
-  "address": {"@type": "PostalAddress", "addressLocality": "Guwahati", "addressRegion": "Assam", "addressCountry": "IN"},
-  "areaServed": ["Assam", "Meghalaya", "Nagaland", "Manipur", "Mizoram", "Tripura", "Arunachal Pradesh", "Sikkim"],
-  "priceRange": "₹6,000 setup + ₹3,000/month",
-  "makesOffer": {"@type": "Offer", "priceCurrency": "INR", "price": "6000", "description": "Setup ₹6,000, then ₹3,000 per month"}
-}
-</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-.svcs{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.svc{background:var(--bg-3);border-radius:28px;padding:36px 32px;display:flex;flex-direction:column;
-  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
-.svc:hover{transform:scale(1.015);box-shadow:var(--shadow)}
-.svc .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;margin-bottom:22px;
-  background:var(--grad);color:#fff;font-weight:700;font-size:15px}
-.svc h3{margin:0 0 10px;font-size:24px;line-height:1.15;letter-spacing:-.01em}
-.svc p{margin:0 0 16px;color:var(--ink-3);font-size:16px}
-.svc ul{margin:0 0 22px;padding:0;list-style:none;color:var(--ink-2);font-size:14px;flex:1}
-.svc li{padding:7px 0;border-top:1px solid var(--line)}
-.svc a{font-size:16px}
-.svc a::after{content:" \203A"}
-.svc a:hover{text-decoration:underline}
-.plan{max-width:860px;margin:0 auto;background:var(--bg-2);border-radius:32px;padding:56px 48px;text-align:center}
-.plan .big{font-size:clamp(56px,9vw,96px);font-weight:700;letter-spacing:-.03em;line-height:1;
-  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
-.plan .setup{font-size:17px;color:var(--ink-3);margin:8px 0 18px}
-.plan .mo{font-size:28px;font-weight:600;margin:0 0 28px;letter-spacing:-.01em}
-.plan .mo small{font-size:17px;font-weight:400;color:var(--ink-3)}
-.plan .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;text-align:left;margin:40px 0 0}
-.plan .col{background:var(--bg-3);border-radius:22px;padding:26px 26px 18px}
-.plan h3{margin:0 0 10px;font-size:19px}
-.plan ul{margin:0;padding:0;list-style:none;color:var(--ink-2);font-size:15px}
-.plan li{padding:8px 0 8px 26px;position:relative}
-.plan li::before{content:"\2713";position:absolute;left:0;color:var(--accent);font-weight:700}
-@media(max-width:1000px){.svcs{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){
-  .svcs{grid-template-columns:1fr}
-  .plan{padding:40px 22px}
-  .plan .cols{grid-template-columns:1fr}
+/* Layout: clean white showroom. Full-width photo hero with an overlapping booking bar, category photo tiles,
+   trending cards, a dark trust band, a promo banner, then the full marketplace (filters + cards). One deliberate light look.
+   Palette: white and cool greys, near-black ink, one electric blue accent with a pale blue tint for highlights. */
+:root{
+  --bg:#ffffff; --bg2:#ffffff; --stage:#f2f3f6; --stage-glow:rgba(77,124,254,.10);
+  --glass:#f6f7f9; --glass2:#eef0f4; --solid:#ffffff; --solid2:#f6f7f9;
+  --line:#e7e9ee; --line2:#d8dbe2;
+  --ink:#0e1014; --dim:#646b78; --dim2:#8b919c;
+  --accent:#4d7cfe; --onaccent:#ffffff; --soft:#e4ecff; --dark:#0c0d10; --ondark:#f4f5f7;
+  --good:#16875a; --goodbg:#e3f5ec; --warn:#a86400; --warnbg:#eef3ff; --bad:#c53a2c; --badbg:#fde8e5;
+  --chart1:#4d7cfe; --chart2:#0e1014; --chart3:#8fb0ff; --chart4:#b8c6ea; --chart5:#c9ced8;
+  --shadow:0 18px 40px -22px rgba(14,16,20,.35),0 2px 6px rgba(14,16,20,.06);
+  --f-display:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --f-body:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
 }
+*{box-sizing:border-box}
+html,body{margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.08;letter-spacing:-.02em}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+select,input{background:var(--solid)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--f-mono);font-size:.92em;font-variant-numeric:tabular-nums}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:16px}
+.glass{background:var(--solid);border:1px solid var(--line)}
 
-/* demos */
-.band{padding:40px 0 110px}
-.band .head{text-align:center;margin-bottom:34px}
-.band .head .sub{margin-bottom:0}
-.tabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:0 auto 30px;padding:5px;border-radius:980px;background:var(--bg-2);width:max-content;max-width:100%}
-.tabs button{border:0;background:none;font:inherit;font-size:15px;padding:9px 18px;border-radius:980px;cursor:pointer;color:var(--ink-2);white-space:nowrap}
-.tabs button[aria-selected="true"]{background:var(--bg-3);color:var(--ink);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.12)}
-.dpanel{display:grid;grid-template-columns:1.45fr 1fr;gap:40px;align-items:center}
-.dpanel video{width:100%;aspect-ratio:16/9;display:block;border-radius:22px;background:#000;box-shadow:var(--shadow)}
-.dpanel h3{font-size:30px;line-height:1.1;margin:0 0 8px;letter-spacing:-.015em}
-.dpanel .len{font-size:14px;color:var(--ink-3);margin:0 0 18px}
-.dpanel ul{list-style:none;margin:0 0 26px;padding:0}
-.dpanel li{padding:10px 0 10px 30px;position:relative;border-top:1px solid var(--line);font-size:16px;color:var(--ink-2)}
-.dpanel li::before{content:"\2713";position:absolute;left:4px;color:var(--accent);font-weight:700}
-.dpanel .cta{justify-content:flex-start}
-.enq{max-width:860px;margin:56px auto 0;background:var(--bg-2);border-radius:28px;padding:36px 36px 30px}
-.enq h3{margin:0 0 6px;font-size:24px;letter-spacing:-.01em}
-.enq p.s{margin:0 0 20px;color:var(--ink-3);font-size:15px}
-.enq form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.enq label{display:block;font-size:13px;color:var(--ink-3);margin-bottom:6px}
-.enq input,.enq select,.enq textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--bg-3);border:1px solid var(--line);border-radius:12px;padding:12px 14px;outline:0}
-.enq input:focus,.enq select:focus,.enq textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,113,227,.18)}
-.enq .full{grid-column:1/-1}
-.enq textarea{min-height:84px;resize:vertical}
-.enq .row2{grid-column:1/-1;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.enq .note{margin:0;text-align:left;font-size:13px}
-.enq .err{color:#d70015;font-size:13px;margin:0}.enq .err:empty{display:none}
-@media(max-width:860px){.dpanel{grid-template-columns:1fr;gap:24px}}
-@media(max-width:560px){.tabs{display:grid;grid-template-columns:1fr 1fr;width:100%;border-radius:20px}.tabs button{border-radius:14px}}
-@media(max-width:640px){.enq{padding:26px 18px}.enq form{grid-template-columns:1fr}.dpanel h3{font-size:24px}.band{padding:24px 0 72px}}
+/* ---------- header ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:21px;letter-spacing:-.03em;text-decoration:none;color:var(--ink)}
+.logo em{font-style:normal;color:var(--accent)}
+.modes{display:flex;gap:4px;margin:0 auto}
+.modes .pill-bg{display:none}
+.modes button{border:0;background:none;color:var(--dim);padding:8px 14px;border-radius:999px;font-size:14px;font-weight:600;transition:color .25s,background .25s}
+.modes button:hover{color:var(--ink)}
+.modes button[aria-selected="true"]{color:var(--ink);background:var(--glass2)}
+.top .cta{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:9px 18px;font-weight:700;font-size:14px;transition:transform .25s var(--ease)}
+.top .cta:hover{transform:translateY(-1px)}
+.bizlink{font-size:14px;font-weight:600;color:var(--dim);text-decoration:none;white-space:nowrap}
+.bizlink:hover{color:var(--ink)}
+@media(max-width:560px){.bizlink{display:none}}
+@media(max-width:760px){.top .wrap{flex-wrap:wrap;gap:10px}.modes{order:3;width:100%;justify-content:space-between;margin:0}.modes button{flex:1;padding:7px 4px;font-size:13px}.top .cta{margin-left:auto}}
 
-.pains{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.pain{background:var(--bg-3);border-radius:24px;padding:28px 26px}
-.pain .was{margin:0 0 14px;color:var(--ink-3);font-size:16px}
-.pain .now{margin:0;font-size:20px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
-.pain .now::before{content:"\2713  ";color:var(--accent)}
-.plan .incl{list-style:none;margin:0 auto 28px;padding:0;max-width:440px;text-align:left}
-.plan .incl li{padding:10px 0 10px 30px;position:relative;border-top:1px solid var(--line);color:var(--ink-2);font-size:16px}
-.plan .incl li::before{content:"\2713";position:absolute;left:4px;color:var(--accent);font-weight:700}
-.steps.s3{grid-template-columns:repeat(3,1fr)}
-#enquire-sec .enq{background:var(--bg-3);margin-top:0}
-@media(max-width:860px){.pains,.steps.s3{grid-template-columns:1fr}}
-.prices{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0 0 12px}
-.pr-col{padding:6px 18px}
-.pr-col+.pr-col{border-left:1px solid var(--line)}
-.pr-col .where{font-size:14px;font-weight:600;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.pr-col .big{font-size:clamp(48px,7vw,80px)}
-.pr-col .more{display:inline-block;font-size:14px;margin-top:-14px}
-@media(max-width:640px){.prices{grid-template-columns:1fr;gap:18px}.pr-col+.pr-col{border-left:0;border-top:1px solid var(--line);padding-top:22px}}
+/* ---------- hero ---------- */
+.hero{padding-block:14px 0;position:relative}
+.hero-card{position:relative;border-radius:28px;overflow:hidden;min-height:clamp(430px,52vw,600px);background:var(--dark);color:#fff;display:flex;align-items:flex-end}
+.hero-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 65%;transform:scale(1.06);animation:settle 2.4s var(--ease) forwards}
+@keyframes settle{to{transform:scale(1)}}
+.hero-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.25) 0%,rgba(8,9,12,.05) 35%,rgba(8,9,12,.72) 100%)}
+.hero-copy{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:end;padding:28px 36px 96px}
+.hero-copy > *{min-width:0}
+.hero h1{font-size:clamp(38px,6vw,76px);font-weight:800;animation:rise .9s var(--ease) both}
+.hero-copy p{margin:0;color:rgba(255,255,255,.82);font-size:15px;max-width:44ch;justify-self:end;animation:rise .9s .12s var(--ease) both}
+@keyframes rise{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+@media(max-width:760px){.hero-copy{grid-template-columns:1fr;padding:22px 20px 150px}.hero-copy p{justify-self:start}}
+
+.book{position:relative;z-index:2;margin:-62px auto 0;width:min(1000px,calc(100% - 32px));background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:10px 12px 12px;animation:rise .9s .2s var(--ease) both}
+.seg{display:inline-flex;gap:4px;background:var(--glass2);padding:4px;border-radius:12px;margin:0 0 10px}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:9px;font-size:13px;font-weight:600;color:var(--dim);transition:all .25s var(--ease)}
+.seg button[aria-checked="true"]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.fields{display:grid;grid-template-columns:1fr 1.25fr 1.25fr auto;gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.fields > div{padding:9px 14px;border-left:1px solid var(--line);min-width:0}
+.fields > div:first-child{border-left:0}
+.fields label{display:block;font-size:11.5px;color:var(--dim);font-weight:600}
+.fields select,.fields input{width:100%;border:0;padding:2px 0;font-size:14px;font-weight:600;outline:0;background:transparent}
+.fields .go{border:0;background:var(--accent);color:#fff;font-weight:700;padding:0 30px;font-size:15px;transition:background .25s}
+.fields .go:hover{background:#3a6af5}
+@media(max-width:760px){.book{margin-top:-128px}.fields{grid-template-columns:1fr 1fr}.fields > div:nth-child(3){border-left:0}.fields > div:nth-child(n+3){border-top:1px solid var(--line)}.fields .go{grid-column:1/-1;padding:13px}}
+@media(max-width:420px){.fields{grid-template-columns:1fr}.fields > div{border-left:0!important;border-top:1px solid var(--line)}.fields > div:first-child{border-top:0}}
+
+/* ---------- sections ---------- */
+.sec{padding-block:64px 0}
+.sec-h{display:flex;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.sec h2,.sec-h h2{font-size:clamp(28px,3.6vw,42px);font-weight:800}
+.pillbtn{margin-left:auto;border:0;background:var(--soft);color:var(--accent);border-radius:999px;padding:9px 18px;font-weight:700;font-size:13.5px;text-decoration:none;transition:background .25s}
+.pillbtn:hover{background:#d4e0ff}
+
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:900px){.cats{grid-template-columns:1fr 1fr}}
+.cat{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:20px;overflow:hidden;background:var(--dark);color:#fff;border:0;padding:0;text-align:left;
+  animation:rise .8s var(--ease) both;animation-delay:calc(var(--i,0)*70ms)}
+.cat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 80%;transition:transform 1s var(--ease)}
+.cat:hover img{transform:scale(1.07)}
+.cat::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 40%,transparent 70%,rgba(0,0,0,.35))}
+.cat .t{position:absolute;z-index:1;left:18px;top:16px;right:18px}
+.cat .t b{display:block;font-size:clamp(20px,2.2vw,28px);font-weight:700;line-height:1.1;letter-spacing:-.02em}
+.cat .t span{font-size:13px;opacity:.8}
+.arrow{position:absolute;z-index:1;right:14px;bottom:14px;width:40px;height:40px;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;transition:transform .35s var(--ease),background .25s}
+.arrow svg{width:16px;height:16px}
+.cat:hover .arrow{background:var(--accent);color:#fff;transform:rotate(-45deg)}
+.cat .noimg{background:linear-gradient(160deg,#1c1f26,#0c0d10);color:rgba(255,255,255,.5)}
+.cat .noimg b{display:none}
+
+/* vehicle cards (trending + marketplace) */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.trend{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1000px){.trend{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.trend{grid-template-columns:1fr}}
+.vcard{position:relative;border-radius:20px;background:var(--solid);border:1px solid var(--line);overflow:hidden;cursor:pointer;display:flex;flex-direction:column;
+  padding:16px;gap:12px;transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .3s;animation:rise .7s var(--ease) both;animation-delay:calc(var(--i,0)*50ms)}
+.vcard:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--line2)}
+.vcard.hl{background:var(--soft);border-color:var(--soft)}
+.vcard .vh{display:flex;align-items:flex-start;gap:8px}
+.vcard h3{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.vcard .sub{font-size:12.5px;color:var(--dim)}
+.vcard .badge{margin-left:auto;flex:none;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--glass2);color:var(--dim)}
+.vcard.hl .badge{background:#fff}
+.vstage{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:14px;overflow:hidden;background:var(--stage)}
+.vstage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 85%;transition:transform .9s var(--ease)}
+.vcard:hover .vstage img{transform:scale(1.06)}
+.vstage .real{position:absolute;left:8px;bottom:8px;z-index:1;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.45);padding:2px 7px;border-radius:999px}
+.vfoot{display:flex;align-items:center;gap:10px;margin-top:auto}
+.vfoot .p b{font-size:19px;font-weight:800;letter-spacing:-.02em}
+.vfoot .p span{font-size:13px;color:var(--dim);font-weight:500}
+.vfoot .p small{display:block;font-size:11.5px;color:var(--good);font-weight:600}
+.rent{margin-left:auto;border:1px solid var(--line2);background:#fff;border-radius:999px;padding:8px 15px;font-size:13px;font-weight:700;transition:all .25s var(--ease);white-space:nowrap}
+.vcard:hover .rent{background:var(--ink);border-color:var(--ink);color:#fff}
+.noimg{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:8px;padding:12px;text-align:center;color:var(--dim2);background:var(--stage)}
+.noimg svg{width:90px;max-width:40%}
+.noimg b{font-size:13px;color:var(--dim)}
+
+/* dark trust band */
+.band{background:var(--dark);color:var(--ondark);margin-top:72px}
+.feats{display:grid;grid-template-columns:repeat(4,1fr)}
+.feat{display:flex;gap:14px;align-items:center;padding:30px 22px;border-left:1px solid rgba(255,255,255,.1)}
+.feat:first-child{border-left:0}
+.feat svg{width:30px;height:30px;flex:none;color:#fff;opacity:.9}
+.feat b{display:block;font-size:14.5px}
+.feat span{font-size:12.5px;color:rgba(255,255,255,.6)}
+@media(max-width:900px){.feats{grid-template-columns:1fr 1fr}.feat:nth-child(3){border-left:0}.feat:nth-child(n+3){border-top:1px solid rgba(255,255,255,.1)}}
+@media(max-width:520px){.feats{grid-template-columns:1fr}.feat{border-left:0!important;border-top:1px solid rgba(255,255,255,.1)}.feat:first-child{border-top:0}}
+
+/* promo */
+.promo{position:relative;border-radius:28px;background:var(--dark);color:#fff;overflow:hidden;display:grid;grid-template-columns:1fr 1.15fr;min-height:380px}
+.promo > *{min-width:0}
+.promo .pc{padding:44px 40px;display:grid;align-content:center;gap:14px;position:relative;z-index:1}
+.promo h2{font-size:clamp(30px,4vw,50px);font-weight:800}
+.promo p{margin:0;color:rgba(255,255,255,.7);max-width:40ch}
+.promo .go{justify-self:start;border:0;background:var(--accent);color:#fff;border-radius:999px;padding:12px 22px;font-weight:700;transition:transform .25s var(--ease)}
+.promo .go:hover{transform:translateY(-2px)}
+.promo .ph{position:relative;min-height:260px}
+.promo .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 85%}
+.promo .ph::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,var(--dark),transparent 35%)}
+.deal{position:absolute;z-index:2;right:22px;top:22px;background:var(--accent);color:#fff;border-radius:16px;padding:16px 18px;width:150px}
+.deal b{display:block;font-size:38px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.deal span{font-size:12.5px;line-height:1.3;display:block;margin-top:6px}
+@media(max-width:800px){.promo{grid-template-columns:1fr}.promo .ph::before{background:linear-gradient(180deg,var(--dark),transparent 40%)}.promo .pc{padding:32px 24px 8px}}
+
+/* marketplace */
+.market{display:grid;grid-template-columns:240px 1fr;gap:22px;padding-block:64px 70px;align-items:start}
+.market > *{min-width:0}
+@media(max-width:860px){.market{grid-template-columns:1fr}}
+.rail{position:sticky;top:84px;display:grid;gap:18px;padding:18px;border-radius:20px;background:var(--solid2);border:1px solid var(--line)}
+@media(max-width:860px){.rail{position:static}}
+.fgroup h4{margin:0 0 8px;font-size:12px;letter-spacing:.6px;text-transform:uppercase;color:var(--dim)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600;transition:all .25s var(--ease)}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.check{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:3px 0;cursor:pointer}
+.check input{accent-color:var(--accent);width:16px;height:16px}
+.check small{margin-left:auto;color:var(--dim2)}
+.range{width:100%;accent-color:var(--accent)}
+.kv{font-size:12.5px;color:var(--dim)}
+.kv b{color:var(--ink);font-weight:700}
+.rail .note{font-size:12.5px;color:var(--dim);border-top:1px solid var(--line);padding-top:12px;margin:0}
+.resbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.resbar h2{font-size:clamp(26px,3vw,36px);font-weight:800}
+.resbar .sub{color:var(--dim);font-size:13.5px;flex-basis:100%;order:3}
+.resbar select{margin-left:auto;border:1px solid var(--line2);border-radius:999px;padding:8px 12px;font-size:13.5px;font-weight:600}
+.catchip{border:0;background:var(--soft);color:var(--accent);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700}
+.empty{border:1px dashed var(--line2);border-radius:18px;padding:30px;text-align:center;color:var(--dim)}
+.btn{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:8px 15px;font-size:13.5px;font-weight:700;transition:all .25s var(--ease)}
+.btn:hover{border-color:var(--ink)}
+.btn.acc{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.sm{padding:6px 12px;font-size:12.5px}
+.btn:disabled{opacity:.45;pointer-events:none}
+
+/* sheet photo */
+.viewer{overflow:hidden}
+.viewer .phbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(22px) saturate(1.2);transform:scale(1.25);opacity:.55}
+.viewer img.photo{position:relative;display:block;width:100%;height:100%;object-fit:contain;animation:rise .6s var(--ease) both}
+
+/* hero fallback when no large photo loads: a slow strip of real fleet photos */
+.hero-card.collage::after{background:linear-gradient(180deg,rgba(8,9,12,0) 40%,rgba(8,9,12,.9) 78%)}
+.strip{position:absolute;top:26px;left:0;display:flex;gap:14px;width:max-content;animation:marq 48s linear infinite}
+.strip img{position:static;width:clamp(170px,19vw,250px);height:clamp(170px,19vw,250px);border-radius:18px;object-fit:cover;object-position:50% 80%;transform:none;animation:none;flex:none}
+@keyframes marq{to{transform:translateX(-50%)}}
+.hero-card.collage .hero-copy{padding-top:clamp(210px,23vw,300px)}
+
+/* footer */
+footer.foot{border-top:1px solid var(--line);padding-block:48px 28px;margin-top:10px}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:28px}
+@media(max-width:800px){.fgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.fgrid{grid-template-columns:1fr}}
+.fgrid > *{min-width:0}
+.fgrid h5{margin:0 0 10px;font-size:14px}
+.fgrid ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.fgrid a,.fgrid button.lk{color:var(--dim);text-decoration:none;font-size:13.5px;background:none;border:0;padding:0;text-align:left}
+.fgrid a:hover,.fgrid button.lk:hover{color:var(--ink)}
+.news{display:flex;gap:6px;margin-top:12px;max-width:340px}
+.news input{flex:1;min-width:0;border:1px solid var(--line2);border-radius:999px;padding:9px 14px;font-size:13.5px}
+.news button{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:9px 16px;font-weight:700;font-size:13px}
+.fine{margin-top:32px;padding-top:18px;border-top:1px solid var(--line);color:var(--dim2);font-size:12px}
+.fine .src a{color:var(--dim)}
+
+/* ---------- vehicle sheet ---------- */
+.scrim{position:fixed;inset:0;background:rgba(3,8,5,.55);backdrop-filter:blur(3px);z-index:40;opacity:0;transition:opacity .45s var(--ease)}
+.sheet{position:fixed;top:0;right:0;bottom:0;width:min(520px,100%);background:var(--bg2);z-index:41;border-left:1px solid var(--line);
+  display:flex;flex-direction:column;box-shadow:-30px 0 80px rgba(0,0,0,.45);transform:translateX(104%);transition:transform .6s var(--ease)}
+.open .scrim{opacity:1}.open .sheet{transform:none}
+.sheet header{padding:14px 18px;padding-top:calc(14px + env(safe-area-inset-top,0px));display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.sheet header h3{font-size:19px;font-weight:800}
+.sheet header p{margin:2px 0 0;color:var(--dim);font-size:13px}
+.x{margin-left:auto;border:1px solid var(--line);background:var(--glass);border-radius:10px;width:36px;height:36px;font-size:18px;flex:none;transition:transform .3s var(--ease)}
+.x:hover{transform:rotate(90deg)}
+.sheet .body{overflow:auto;flex:1;display:grid;gap:16px;align-content:start;padding:0 18px 18px}
+.viewer{position:relative;margin:0 -18px;height:250px;background:radial-gradient(ellipse 60% 50% at 50% 75%,var(--stage-glow),transparent 70%),var(--stage)}
+.viewer small{position:absolute;left:18px;bottom:10px;color:var(--dim2);font-size:11.5px}
+.viewer img{width:100%;height:100%;object-fit:contain}
+.steps{display:flex;gap:6px;font-size:12px;color:var(--dim2)}
+.steps span{flex:1;padding-top:6px;border-top:2px solid var(--line2);transition:border-color .4s,color .4s}
+.steps span.on{border-color:var(--accent);color:var(--ink)}
+.pane{animation:panein .5s var(--ease) both;display:grid;gap:16px}
+@keyframes panein{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.sheet footer{padding:14px 18px;padding-bottom:calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;background:var(--bg2)}
+.sheet footer .tot small{display:block;color:var(--dim);font-size:12px}
+.sheet footer .tot b{font-family:var(--f-display);font-size:24px;font-weight:800}
+.sect-l{font-size:11.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--dim);font-weight:700;margin-bottom:6px}
+.offer{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;padding:12px 14px;border:1px solid var(--line2);border-radius:14px;
+  margin-bottom:8px;background:var(--glass);transition:border-color .25s,transform .35s var(--ease),background .25s;cursor:pointer;width:100%;text-align:left}
+.offer:hover{border-color:var(--accent);transform:translateX(-3px)}
+.offer .op{display:flex;gap:10px;align-items:center;min-width:0}
+.offer .op b{display:block;font-size:14.5px}
+.offer .op span{font-size:12.5px;color:var(--dim)}
+.offer .pr{text-align:right}
+.offer .pr b{font-family:var(--f-display);font-size:20px;font-weight:800}
+.offer .meta{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--dim)}
+.av{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;flex:none}
+.stars{color:var(--warn);font-weight:700}
+.tag{font-size:11px;padding:2px 7px;border-radius:6px;background:var(--glass2);color:var(--dim);font-weight:700}
+.tag.good{background:var(--goodbg);color:var(--good)}
+.best{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;background:var(--accent);color:var(--onaccent);padding:2px 6px;border-radius:5px;font-weight:800}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line2);border-radius:12px;padding:11px 13px;margin-bottom:6px;cursor:pointer;transition:border-color .25s,background .25s}
+.opt:has(input:checked){border-color:var(--accent);background:var(--warnbg)}
+.opt input{margin-top:3px;accent-color:var(--accent)}
+.opt b{display:block;font-size:14px}
+.opt span{font-size:12.5px;color:var(--dim)}
+.opt em{font-style:normal;margin-left:auto;font-weight:700;white-space:nowrap;font-size:13.5px}
+.opt.off{opacity:.45;pointer-events:none}
+.bill{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.bill div{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;font-size:13.5px;border-top:1px solid var(--line)}
+.bill div:first-child{border-top:0}
+.bill .t{font-weight:700;background:var(--glass2)}
+.bill .d{color:var(--dim);font-size:12.5px}
+.split{border:1px dashed color-mix(in srgb,var(--accent) 60%,transparent);border-radius:12px;padding:12px;background:var(--warnbg)}
+.split h5{margin:0 0 8px;font-size:12px;letter-spacing:.7px;text-transform:uppercase;color:var(--warn)}
+.bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:6px 0 10px;gap:2px}
+.bar i{display:block;height:100%;transform-origin:left;animation:grow 1s var(--ease) both}
+@keyframes grow{from{transform:scaleX(0)}}
+.legend{display:grid;gap:3px;font-size:12.5px}
+.legend div{display:flex;gap:8px;align-items:center}
+.legend s{width:10px;height:10px;border-radius:3px;flex:none;text-decoration:none}
+.legend b{margin-left:auto}
+.field{display:grid;gap:4px}
+.field input{border:1px solid var(--line2);border-radius:10px;padding:10px 11px;font-size:14px;width:100%}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:420px){.two{grid-template-columns:1fr}}
+.ok{text-align:center;display:grid;gap:10px;justify-items:center}
+.ok svg{width:74px;height:74px}
+.ok circle{stroke:var(--good);stroke-dasharray:220;stroke-dashoffset:220;animation:draw .8s var(--ease) forwards}
+.ok path{stroke:var(--good);stroke-dasharray:60;stroke-dashoffset:60;animation:draw .5s .5s var(--ease) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.ticket{width:100%;border:1px solid var(--line);border-radius:14px;text-align:left;overflow:hidden}
+.ticket div{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;border-top:1px dashed var(--line2);font-size:13.5px}
+.ticket div:first-child{border-top:0;background:var(--accent);color:var(--onaccent);font-weight:700}
+.ticket div span:first-child{color:var(--dim)}
+.ticket div:first-child span:first-child{color:var(--onaccent);opacity:.7}
+
+/* ---------- partner ---------- */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-block:24px 50px}
+.pgrid > *{min-width:0}
+@media(max-width:900px){.pgrid{grid-template-columns:1fr}}
+.phead{grid-column:1/-1;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.phead h2{font-size:28px;font-weight:800}
+.phead p{margin:2px 0 0;color:var(--dim);font-size:13.5px}
+.phead select{margin-left:auto;border:1px solid var(--line2);border-radius:10px;padding:9px 10px}
+.tiles{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:700px){.tiles{grid-template-columns:1fr 1fr}}
+.tile{border-radius:16px;padding:14px 16px;animation:cardin .7s var(--ease) both;animation-delay:calc(var(--i,0)*70ms)}
+.tile small{display:block;font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--dim);font-weight:600}
+.tile b{display:block;font-family:var(--f-display);font-size:28px;font-weight:800;margin-top:2px}
+.tile span{font-size:12.5px;color:var(--dim)}
+.panel{border-radius:16px;overflow:hidden}
+.panel > h3{font-size:14px;font-family:var(--f-body);font-weight:700;padding:12px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.panel > h3 em{font-style:normal;margin-left:auto;font-weight:500;color:var(--dim);font-size:12.5px}
+.panel .pad{padding:14px 16px}
+.panel.wide{grid-column:1/-1}
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--dim);font-weight:600;padding:9px 12px;background:var(--glass)}
+td{padding:10px 12px;border-top:1px solid var(--line);vertical-align:top}
+td small{display:block;color:var(--dim);font-size:12px}
+td.r,th.r{text-align:right}
+.pill{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px}
+.pill.conf{background:var(--goodbg);color:var(--good)}
+.pill.done{background:var(--glass2);color:var(--dim)}
+tr.flash td{animation:flash 2.4s var(--ease)}
+@keyframes flash{0%{background:var(--warnbg)}100%{background:transparent}}
+.fleetrow{display:flex;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--line);font-size:13.5px}
+.fleetrow:first-child{border-top:0}
+.fleetrow img{width:64px;height:43px;object-fit:contain;flex:none;border-radius:6px}
+.fleetrow img.photo{object-fit:cover}
+.fleetrow .mono{color:var(--dim)}
+.sw{position:relative;width:42px;height:24px;border-radius:999px;border:0;background:var(--line2);flex:none;transition:background .3s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .4s var(--ease);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.sw[aria-checked="true"]{background:var(--good)}
+.sw[aria-checked="true"]::after{transform:translateX(18px)}
+.sync{display:grid;gap:8px}
+.sync label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line2);border-radius:12px;padding:10px 12px;cursor:pointer;transition:border-color .25s,background .25s}
+.sync label:has(input:checked){border-color:var(--accent);background:var(--warnbg)}
+.sync label b{display:block;font-size:14px}
+.sync label span{font-size:12.5px;color:var(--dim)}
+.sync input{margin-top:4px;accent-color:var(--accent)}
+.syncstatus{font-size:13px;color:var(--good);font-weight:600;margin-top:8px}
+
+/* ---------- business ---------- */
+.biz{padding-block:28px 56px;display:grid;gap:24px}
+.biz > *{min-width:0}
+.lede h2{font-size:clamp(28px,4vw,44px);font-weight:900;font-stretch:125%}
+.lede p{max-width:70ch;color:var(--dim);margin:10px 0 0}
+.streams{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;perspective:1000px}
+@media(max-width:900px){.streams{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.streams{grid-template-columns:1fr}}
+.stream{border-radius:16px;padding:16px;display:grid;gap:6px;align-content:start;transition:transform .6s var(--ease),border-color .3s;
+  animation:cardin .7s var(--ease) both;animation-delay:calc(var(--i,0)*60ms)}
+.stream:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+.stream .who{font-size:11px;letter-spacing:.7px;text-transform:uppercase;font-weight:700;color:var(--dim)}
+.stream h3{font-size:18px;font-weight:800}
+.stream .rate{font-family:var(--f-mono);font-weight:600;color:var(--accent);font-size:13.5px}
+.stream p{margin:0;font-size:13.5px;color:var(--dim)}
+.stream.core{border-color:color-mix(in srgb,var(--accent) 55%,transparent);background:linear-gradient(160deg,var(--warnbg),var(--glass) 60%)}
+.calc{display:grid;grid-template-columns:360px 1fr}
+@media(max-width:900px){.calc{grid-template-columns:1fr}}
+.calc > *{min-width:0}
+.inputs{padding:16px;display:grid;gap:14px;border-right:1px solid var(--line)}
+@media(max-width:900px){.inputs{border-right:0;border-bottom:1px solid var(--line)}}
+.sl label{display:flex;justify-content:space-between;font-size:13.5px;gap:8px}
+.sl label b{font-family:var(--f-mono);font-weight:600;color:var(--accent)}
+.sl small{display:block;color:var(--dim2);font-size:12px}
+.outputs{padding:16px;display:grid;gap:14px;align-content:start}
+.big{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:560px){.big{grid-template-columns:1fr}}
+.big div{background:var(--glass2);border-radius:12px;padding:12px 14px;border:1px solid var(--line)}
+.big small{display:block;font-size:11.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--dim);font-weight:600}
+.big b{font-family:var(--f-display);font-size:26px;font-weight:800}
+.big .hl{background:var(--accent);border-color:var(--accent);color:var(--onaccent)}
+.big .hl small{color:var(--onaccent);opacity:.7}
+.rows{display:grid;gap:9px}
+.srow{display:grid;grid-template-columns:170px 1fr 90px;gap:10px;align-items:center;font-size:13.5px}
+@media(max-width:560px){.srow{grid-template-columns:1fr 80px}.srow .track{grid-column:1/-1;order:3}}
+.track{height:12px;background:var(--glass2);border-radius:6px;overflow:hidden}
+.track i{display:block;height:100%;border-radius:6px;transition:width .7s var(--ease)}
+.srow b{text-align:right;font-family:var(--f-mono);font-weight:600}
+.assume{font-size:12.5px;color:var(--dim);margin:0}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:800px){.cols{grid-template-columns:1fr}}
+.cols > *{min-width:0}
+.list{margin:0;padding:0 0 0 18px;display:grid;gap:8px;font-size:14px;color:var(--dim)}
+.list b{color:var(--ink)}
+.phase{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:800px){.phase{grid-template-columns:1fr}}
+.phase > div{border-radius:16px;padding:16px}
+.phase small{font-family:var(--f-mono);color:var(--accent);font-weight:600;font-size:12.5px}
+.phase h3{font-size:17px;font-weight:800;margin:4px 0 6px}
+.phase ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--dim);display:grid;gap:4px}
+.cmp table td:first-child{font-weight:600}
+.src{font-size:12.5px;color:var(--dim)}
+.src a{color:var(--accent)}
+footer.foot{border-top:1px solid var(--line);padding-block:18px;color:var(--dim);font-size:12.5px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--solid2);color:var(--ink);border:1px solid var(--line2);
+  padding:11px 16px;border-radius:12px;font-size:14px;z-index:60;box-shadow:var(--shadow);max-width:calc(100% - 32px);
+  transform:translate(-50%,20px);opacity:0;transition:transform .45s var(--ease),opacity .45s;pointer-events:none}
+.toast.on{transform:translate(-50%,0);opacity:1}
+main{animation:viewin .55s var(--ease) both}
+@keyframes viewin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.45s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<nav class="nav">
-  <div class="wrap">
-    <a class="logo" href="./">OPII<i>US</i></a>
-    <ul>
-      <li><a href="#demos">See it</a></li>
-      <li><a href="#price">Price</a></li>
-      <li><a href="#faq">Questions</a></li>
-    </ul>
-    <a class="btn btn-primary btn-sm" href="https://wa.me/918638830682?text=Hi%20OPIIUS%2C%20I%27d%20like%20to%20know%20more." target="_blank" rel="noopener">WhatsApp us</a>
-  </div>
-</nav>
 
-<header class="hero" id="top">
+<div class="top">
   <div class="wrap">
-    <p class="eyebrow">For rental shops, tour operators and tent houses</p>
-    <h1>Run your business <em>from your phone.</em></h1>
-    <p class="lede">One simple app that shows every booking, every bike, car or item, and every rupee people owe you. We set it up for you, with your own data.</p>
-    <div class="cta">
-      <a class="btn btn-primary" href="#demos">Watch a 30-second video</a>
-      <a class="btn btn-ghost" href="https://wa.me/918638830682?text=Hi%20OPIIUS%2C%20I%27d%20like%20to%20know%20more." target="_blank" rel="noopener">WhatsApp us</a>
-    </div>
-  </div>
-</header>
-
-<section id="why">
-  <div class="wrap">
-    <p class="kicker">Sound familiar?</p>
-    <h2>It fixes the everyday headaches.</h2>
-    <p class="sub">&nbsp;</p>
-    <div class="pains">
-      <div class="pain"><p class="was">Two customers booked for the same bike, car or date.</p><p class="now">It won't let you double book.</p></div>
-      <div class="pain"><p class="was">Forgot who still owes money or whose deposit you hold.</p><p class="now">Every balance and deposit on one screen.</p></div>
-      <div class="pain"><p class="was">Bookings spread across a register, WhatsApp and memory.</p><p class="now">Everything in one place, on your phone.</p></div>
-    </div>
-  </div>
-</section>
-
-<div class="band" id="demos">
-  <div class="wrap">
-    <div class="head">
-      <p class="kicker">See it</p>
-      <h2>Pick your business.</h2>
-      <p class="sub">Watch a 30-second video, or open it and try it yourself. It uses sample data, so tap anything.</p>
-    </div>
-    <div class="tabs" role="tablist" aria-label="Choose a business">
-      <button role="tab" id="t-bike" aria-controls="demo-panel" aria-selected="true" data-k="bike">Bike rental</button>
-      <button role="tab" id="t-car" aria-controls="demo-panel" aria-selected="false" data-k="car">Car rental</button>
-      <button role="tab" id="t-tour" aria-controls="demo-panel" aria-selected="false" data-k="tour">Tour operator</button>
-      <button role="tab" id="t-tent" aria-controls="demo-panel" aria-selected="false" data-k="tent">Tent house</button>
-    </div>
-    <div class="dpanel" id="demo-panel" role="tabpanel" aria-labelledby="t-bike">
-      <video id="dVideo" controls playsinline preload="metadata" poster="demos/media/bike.jpg"></video>
-      <div>
-        <h3 id="dTitle">Bike &amp; scooty rentals</h3>
-        <p class="len">30-second video</p>
-        <ul id="dList"></ul>
-        <div class="cta">
-          <a class="btn btn-primary" id="dTry" href="demos/bike-desk.html" target="_blank" rel="noopener">Try it yourself</a>
-          <a class="btn btn-ghost" id="dEnq" href="#enquire">I want this</a>
-        </div>
-      </div>
-    </div>
-
+    <a class="logo" href="#rent" data-go="rent" aria-label="OPIIUS home">
+      <svg width="28" height="28" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="9" fill="var(--ink)"/><path d="M7 21 L13 9 L17 17 L19.5 13 L23 21 Z" fill="#fff"/><rect x="6" y="22.5" width="18" height="2" rx="1" fill="var(--accent)"/></svg>
+      <span>OPI<em>IUS</em></span>
+    </a>
+    <nav class="modes" role="tablist" aria-label="Demo views">
+      <span class="pill-bg" aria-hidden="true"></span>
+      <button role="tab" id="t-rent" data-go="rent" aria-selected="true">Rent a ride</button>
+      <button role="tab" id="t-partner" data-go="partner" aria-selected="false">Partner app</button>
+      <button role="tab" id="t-biz" data-go="biz" aria-selected="false">Business model</button>
+    </nav>
+    <a class="bizlink" href="business.html">Apps for businesses</a>
+    <button type="button" class="cta" data-go="partner">List your fleet</button>
   </div>
 </div>
 
-<section id="price">
-  <div class="wrap">
-    <p class="kicker">Price</p>
-    <h2>Simple price. No contract.</h2>
-    <p class="sub">&nbsp;</p>
-    <div class="plan">
-      <div class="prices">
-        <div class="pr-col">
-          <div class="where">In India</div>
-          <div class="big">₹6,000</div>
-          <div class="setup">once, to set it up</div>
-          <div class="mo">+ ₹3,000 <small>a month</small></div>
+<!-- =========================== RENT =========================== -->
+<main id="v-rent">
+  <section class="hero wrap">
+    <div class="hero-card">
+      <img id="hero-photo" alt="" fetchpriority="high">
+      <div class="hero-copy">
+        <h1>Every rental company. One search.</h1>
+        <p>Compare self-drive cars, bikes and scooters from verified rental companies in Guwahati and Shillong. Pick the best price and pay once.</p>
+      </div>
+    </div>
+    <form class="book" id="search" autocomplete="off">
+      <div class="seg" role="radiogroup" aria-label="Vehicle type">
+        <button type="button" role="radio" aria-checked="true" data-kind="all">All rides</button>
+        <button type="button" role="radio" aria-checked="false" data-kind="car">Cars</button>
+        <button type="button" role="radio" aria-checked="false" data-kind="bike">Bikes &amp; scooters</button>
+      </div>
+      <input type="hidden" id="s-kind" value="all">
+      <div class="fields">
+        <div><label for="s-city">Pick up in</label>
+          <select id="s-city"><option value="Guwahati">Guwahati</option><option value="Shillong">Shillong</option></select></div>
+        <div><label for="s-from">Pick-up date</label><input id="s-from" type="datetime-local"></div>
+        <div><label for="s-to">Return date</label><input id="s-to" type="datetime-local"></div>
+        <button class="go" type="submit">Search</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="h-cat">
+    <div class="sec-h"><h2 id="h-cat">Browse by category</h2></div>
+    <div class="cats" id="cat-grid"></div>
+  </section>
+
+  <section class="wrap sec" aria-labelledby="h-trend">
+    <div class="sec-h"><h2 id="h-trend">Trending rides</h2><a class="pillbtn" href="#market" data-all>View all</a></div>
+    <div class="cards trend" id="trend"></div>
+  </section>
+
+  <section class="band" aria-label="Why OPIIUS">
+    <div class="wrap feats">
+      <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.6-1.5 1.8-2 3-2s2.4.5 3 2M14 10h4M14 13h3"/></svg><div><b>Licence checked once</b><span>Rent from any company after</span></div></div>
+      <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16l20-6-3-3-6 2-6-4-2 1 4 5-4 1-2-1-1 1 3 3z"/><path d="M3 21h18"/></svg><div><b>Airport &amp; station delivery</b><span>Keys handed over at arrivals</span></div></div>
+      <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg><div><b>Half the deposit</b><span>With OPIIUS Protect</span></div></div>
+      <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/></svg><div><b>One payment</b><span>UPI or card, any company</span></div></div>
+    </div>
+  </section>
+
+  <section class="wrap sec">
+    <div class="promo">
+      <div class="pc">
+        <h2>Drive to Shillong. Leave it there.</h2>
+        <p>One-way trips between Guwahati and Shillong. Drop the car at a partner hub and fly or bus home. No drive back.</p>
+        <button type="button" class="go" data-oneway>Find one-way rides</button>
+      </div>
+      <div class="ph" id="promo-ph"><div class="deal"><b>50%</b><span>lower deposit with OPIIUS Protect</span></div></div>
+    </div>
+  </section>
+
+  <div class="wrap market" id="market">
+    <aside class="rail" aria-label="Filters">
+      <div class="fgroup"><h4>Type</h4><div class="chips" id="f-type"></div></div>
+      <div class="fgroup"><h4>Max price per day</h4>
+        <input class="range" id="f-max" type="range" min="400" max="5000" step="100" value="5000" aria-label="Maximum price per day">
+        <div class="kv">Up to <b class="num" id="f-maxv">₹5,000</b></div></div>
+      <div class="fgroup"><h4>Rental company</h4><div id="f-ops-list"></div></div>
+      <div class="fgroup"><h4>Must have</h4>
+        <label class="check"><input type="checkbox" id="f-deliv"> Airport / station delivery</label>
+        <label class="check"><input type="checkbox" id="f-assured"> OPIIUS Assured only</label>
+        <label class="check"><input type="checkbox" id="f-oneway"> One-way trips</label>
+      </div>
+      <p class="note">Every company on OPIIUS runs its own fleet. OPIIUS checks their papers, collects payment and handles disputes.</p>
+    </aside>
+    <section aria-live="polite">
+      <div class="resbar">
+        <h2 id="r-title">All rides in Guwahati</h2>
+        <span id="r-cat"></span>
+        <select id="r-sort" aria-label="Sort by">
+          <option value="price">Lowest price</option>
+          <option value="rating">Best rated</option>
+          <option value="offers">Most choice</option>
+        </select>
+        <span class="sub" id="r-sub"></span>
+      </div>
+      <div class="cards" id="results"></div>
+    </section>
+  </div>
+</main>
+
+<!-- =========================== PARTNER =========================== -->
+<main id="v-partner" hidden>
+  <div class="wrap pgrid">
+    <div class="phead">
+      <div>
+        <h2 id="p-name">Partner app</h2>
+        <p>What a rental company sees. Bookings made on the Rent tab land here instantly.</p>
+      </div>
+      <select id="p-op" aria-label="View as rental company"></select>
+    </div>
+    <div class="tiles">
+      <div class="tile glass" style="--i:0"><small>Bookings this month</small><b class="num" id="k-bk">0</b><span>via OPIIUS</span></div>
+      <div class="tile glass" style="--i:1"><small>Rental earned</small><b class="num" id="k-gmv">₹0</b><span>before commission</span></div>
+      <div class="tile glass" style="--i:2"><small>Your payout</small><b class="num" id="k-pay">₹0</b><span>next transfer tomorrow 10 am</span></div>
+      <div class="tile glass" style="--i:3"><small>Fleet online</small><b class="num" id="k-fleet">0/0</b><span>visible to riders</span></div>
+    </div>
+
+    <div class="panel glass wide">
+      <h3>Bookings from OPIIUS <em id="p-count"></em></h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Booking</th><th>Rider</th><th>Vehicle</th><th>Dates</th><th>Pick-up</th><th class="r">Rent</th><th class="r">You get</th><th>Status</th></tr></thead>
+        <tbody id="p-rows"></tbody>
+      </table></div>
+    </div>
+
+    <div class="panel glass">
+      <h3>Your fleet on OPIIUS <em>switch off anything you are using elsewhere</em></h3>
+      <div id="p-fleet"></div>
+    </div>
+
+    <div class="panel glass">
+      <h3>Already have booking software?</h3>
+      <div class="pad">
+        <p style="margin:0 0 10px;font-size:13.5px;color:var(--dim)">Keep it. OPIIUS only needs to know which vehicles are free, so there is no double booking.</p>
+        <div class="sync" id="p-sync">
+          <label><input type="radio" name="sync" value="api"><div><b>Connect your current software</b><span>Two-way sync every 2 minutes. OPIIUS bookings appear in your system as normal bookings.</span></div></label>
+          <label><input type="radio" name="sync" value="sheet"><div><b>Google Sheet or calendar</b><span>Mark a vehicle busy in your sheet and it drops off OPIIUS.</span></div></label>
+          <label><input type="radio" name="sync" value="free"><div><b>Use the OPIIUS partner app</b><span>Free for every partner. Bookings, DL checks, deposits and return inspection in one place.</span></div></label>
+          <label><input type="radio" name="sync" value="wa"><div><b>WhatsApp only</b><span>New booking arrives on WhatsApp. Reply YES to accept.</span></div></label>
         </div>
-        <div class="pr-col">
-          <div class="where">Outside India</div>
-          <div class="big">$400</div>
-          <div class="setup">once, to set it up</div>
-          <div class="mo">+ $75 <small>a month</small></div>
-          <a class="more" href="global.html">English site for international clients</a>
+        <div class="syncstatus" id="p-syncs"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- =========================== BUSINESS =========================== -->
+<main id="v-biz" hidden>
+  <div class="wrap biz">
+    <div class="lede">
+      <h2>How OPIIUS makes money</h2>
+      <p>OPIIUS owns no vehicles. Rental companies keep running their fleets and only pay when OPIIUS brings them a customer. The platform earns a little from both sides of every booking. Commission brings in the most money, and trip protection earns the best margin.</p>
+    </div>
+
+    <div class="streams">
+      <div class="stream glass core" style="--i:0"><span class="who">Paid by rental company</span><h3>Booking commission</h3><span class="rate">12% at launch, 15% at scale</span>
+        <p>Taken only on the rent of bookings OPIIUS brings. Nothing to list. Founding partners pay 0% for the first 60 days. Zoomcar keeps about 40% from private hosts; OYO charged hotels 20–30%.</p></div>
+      <div class="stream glass core" style="--i:1"><span class="who">Paid by rider</span><h3>OPIIUS Protect</h3><span class="rate">₹99/day bike · ₹249/day car</span>
+        <p>Damage cover that cuts the security deposit in half. Underwritten with an insurer; OPIIUS keeps about 40%. Highest-margin line, and it removes the biggest fear riders have.</p></div>
+      <div class="stream glass" style="--i:2"><span class="who">Paid by rider</span><h3>Convenience fee</h3><span class="rate">₹49 bike · ₹99 car</span>
+        <p>Flat fee per booking for instant confirmation, one-time DL check and support. Small enough that nobody leaves over it.</p></div>
+      <div class="stream glass" style="--i:3"><span class="who">Paid by rental company</span><h3>Partner Pro</h3><span class="rate">₹1,499 / month</span>
+        <p>Optional. Top placement in search, a WhatsApp booking bot, and the full partner app. Basic listing always stays free.</p></div>
+      <div class="stream glass" style="--i:4"><span class="who">Paid by rider or hotel</span><h3>Trip add-ons</h3><span class="rate">₹30–₹300 per booking</span>
+        <p>Inner Line Permit help for Arunachal and Nagaland, riding gear, one-way drop fee, and commission on homestays booked along the route.</p></div>
+      <div class="stream glass" style="--i:5"><span class="who">Paid by rider</span><h3>Delivery</h3><span class="rate">₹199 bike · ₹399 car</span>
+        <p>Vehicle brought to the airport, railway station or hotel. The rental company keeps the delivery fee; OPIIUS earns its commission on the booking it made possible.</p></div>
+    </div>
+
+    <div class="panel glass">
+      <h3>Revenue calculator <em>move the sliders; figures are estimates, not forecasts</em></h3>
+      <div class="calc">
+        <div class="inputs" id="calc-in"></div>
+        <div class="outputs">
+          <div class="big">
+            <div><small>Rent booked / month</small><b class="num" id="c-gmv">₹0</b></div>
+            <div><small>Bookings / month</small><b class="num" id="c-bk">0</b></div>
+            <div class="hl"><small>OPIIUS net / month</small><b class="num" id="c-net">₹0</b></div>
+          </div>
+          <div class="rows" id="c-rows"></div>
+          <p class="assume" id="c-note"></p>
         </div>
       </div>
-      <ul class="incl">
-        <li>We set it up with your own bikes, cars, packages or items</li>
-        <li>We train you and your staff</li>
-        <li>Changes and help on WhatsApp, any time</li>
-        <li>Stop any month. Your data stays yours.</li>
-      </ul>
-      <a class="btn btn-primary" href="#enquire">I want this</a>
     </div>
-  </div>
-</section>
 
-<section>
-  <div class="wrap">
-    <p class="kicker">How to start</p>
-    <h2>Ready in about a week.</h2>
-    <p class="sub">&nbsp;</p>
-    <div class="steps s3">
-      <div class="step"><h3>Call or WhatsApp us</h3><p>Tell us about your business. We can meet you in Guwahati.</p></div>
-      <div class="step"><h3>We set it up</h3><p>With your own bikes, cars, packages or items, prices and bookings.</p></div>
-      <div class="step"><h3>You run it from your phone</h3><p>You and your staff use it every day. We fix or change anything you need.</p></div>
+    <div class="cols">
+      <div class="panel glass"><h3>Why rental companies will join</h3><div class="pad">
+        <ol class="list">
+          <li><b>They pay only for results.</b> No listing fee, no software switch. If OPIIUS brings nobody, it costs nothing.</li>
+          <li><b>Idle days are lost money.</b> A scooter off the road on a Tuesday earns ₹0. Filling even 5 extra days a month is ₹2,000–₹15,000 per vehicle.</li>
+          <li><b>Tourists search on Google, not Instagram.</b> A small company cannot rank for "bike rental Guwahati". A platform with 20 companies can.</li>
+          <li><b>Money arrives clean.</b> Paid online in advance, payout next morning, deposits and damage disputes handled by OPIIUS.</li>
+        </ol></div></div>
+      <div class="panel glass"><h3>How to keep the most profit</h3><div class="pad">
+        <ol class="list">
+          <li><b>Take all payments on OPIIUS.</b> Controlling the money stops companies taking repeat riders off-platform and holds float until payout.</li>
+          <li><b>Never pay minimum guarantees.</b> OYO grew by guaranteeing hotels income and lost heavily when demand did not match. Pay per booking only.</li>
+          <li><b>Push Protect, not discounts.</b> A 45% attach rate on Protect earns more than raising commission by 2 points, and nobody is annoyed by it.</li>
+          <li><b>Own the Northeast trip.</b> One-way Guwahati to Shillong, permits for Tawang and Ziro, festival-season pricing. National apps do not do this.</li>
+          <li><b>Buy demand cheaply.</b> Pay hostels and hotel desks a referral fee per booking instead of paying for ads.</li>
+        </ol></div></div>
     </div>
-  </div>
-</section>
 
-<section id="faq">
-  <div class="wrap">
-    <p class="kicker">Questions</p>
-    <h2>Common questions.</h2>
-    <div class="faq">
-      <details><summary>Do I need a computer?</summary>
-        <p>No. It works on any phone, tablet or computer, in the browser. Nothing to install.</p></details>
-      <details><summary>What if I stop paying?</summary>
-        <p>There is no contract. Stop any month, and we give you all your data.</p></details>
-      <details><summary>Is it hard for my staff?</summary>
-        <p>If they can use WhatsApp, they can use this. We train them at your shop.</p></details>
-      <details><summary>My business is different. Can you still help?</summary>
-        <p>Probably. We also build websites, WhatsApp auto-replies and quotation tools. Tell us what you do and we'll say honestly if we can help.</p></details>
+    <div>
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:12px">Rollout</h2>
+      <div class="phase">
+        <div class="glass"><small>Months 0–3</small><h3>Guwahati, supply first</h3><ul>
+          <li>Sign 15–20 rental companies, 250+ vehicles</li><li>0% commission for founding partners for 60 days</li><li>Airport and railway station delivery live</li><li>Target: 5 bookings a day</li></ul></div>
+        <div class="glass"><small>Months 4–9</small><h3>Add Shillong, turn on revenue</h3><ul>
+          <li>One-way trips between the two cities</li><li>Protect and convenience fee switched on</li><li>30 hostel and hotel referral desks</li><li>Target: 25 bookings a day</li></ul></div>
+        <div class="glass"><small>Months 10–18</small><h3>The Northeast circuit</h3><ul>
+          <li>Tawang, Siliguri–Gangtok, Dimapur</li><li>Partner Pro and permit services</li><li>Festival calendar pricing: Bihu, Durga Puja, Hornbill</li><li>Target: 80 bookings a day</li></ul></div>
+      </div>
     </div>
-  </div>
-</section>
 
-<section id="enquire-sec">
-  <div class="wrap">
-    <div class="enq" id="enquire">
-      <h3>Get it for your business</h3>
-      <p class="s">Leave your name and number. We reply the same day, and show it to you with your own bikes, cars, packages or items.</p>
-      <form id="enqForm" novalidate>
-        <div><label for="eName">Your name</label><input id="eName" autocomplete="name" required></div>
-        <div><label for="ePhone">Phone / WhatsApp</label><input id="ePhone" type="tel" inputmode="tel" autocomplete="tel" required></div>
-        <div class="full"><label for="eBiz">Your business</label>
-          <select id="eBiz"><option value="bike">Bike &amp; scooty rental</option><option value="car">Self-drive car rental</option><option value="tour">Tour operator / travel agency</option><option value="tent">Tent house / event decorator</option><option value="other">Something else</option></select></div>
-        <div class="full"><label for="eMsg">Anything to add? (optional)</label><textarea id="eMsg" placeholder="e.g. 15 bikes, 2 branches"></textarea></div>
-        <div class="row2"><button class="btn btn-primary" type="submit">Send on WhatsApp</button><p class="note">Opens WhatsApp with your message ready. Or call <a href="tel:+918638830682">86388 30682</a>.</p></div>
-        <p class="err full" id="eErr" role="alert"></p>
-      </form>
+    <div class="panel glass cmp"><h3>What others charge</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Platform</th><th>Model</th><th>What the supplier gives up</th></tr></thead>
+        <tbody>
+          <tr><td>Zoomcar (host marketplace)</td><td>Private car owners list cars</td><td>Host keeps about 60%, plus ₹999 joining and ₹499/month GPS</td></tr>
+          <tr><td>OYO (hotels)</td><td>Franchise and marketplace</td><td>20–30% of booking value</td></tr>
+          <tr><td>Royal Brothers (bikes)</td><td>Own fleet plus franchise partners</td><td>Partners invest in bikes under the brand</td></tr>
+          <tr><td><b>OPIIUS</b></td><td>Marketplace of existing rental companies</td><td><b>12–15% of rent, only on bookings OPIIUS brings</b></td></tr>
+        </tbody>
+      </table></div>
     </div>
-    </div>
-  </div>
-</section>
 
-<footer>
-  <div class="wrap">© OPIIUS · Guwahati, Assam · <a href="tel:+918638830682">86388 30682</a> · <a href="profile.html">About the founder</a> · <a href="global.html">Outside India? English site in USD</a></div>
-</footer>
+    <p class="src">Sources: <a href="https://www.zoomcar.com/in/host/en/help" target="_blank" rel="noopener">Zoomcar host help</a> ·
+      <a href="https://myinvestmentideas.com/host-car-on-zoomcar-earn-upto-40000-per-month-is-it-safe/" target="_blank" rel="noopener">Zoomcar host fees</a> ·
+      <a href="https://research.contrary.com/company/oyo" target="_blank" rel="noopener">Contrary Research on OYO</a> ·
+      <a href="https://www.markhub24.com/post/oyo-s-revenue-sharing-model-with-hotel-partners-from-aggregator-to-franchise-and-the-road-to-profit" target="_blank" rel="noopener">OYO revenue sharing</a> ·
+      <a href="https://www.imarcgroup.com/india-car-rental-market" target="_blank" rel="noopener">IMARC India car rental market</a> ·
+      <a href="https://assamtribune.com/assam/assam-witnesses-over-1-cr-tourist-footfall-in-2023-24-cm-1552980" target="_blank" rel="noopener">Assam tourist footfall</a>.
+      Rental companies, vehicles and prices in this demo are sample data.</p>
+  </div>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <a class="logo" href="#rent" data-go="rent"><svg width="26" height="26" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="9" fill="var(--ink)"/><path d="M7 21 L13 9 L17 17 L19.5 13 L23 21 Z" fill="#fff"/><rect x="6" y="22.5" width="18" height="2" rx="1" fill="var(--accent)"/></svg><span>OPI<em>IUS</em></span></a>
+      <p class="kv" style="margin:10px 0 0">Trip ideas and seasonal offers for the Northeast, once a month.</p>
+      <form class="news" id="news"><input type="email" id="news-email" placeholder="Your email" aria-label="Your email"><button type="submit">Subscribe</button></form>
+    </div>
+    <div><h5>Riders</h5><ul>
+      <li><button type="button" class="lk" data-cat="cars">Rent a car</button></li>
+      <li><button type="button" class="lk" data-cat="bikes">Rent a bike</button></li>
+      <li><button type="button" class="lk" data-oneway>One-way trips</button></li>
+      <li><button type="button" class="lk" data-go="biz">OPIIUS Protect</button></li></ul></div>
+    <div><h5>Rental companies</h5><ul>
+      <li><button type="button" class="lk" data-go="partner">List your fleet</button></li>
+      <li><button type="button" class="lk" data-go="partner">Partner app</button></li>
+      <li><button type="button" class="lk" data-go="biz">Commission and fees</button></li>
+      <li><a href="business.html">Booking app for your business</a></li></ul></div>
+    <div><h5>Cities</h5><ul>
+      <li><button type="button" class="lk" data-city="Guwahati">Guwahati</button></li>
+      <li><button type="button" class="lk" data-city="Shillong">Shillong</button></li>
+      <li><span class="kv">Tawang, Gangtok: coming next</span></li></ul></div>
+  </div>
+  <div class="fine">OPIIUS is a concept demo. Riders, bookings and every rental company except Real Drive Ghy are sample data; Real Drive Ghy's cars, photos and day prices come from their WhatsApp catalog.
+    Other photos load from Wikimedia Commons under Creative Commons licences: <span id="credits"></span>.</div>
+</div></footer>
+
+<div id="sheet-root"></div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
-(function(){
-  var D={
-    bike:{t:"Bike &amp; scooty rentals",u:"demos/bike-desk.html",l:["See every bike that is out, due back or late","Never book the same bike to two riders","Late fees and deposit refunds worked out for you"],n:"bike and scooty rental"},
-    car:{t:"Self-drive car rentals",u:"demos/car-desk.html",l:["Every car, pickup and return on one screen","Blocks double bookings and suggests the next free date","Deposits, late fees and refunds calculated"],n:"self-drive car rental"},
-    tour:{t:"Tour operators",u:"demos/tour-desk.html",l:["Package quotes in under 2 minutes, with your margin","Cars and drivers on one calendar, no double booking","Who still owes you, and profit on every trip"],n:"tour and travel agency"},
-    tent:{t:"Tent houses &amp; decorators",u:"demos/event-desk.html",l:["Quotes checked against your chairs, pandals and generators","Stock calendar for every item, every day","Advances, balances and labour payments in one place"],n:"tent house and decoration business"}
-  };
-  var cur="bike",v=document.getElementById("dVideo"),tabs=document.querySelectorAll(".tabs button");
-  var EXT=v.canPlayType('video/mp4; codecs="avc1.4D401F, mp4a.40.2"')?".mp4":".webm";
-  function show(k,play){if(!D[k])return;cur=k;var d=D[k];
-    tabs.forEach(function(b){var on=b.dataset.k===k;b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;});
-    document.getElementById("demo-panel").setAttribute("aria-labelledby","t-"+k);
-    v.pause();v.poster="demos/media/"+k+".jpg";v.src="demos/media/"+k+EXT;v.load();
-    document.getElementById("dTitle").innerHTML=d.t;document.getElementById("dTry").href=d.u;
-    document.getElementById("dList").innerHTML=d.l.map(function(x){return "<li>"+x+"</li>";}).join("");
-    document.getElementById("eBiz").value=k;
-    if(play){var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}}
-  tabs.forEach(function(b,i){b.addEventListener("click",function(){show(b.dataset.k,false);});
-    b.addEventListener("keydown",function(e){var n=e.key==="ArrowRight"?1:e.key==="ArrowLeft"?-1:0;if(!n)return;var j=(i+n+tabs.length)%tabs.length;tabs[j].focus();show(tabs[j].dataset.k,false);});});
-  function fromHash(){var m=location.hash.match(/^#demo-(bike|car|tour|tent)$/);if(m){show(m[1],false);document.getElementById("demos").scrollIntoView({behavior:"smooth"});}}
-  window.addEventListener("hashchange",fromHash);show("bike",false);fromHash();
-  document.getElementById("dEnq").addEventListener("click",function(){document.getElementById("eBiz").value=cur;setTimeout(function(){document.getElementById("eName").focus({preventScroll:true});},500);});
-  document.getElementById("enqForm").addEventListener("submit",function(e){e.preventDefault();
-    var n=document.getElementById("eName").value.trim(),p=document.getElementById("ePhone").value.trim(),b=document.getElementById("eBiz"),m=document.getElementById("eMsg").value.trim(),err=document.getElementById("eErr");
-    if(!n||p.replace(/\D/g,"").length<10){err.textContent=!n?"Please add your name.":"Please add a 10-digit phone number.";(!n?document.getElementById("eName"):document.getElementById("ePhone")).focus();return;}
-    err.textContent="";var biz=b.value==="other"?"business":(D[b.value]?D[b.value].n:"business");
-    var t="Hi OPIIUS, I'm "+n+" ("+p+"). I run a "+biz+" and I'd like to see the app with my own data."+(m?" "+m:"");
-    window.open("https://wa.me/918638830682?text="+encodeURIComponent(t),"_blank","noopener");});
+/* =================== CONFIG: edit to re-skin for a pitch =================== */
+const CFG = {
+  commission: 0.12,          // share of rent OPIIUS keeps
+  protectMargin: 0.40,       // share of Protect premium OPIIUS keeps
+  fee: {bike: 49, car: 99},  // rider convenience fee per booking
+  protect: {bike: 99, car: 249},
+  delivery: {bike: 199, car: 399},
+  oneway: {bike: 600, car: 1500},
+  gateway: 0.02              // payment gateway cost on everything collected
+};
+/* Real photos. If a photo fails to load, a plain placeholder with the model name is shown.
+   img/*.jpg: Real Drive Ghy's own cars, from their WhatsApp catalog.
+   Wikimedia Commons files load in the viewer's browser (Creative Commons licences, credited in the footer). */
+const WIKI = f=>"https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(f)+"?width=900";
+const PHOTOS = {
+  i20:"rideme/img/i20.jpg", punch:"rideme/img/punch.jpg", brezza:"rideme/img/breeza.jpg", xl6:"rideme/img/xl6.jpg", carens:"rideme/img/carens.jpg", innova:"rideme/img/innova.jpg",
+  activa:WIKI("Honda_Activa_6G.jpg"),
+  classic:WIKI("Royal_Enfield_Classic_350_(2017_Model_Year).jpg"),
+  himalayan:WIKI("Royal_Enfield_Himalayan_450_Mana_Black.jpg"),
+  swift:WIKI("Maruti_Suzuki_Swift_LXi.jpg"),
+  thar:WIKI("Mahindra_Thar_CRDi_(16183560860).jpg")
+};
+const WIKI_CREDITS = ["Honda Activa 6G","Royal Enfield Classic 350 (2017 Model Year)","Royal Enfield Himalayan 450 Mana Black","Maruti Suzuki Swift LXi","Mahindra Thar CRDi (16183560860)"];
+
+/* =================== SAMPLE DATA ===================
+   Real Drive Ghy: cars, photos and day prices from their WhatsApp catalog; everything else about them here is sample data.
+   All other companies are fictional. */
+const OPS = [
+  {id:"rd", name:"Real Drive Ghy", area:"Guwahati · founding partner", city:"Guwahati", rating:4.9, trips:0, assured:true, deliv:true, oneway:true, km:{bike:0,car:250}, hue:48, founding:true},
+  {id:"nb", name:"Northbound Rentals", area:"Paltan Bazar, near railway station", city:"Guwahati", rating:4.7, trips:1240, assured:true, deliv:true, oneway:true, km:{bike:150,car:250}, hue:152},
+  {id:"hr", name:"Hillroad Bikes", area:"Zoo Road Tiniali", city:"Guwahati", rating:4.5, trips:860, assured:true, deliv:true, oneway:false, km:{bike:120,car:0}, hue:28},
+  {id:"rl", name:"Riverline Self-Drive", area:"Fancy Bazar", city:"Guwahati", rating:4.3, trips:540, assured:false, deliv:false, oneway:true, km:{bike:0,car:300}, hue:205},
+  {id:"tl", name:"Tealeaf Tours & Rentals", area:"Six Mile, GS Road", city:"Guwahati", rating:4.8, trips:1510, assured:true, deliv:true, oneway:true, km:{bike:200,car:300}, hue:95},
+  {id:"eg", name:"Eastgate Motors", area:"Beltola Chariali", city:"Guwahati", rating:4.1, trips:310, assured:false, deliv:true, oneway:false, km:{bike:100,car:200}, hue:330},
+  {id:"pw", name:"Pinewood Wheels", area:"Police Bazar", city:"Shillong", rating:4.6, trips:720, assured:true, deliv:true, oneway:true, km:{bike:150,car:250}, hue:170},
+  {id:"cl", name:"Cloudline Rentals", area:"Laitumkhrah", city:"Shillong", rating:4.4, trips:430, assured:false, deliv:false, oneway:false, km:{bike:120,car:200}, hue:260}
+];
+const MODELS = [
+  {id:"activa", name:"Honda Activa 6G", kind:"bike", sub:"Scooter", cc:"110 cc", seats:2, fuel:"Petrol", gear:"Automatic", dep:2000, build:"scooter", paint:"#2d5b9a"},
+  {id:"classic", name:"Royal Enfield Classic 350", kind:"bike", sub:"Cruiser", cc:"349 cc", seats:2, fuel:"Petrol", gear:"Manual", dep:5000, build:"cruiser", paint:"#6a1712"},
+  {id:"himalayan", name:"Royal Enfield Himalayan 450", kind:"bike", sub:"Adventure", cc:"452 cc", seats:2, fuel:"Petrol", gear:"Manual", dep:8000, build:"adv", paint:"#3c4b3a"},
+  {id:"swift", name:"Maruti Swift", kind:"car", sub:"Hatchback", cc:"1.2 L", seats:5, fuel:"Petrol", gear:"Manual", dep:5000, build:"hatch", paint:"#b3151f"},
+  {id:"thar", name:"Mahindra Thar 4x4", kind:"car", sub:"Off-roader", cc:"2.2 L", seats:4, fuel:"Diesel", gear:"Manual", dep:15000, build:"thar", paint:"#9a2a1a"},
+  {id:"innova", name:"Toyota Innova Crysta", kind:"car", sub:"MPV", cc:"2.4 L", seats:7, fuel:"Diesel", gear:"Manual", dep:10000, build:"mpv", paint:"#a9adb2"},
+  {id:"i20", name:"Hyundai Elite i20", kind:"car", sub:"Hatchback", cc:"1.2 L", seats:5, fuel:"Petrol", gear:"Manual", dep:5000, build:"hatch", paint:"#e8e8e6"},
+  {id:"punch", name:"Tata Punch", kind:"car", sub:"Compact SUV", cc:"1.2 L", seats:5, fuel:"Petrol", gear:"Manual", dep:5000, build:"ev", paint:"#e8e8e6"},
+  {id:"brezza", name:"Maruti Suzuki Brezza", kind:"car", sub:"Compact SUV", cc:"1.5 L", seats:5, fuel:"Petrol", gear:"Manual", dep:6000, build:"suv", paint:"#e8e8e6"},
+  {id:"xl6", name:"Maruti Suzuki XL6", kind:"car", sub:"MPV", cc:"1.5 L", seats:6, fuel:"Petrol", gear:"Manual", dep:8000, build:"mpv", paint:"#e8e8e6"},
+  {id:"carens", name:"Kia Carens", kind:"car", sub:"MPV", cc:"1.5 L", seats:7, fuel:"Diesel", gear:"Manual", dep:8000, build:"mpv", paint:"#e8e8e6"}
+];
+// [operator, model, price per day, units]
+const LISTINGS = [
+  ["nb","activa",450,6],["hr","activa",420,8],["eg","activa",399,4],["tl","activa",480,5],
+  ["nb","classic",1200,4],["hr","classic",1100,5],["tl","classic",1300,3],["eg","classic",999,2],
+  ["tl","himalayan",2100,3],["nb","himalayan",1950,2],
+  ["nb","swift",1800,3],["rl","swift",1650,4],["tl","swift",1900,2],["eg","swift",1700,2],
+  ["tl","thar",3900,2],["rl","thar",3700,1],
+  ["rl","innova",4500,2],["nb","innova",4700,1],
+  ["rd","i20",1500,2],["rd","punch",1900,2],["rd","brezza",2400,2],["rd","xl6",3100,1],["rd","carens",3300,1],["rd","innova",3500,1],
+  ["eg","i20",1450,2],["nb","i20",1600,2],["rl","punch",2000,2],["tl","punch",1950,1],["nb","brezza",2500,2],["tl","brezza",2600,1],
+  ["tl","carens",3400,1],["rl","xl6",3000,1],
+  ["pw","activa",500,6],["cl","activa",470,4],["pw","classic",1350,3],["cl","classic",1250,2],
+  ["pw","himalayan",2200,2],["pw","swift",2000,2],["cl","swift",1900,2],["pw","thar",4200,1],
+];
+const PLATE = {Guwahati:"AS-01", Shillong:"ML-05"};
+const opById = Object.fromEntries(OPS.map(o=>[o.id,o]));
+const modelById = Object.fromEntries(MODELS.map(m=>[m.id,m]));
+const VEH = [];
+LISTINGS.forEach(([op,model,price,units],li)=>{
+  for(let i=0;i<units;i++){
+    const o=opById[op], n=String(1000+((li*37+i*113)%8999)).padStart(4,"0");
+    const series=String.fromCharCode(65+(li%20))+String.fromCharCode(65+((li+i)%24));
+    VEH.push({id:`${op}-${model}-${i}`, op, model, price, plate:`${PLATE[o.city]}-${series}-${n}`, online:true});
+  }
+});
+
+/* =================== helpers =================== */
+const $=s=>document.querySelector(s);
+const inr=n=>"₹"+Math.round(n).toLocaleString("en-IN");
+const inrShort=n=>n>=1e7?"₹"+(n/1e7).toFixed(2)+" Cr":n>=1e5?"₹"+(n/1e5).toFixed(2)+" L":inr(n);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pad=n=>String(n).padStart(2,"0");
+const toLocalInput=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const fmtDate=d=>d.toLocaleDateString("en-IN",{day:"numeric",month:"short"})+", "+d.toLocaleTimeString("en-IN",{hour:"numeric",minute:"2-digit"});
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const initials=n=>n.split(/\s+/).filter(w=>/^[A-Z]/.test(w)).slice(0,2).map(w=>w[0]).join("");
+const avColor=o=>`hsl(${o.hue} 45% 38%)`;
+function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),2800)}
+const store={get(k,d){try{const v=localStorage.getItem("opiius:"+k);return v?JSON.parse(v):d}catch(e){return d}},
+             set(k,v){try{localStorage.setItem("opiius:"+k,JSON.stringify(v))}catch(e){}}};
+function countTo(el,to,fmt=v=>Math.round(v).toLocaleString("en-IN"),ms=900){
+  const from=+(el.dataset.v||0); el.dataset.v=to;
+  if(reduced||from===to){el.textContent=fmt(to);return}
+  const t0=performance.now();
+  (function f(t){const k=Math.min(1,(t-t0)/ms), e=1-Math.pow(1-k,4); el.textContent=fmt(from+(to-from)*e); if(k<1)requestAnimationFrame(f)})(t0);
+}
+
+/* photos, with a clean placeholder if one fails to load */
+const PHOTO_FAIL=new Set();
+function hasPhoto(id){return !!PHOTOS[id]&&!PHOTO_FAIL.has(id)}
+function imgFor(id){return hasPhoto(id)?PHOTOS[id]:""}
+const ICON={bike:'<svg viewBox="0 0 120 80" aria-hidden="true"><circle cx="24" cy="58" r="15" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="96" cy="58" r="15" fill="none" stroke="currentColor" stroke-width="5"/><path d="M24 58 L48 34 H74 L96 58 M70 22 L80 34" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  car:'<svg viewBox="0 0 120 80" aria-hidden="true"><path d="M10 54 V44 Q12 36 24 34 L38 20 Q42 16 50 16 H76 Q84 16 90 22 L102 34 Q110 36 110 46 V54 Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><circle cx="34" cy="56" r="9" fill="none" stroke="currentColor" stroke-width="5"/><circle cx="88" cy="56" r="9" fill="none" stroke="currentColor" stroke-width="5"/></svg>'};
+function noImg(m){return `<div class="noimg">${ICON[m.kind]}<b>${esc(m.name)}</b></div>`}
+document.addEventListener("error",e=>{
+  const el=e.target; if(!(el instanceof HTMLImageElement)||!el.dataset.photo)return;
+  const id=el.dataset.photo, m=modelById[id]; PHOTO_FAIL.add(id);
+  const box=el.closest(".vstage,#d-viewer,.cat,#promo-ph");
+  if(box){box.querySelectorAll("img,.real").forEach(x=>x.remove()); box.insertAdjacentHTML("afterbegin",noImg(m))} else el.remove();
+},true);
+function stageImg(m){
+  return hasPhoto(m.id)?`<img class="photo" data-photo="${m.id}" src="${PHOTOS[m.id]}" alt="${esc(m.name)}" loading="lazy"><span class="real">Real photo</span>`:noImg(m);
+}
+
+/* =================== state =================== */
+let seq=4100;
+const now=new Date(); now.setMinutes(0,0,0);
+const S={
+  city:"Guwahati", kind:"all", type:new Set(), max:5000, ops:new Set(), deliv:false, assured:false, oneway:false, sort:"price",
+  from:new Date(now.getTime()+24*3600e3), to:new Date(now.getTime()+3*24*3600e3),
+  view:"rent", partner:"rd", sync:store.get("sync",{nb:"api"}),
+  offline:new Set(store.get("offline",[])), bookings:[]
+};
+S.from.setHours(9); S.to.setHours(18);
+VEH.forEach(v=>v.online=!S.offline.has(v.id));
+
+function days(){return Math.max(1,Math.ceil((S.to-S.from)/86400e3))}
+function quote({price,m,days,deliv,protect,oneway}){
+  const rent=price*days, del=deliv?CFG.delivery[m.kind]:0, ow=oneway?CFG.oneway[m.kind]:0;
+  const prot=protect?CFG.protect[m.kind]*days:0, fee=CFG.fee[m.kind];
+  const total=rent+del+ow+prot+fee, commission=rent*CFG.commission;
+  const protKeep=prot*CFG.protectMargin, insurer=prot-protKeep, gateway=total*CFG.gateway;
+  const opGets=rent-commission+del+ow, rideme=commission+fee+protKeep-gateway;
+  const deposit=protect?Math.round(m.dep/2):m.dep;
+  return {rent,del,ow,prot,fee,total,commission,protKeep,insurer,gateway,opGets,rideme,deposit};
+}
+function makeBooking({veh,m,op,from,to,days,rider,deliv,protect,oneway,status}){
+  return {id:"OP-"+(seq++), vid:veh.id, plate:veh.plate, model:m.id, op:op.id, from, to, days, rider, deliv, protect, oneway, status,
+    q:quote({price:veh.price,m,days,deliv,protect,oneway})};
+}
+const RIDERS=["Ananya Das","Rohit Sharma","Mehul Kalita","Priya Bora","Arjun Nair","Sneha Roy","Karan Singh","Tanvi Gogoi","Imran Hussain","Nikita Paul","Dev Baruah","Aisha Khan"];
+(function seed(){
+  let k=0;
+  OPS.forEach((o,oi)=>{
+    const vs=VEH.filter(v=>v.op===o.id), n=4+(oi*3)%5;
+    for(let i=0;i<n;i++){
+      const v=vs[(i*5+oi)%vs.length], m=modelById[v.model];
+      const start=new Date(now.getTime()+((i%4)-2)*86400e3); start.setHours(9+(i%3)*2);
+      const d=1+(i+oi)%4, end=new Date(start.getTime()+d*86400e3);
+      S.bookings.push(makeBooking({veh:v,m,op:o,from:start,to:end,days:d,rider:RIDERS[k++%RIDERS.length],
+        deliv:i%3===0&&o.deliv,protect:i%2===0,oneway:false,status:end<now?"done":"conf"}));
+    }
+  });
+  S.bookings.push(...store.get("mine",[]).map(b=>({...b,from:new Date(b.from),to:new Date(b.to),mine:true,fresh:false})));
 })();
+
+/* =================== marketplace =================== */
+function isFree(v){return !S.bookings.some(b=>b.vid===v.id&&b.status!=="done"&&b.from<S.to&&b.to>S.from)}
+function offersFor(modelId,ignoreFilters){
+  return LISTINGS.map(([op,model,price])=>({op:opById[op],model,price}))
+    .filter(x=>x.model===modelId && x.op.city===S.city)
+    .map(x=>({...x, avail:VEH.filter(v=>v.op===x.op.id&&v.model===modelId&&v.online&&isFree(v)).length}))
+    .filter(x=>x.avail>0 && (ignoreFilters || (x.price<=S.max
+      && (!S.ops.size||S.ops.has(x.op.id)) && (!S.deliv||x.op.deliv) && (!S.assured||x.op.assured) && (!S.oneway||x.op.oneway))))
+    .sort((a,b)=>a.price-b.price);
+}
+function renderFilters(){
+  const types=[...new Set(MODELS.filter(m=>S.kind==="all"||m.kind===S.kind).map(m=>m.sub))];
+  $("#f-type").innerHTML=types.map(t=>`<button type="button" class="chip" aria-pressed="${S.type.has(t)}" data-t="${esc(t)}">${esc(t)}</button>`).join("");
+  $("#f-ops-list").innerHTML=OPS.filter(o=>o.city===S.city).map(o=>{
+    const c=VEH.filter(v=>v.op===o.id&&v.online).length;
+    return `<label class="check"><input type="checkbox" data-op="${o.id}" ${S.ops.has(o.id)?"checked":""}> ${esc(o.name)}<small class="num">${c}</small></label>`}).join("");
+}
+const CATS={
+  scooters:{label:"Scooters",f:m=>m.sub==="Scooter",pick:["activa"]},
+  bikes:{label:"Motorcycles",f:m=>m.kind==="bike"&&m.sub!=="Scooter",pick:["classic","himalayan"]},
+  cars:{label:"Hatchbacks & SUVs",f:m=>m.kind==="car"&&m.seats<=5,pick:["brezza","thar","i20","punch","swift"]},
+  seven:{label:"6–7 seaters",f:m=>m.kind==="car"&&m.seats>=6,pick:["innova","xl6","carens"]}
+};
+function vcard(m,offers,i,hl){
+  const lo=offers[0].price, hi=offers[offers.length-1].price, d=days();
+  return `<article class="vcard${hl?" hl":""}" role="button" tabindex="0" style="--i:${Math.min(i,10)}" data-model="${m.id}" aria-label="${esc(m.name)}, from ${inr(lo)} per day, ${offers.length} offers">
+    <div class="vh"><div><h3>${esc(m.name)}</h3><div class="sub">${m.sub} · ${m.gear} · ${m.seats} seats</div></div>
+      <span class="badge">${offers.length} compan${offers.length>1?"ies":"y"}</span></div>
+    <div class="vstage">${stageImg(m)}</div>
+    <div class="vfoot"><div class="p"><b class="num">${inr(lo)}</b><span> /day</span>${offers.length>1?`<small>Save up to ${inr((hi-lo)*d)} by comparing</small>`:""}</div><span class="rent">Rent now</span></div>
+  </article>`;
+}
+function renderResults(){
+  const d=days(), cat=S.cat&&CATS[S.cat];
+  let list=MODELS.filter(m=>(S.kind==="all"||m.kind===S.kind)&&(!S.type.size||S.type.has(m.sub))&&(!cat||cat.f(m)))
+    .map(m=>({m,offers:offersFor(m.id)})).filter(x=>x.offers.length);
+  if(S.sort==="price") list.sort((a,b)=>a.offers[0].price-b.offers[0].price);
+  if(S.sort==="rating") list.sort((a,b)=>Math.max(...b.offers.map(o=>o.op.rating))-Math.max(...a.offers.map(o=>o.op.rating)));
+  if(S.sort==="offers") list.sort((a,b)=>b.offers.length-a.offers.length);
+  const nOffers=list.reduce((s,x)=>s+x.offers.length,0);
+  $("#r-title").textContent=`All rides in ${S.city}`;
+  $("#r-cat").innerHTML=cat?`<button type="button" class="catchip" data-clearcat>${esc(cat.label)} ×</button>`:"";
+  $("#r-sub").textContent=`${list.length} models · ${nOffers} offers · ${fmtDate(S.from)} to ${fmtDate(S.to)} (${d} day${d>1?"s":""})`;
+  if(!list.length){$("#results").innerHTML=`<div class="empty" style="grid-column:1/-1"><b>No rides match these filters.</b><br>Raise the price limit or clear a filter.</div>`;return}
+  $("#results").innerHTML=list.map(({m,offers},i)=>vcard(m,offers,i,false)).join("");
+}
+const ARROW='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
+function renderCats(){
+  $("#cat-grid").innerHTML=Object.entries(CATS).map(([k,c],i)=>{
+    const ms=MODELS.filter(m=>c.f(m)&&offersFor(m.id,true).length), ph=c.pick.find(hasPhoto), m=modelById[ph||c.pick[0]];
+    const lo=Math.min(...ms.map(x=>offersFor(x.id,true)[0].price));
+    return `<button type="button" class="cat" style="--i:${i}" data-cat="${k}" aria-label="${esc(c.label)}">
+      ${ph?`<img data-photo="${ph}" src="${PHOTOS[ph]}" alt="" loading="lazy">`:noImg(m)}
+      <span class="t"><b>${esc(c.label)}</b><span>${ms.length?`${ms.length} model${ms.length>1?"s":""} · from ${inr(lo)}/day`:"Coming soon in "+S.city}</span></span>
+      <span class="arrow">${ARROW}</span></button>`}).join("");
+}
+const TREND=["innova","classic","brezza","thar","xl6","activa","carens","himalayan","swift","i20","punch"];
+function renderTrend(){
+  const list=TREND.map(id=>({m:modelById[id],offers:offersFor(id,true)})).filter(x=>x.offers.length).slice(0,4);
+  $("#trend").innerHTML=list.map((x,i)=>vcard(x.m,x.offers,i,i===0)).join("");
+}
+function renderRent(){renderFilters();renderResults();renderCats();renderTrend()}
+
+/* =================== hero + promo photos =================== */
+const HERO_SRC=["https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent("Mahindra_Thar_CRDi_(16183560860).jpg")+"?width=1800"];
+function heroCollage(){
+  const card=$(".hero-card"), ids=["innova","brezza","xl6","carens","punch","i20"].filter(hasPhoto); if(!ids.length)return;
+  const imgs=ids.map(id=>`<img src="${PHOTOS[id]}" alt="">`).join("");
+  card.classList.add("collage"); card.insertAdjacentHTML("afterbegin",`<div class="strip" aria-hidden="true">${imgs}${imgs}</div>`);
+}
+function initHero(){
+  const img=$("#hero-photo"); let k=0;
+  img.onerror=()=>{k++; if(k<HERO_SRC.length) img.src=HERO_SRC[k]; else {img.remove();heroCollage()}};
+  img.src=HERO_SRC[0];
+  const pp=$("#promo-ph");
+  if(hasPhoto("xl6")) pp.insertAdjacentHTML("afterbegin",`<img data-photo="xl6" src="${PHOTOS.xl6}" alt="Maruti Suzuki XL6 on a hill road" loading="lazy">`);
+}
+function heroPause(){}
+function heroCaption(){renderTrend()}
+
+/* =================== vehicle sheet =================== */
+let D=null;
+function openModel(modelId){
+  const m=modelById[modelId];
+  D={m,op:null,price:0,deliv:false,protect:true,oneway:false,step:0,rider:"",phone:"",dl:""};
+  mountSheet(); drawSheet();
+}
+function mountSheet(){
+  const root=$("#sheet-root");
+  root.innerHTML=`<div class="scrim" data-close></div>
+    <aside class="sheet" role="dialog" aria-modal="true" aria-labelledby="d-title">
+      <header><div><h3 id="d-title"></h3><p id="d-sub"></p></div><button class="x" data-close aria-label="Close">×</button></header>
+      <div class="body"><div class="viewer" id="d-viewer"></div><div class="steps" id="d-steps"></div><div id="d-pane"></div></div>
+      <footer id="d-foot"></footer></aside>`;
+  document.body.style.overflow="hidden";
+  const v=$("#d-viewer"), m=D.m;
+  v.innerHTML=hasPhoto(m.id)?`<img class="phbg" src="${PHOTOS[m.id]}" alt=""><img class="photo" data-photo="${m.id}" src="${PHOTOS[m.id]}" alt="${esc(m.name)}">`:noImg(m);
+  heroPause(true);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.add("open")));
+  setTimeout(()=>root.querySelector(".x")?.focus({preventScroll:true}),350);
+}
+function closeSheet(){
+  const root=$("#sheet-root"); if(!root.classList.contains("open"))return;
+  root.classList.remove("open"); D=null; document.body.style.overflow="";
+  setTimeout(()=>{if(!D)root.innerHTML=""},600);
+  if(S.view==="rent")heroPause(false);
+}
+function drawSheet(){
+  const {m}=D, d=days();
+  $("#d-title").textContent=m.name;
+  $("#d-sub").textContent=D.op?`${D.op.name} · ★ ${D.op.rating}`:`${m.sub} · ${m.cc} · ${m.gear}`;
+  $("#d-steps").innerHTML=["Compare","Trip","Pay","Done"].map((s,i)=>`<span class="${i<=D.step?"on":""}">${s}</span>`).join("");
+  let body="", foot="";
+  if(D.step===0){
+    const offers=offersFor(m.id,true);
+    body=`<div><div class="sect-l">${offers.length} rental compan${offers.length>1?"ies":"y"} in ${S.city} · ${d} day${d>1?"s":""}</div>
+      ${offers.map((o,i)=>{const km=o.op.km[m.kind];
+        return `<button type="button" class="offer" data-pick="${o.op.id}" style="animation:panein .5s ${i*60}ms var(--ease) both">
+          <div class="op"><span class="av" style="background:${avColor(o.op)}">${initials(o.op.name)}</span><div><b>${esc(o.op.name)} ${o.op.founding?'<span class="tag founding">Founding partner</span>':o.op.assured?'<span class="tag good">Assured</span>':""}</b><span>${esc(o.op.area)}</span></div></div>
+          <div class="pr">${i===0&&offers.length>1?'<span class="best">Lowest</span><br>':""}<b class="num">${inr(o.price)}</b><span class="kv">/day</span></div>
+          <div class="meta">${o.op.founding?'<span class="stars">New on OPIIUS</span>':`<span class="stars">★ ${o.op.rating}</span><span>${o.op.trips.toLocaleString("en-IN")} trips</span>`}<span>${km?km+" km/day free":"Unlimited km"}</span><span>${o.op.deliv?"Delivers":"Pick-up only"}</span><span>${o.avail} free</span><span>Total ${inr(o.price*d)}</span></div>
+        </button>`}).join("")||`<div class="empty">None free for these dates in ${S.city}.</div>`}</div>`;
+    foot=`<span class="kv">Deposit ${inr(m.dep)} · halved with Protect</span>`;
+  } else if(D.step===1){
+    const {op,price}=D, q=quote({price,m,days:d,deliv:D.deliv,protect:D.protect,oneway:D.oneway});
+    body=`
+      <div><div class="sect-l">Your trip</div>
+        <div class="bill"><div><span>Pick-up</span><span>${fmtDate(S.from)}</span></div><div><span>Return</span><span>${fmtDate(S.to)}</span></div>
+        <div><span>From</span><span>${esc(op.area)}</span></div><div><span>Free km</span><span>${op.km[m.kind]?op.km[m.kind]*d+" km total":"Unlimited"}</span></div></div></div>
+      <div><div class="sect-l">Add to your trip</div>
+        <label class="opt"><input type="checkbox" id="o-protect" ${D.protect?"checked":""}><div><b>OPIIUS Protect</b><span>Covers accidental damage above ₹2,000. Deposit drops from ${inr(m.dep)} to ${inr(m.dep/2)}.</span></div><em>${inr(CFG.protect[m.kind])}/day</em></label>
+        <label class="opt ${op.deliv?"":"off"}"><input type="checkbox" id="o-deliv" ${D.deliv?"checked":""} ${op.deliv?"":"disabled"}><div><b>Deliver to LGBI Airport or railway station</b><span>${op.deliv?"Keys handed over at arrivals.":"This company does not deliver."}</span></div><em>${inr(CFG.delivery[m.kind])}</em></label>
+        <label class="opt ${op.oneway?"":"off"}"><input type="checkbox" id="o-oneway" ${D.oneway?"checked":""} ${op.oneway?"":"disabled"}><div><b>One-way: leave it in ${S.city==="Guwahati"?"Shillong":"Guwahati"}</b><span>${op.oneway?"Drop at a partner hub. No need to ride back.":"Return to the same place only."}</span></div><em>${inr(CFG.oneway[m.kind])}</em></label>
+      </div>
+      <div><div class="sect-l">Price</div><div class="bill">
+        <div><span>Rent · ${inr(price)} × ${d} day${d>1?"s":""}</span><span class="num">${inr(q.rent)}</span></div>
+        ${q.prot?`<div><span>OPIIUS Protect</span><span class="num">${inr(q.prot)}</span></div>`:""}
+        ${q.del?`<div><span>Delivery</span><span class="num">${inr(q.del)}</span></div>`:""}
+        ${q.ow?`<div><span>One-way drop</span><span class="num">${inr(q.ow)}</span></div>`:""}
+        <div><span>Convenience fee</span><span class="num">${inr(q.fee)}</span></div>
+        <div class="t"><span>Pay now</span><span class="num">${inr(q.total)}</span></div>
+        <div class="d"><span>Refundable deposit at pick-up</span><span class="num">${inr(q.deposit)}</span></div></div></div>
+      ${splitBox(q)}`;
+    foot=`<button class="btn" id="d-back0">Back</button><div class="tot" style="margin-left:auto;text-align:right"><small>Pay now</small><b class="num" id="d-total">${inr(q.total)}</b></div><button class="btn acc" id="d-next">Continue</button>`;
+    D.q=q;
+  } else if(D.step===2){
+    body=`
+      <div class="field"><label class="sect-l" for="d-name">Full name as on licence</label><input id="d-name" value="${esc(D.rider)}" placeholder="e.g. Ananya Das"></div>
+      <div class="two"><div class="field"><label class="sect-l" for="d-phone">Mobile</label><input id="d-phone" inputmode="tel" value="${esc(D.phone)}" placeholder="98640 12345"></div>
+      <div class="field"><label class="sect-l" for="d-dl">Driving licence no.</label><input id="d-dl" value="${esc(D.dl)}" placeholder="AS01 20190012345"></div></div>
+      <p class="kv" style="margin:0">OPIIUS checks the licence once. Next time you rent from any company on OPIIUS, you skip this step.</p>
+      <div><div class="sect-l">Payment</div>
+        <label class="opt"><input type="radio" name="pay" checked><div><b>UPI</b><span>GPay, PhonePe, Paytm</span></div></label>
+        <label class="opt"><input type="radio" name="pay"><div><b>Card</b><span>Debit or credit</span></div></label></div>
+      <p class="kv" style="margin:0;color:var(--bad)" id="d-err"></p>`;
+    foot=`<button class="btn" id="d-back">Back</button><button class="btn acc" id="d-pay" style="margin-left:auto">Pay ${inr(D.q.total)}</button>`;
+  } else {
+    const b=D.booking;
+    body=`<div class="ok"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="34" fill="none" stroke-width="4"/><path d="M25 41 L36 52 L56 30" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h3 style="font-size:24px">Ride confirmed</h3>
+      <p class="kv" style="margin:0">${esc(D.op.name)} has your booking. Show this at pick-up.</p>
+      <div class="ticket">
+        <div><span>Booking</span><span class="mono">${b.id}</span></div>
+        <div><span>Vehicle</span><span>${esc(m.name)} · <span class="mono">${b.plate}</span></span></div>
+        <div><span>Pick-up</span><span>${fmtDate(b.from)}${b.deliv?" · Airport":""}</span></div>
+        <div><span>Return</span><span>${fmtDate(b.to)}${b.oneway?" · one-way":""}</span></div>
+        <div><span>Paid</span><span class="num">${inr(b.q.total)}</span></div>
+        <div><span>Deposit at pick-up</span><span class="num">${inr(b.q.deposit)}</span></div>
+      </div></div>
+      ${splitBox(b.q)}`;
+    foot=`<button class="btn" data-close>Keep browsing</button><button class="btn acc" id="d-partner" style="margin-left:auto">See it in ${esc(D.op.name)}'s app</button>`;
+  }
+  $("#d-pane").innerHTML=`<div class="pane">${body}</div>`;
+  $("#d-foot").innerHTML=foot;
+}
+function refreshPrice(){ // update totals in place without re-animating the pane
+  const d=days(), q=quote({price:D.price,m:D.m,days:d,deliv:D.deliv,protect:D.protect,oneway:D.oneway});
+  const scroll=$(".sheet .body").scrollTop; drawSheet(); $(".sheet .body").scrollTop=scroll;
+  document.querySelector("#d-pane .pane").style.animation="none";
+  const el=$("#d-total"); el.dataset.v=D.prevTotal||q.total; countTo(el,q.total,inr,500); D.prevTotal=q.total;
+}
+function splitBox(q){
+  const parts=[["Rental company",q.opGets,"var(--chart3)"],["OPIIUS",q.rideme,"var(--chart2)"],["Insurer (Protect)",q.insurer,"var(--chart5)"],["Payment gateway",q.gateway,"var(--line2)"]];
+  const tot=parts.reduce((s,p)=>s+p[1],0);
+  return `<div class="split"><h5>Pitch view: where this money goes</h5>
+    <div class="bar">${parts.filter(p=>p[1]>0).map((p,i)=>`<i style="width:${p[1]/tot*100}%;background:${p[2]};animation-delay:${i*120}ms"></i>`).join("")}</div>
+    <div class="legend">${parts.map(p=>`<div><s style="background:${p[2]}"></s>${p[0]}<b class="num">${inr(p[1])}</b></div>`).join("")}</div>
+    <p class="kv" style="margin:8px 0 0">OPIIUS keeps ${(q.rideme/q.total*100).toFixed(1)}% of what the rider pays: ${Math.round(CFG.commission*100)}% commission on rent (${inr(q.commission)}), the ${inr(q.fee)} fee${q.protKeep?`, and ${inr(q.protKeep)} from Protect`:""}.</p></div>`;
+}
+function confirmBooking(){
+  const name=$("#d-name").value.trim(), phone=$("#d-phone").value.trim(), dl=$("#d-dl").value.trim();
+  D.rider=name;D.phone=phone;D.dl=dl;
+  if(name.length<3){$("#d-err").textContent="Enter the rider's full name as it appears on the licence.";return}
+  if(phone.replace(/\D/g,"").length<10){$("#d-err").textContent="Enter a 10-digit mobile number so the rental company can reach you.";return}
+  const veh=VEH.find(v=>v.op===D.op.id&&v.model===D.m.id&&v.online&&isFree(v));
+  if(!veh){$("#d-err").textContent="That vehicle was just booked by someone else. Go back and pick another offer.";return}
+  const b=makeBooking({veh,m:D.m,op:D.op,from:new Date(S.from),to:new Date(S.to),days:days(),rider:name,deliv:D.deliv,protect:D.protect,oneway:D.oneway,status:"new"});
+  b.id="OP-"+(5000+S.bookings.filter(x=>x.mine).length); b.mine=true; b.fresh=true;
+  S.bookings.push(b);
+  store.set("mine",S.bookings.filter(x=>x.mine));
+  D.booking=b; D.step=3; drawSheet(); renderResults();
+}
+
+/* =================== partner app =================== */
+function renderPartner(){
+  const op=opById[S.partner];
+  $("#p-op").innerHTML=OPS.map(o=>`<option value="${o.id}" ${o.id===S.partner?"selected":""}>${esc(o.name)} · ${o.city}</option>`).join("");
+  $("#p-name").textContent=op.name;
+  const bs=S.bookings.filter(b=>b.op===op.id).sort((a,b)=>(!!b.mine-!!a.mine)||(b.from-a.from));
+  const gmv=bs.reduce((s,b)=>s+b.q.rent,0), pay=bs.reduce((s,b)=>s+b.q.opGets,0), vs=VEH.filter(v=>v.op===op.id);
+  countTo($("#k-bk"),bs.length); countTo($("#k-gmv"),gmv,inr); countTo($("#k-pay"),pay,inr);
+  $("#k-fleet").textContent=`${vs.filter(v=>v.online).length}/${vs.length}`;
+  $("#p-count").textContent=`${bs.filter(b=>b.status!=="done").length} upcoming or active`;
+  const lbl={conf:"Confirmed",done:"Returned"};
+  $("#p-rows").innerHTML=bs.map(b=>{const m=modelById[b.model];
+    return `<tr class="${b.fresh?"flash":""}"><td><span class="mono">${b.id}</span>${b.mine?"<small>booked by you just now</small>":""}</td>
+      <td>${esc(b.rider)}<small>DL verified by OPIIUS</small></td><td>${esc(m.name)}<small class="mono">${b.plate}</small></td>
+      <td>${fmtDate(b.from)}<small>${b.days} day${b.days>1?"s":""}${b.oneway?" · one-way":""}</small></td>
+      <td>${b.deliv?"Airport delivery":"At your counter"}<small>${b.protect?"Protect: deposit "+inr(b.q.deposit):"Deposit "+inr(b.q.deposit)}</small></td>
+      <td class="r num">${inr(b.q.rent)}</td><td class="r num"><b>${inr(b.q.opGets)}</b><small>after ${Math.round(CFG.commission*100)}%</small></td>
+      <td>${b.status==="new"?`<button class="btn sm acc" data-accept="${b.id}">Accept</button>`:`<span class="pill ${b.status==="done"?"done":"conf"}">${lbl[b.status]}</span>`}</td></tr>`}).join("")
+    || `<tr><td colspan="8" style="color:var(--dim)">No bookings yet. Book one of this company's vehicles on the Rent tab and it appears here.</td></tr>`;
+  bs.forEach(b=>b.fresh=false);
+  $("#p-fleet").innerHTML=vs.map(v=>{const m=modelById[v.model], src=imgFor(v.model);
+    return `<div class="fleetrow">${src?`<img src="${src}" alt="" class="photo" data-photo="${v.model}">`:`<span class="fthumb">${ICON[m.kind]}</span>`}<div>${esc(m.name)}<br><span class="mono">${v.plate}</span></div>
+    <span class="kv num" style="margin-left:auto">${inr(v.price)}/day</span>
+    <button class="sw" role="switch" aria-checked="${v.online}" aria-label="Show ${esc(v.plate)} on OPIIUS" data-veh="${v.id}"></button></div>`}).join("");
+  const cur=S.sync[op.id]||"free";
+  document.querySelectorAll('#p-sync input').forEach(i=>i.checked=i.value===cur);
+  $("#p-syncs").textContent={api:"Connected. Last sync 2 minutes ago, 0 conflicts.",sheet:"Sheet linked. Checked every 5 minutes.",free:"Using the OPIIUS partner app.",wa:"WhatsApp alerts on. Reply YES to accept a booking."}[cur];
+}
+
+/* =================== business calculator =================== */
+const CI=[
+  {k:"ops",label:"Rental companies on OPIIUS",min:5,max:150,step:5,v:20,fmt:v=>v},
+  {k:"fleet",label:"Vehicles per company",min:5,max:60,step:1,v:15,fmt:v=>v},
+  {k:"util",label:"Days booked via OPIIUS per vehicle / month",min:1,max:20,step:1,v:6,fmt:v=>v,hint:"Extra days OPIIUS fills, on top of their own customers"},
+  {k:"rate",label:"Average rent per day",min:400,max:4000,step:50,v:1400,fmt:v=>inr(v),hint:"Mix of scooters (₹450) and cars (₹1,800–₹4,500)"},
+  {k:"trip",label:"Average trip length (days)",min:1,max:6,step:.5,v:2.5,fmt:v=>v},
+  {k:"comm",label:"Commission on rent",min:5,max:25,step:1,v:12,fmt:v=>v+"%"},
+  {k:"attach",label:"Riders who add Protect",min:0,max:80,step:5,v:45,fmt:v=>v+"%"},
+  {k:"pro",label:"Companies on Partner Pro",min:0,max:100,step:5,v:30,fmt:v=>v+"%"}
+];
+function renderCalcInputs(){
+  $("#calc-in").innerHTML=CI.map(c=>`<div class="sl"><label for="c-${c.k}"><span>${c.label}</span><b id="cv-${c.k}">${c.fmt(c.v)}</b></label>
+    <input class="range" type="range" id="c-${c.k}" min="${c.min}" max="${c.max}" step="${c.step}" value="${c.v}">${c.hint?`<small>${c.hint}</small>`:""}</div>`).join("");
+  $("#c-rows").innerHTML=["Commission","OPIIUS Protect margin","Convenience fee","Trip add-ons","Partner Pro"].map((n,i)=>
+    `<div class="srow"><span>${n}</span><div class="track"><i id="cb-${i}" style="width:0;background:var(--chart${i+1})"></i></div><b class="num" id="cr-${i}">₹0</b></div>`).join("")
+    +`<div class="srow"><span style="color:var(--dim)">Less payment gateway (2%)</span><span></span><b class="num" style="color:var(--bad)" id="c-gw">₹0</b></div>`;
+}
+function calc(){
+  const v=Object.fromEntries(CI.map(c=>[c.k,+$("#c-"+c.k).value]));
+  CI.forEach(c=>$("#cv-"+c.k).textContent=c.fmt(v[c.k]));
+  const rentalDays=v.ops*v.fleet*v.util, gmv=rentalDays*v.rate, bookings=rentalDays/v.trip, avgProtectDay=160;
+  const lines=[gmv*v.comm/100, rentalDays*(v.attach/100)*avgProtectDay*CFG.protectMargin, bookings*69, bookings*30, v.ops*(v.pro/100)*1499];
+  const gross=lines.reduce((s,l)=>s+l,0), collected=gmv+bookings*69+rentalDays*(v.attach/100)*avgProtectDay;
+  const gateway=collected*CFG.gateway, net=gross-gateway, max=Math.max(...lines);
+  countTo($("#c-gmv"),gmv,inrShort,500); countTo($("#c-bk"),bookings,v=>Math.round(v).toLocaleString("en-IN"),500); countTo($("#c-net"),net,inrShort,500);
+  lines.forEach((l,i)=>{$("#cb-"+i).style.width=(l/max*100)+"%"; $("#cr-"+i).textContent=inrShort(l)});
+  $("#c-gw").textContent="−"+inrShort(gateway);
+  $("#c-note").textContent=`${Math.round(rentalDays).toLocaleString("en-IN")} rental days a month across ${v.ops*v.fleet} vehicles. That is ${inrShort(net*12)} a year before salaries, marketing and damage claims above the Protect pool. Convenience fee averaged at ₹69, Protect at ₹160 per day with OPIIUS keeping 40%.`;
+}
+
+/* =================== routing + events =================== */
+function movePill(){
+  const b=document.querySelector(`.modes [aria-selected="true"]`), bg=$(".pill-bg"); if(!b)return;
+  bg.style.width=b.offsetWidth+"px"; bg.style.transform=`translateX(${b.offsetLeft}px)`;
+}
+function go(view){
+  const apply=()=>{
+    S.view=view;
+    ["rent","partner","biz"].forEach(v=>{$("#v-"+v).hidden=v!==view;$("#t-"+v).setAttribute("aria-selected",v===view)});
+    movePill();
+    if(view==="rent"){renderRent();heroPause(false)} else heroPause(true);
+    if(view==="partner")renderPartner();
+    if(view==="biz")calc();
+    try{history.replaceState(null,"","#"+view)}catch(e){}
+    window.scrollTo({top:0,behavior:"instant"});
+  };
+  if(document.startViewTransition&&!reduced&&S.view!==view) document.startViewTransition(apply); else apply();
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-go],[data-t],[data-model],[data-pick],[data-kind],[data-cat],[data-all],[data-clearcat],[data-oneway],[data-city],[data-close],[data-accept],[data-veh],#d-next,#d-back,#d-back0,#d-pay,#d-partner");
+  if(!t)return;
+  if(t.dataset.go){e.preventDefault();go(t.dataset.go);return}
+  if(t.dataset.t){S.type.has(t.dataset.t)?S.type.delete(t.dataset.t):S.type.add(t.dataset.t);renderFilters();renderResults();return}
+  const toMarket=()=>{if(S.view!=="rent")go("rent"); setTimeout(()=>$("#market").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"}),S.view==="rent"?0:60)};
+  if(t.dataset.kind){S.kind=t.dataset.kind;$("#s-kind").value=S.kind;S.type.clear();
+    document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-checked",b===t));renderFilters();renderResults();return}
+  if(t.dataset.cat){S.cat=t.dataset.cat;S.kind="all";S.type.clear();$("#s-kind").value="all";
+    document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-checked",b.dataset.kind==="all"));renderFilters();renderResults();toMarket();return}
+  if(t.hasAttribute("data-all")){S.cat=null;renderResults();return}
+  if(t.hasAttribute("data-clearcat")){S.cat=null;renderResults();return}
+  if(t.hasAttribute("data-oneway")){S.oneway=true;$("#f-oneway").checked=true;renderResults();toMarket();return}
+  if(t.dataset.city){S.city=t.dataset.city;$("#s-city").value=S.city;S.ops.clear();if(S.view!=="rent")go("rent");else renderRent();window.scrollTo({top:0,behavior:reduced?"auto":"smooth"});return}
+  if(t.dataset.model){openModel(t.dataset.model);return}
+  if(t.dataset.pick){const op=opById[t.dataset.pick];D.op=op;D.price=LISTINGS.find(l=>l[0]===op.id&&l[1]===D.m.id)[2];
+    D.deliv=false;D.oneway=false;D.step=1;D.prevTotal=0;drawSheet();$(".sheet .body").scrollTo({top:0,behavior:"smooth"});return}
+  if(t.hasAttribute("data-close")){closeSheet();return}
+  if(t.id==="d-back0"){D.step=0;D.op=null;drawSheet();return}
+  if(t.id==="d-next"){D.step=2;drawSheet();return}
+  if(t.id==="d-back"){D.rider=$("#d-name").value;D.phone=$("#d-phone").value;D.dl=$("#d-dl").value;D.step=1;drawSheet();return}
+  if(t.id==="d-pay"){confirmBooking();return}
+  if(t.id==="d-partner"){S.partner=D.op.id;closeSheet();go("partner");return}
+  if(t.dataset.accept){const b=S.bookings.find(x=>x.id===t.dataset.accept);b.status="conf";
+    store.set("mine",S.bookings.filter(x=>x.mine));renderPartner();toast(`${b.id} accepted. The rider has been sent pick-up details.`);return}
+  if(t.dataset.veh){const v=VEH.find(x=>x.id===t.dataset.veh);v.online=!v.online;
+    v.online?S.offline.delete(v.id):S.offline.add(v.id);store.set("offline",[...S.offline]);
+    t.setAttribute("aria-checked",v.online); const vs=VEH.filter(x=>x.op===S.partner);
+    $("#k-fleet").textContent=`${vs.filter(x=>x.online).length}/${vs.length}`;
+    toast(v.online?`${v.plate} is back on OPIIUS.`:`${v.plate} is hidden from riders.`);return}
+});
+document.addEventListener("change",e=>{
+  const t=e.target;
+  if(t.id==="o-protect"){D.protect=t.checked;refreshPrice()}
+  else if(t.id==="o-deliv"){D.deliv=t.checked;refreshPrice()}
+  else if(t.id==="o-oneway"){D.oneway=t.checked;refreshPrice()}
+  else if(t.dataset.op){t.checked?S.ops.add(t.dataset.op):S.ops.delete(t.dataset.op);renderResults()}
+  else if(t.id==="f-deliv"){S.deliv=t.checked;renderResults()}
+  else if(t.id==="f-assured"){S.assured=t.checked;renderResults()}
+  else if(t.id==="f-oneway"){S.oneway=t.checked;renderResults()}
+  else if(t.id==="r-sort"){S.sort=t.value;renderResults()}
+  else if(t.id==="p-op"){S.partner=t.value;renderPartner()}
+  else if(t.name==="sync"){S.sync[S.partner]=t.value;store.set("sync",S.sync);renderPartner()}
+  else if(t.id==="s-city"){S.city=t.value;S.ops.clear();renderRent()}
+  else if(t.id==="s-from"||t.id==="s-to"){readDates()}
+});
+document.addEventListener("input",e=>{
+  if(e.target.id==="f-max"){S.max=+e.target.value;$("#f-maxv").textContent=inr(S.max);renderResults()}
+  if(e.target.id&&e.target.id.startsWith("c-"))calc();
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&D)closeSheet();
+  if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("vcard")){e.preventDefault();openModel(e.target.dataset.model)}
+});
+addEventListener("resize",movePill);
+function readDates(){
+  const f=new Date($("#s-from").value), t=new Date($("#s-to").value);
+  if(isNaN(f)||isNaN(t))return;
+  if(t<=f){toast("Return must be after pick-up. Moved return to one day later.");t.setTime(f.getTime()+86400e3);$("#s-to").value=toLocalInput(t)}
+  S.from=f;S.to=t;renderResults();
+}
+$("#news").addEventListener("submit",e=>{e.preventDefault();toast("This is a demo, so no email was sent.")});
+$("#search").addEventListener("submit",e=>{e.preventDefault();readDates();
+  S.city=$("#s-city").value;S.kind=$("#s-kind").value;renderRent();
+  $("#market").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"})});
+
+/* =================== boot =================== */
+$("#credits").textContent=WIKI_CREDITS.join(" · ");
+$("#s-from").value=toLocalInput(S.from);$("#s-to").value=toLocalInput(S.to);
+renderCalcInputs();
+const start=(location.hash||"").slice(1);
+go(["rent","partner","biz"].includes(start)?start:"rent");
+initHero();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(movePill);
 </script>
 </body>
 </html>

@@ -1,9 +1,9 @@
-# RideMe: business model
+# OPIIUS: business model
 
 One platform where riders compare and book bikes, scooters and self-drive cars from every
 rental company in a city. Start in Guwahati, then Shillong, then the Northeast circuit.
 
-Demo: `rideme/index.html` (three tabs: rider marketplace, partner app, business model with a
+Demo: `index.html` (site root) (three tabs: rider marketplace, partner app, business model with a
 revenue calculator).
 
 ## 1. The problem on each side
@@ -33,17 +33,17 @@ revenue calculator).
 | Zoomcar | Private owners list cars | Host keeps ~60% of rent; ₹999 joining fee; ₹499/month GPS |
 | OYO | Hotel franchise + marketplace | 20–30% of booking value |
 | Royal Brothers | Own fleet + franchise partners | Partner invests in bikes under the brand |
-| **RideMe** | Marketplace of existing rental companies | **12–15% of rent, only on bookings RideMe brings** |
+| **OPIIUS** | Marketplace of existing rental companies | **12–15% of rent, only on bookings OPIIUS brings** |
 
-RideMe can charge less than Zoomcar because it does not provide the cars, GPS or insurance. The
-rental company does the operations; RideMe brings customers, payments and trust.
+OPIIUS can charge less than Zoomcar because it does not provide the cars, GPS or insurance. The
+rental company does the operations; OPIIUS brings customers, payments and trust.
 
 ## 4. Revenue streams (ranked by profit)
 
 | # | Stream | Who pays | Price | Why it matters |
 |---|---|---|---|---|
 | 1 | Booking commission | Rental company | 12% at launch → 15% at scale, on rent only | Core, scales with every booking |
-| 2 | RideMe Protect | Rider | ₹99/day bike, ₹249/day car | Highest margin (~40% kept after insurer). Halves the deposit, which is the rider's biggest fear |
+| 2 | OPIIUS Protect | Rider | ₹99/day bike, ₹249/day car | Highest margin (~40% kept after insurer). Halves the deposit, which is the rider's biggest fear |
 | 3 | Convenience fee | Rider | ₹49 bike, ₹99 car per booking | Pure margin, covers DL check and support |
 | 4 | Partner Pro | Rental company | ₹1,499/month, optional | Top placement, WhatsApp booking bot, full partner app |
 | 5 | Trip add-ons | Rider / hotel | ₹30–₹300 per booking | Permit assistance, gear, one-way drop fee, homestay affiliate commission |
@@ -51,17 +51,17 @@ rental company does the operations; RideMe brings customers, payments and trust.
 
 Example: a Royal Enfield Classic 350 for 2 days at ₹1,200/day with Protect.
 Rider pays ₹2,400 rent + ₹198 Protect + ₹49 fee = ₹2,647.
-RideMe keeps ₹288 commission + ₹49 fee + ₹79 Protect margin − ₹53 gateway = **₹363 (≈13.7%)**.
+OPIIUS keeps ₹288 commission + ₹49 fee + ₹79 Protect margin − ₹53 gateway = **₹363 (≈13.7%)**.
 Rental company gets ₹2,112 for a booking it would not otherwise have had.
 
 ## 5. Sample monthly numbers (assumptions, not a forecast)
 
-20 companies × 15 vehicles, RideMe fills 6 extra days per vehicle per month, ₹1,400 average
+20 companies × 15 vehicles, OPIIUS fills 6 extra days per vehicle per month, ₹1,400 average
 daily rent, 2.5-day trips, 12% commission, 45% take Protect, 30% on Partner Pro:
 
 | Line | Monthly |
 |---|---|
-| Rent booked through RideMe | ₹25.2 L |
+| Rent booked through OPIIUS | ₹25.2 L |
 | Bookings | 720 |
 | Commission | ₹3.02 L |
 | Protect margin | ₹0.52 L |
@@ -69,17 +69,17 @@ daily rent, 2.5-day trips, 12% commission, 45% take Protect, 30% on Partner Pro:
 | Add-ons | ₹0.22 L |
 | Partner Pro | ₹0.09 L |
 | Less payment gateway (2% of everything collected) | −₹0.54 L |
-| **RideMe net revenue** | **≈ ₹3.8 L / month (≈ ₹46 L / year)** |
+| **OPIIUS net revenue** | **≈ ₹3.8 L / month (≈ ₹46 L / year)** |
 
 Before salaries, marketing and damage claims above the Protect pool. The calculator on the demo's
 Business model tab recomputes this live.
 
 ## 6. Rules that protect the profit
 
-1. **Take every payment on RideMe.** Controlling money flow is what stops rental companies taking
+1. **Take every payment on OPIIUS.** Controlling money flow is what stops rental companies taking
    repeat riders off-platform. Pay partners T+1 after pick-up. Hide the rider's phone number until the booking is paid.
 2. **Never pay minimum guarantees.** OYO's guarantees to hotels scaled with supply, not demand,
-   and caused heavy losses. RideMe pays only per booking.
+   and caused heavy losses. OPIIUS pays only per booking.
 3. **Grow margin through Protect, not higher commission.** A 45% attach rate earns more than
    raising commission 2 points and does not upset partners.
 4. **Stay asset-light.** Never buy vehicles. Every vehicle belongs to a partner.
@@ -88,14 +88,14 @@ Business model tab recomputes this live.
 6. **Buy demand cheaply.** Pay hostel and hotel front desks a small fee per booking (for example
    ₹100) instead of paying for ads. Rank on Google for "bike rental Guwahati", "Shillong self drive car".
 7. **Reward staying on the platform.** Reviews, DL-verified once, deposit protection and dispute
-   handling only exist for bookings made on RideMe.
+   handling only exist for bookings made on OPIIUS.
 
 ## 7. Answering "we already have software"
 
-RideMe does not replace their software. It sits on top as a sales channel:
+OPIIUS does not replace their software. It sits on top as a sales channel:
 - Connect their existing system (two-way availability sync), or
 - Mark vehicles busy in a Google Sheet or calendar, or
-- Use the free RideMe partner app, or
+- Use the free OPIIUS partner app, or
 - Just accept bookings on WhatsApp.
 
 ## 8. Rollout
@@ -118,7 +118,7 @@ Settle this in writing before building:
 
 | Risk | Mitigation |
 |---|---|
-| Rental companies take riders off-platform | Payments on RideMe, masked numbers, Protect and reviews only on-platform |
+| Rental companies take riders off-platform | Payments on OPIIUS, masked numbers, Protect and reviews only on-platform |
 | Damage disputes | Photo check-in and check-out in the partner app; Protect pool with an insurer |
 | Double booking | Availability sync or one-tap switch-off in the partner app |
 | Seasonality (monsoon lull) | Monthly rentals for students and workers in the off-season |
