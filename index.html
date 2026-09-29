@@ -122,7 +122,25 @@ a{color:inherit}
 .co-n{min-width:0}
 .co-n b{display:block;font-size:15.5px;letter-spacing:-.01em}
 .co-n span{display:block;font-size:12.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.co-r{margin-left:auto;font-size:12.5px;font-weight:800;color:var(--warn);white-space:nowrap}
+.co-r{margin-left:auto;font-size:12px;font-weight:800;color:#fff;background:#1f8a4c;padding:3px 7px;border-radius:7px;white-space:nowrap}
+.co-r.new{background:var(--accent)}
+.cosearch{display:flex;align-items:center;gap:10px;border:1px solid var(--line2);border-radius:14px;padding:12px 16px;margin:0 0 22px;max-width:640px;box-shadow:var(--shadow);background:#fff}
+.cosearch svg{width:18px;height:18px;color:var(--dim);flex:none}
+.cosearch input{border:0;outline:0;width:100%;font-size:14.5px;background:transparent}
+.co-sec{grid-column:1/-1;display:flex;align-items:baseline;gap:10px;margin-top:10px}
+.co-sec b{font-size:19px;letter-spacing:-.02em}
+.co-sec span{font-size:13px;color:var(--dim)}
+.co-foot .online{color:#1f8a4c;font-weight:700;white-space:nowrap}
+.co.dir{cursor:default}
+.co-cover{position:relative;aspect-ratio:16/8;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,hsl(var(--h) 45% 95%),hsl(var(--h) 35% 86%))}
+.co-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 85%}
+.co-cover img.studio{object-fit:contain;padding:6% 18%;mix-blend-mode:multiply}
+.notyet{position:absolute;left:8px;top:8px;font-size:10.5px;font-weight:700;background:rgba(255,255,255,.9);color:var(--dim);padding:3px 8px;border-radius:999px}
+.co-about{margin:0;font-size:13px;color:var(--dim);line-height:1.5}
+.co.dir .co-foot{gap:6px 10px;flex-wrap:wrap}
+.co.dir .rent{text-decoration:none;color:var(--ink)}
+.co.dir .rent:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.claim{border:0;background:none;color:var(--accent);font-weight:700;font-size:12.5px;white-space:nowrap;padding:0}
 .co-ph{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .co-ph span{aspect-ratio:4/3;max-width:100%;border-radius:10px;background:var(--stage);overflow:hidden;position:relative}
 .co-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 85%;transition:transform .8s var(--ease)}
@@ -134,7 +152,7 @@ a{color:inherit}
 .tag.founding{background:var(--ink);color:#fff}
 .co-foot{display:flex;align-items:center;gap:8px;margin-top:auto;font-size:13px;color:var(--dim)}
 .co-foot b{color:var(--ink)}
-.co:hover .rent{background:var(--ink);border-color:var(--ink);color:#fff}
+
 .co-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:16px}
 .co-facts div{background:var(--solid2);border:1px solid var(--line);border-radius:12px;padding:9px 11px}
 .co-facts small{display:block;font-size:11px;color:var(--dim);font-weight:600}
@@ -571,7 +589,9 @@ main{animation:viewin .55s var(--ease) both}
       <h2 class="rv" id="cos-title">Rental companies in Guwahati</h2>
       <div class="pills rv" style="--d:1" id="co-pills" role="group" aria-label="Filter rental companies"></div>
     </div>
-    <p class="rv" style="--d:1">Every company runs its own fleet. Open one to see all its vehicles, or compare the same car across companies in the fleet below.</p>
+    <p class="rv" style="--d:1">Like a food app for rentals: book online from OPIIUS partners, or find every other rental company in town and contact them directly.</p>
+    <div class="cosearch rv" style="--d:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input type="search" id="co-q" placeholder="Search a company, area or vehicle (e.g. Thar, Paltan Bazar, scooty)" aria-label="Search rental companies"></div>
     <div class="cogrid" id="cogrid"></div>
   </section>
 
@@ -807,7 +827,8 @@ main{animation:viewin .55s var(--ease) both}
       <li><button type="button" class="lk" data-city="Shillong">Shillong</button></li>
       <li><span class="kv">Tawang, Gangtok: coming next</span></li></ul></div>
   </div>
-  <div class="fine">OPIIUS is a concept demo. Riders, bookings and every rental company except Real Drive Ghy are sample data; Real Drive Ghy's cars, photos and day prices come from their WhatsApp catalog.
+  <div class="fine">OPIIUS is in early launch. Real Drive Ghy is our founding partner, with cars, photos and day prices from their WhatsApp catalog. Companies marked "Demo partner", and all riders and bookings, are sample data to show how booking works.
+    Companies under "More rental companies in Guwahati" are not affiliated with OPIIUS: their details come from their own public websites and listings, and their cover photos show the type of vehicle they rent, not their actual fleet. To update or remove a listing, use "List your business".
     Other photos load from Wikimedia Commons under Creative Commons licences: <span id="credits"></span>.</div>
 </div></footer>
 
@@ -1089,8 +1110,26 @@ function renderPhones(){
       <div class="btn2">Show at counter</div></div></div>`;
 }
 /* =================== rental companies =================== */
-S.coFilter="all";
-const CO_FILTERS=[["all","All"],["car","Cars"],["bike","Bikes & scooters"],["deliv","Airport delivery"]];
+S.coFilter="all"; S.coQ="";
+const CO_FILTERS=[["all","All"],["online","Book online"],["car","Cars"],["bike","Bikes & scooters"],["deliv","Delivery"]];
+/* Real Guwahati rental companies that are not on OPIIUS. Only facts their own sites or listings state publicly;
+   no prices, ratings or booking are shown for them. Cover photos show the type of vehicle, not their fleet. */
+const DIRECTORY=[
+  {name:"AS01 Self Drive", url:"https://www.as01selfdrive.com/", area:"Guwahati", kinds:["car"], deliv:true, about:"Thar, Innova, Creta and more. Unlimited km and doorstep delivery.", cover:"thar"},
+  {name:"Onroadz Guwahati", url:"https://www.onroadzguwahati.com/", area:"Guwahati", kinds:["car"], deliv:true, about:"Self-drive cars with 300 km/day, airport delivery and 24x7 roadside help.", cover:"swift"},
+  {name:"FuFu Gadi", url:"https://www.fufugadi.com/", area:"Guwahati", kinds:["car"], deliv:true, about:"Self-drive cars for Assam and Meghalaya trips. Airport, railway or doorstep delivery.", cover:"scorpio"},
+  {name:"Fab Wheelz", url:"https://www.fabwheelz.com/", area:"Guwahati", kinds:["car"], deliv:false, about:"Self-drive cars; says zero security deposit.", cover:"i20"},
+  {name:"Wanderides", url:"https://www.wanderides.com/", area:"Guwahati", kinds:["car"], deliv:false, about:"Self-drive cars, plus Innova with driver and tempo travellers.", cover:"innova"},
+  {name:"ZIPZAP Car Rentals", url:"https://zipzapcarrentals.com/", area:"Guwahati", kinds:["car"], deliv:false, about:"Self-drive car rental for Northeast trips.", cover:"xuv700"},
+  {name:"RideHard", url:"https://ridehard.in/", area:"Guwahati", kinds:["bike"], deliv:true, about:"Royal Enfield, Himalayan and scooties. Delivery across town.", cover:"classic"},
+  {name:"Sukuto", url:"https://sukuto.com/bike-rental-in-guwahati/", area:"Guwahati", kinds:["bike"], deliv:false, about:"Activa, Dio, Pulsar and Royal Enfield. Says no deposit.", cover:"activa"},
+  {name:"Gearz Vehicle", url:"https://gearzvehicle.com/bike-on-rent-in-guwahati/paltan-bazar", area:"Paltan Bazar", kinds:["bike"], deliv:false, about:"Bikes and scooties on rent, helmet included.", cover:"shine"},
+  {name:"SafarCabby", url:"https://www.safarcabby.com/guwahati/bike-rental-in-guwahati", area:"Zoo Road Tiniali", kinds:["bike"], deliv:false, about:"Bike rental for city rides and trips to Shillong.", cover:"gt650"},
+  {name:"Trivane", url:"https://www.trivane.com/", area:"Guwahati", kinds:["bike","car"], deliv:false, about:"Motorcycle rental with free helmets for rider and pillion; self-drive cars too.", cover:"classic"},
+  {name:"Zola Adventures", url:"https://www.zolaadventures.com/", area:"Guwahati", kinds:["bike","car"], deliv:false, about:"Bikes, scooties and self-drive cars, including RE Himalayan.", cover:"gt650"},
+  {name:"Canopy Northeast", url:"https://www.canopytravels.com/", area:"Guwahati", kinds:["bike","car"], deliv:false, about:"Self-drive cars, bikes and scooties.", cover:"brezza"}
+];
+const dirHue=n=>[...n].reduce((h,c)=>(h*31+c.charCodeAt(0))%360,7);
 function coFleet(op){
   return LISTINGS.filter(l=>l[0]===op.id).map(([,mid,price])=>{const m=modelById[mid];
     return {m,price,avail:VEH.filter(v=>v.op===op.id&&v.model===mid&&v.online&&isFree(v)).length,units:VEH.filter(v=>v.op===op.id&&v.model===mid&&v.online).length}})
@@ -1099,27 +1138,44 @@ function coFleet(op){
 function renderHstats(){
   const ops=OPS.filter(o=>o.city===S.city), veh=VEH.filter(v=>v.online&&opById[v.op].city===S.city);
   const lo=Math.min(...LISTINGS.filter(l=>opById[l[0]].city===S.city).map(l=>l[2]));
-  $("#hstats").innerHTML=`<span><b>${ops.length}</b> rental companies</span><span><b>${veh.length}</b> vehicles</span><span>from <b>${inr(lo)}</b>/day</span>`;
+  const dir=S.city==="Guwahati"?DIRECTORY.length:0;
+  $("#hstats").innerHTML=`<span><b>${ops.length+dir}</b> rental companies</span><span><b>${veh.length}</b> vehicles to book online</span><span>from <b>${inr(lo)}</b>/day</span>`;
 }
+function coMatch(text){const q=S.coQ.trim().toLowerCase(); return !q||text.toLowerCase().includes(q)}
 function renderCompanies(){
   $("#cos-title").textContent=`Rental companies in ${S.city}`;
   $("#co-pills").innerHTML=CO_FILTERS.map(([k,l])=>`<button type="button" data-cofilter="${k}" aria-pressed="${S.coFilter===k}">${esc(l)}</button>`).join("");
   const f=S.coFilter;
-  const ops=OPS.filter(o=>o.city===S.city).map(o=>({o,fleet:coFleet(o)}))
-    .filter(({o,fleet})=>fleet.length&&(f==="all"||(f==="deliv"?o.deliv:fleet.some(x=>x.m.kind===f))))
+  const partners=OPS.filter(o=>o.city===S.city).map(o=>({o,fleet:coFleet(o)}))
+    .filter(({o,fleet})=>fleet.length&&(f==="all"||f==="online"||(f==="deliv"?o.deliv:fleet.some(x=>x.m.kind===f)))
+      &&coMatch(o.name+" "+o.area+" "+fleet.map(x=>x.m.name+" "+x.m.sub).join(" ")))
     .sort((a,b)=>(!!b.o.founding-!!a.o.founding)||(b.o.rating-a.o.rating));
-  $("#cogrid").innerHTML=ops.length?ops.map(({o,fleet},i)=>{
+  const listed=S.city!=="Guwahati"||f==="online"?[]:DIRECTORY.filter(d=>(f==="all"||(f==="deliv"?d.deliv:d.kinds.includes(f)))
+      &&coMatch(d.name+" "+d.area+" "+d.about+" "+d.kinds.map(k=>k==="car"?"car cars":"bike bikes scooty scooter").join(" ")));
+  const pcards=partners.map(({o,fleet},i)=>{
     const cars=fleet.filter(x=>x.m.kind==="car").length, bikes=fleet.length-cars, units=fleet.reduce((s,x)=>s+x.units,0);
-    const what=cars&&bikes?"Cars & bikes":cars?"Cars":"Bikes & scooters";
+    const what=cars&&bikes?"Cars · Bikes":cars?"Cars":"Bikes · Scooters";
     const th=fleet.filter(x=>hasPhoto(x.m.id)).slice(0,3);
-    return `<article class="co rv" style="--d:${i%4}" role="button" tabindex="0" data-company="${o.id}" aria-label="${esc(o.name)}, ${units} vehicles, see fleet">
-      <div class="co-top"><span class="av" style="background:${avColor(o)}">${initials(o.name)}</span>
-        <div class="co-n"><b>${esc(o.name)}</b><span>${esc(o.area)}</span></div>
-        <span class="co-r">${o.founding?"New":"★ "+o.rating}</span></div>
+    return `<article class="co rv" style="--d:${i%4}" role="button" tabindex="0" data-company="${o.id}" aria-label="${esc(o.name)}, ${units} vehicles, book online">
       <div class="co-ph">${th.map(x=>`<span><img class="${STUDIO.has(x.m.id)?"studio":""}" src="${PHOTOS[x.m.id]}" alt="" loading="lazy"></span>`).join("")}</div>
-      <div class="co-tags">${o.founding?'<span class="tag founding">Founding partner</span>':o.assured?'<span class="tag good">Assured</span>':""}<span class="tag">${what}</span>${o.deliv?'<span class="tag">Airport delivery</span>':""}${o.oneway?'<span class="tag">One-way</span>':""}</div>
-      <div class="co-foot"><span><b>${units} vehicles</b> · from ${inr(fleet.reduce((m,x)=>Math.min(m,x.price),1e9))}/day</span><span class="rent">See fleet</span></div>
-    </article>`}).join(""):`<div class="empty">No companies match this filter in ${S.city}.</div>`;
+      <div class="co-top"><span class="av" style="background:${avColor(o)}">${initials(o.name)}</span>
+        <div class="co-n"><b>${esc(o.name)}</b><span>${what} · ${esc(o.area)}</span></div>
+        <span class="co-r ${o.founding?"new":""}">${o.founding?"NEW":o.rating+" ★"}</span></div>
+      <div class="co-tags">${o.founding?'<span class="tag founding">Founding partner</span>':'<span class="tag">Demo partner</span>'}${o.deliv?'<span class="tag">Airport delivery</span>':""}${o.oneway?'<span class="tag">One-way</span>':""}</div>
+      <div class="co-foot"><span class="online">● Book online</span><span><b>${units}</b> vehicles · from ${inr(fleet.reduce((m,x)=>Math.min(m,x.price),1e9))}/day</span></div>
+    </article>`});
+  const dcards=listed.map((d,i)=>{const h=dirHue(d.name), ini=d.name.split(/\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase();
+    return `<article class="co dir rv" style="--d:${(partners.length+i)%4}">
+      <div class="co-cover" style="--h:${h}">${hasPhoto(d.cover)?`<img class="${STUDIO.has(d.cover)?"studio":""}" src="${PHOTOS[d.cover]}" alt="" loading="lazy">`:""}<span class="notyet">Not on OPIIUS yet</span></div>
+      <div class="co-top"><span class="av" style="background:hsl(${h} 35% 38%)">${esc(ini)}</span>
+        <div class="co-n"><b>${esc(d.name)}</b><span>${d.kinds.map(k=>k==="car"?"Cars":"Bikes · Scooters").join(" · ")} · ${esc(d.area)}</span></div></div>
+      <p class="co-about">${esc(d.about)}</p>
+      <div class="co-foot"><a class="rent" href="${d.url}" target="_blank" rel="noopener">Visit website ↗</a><button type="button" class="claim" data-go="partner">List your business</button></div>
+    </article>`});
+  const head=(t,n)=>`<div class="co-sec"><b>${t}</b><span>${n}</span></div>`;
+  $("#cogrid").innerHTML=(pcards.length?head("Book online on OPIIUS",`${pcards.length} compan${pcards.length>1?"ies":"y"}`)+pcards.join(""):"")
+    +(dcards.length?head("More rental companies in Guwahati",`${dcards.length} · contact them directly`)+dcards.join(""):"")
+    ||`<div class="empty">No rental companies match "${esc(S.coQ)}".</div>`;
   observeRv();
 }
 function openCompany(opId){
@@ -1439,6 +1495,7 @@ document.addEventListener("change",e=>{
   else if(t.id==="s-from"||t.id==="s-to"){readDates()}
 });
 document.addEventListener("input",e=>{
+  if(e.target.id==="co-q"){S.coQ=e.target.value;renderCompanies();return}
   if(e.target.id==="f-max"){S.max=+e.target.value;$("#f-maxv").textContent=inr(S.max);renderResults()}
   if(e.target.id&&e.target.id.startsWith("c-"))calc();
 });
