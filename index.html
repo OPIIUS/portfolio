@@ -67,16 +67,25 @@ a{color:inherit}
 
 /* ---------- hero ---------- */
 .hero{padding-block:14px 0;position:relative}
-.hero-card{position:relative;border-radius:28px;overflow:hidden;min-height:clamp(430px,52vw,600px);background:var(--dark);color:#fff;display:flex;align-items:flex-end}
-.hero-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 65%;transform:scale(1.06);animation:settle 2.4s var(--ease) forwards}
-@keyframes settle{to{transform:scale(1)}}
-.hero-card::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,12,.25) 0%,rgba(8,9,12,.05) 35%,rgba(8,9,12,.72) 100%)}
-.hero-copy{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:end;padding:28px 36px 96px}
+.hero-card{position:relative;border-radius:28px;overflow:hidden;min-height:clamp(440px,48vw,560px);color:var(--ink);display:flex;align-items:flex-end;
+  background:radial-gradient(ellipse 60% 55% at 72% 62%,#ffffff,transparent 70%),linear-gradient(180deg,#eef0f4,#e2e6ec)}
+.hero-card::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(180deg,transparent,rgba(14,16,20,.05))}
+.show{position:absolute;right:4%;top:17%;bottom:24%;width:min(46%,560px)}
+.show img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;mix-blend-mode:multiply;
+  opacity:0;transform:translateX(60px) scale(.96);transition:opacity .9s var(--ease),transform 1.1s var(--ease)}
+.show img.on{opacity:1;transform:none}
+.showcap{position:absolute;z-index:1;right:28px;top:22px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.8);backdrop-filter:blur(8px);
+  border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 14px;font-size:13px}
+.showcap span{color:var(--dim)}
+.showcap:empty{display:none}
+.hero-copy{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:1fr;gap:14px;align-items:end;padding:28px 36px 96px}
 .hero-copy > *{min-width:0}
 .hero h1{font-size:clamp(38px,6vw,76px);font-weight:800;animation:rise .9s var(--ease) both}
-.hero-copy p{margin:0;color:rgba(255,255,255,.82);font-size:15px;max-width:44ch;justify-self:end;animation:rise .9s .12s var(--ease) both}
+.hero-copy p{margin:0;color:var(--dim);font-size:16px;max-width:40ch;animation:rise .9s .12s var(--ease) both}
 @keyframes rise{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
-@media(max-width:760px){.hero-copy{grid-template-columns:1fr;padding:22px 20px 150px}.hero-copy p{justify-self:start}}
+.hero h1{max-width:9.5ch}
+@media(max-width:760px){.hero-card{flex-direction:column;align-items:stretch;justify-content:flex-end}.show{position:relative;right:auto;top:auto;bottom:auto;width:100%;height:210px;margin-top:64px}
+  .showcap{display:none}.hero-copy{padding:10px 20px 150px}}
 
 .book{position:relative;z-index:2;margin:-62px auto 0;width:min(1000px,calc(100% - 32px));background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:10px 12px 12px;animation:rise .9s .2s var(--ease) both}
 .seg{display:inline-flex;gap:4px;background:var(--glass2);padding:4px;border-radius:12px;margin:0 0 10px}
@@ -99,8 +108,9 @@ a{color:inherit}
 .pillbtn{margin-left:auto;border:0;background:var(--soft);color:var(--accent);border-radius:999px;padding:9px 18px;font-weight:700;font-size:13.5px;text-decoration:none;transition:background .25s}
 .pillbtn:hover{background:#d4e0ff}
 
-.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media(max-width:900px){.cats{grid-template-columns:1fr 1fr}}
+.cats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+@media(max-width:1000px){.cats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:620px){.cats{grid-template-columns:1fr 1fr}}
 .cat{position:relative;aspect-ratio:3/4;max-width:100%;border-radius:20px;overflow:hidden;background:var(--dark);color:#fff;border:0;padding:0;text-align:left;
   animation:rise .8s var(--ease) both;animation-delay:calc(var(--i,0)*70ms)}
 .cat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 80%;transition:transform 1s var(--ease)}
@@ -131,6 +141,13 @@ a{color:inherit}
 .vcard.hl .badge{background:#fff}
 .vstage{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:14px;overflow:hidden;background:var(--stage)}
 .vstage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 85%;transition:transform .9s var(--ease)}
+.vstage img.studio,.viewer img.studio{object-fit:contain;object-position:50% 60%;mix-blend-mode:multiply;padding:4% 6%}
+.vstage:has(img.studio){background:radial-gradient(ellipse 70% 60% at 50% 55%,#fff,transparent 75%),var(--stage)}
+.cat:has(img.studio){background:linear-gradient(180deg,#f3f4f7,#e6e9ee);color:var(--ink)}
+.cat:has(img.studio)::after{display:none}
+.cat img.studio{object-fit:contain;object-position:50% 72%;padding:0 7%;mix-blend-mode:multiply}
+.cat:has(img.studio) .t span{opacity:1;color:var(--dim)}
+.cat:has(img.studio) .arrow{background:var(--ink);color:#fff}
 .vcard:hover .vstage img{transform:scale(1.06)}
 .vstage .real{position:absolute;left:8px;bottom:8px;z-index:1;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.45);padding:2px 7px;border-radius:999px}
 .vfoot{display:flex;align-items:center;gap:10px;margin-top:auto}
@@ -192,6 +209,9 @@ a{color:inherit}
 .resbar h2{font-size:clamp(26px,3vw,36px);font-weight:800}
 .resbar .sub{color:var(--dim);font-size:13.5px;flex-basis:100%;order:3}
 .resbar select{margin-left:auto;border:1px solid var(--line2);border-radius:999px;padding:8px 12px;font-size:13.5px;font-weight:600}
+.group{margin-bottom:34px}
+.group > h3{font-size:20px;font-weight:800;margin:0 0 12px;display:flex;align-items:baseline;gap:10px}
+.group > h3 span{font-size:13px;font-weight:600;color:var(--dim)}
 .catchip{border:0;background:var(--soft);color:var(--accent);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700}
 .empty{border:1px dashed var(--line2);border-radius:18px;padding:30px;text-align:center;color:var(--dim)}
 .btn{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:8px 15px;font-size:13.5px;font-weight:700;transition:all .25s var(--ease)}
@@ -204,13 +224,6 @@ a{color:inherit}
 .viewer{overflow:hidden}
 .viewer .phbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(22px) saturate(1.2);transform:scale(1.25);opacity:.55}
 .viewer img.photo{position:relative;display:block;width:100%;height:100%;object-fit:contain;animation:rise .6s var(--ease) both}
-
-/* hero fallback when no large photo loads: a slow strip of real fleet photos */
-.hero-card.collage::after{background:linear-gradient(180deg,rgba(8,9,12,0) 40%,rgba(8,9,12,.9) 78%)}
-.strip{position:absolute;top:26px;left:0;display:flex;gap:14px;width:max-content;animation:marq 48s linear infinite}
-.strip img{position:static;width:clamp(170px,19vw,250px);height:clamp(170px,19vw,250px);border-radius:18px;object-fit:cover;object-position:50% 80%;transform:none;animation:none;flex:none}
-@keyframes marq{to{transform:translateX(-50%)}}
-.hero-card.collage .hero-copy{padding-top:clamp(210px,23vw,300px)}
 
 /* footer */
 footer.foot{border-top:1px solid var(--line);padding-block:48px 28px;margin-top:10px}
@@ -435,7 +448,8 @@ main{animation:viewin .55s var(--ease) both}
 <main id="v-rent">
   <section class="hero wrap">
     <div class="hero-card">
-      <img id="hero-photo" alt="" fetchpriority="high">
+      <div class="show" id="show" aria-hidden="true"></div>
+      <div class="showcap" id="showcap"></div>
       <div class="hero-copy">
         <h1>Every rental company. One search.</h1>
         <p>Compare self-drive cars, bikes and scooters from verified rental companies in Guwahati and Shillong. Pick the best price and pay once.</p>
@@ -513,7 +527,7 @@ main{animation:viewin .55s var(--ease) both}
         </select>
         <span class="sub" id="r-sub"></span>
       </div>
-      <div class="cards" id="results"></div>
+      <div id="results"></div>
     </section>
   </div>
 </main>
@@ -663,7 +677,7 @@ main{animation:viewin .55s var(--ease) both}
       <form class="news" id="news"><input type="email" id="news-email" placeholder="Your email" aria-label="Your email"><button type="submit">Subscribe</button></form>
     </div>
     <div><h5>Riders</h5><ul>
-      <li><button type="button" class="lk" data-cat="cars">Rent a car</button></li>
+      <li><button type="button" class="lk" data-cat="suv">Rent a car</button></li>
       <li><button type="button" class="lk" data-cat="bikes">Rent a bike</button></li>
       <li><button type="button" class="lk" data-oneway>One-way trips</button></li>
       <li><button type="button" class="lk" data-go="biz">OPIIUS Protect</button></li></ul></div>
@@ -700,14 +714,14 @@ const CFG = {
    Wikimedia Commons files load in the viewer's browser (Creative Commons licences, credited in the footer). */
 const WIKI = f=>"https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(f)+"?width=900";
 const PHOTOS = {
-  i20:"rideme/img/i20.jpg", punch:"rideme/img/punch.jpg", brezza:"rideme/img/breeza.jpg", xl6:"rideme/img/xl6.jpg", carens:"rideme/img/carens.jpg", innova:"rideme/img/innova.jpg",
+  i20:"rideme/img/i20-studio.png", punch:"rideme/img/punch.jpg", brezza:"rideme/img/breeza.jpg", xl6:"rideme/img/xl6.jpg", carens:"rideme/img/carens.jpg", innova:"rideme/img/innova.jpg",
+  scorpio:"rideme/img/scorpio.png", thar:"rideme/img/thar.png", swift:"rideme/img/swift.png", classic:"rideme/img/classic.png",
   activa:WIKI("Honda_Activa_6G.jpg"),
-  classic:WIKI("Royal_Enfield_Classic_350_(2017_Model_Year).jpg"),
-  himalayan:WIKI("Royal_Enfield_Himalayan_450_Mana_Black.jpg"),
-  swift:WIKI("Maruti_Suzuki_Swift_LXi.jpg"),
-  thar:WIKI("Mahindra_Thar_CRDi_(16183560860).jpg")
+  himalayan:WIKI("Royal_Enfield_Himalayan_450_Mana_Black.jpg")
 };
-const WIKI_CREDITS = ["Honda Activa 6G","Royal Enfield Classic 350 (2017 Model Year)","Royal Enfield Himalayan 450 Mana Black","Maruti Suzuki Swift LXi","Mahindra Thar CRDi (16183560860)"];
+const WIKI_CREDITS = ["Honda Activa 6G","Royal Enfield Himalayan 450 Mana Black"];
+// Studio shots on a white background: shown whole (contain) and blended into the light card.
+const STUDIO = new Set(["scorpio","swift","i20","classic"]);
 
 /* =================== SAMPLE DATA ===================
    Real Drive Ghy: cars, photos and day prices from their WhatsApp catalog; everything else about them here is sample data.
@@ -729,6 +743,7 @@ const MODELS = [
   {id:"swift", name:"Maruti Swift", kind:"car", sub:"Hatchback", cc:"1.2 L", seats:5, fuel:"Petrol", gear:"Manual", dep:5000, build:"hatch", paint:"#b3151f"},
   {id:"thar", name:"Mahindra Thar 4x4", kind:"car", sub:"Off-roader", cc:"2.2 L", seats:4, fuel:"Diesel", gear:"Manual", dep:15000, build:"thar", paint:"#9a2a1a"},
   {id:"innova", name:"Toyota Innova Crysta", kind:"car", sub:"MPV", cc:"2.4 L", seats:7, fuel:"Diesel", gear:"Manual", dep:10000, build:"mpv", paint:"#a9adb2"},
+  {id:"scorpio", name:"Mahindra Scorpio", kind:"car", sub:"SUV", cc:"2.2 L", seats:7, fuel:"Diesel", gear:"Manual", dep:10000, build:"suv", paint:"#111"},
   {id:"i20", name:"Hyundai Elite i20", kind:"car", sub:"Hatchback", cc:"1.2 L", seats:5, fuel:"Petrol", gear:"Manual", dep:5000, build:"hatch", paint:"#e8e8e6"},
   {id:"punch", name:"Tata Punch", kind:"car", sub:"Compact SUV", cc:"1.2 L", seats:5, fuel:"Petrol", gear:"Manual", dep:5000, build:"ev", paint:"#e8e8e6"},
   {id:"brezza", name:"Maruti Suzuki Brezza", kind:"car", sub:"Compact SUV", cc:"1.5 L", seats:5, fuel:"Petrol", gear:"Manual", dep:6000, build:"suv", paint:"#e8e8e6"},
@@ -746,6 +761,7 @@ const LISTINGS = [
   ["rd","i20",1500,2],["rd","punch",1900,2],["rd","brezza",2400,2],["rd","xl6",3100,1],["rd","carens",3300,1],["rd","innova",3500,1],
   ["eg","i20",1450,2],["nb","i20",1600,2],["rl","punch",2000,2],["tl","punch",1950,1],["nb","brezza",2500,2],["tl","brezza",2600,1],
   ["tl","carens",3400,1],["rl","xl6",3000,1],
+  ["nb","scorpio",3400,2],["rl","scorpio",3200,2],["tl","scorpio",3500,1],["pw","scorpio",3800,1],
   ["pw","activa",500,6],["cl","activa",470,4],["pw","classic",1350,3],["cl","classic",1250,2],
   ["pw","himalayan",2200,2],["pw","swift",2000,2],["cl","swift",1900,2],["pw","thar",4200,1],
 ];
@@ -796,7 +812,7 @@ document.addEventListener("error",e=>{
   if(box){box.querySelectorAll("img,.real").forEach(x=>x.remove()); box.insertAdjacentHTML("afterbegin",noImg(m))} else el.remove();
 },true);
 function stageImg(m){
-  return hasPhoto(m.id)?`<img class="photo" data-photo="${m.id}" src="${PHOTOS[m.id]}" alt="${esc(m.name)}" loading="lazy"><span class="real">Real photo</span>`:noImg(m);
+  return hasPhoto(m.id)?`<img class="photo${STUDIO.has(m.id)?" studio":""}" data-photo="${m.id}" src="${PHOTOS[m.id]}" alt="${esc(m.name)}" loading="lazy"><span class="real">Real photo</span>`:noImg(m);
 }
 
 /* =================== state =================== */
@@ -861,9 +877,11 @@ function renderFilters(){
 const CATS={
   scooters:{label:"Scooters",f:m=>m.sub==="Scooter",pick:["activa"]},
   bikes:{label:"Motorcycles",f:m=>m.kind==="bike"&&m.sub!=="Scooter",pick:["classic","himalayan"]},
-  cars:{label:"Hatchbacks & SUVs",f:m=>m.kind==="car"&&m.seats<=5,pick:["brezza","thar","i20","punch","swift"]},
-  seven:{label:"6–7 seaters",f:m=>m.kind==="car"&&m.seats>=6,pick:["innova","xl6","carens"]}
+  hatch:{label:"Hatchbacks",f:m=>m.kind==="car"&&m.sub==="Hatchback",pick:["swift","i20"]},
+  suv:{label:"SUVs",f:m=>m.kind==="car"&&m.sub!=="Hatchback"&&m.seats<=5,pick:["brezza","thar","punch"]},
+  seven:{label:"6–7 seaters",f:m=>m.kind==="car"&&m.seats>=6,pick:["scorpio","innova","xl6","carens"]}
 };
+const catOf=m=>Object.keys(CATS).find(k=>CATS[k].f(m));
 function vcard(m,offers,i,hl){
   const lo=offers[0].price, hi=offers[offers.length-1].price, d=days();
   return `<article class="vcard${hl?" hl":""}" role="button" tabindex="0" style="--i:${Math.min(i,10)}" data-model="${m.id}" aria-label="${esc(m.name)}, from ${inr(lo)} per day, ${offers.length} offers">
@@ -885,7 +903,11 @@ function renderResults(){
   $("#r-cat").innerHTML=cat?`<button type="button" class="catchip" data-clearcat>${esc(cat.label)} ×</button>`:"";
   $("#r-sub").textContent=`${list.length} models · ${nOffers} offers · ${fmtDate(S.from)} to ${fmtDate(S.to)} (${d} day${d>1?"s":""})`;
   if(!list.length){$("#results").innerHTML=`<div class="empty" style="grid-column:1/-1"><b>No rides match these filters.</b><br>Raise the price limit or clear a filter.</div>`;return}
-  $("#results").innerHTML=list.map(({m,offers},i)=>vcard(m,offers,i,false)).join("");
+  let n=0;
+  $("#results").innerHTML=Object.entries(CATS).map(([k,c])=>{
+    const g=list.filter(x=>catOf(x.m)===k); if(!g.length)return "";
+    return `<div class="group"><h3>${esc(c.label)} <span>${g.length} model${g.length>1?"s":""}</span></h3>
+      <div class="cards">${g.map(x=>vcard(x.m,x.offers,n++,false)).join("")}</div></div>`}).join("");
 }
 const ARROW='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
 function renderCats(){
@@ -893,11 +915,11 @@ function renderCats(){
     const ms=MODELS.filter(m=>c.f(m)&&offersFor(m.id,true).length), ph=c.pick.find(hasPhoto), m=modelById[ph||c.pick[0]];
     const lo=Math.min(...ms.map(x=>offersFor(x.id,true)[0].price));
     return `<button type="button" class="cat" style="--i:${i}" data-cat="${k}" aria-label="${esc(c.label)}">
-      ${ph?`<img data-photo="${ph}" src="${PHOTOS[ph]}" alt="" loading="lazy">`:noImg(m)}
+      ${ph?`<img data-photo="${ph}" class="${STUDIO.has(ph)?"studio":""}" src="${PHOTOS[ph]}" alt="" loading="lazy">`:noImg(m)}
       <span class="t"><b>${esc(c.label)}</b><span>${ms.length?`${ms.length} model${ms.length>1?"s":""} · from ${inr(lo)}/day`:"Coming soon in "+S.city}</span></span>
       <span class="arrow">${ARROW}</span></button>`}).join("");
 }
-const TREND=["innova","classic","brezza","thar","xl6","activa","carens","himalayan","swift","i20","punch"];
+const TREND=["scorpio","classic","thar","swift","innova","brezza","xl6","activa","carens","himalayan","swift","i20","punch"];
 function renderTrend(){
   const list=TREND.map(id=>({m:modelById[id],offers:offersFor(id,true)})).filter(x=>x.offers.length).slice(0,4);
   $("#trend").innerHTML=list.map((x,i)=>vcard(x.m,x.offers,i,i===0)).join("");
@@ -905,21 +927,28 @@ function renderTrend(){
 function renderRent(){renderFilters();renderResults();renderCats();renderTrend()}
 
 /* =================== hero + promo photos =================== */
-const HERO_SRC=["https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent("Mahindra_Thar_CRDi_(16183560860).jpg")+"?width=1800"];
-function heroCollage(){
-  const card=$(".hero-card"), ids=["innova","brezza","xl6","carens","punch","i20"].filter(hasPhoto); if(!ids.length)return;
-  const imgs=ids.map(id=>`<img src="${PHOTOS[id]}" alt="">`).join("");
-  card.classList.add("collage"); card.insertAdjacentHTML("afterbegin",`<div class="strip" aria-hidden="true">${imgs}${imgs}</div>`);
+const HERO_CARS=["scorpio","swift","classic","i20"];
+let heroI=0, heroT=0;
+function heroCap(){
+  const list=HERO_CARS.filter(hasPhoto); if(!list.length){$("#showcap").innerHTML="";return}
+  const id=list[heroI%list.length], m=modelById[id], of=offersFor(id,true);
+  $("#showcap").innerHTML=`<b>${esc(m.name)}</b><span>${of.length?`from ${inr(of[0].price)}/day · ${of.length} compan${of.length>1?"ies":"y"}`:"not in "+S.city}</span><button type="button" class="btn sm" data-model="${id}">View</button>`;
+}
+function heroNext(i){
+  const imgs=[...$("#show").querySelectorAll("img")]; if(!imgs.length)return;
+  heroI=(i+imgs.length)%imgs.length;
+  imgs.forEach((im,k)=>im.classList.toggle("on",k===heroI)); heroCap();
+  clearTimeout(heroT); if(!reduced) heroT=setTimeout(()=>heroNext(heroI+1),4200);
 }
 function initHero(){
-  const img=$("#hero-photo"); let k=0;
-  img.onerror=()=>{k++; if(k<HERO_SRC.length) img.src=HERO_SRC[k]; else {img.remove();heroCollage()}};
-  img.src=HERO_SRC[0];
+  const list=HERO_CARS.filter(hasPhoto);
+  $("#show").innerHTML=list.map(id=>`<img src="${PHOTOS[id]}" alt="">`).join("");
+  heroNext(0);
   const pp=$("#promo-ph");
   if(hasPhoto("xl6")) pp.insertAdjacentHTML("afterbegin",`<img data-photo="xl6" src="${PHOTOS.xl6}" alt="Maruti Suzuki XL6 on a hill road" loading="lazy">`);
 }
 function heroPause(){}
-function heroCaption(){renderTrend()}
+function heroCaption(){renderTrend();heroCap()}
 
 /* =================== vehicle sheet =================== */
 let D=null;
@@ -937,7 +966,7 @@ function mountSheet(){
       <footer id="d-foot"></footer></aside>`;
   document.body.style.overflow="hidden";
   const v=$("#d-viewer"), m=D.m;
-  v.innerHTML=hasPhoto(m.id)?`<img class="phbg" src="${PHOTOS[m.id]}" alt=""><img class="photo" data-photo="${m.id}" src="${PHOTOS[m.id]}" alt="${esc(m.name)}">`:noImg(m);
+  v.innerHTML=hasPhoto(m.id)?`<img class="phbg" src="${PHOTOS[m.id]}" alt=""><img class="photo${STUDIO.has(m.id)?" studio":""}" data-photo="${m.id}" src="${PHOTOS[m.id]}" alt="${esc(m.name)}">`:noImg(m);
   heroPause(true);
   requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.add("open")));
   setTimeout(()=>root.querySelector(".x")?.focus({preventScroll:true}),350);
