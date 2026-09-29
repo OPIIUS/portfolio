@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>OPIIUS</title>
-<meta name="description" content="Compare self-drive cars, bikes and scooters from verified rental companies in Guwahati and Shillong, and book in one payment.">
+<meta name="description" content="OPIIUS: rent a car, bike or scooter from Guwahati and Shillong rental companies, or plan a Meghalaya trip, all in one place.">
 <link rel="canonical" href="https://opiius.online/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="OPIIUS: every rental company, one search">
+<meta property="og:title" content="OPIIUS: the Northeast, sorted. Rent, ride, explore.">
 <meta property="og:description" content="Compare self-drive cars, bikes and scooters from verified rental companies in Guwahati and Shillong.">
 <meta property="og:url" content="https://opiius.online/">
 <meta property="og:image" content="https://opiius.online/rideme/img/xl6.jpg">
@@ -80,7 +80,7 @@ a{color:inherit}
 .hx-copy{position:relative;z-index:2}
 .hx h1{font-size:clamp(42px,6.2vw,84px);font-weight:800;line-height:.98;letter-spacing:-.045em}
 .hx-copy p{margin:20px 0 0;color:var(--dim);font-size:16px;max-width:38ch}
-.qs{margin-top:28px;display:grid;grid-template-columns:1fr 1.35fr 1.35fr auto;border:1px solid var(--line2);border-radius:18px;background:#fff;box-shadow:var(--shadow);overflow:hidden;max-width:620px}
+.qs{margin:0 0 22px;display:grid;grid-template-columns:1fr 1.35fr 1.35fr auto;border:1px solid var(--line2);border-radius:18px;background:#fff;box-shadow:var(--shadow);overflow:hidden;max-width:620px}
 .qs > div{padding:9px 14px;border-left:1px solid var(--line);min-width:0}
 .qs > div:first-of-type{border-left:0}
 .qs label{display:block;font-size:11px;color:var(--dim);font-weight:600}
@@ -116,6 +116,38 @@ a{color:inherit}
   .qs{grid-template-columns:1fr 1fr}.qs > div:nth-of-type(3){border-left:0}.qs > div:nth-of-type(n+3){border-top:1px solid var(--line)}.qs .go{grid-column:1/-1;padding:12px}}
 @media(max-width:420px){.qs{grid-template-columns:1fr}.qs > div{border-left:0!important;border-top:1px solid var(--line)}.qs > div:first-of-type{border-top:0}}
 
+.omni{display:flex;align-items:center;gap:10px;margin-top:22px;max-width:560px;background:#fff;border:1.5px solid var(--ink);border-radius:18px;padding:6px 6px 6px 16px;box-shadow:var(--shadow)}
+.omni svg{width:20px;height:20px;flex:none;color:var(--dim)}
+.omni input{flex:1;min-width:0;border:0;outline:0;font-size:15.5px;padding:10px 0;background:transparent}
+.omni button{border:0;background:var(--ink);color:#fff;border-radius:13px;padding:11px 20px;font-weight:700;font-size:14.5px;transition:background .25s}
+.omni button:hover{background:var(--accent)}
+.ideas{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;max-width:560px}
+.ideas button{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;color:var(--dim);transition:all .25s var(--ease)}
+.ideas button:hover{border-color:var(--ink);color:var(--ink)}
+.choose{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;max-width:520px}
+.ch{display:flex;align-items:center;gap:12px;border:1px solid var(--line2);background:#fff;border-radius:16px;padding:14px 16px;text-align:left;text-decoration:none;color:var(--ink);cursor:pointer;transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+.ch:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--ink)}
+.ch .ic{width:42px;height:42px;border-radius:12px;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none}
+.ch .ic svg{width:22px;height:22px}
+.ch b{display:block;font-size:15.5px}
+.ch small{display:block;font-size:12.5px;color:var(--dim)}
+@media(max-width:420px){.choose{grid-template-columns:1fr}}
+.tz{padding-block:80px 10px}
+.tz h2{font-size:clamp(32px,4.2vw,54px);font-weight:800;letter-spacing:-.04em}
+.tz > p{color:var(--dim);max-width:60ch;margin:14px 0 28px}
+.tzgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:1000px){.tzgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.tzgrid{grid-template-columns:1fr}}
+.tzc{display:flex;flex-direction:column;gap:8px;min-height:210px;border-radius:20px;padding:20px;text-decoration:none;color:#fff;border:0;text-align:left;cursor:pointer;
+  background:linear-gradient(160deg,#1d4d3b,#0f2a22);transition:transform .5s var(--ease),box-shadow .5s}
+.tzc:nth-child(2){background:linear-gradient(160deg,#1f3f63,#10233a)}
+.tzc:nth-child(3){background:linear-gradient(160deg,#4a3a20,#2a200f)}
+.tzc.self{background:#fff;color:var(--ink);border:1px dashed var(--line2)}
+.tzc:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.tzc small{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.7}
+.tzc b{font-size:20px;letter-spacing:-.02em;line-height:1.15}
+.tzc span{font-size:13.5px;opacity:.8}
+.tzc em{margin-top:auto;font-style:normal;font-weight:700;font-size:13.5px}
 .hstats{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;font-size:13.5px;color:var(--dim)}
 .hstats b{color:var(--ink);font-weight:800}
 
@@ -290,6 +322,10 @@ a{color:inherit}
 .vcard .sub{font-size:12.5px;color:var(--dim)}
 .vcard .badge{margin-left:auto;flex:none;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:var(--glass2);color:var(--dim)}
 .vcard.hl .badge{background:#fff}
+.vcard .badge.live{background:#e3f5ec;color:#1f8a4c}
+.vfoot .p small.est{color:var(--dim);font-weight:600}
+.ftile .live-dot{position:absolute;right:12px;top:12px;z-index:1;font-size:11px;font-weight:700;color:#1f8a4c;background:rgba(255,255,255,.92);padding:4px 9px;border-radius:999px}
+.offer.quote{border-style:dashed}
 .vstage{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:14px;overflow:hidden;background:var(--stage)}
 .vstage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 85%;transition:transform .9s var(--ease)}
 .vstage img.studio,.viewer img.studio{object-fit:contain;object-position:50% 60%;mix-blend-mode:multiply;padding:4% 6%}
@@ -564,6 +600,7 @@ main{animation:viewin .55s var(--ease) both}
       <button role="tab" id="t-biz" data-go="biz" aria-selected="false">Business model</button>
     </nav>
     <button type="button" class="bizlink navlk" data-scroll="companies">Companies</button>
+    <a class="bizlink" href="tours/meghalaya.html">Tours</a>
     <button type="button" class="bizlink navlk" data-scroll="fleet">Fleet</button>
     <button type="button" class="bizlink navlk" data-scroll="features">Features</button>
     <a class="bizlink" href="business.html">For businesses</a>
@@ -575,17 +612,26 @@ main{animation:viewin .55s var(--ease) both}
 <main id="v-rent">
   <section class="hx wrap">
     <div class="hx-copy">
-      <h1 class="rv">All Guwahati Rentals in One Place</h1>
-      <p class="rv" style="--d:1">Cars, bikes and scooters from every rental company in town. Compare their prices, pick the one you like and pay once.</p>
-      <div class="hstats rv" style="--d:1" id="hstats"></div>
-      <form class="qs rv" style="--d:2" id="search" autocomplete="off">
-        <input type="hidden" id="s-kind" value="all">
-        <div><label for="s-city">City</label>
-          <select id="s-city"><option value="Guwahati">Guwahati</option><option value="Shillong">Shillong</option></select></div>
-        <div><label for="s-from">Pick-up</label><input id="s-from" type="datetime-local"></div>
-        <div><label for="s-to">Return</label><input id="s-to" type="datetime-local"></div>
-        <button class="go" type="submit">Search</button>
+      <span class="eyebrow rv">OPIIUS · Rent, ride, explore</span>
+      <h1 class="rv">Where do you want to go?</h1>
+      <p class="rv" style="--d:1">Every rental company and tour in the Northeast, in one place. Ask for a car, a bike or a trip.</p>
+      <form class="omni rv" style="--d:1" id="omni" autocomplete="off" role="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input type="search" id="omni-q" aria-label="Search rentals and tours" placeholder="Try &quot;SUV in Shillong&quot; or &quot;Meghalaya 4 day trip&quot;">
+        <button type="submit">Go</button>
       </form>
+      <div class="ideas rv" style="--d:2" id="ideas">
+        <button type="button" data-q="Cars in Guwahati under ₹2,000">Cars under ₹2,000</button>
+        <button type="button" data-q="Royal Enfield in Guwahati">Royal Enfield</button>
+        <button type="button" data-q="7 seater for family">7-seater for family</button>
+        <button type="button" data-q="Meghalaya 4 day trip">Meghalaya 4-day trip</button>
+        <button type="button" data-q="Weekend trip from Guwahati">Weekend trip</button>
+      </div>
+      <div class="choose rv" style="--d:1">
+        <button type="button" class="ch" data-scroll="companies"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16l1.5-5A2 2 0 0 1 8.4 9.6h7.2a2 2 0 0 1 1.9 1.4L19 16"/><rect x="3" y="16" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="20" r="1.2"/><circle cx="16.5" cy="20" r="1.2"/></svg></span><span><b>Rent a vehicle</b><small>Cars, bikes, scooters</small></span></button>
+        <a class="ch" href="tours/meghalaya.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l6-11 4 7 3-4 5 8z"/><circle cx="17" cy="6" r="2"/></svg></span><span><b>Explore tours</b><small>Meghalaya, 3 to 5 days</small></span></a>
+      </div>
+      <div class="hstats rv" style="--d:1" id="hstats"></div>
     </div>
     <div class="hx-car" id="hx-car" aria-hidden="true">
       <span class="pin" style="--x:12%;--y:14%;--k:0"></span><span class="pin" style="--x:44%;--y:6%;--k:1"></span>
@@ -609,6 +655,18 @@ main{animation:viewin .55s var(--ease) both}
     <div class="cosearch rv" style="--d:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
       <input type="search" id="co-q" placeholder="Search a company, area or vehicle (e.g. Thar, Paltan Bazar, scooty)" aria-label="Search rental companies"></div>
     <div class="cogrid" id="cogrid"></div>
+  </section>
+
+  <section class="tz wrap" id="tours">
+    <span class="eyebrow rv">OPIIUS Tours</span>
+    <div class="cos-h"><h2 class="rv">Planning Meghalaya?</h2><a class="pillbtn rv" href="tours/meghalaya.html">See the Meghalaya guide</a></div>
+    <p class="rv" style="--d:1">Take a tour with a local operator, or drive it yourself with a rented car. OPIIUS shows you both, with honest costs.</p>
+    <div class="tzgrid">
+      <a class="tzc rv" style="--d:0" href="tours/meghalaya.html#p3"><small>3 days · 2 nights</small><b>Shillong &amp; Sohra</b><span>Umiam Lake, Laitlum, Nohkalikai, Mawsmai cave</span><em>Typically ₹9,000–13,000 per person</em></a>
+      <a class="tzc rv" style="--d:1" href="tours/meghalaya.html#p4"><small>4 days · 3 nights</small><b>Shillong, Sohra &amp; Dawki</b><span>Adds the Umngot river and Mawlynnong village</span><em>Typically ₹12,000–18,000 per person</em></a>
+      <a class="tzc rv" style="--d:2" href="tours/meghalaya.html#p5"><small>5 days · 4 nights</small><b>Meghalaya with root bridges</b><span>Adds the trek to Nongriat's double-decker bridge</span><em>Typically ₹15,000–22,000 per person</em></a>
+      <button type="button" class="tzc self rv" style="--d:3" data-cat="seven"><small>Self-drive</small><b>Drive it yourself</b><span>SUVs and 7-seaters for Meghalaya roads, with a free day-by-day plan</span><em>Cars from ₹1,500/day</em></button>
+    </div>
   </section>
 
   <section class="app wrap" id="app">
@@ -662,6 +720,14 @@ main{animation:viewin .55s var(--ease) both}
       <p class="note">Every company on OPIIUS runs its own fleet. OPIIUS checks their papers, collects payment and handles disputes.</p>
     </aside>
     <section aria-live="polite">
+      <form class="qs" id="search" autocomplete="off">
+        <input type="hidden" id="s-kind" value="all">
+        <div><label for="s-city">City</label>
+          <select id="s-city"><option value="Guwahati">Guwahati</option><option value="Shillong">Shillong</option></select></div>
+        <div><label for="s-from">Pick-up</label><input id="s-from" type="datetime-local"></div>
+        <div><label for="s-to">Return</label><input id="s-to" type="datetime-local"></div>
+        <button class="go" type="submit">Search</button>
+      </form>
       <div class="resbar">
         <h2 id="r-title">All rides in Guwahati</h2>
         <span id="r-cat"></span>
@@ -843,8 +909,8 @@ main{animation:viewin .55s var(--ease) both}
       <li><button type="button" class="lk" data-city="Shillong">Shillong</button></li>
       <li><span class="kv">Tawang, Gangtok: coming next</span></li></ul></div>
   </div>
-  <div class="fine">OPIIUS is in early launch. Real Drive Ghy is our founding partner, with cars, photos and day prices from their WhatsApp catalog. Companies marked "Demo partner", and all riders and bookings, are sample data to show how booking works.
-    Companies under "More rental companies in Guwahati" are not affiliated with OPIIUS: their details come from their own public websites and listings, and their cover photos show the type of vehicle they rent, not their actual fleet. To update or remove a listing, use "List your business".
+  <div class="fine">This is a demo of the OPIIUS platform for rental companies and tour operators. Real Drive Ghy's cars, photos and day prices come from their catalog; companies marked "Demo partner", tour prices, riders and bookings are sample data, and booking requests are not sent anywhere.
+    Companies under "More rental companies in Guwahati" are not affiliated with OPIIUS: their details come from their own public websites and listings, and their cover photos show the type of vehicle they rent.
     Other photos load from Wikimedia Commons under Creative Commons licences: <span id="credits"></span>.</div>
 </div></footer>
 
@@ -853,6 +919,11 @@ main{animation:viewin .55s var(--ease) both}
 
 <script>
 /* =================== CONFIG: edit to re-skin for a pitch =================== */
+/* DEMO for rental-company owners: shows how OPIIUS looks and works. Nothing typed here leaves the page.
+   LIVE=false shows every sample company as bookable so owners can see side-by-side comparison. */
+const LIVE = false;
+const REAL_OPS = new Set(["rd"]);
+const isReal = op => !LIVE || REAL_OPS.has(op.id);
 const CFG = {
   commission: 0.12,          // share of rent OPIIUS keeps
   protectMargin: 0.40,       // share of Protect premium OPIIUS keeps
@@ -1025,16 +1096,28 @@ const RIDERS=["Ananya Das","Rohit Sharma","Mehul Kalita","Priya Bora","Arjun Nai
 function isFree(v){return !S.bookings.some(b=>b.vid===v.id&&b.status!=="done"&&b.from<S.to&&b.to>S.from)}
 function offersFor(modelId,ignoreFilters){
   return LISTINGS.map(([op,model,price])=>({op:opById[op],model,price}))
-    .filter(x=>x.model===modelId && x.op.city===S.city)
-    .map(x=>({...x, avail:VEH.filter(v=>v.op===x.op.id&&v.model===modelId&&v.online&&isFree(v)).length}))
+    .filter(x=>x.model===modelId && x.op.city===S.city && isReal(x.op))
+    .map(x=>({...x, avail:LIVE?1:VEH.filter(v=>v.op===x.op.id&&v.model===modelId&&v.online&&isFree(v)).length}))
     .filter(x=>x.avail>0 && (ignoreFilters || (x.price<=S.max
       && (!S.ops.size||S.ops.has(x.op.id)) && (!S.deliv||x.op.deliv) && (!S.assured||x.op.assured) && (!S.oneway||x.op.oneway))))
     .sort((a,b)=>a.price-b.price);
 }
+/* Typical day price for a model in the city, from market sample data. Shown as an estimate, never as an offer. */
+function estimateFor(modelId){
+  const ps=LISTINGS.filter(l=>l[1]===modelId&&opById[l[0]].city===S.city).map(l=>l[2]);
+  return ps.length?{lo:Math.min(...ps),hi:Math.max(...ps)}:null;
+}
+/* One place to decide what a model shows: real offers first, otherwise the typical price. */
+function priceInfo(modelId,ignoreFilters){
+  const offers=offersFor(modelId,ignoreFilters), est=estimateFor(modelId);
+  if(offers.length) return {offers,real:true,lo:offers[0].price,hi:offers[offers.length-1].price};
+  if(est&&(ignoreFilters||est.lo<=S.max)) return {offers,real:false,lo:est.lo,hi:est.hi};
+  return null;
+}
 function renderFilters(){
   const types=[...new Set(MODELS.filter(m=>S.kind==="all"||m.kind===S.kind).map(m=>m.sub))];
   $("#f-type").innerHTML=types.map(t=>`<button type="button" class="chip" aria-pressed="${S.type.has(t)}" data-t="${esc(t)}">${esc(t)}</button>`).join("");
-  $("#f-ops-list").innerHTML=OPS.filter(o=>o.city===S.city).map(o=>{
+  $("#f-ops-list").innerHTML=OPS.filter(o=>o.city===S.city&&isReal(o)).map(o=>{
     const c=VEH.filter(v=>v.op===o.id&&v.online).length;
     return `<label class="check"><input type="checkbox" data-op="${o.id}" ${S.ops.has(o.id)?"checked":""}> ${esc(o.name)}<small class="num">${c}</small></label>`}).join("");
 }
@@ -1046,32 +1129,31 @@ const CATS={
   seven:{label:"6–7 seaters",f:m=>m.kind==="car"&&m.seats>=6,pick:["scorpio","xuv700","innova","xl6","carens"]}
 };
 const catOf=m=>Object.keys(CATS).find(k=>CATS[k].f(m));
-function vcard(m,offers,i,hl){
-  const lo=offers[0].price, hi=offers[offers.length-1].price, d=days();
-  return `<article class="vcard${hl?" hl":""}" role="button" tabindex="0" style="--i:${Math.min(i,10)}" data-model="${m.id}" aria-label="${esc(m.name)}, from ${inr(lo)} per day, ${offers.length} offers">
+function vcard(m,pi,i,hl){
+  const d=days(), n=pi.offers.length;
+  return `<article class="vcard${hl?" hl":""}" role="button" tabindex="0" style="--i:${Math.min(i,10)}" data-model="${m.id}" aria-label="${esc(m.name)}, ${pi.real?"from":"typically"} ${inr(pi.lo)} per day">
     <div class="vh"><div><h3>${esc(m.name)}</h3><div class="sub">${m.sub} · ${m.gear} · ${m.seats} seats</div></div>
-      <span class="badge">${offers.length} compan${offers.length>1?"ies":"y"}</span></div>
+      <span class="badge ${pi.real?"live":""}">${pi.real?"● Book online":"Get quotes"}</span></div>
     <div class="vstage">${stageImg(m)}</div>
-    <div class="vfoot"><div class="p"><b class="num">${inr(lo)}</b><span> /day</span>${offers.length>1?`<small>Save up to ${inr((hi-lo)*d)} by comparing</small>`:""}</div><span class="rent">Rent now</span></div>
+    <div class="vfoot"><div class="p">${pi.real?`<b class="num">${inr(pi.lo)}</b><span> /day</span>`:`<b class="num">~${inr(pi.lo)}</b><span> /day typical</span>`}${pi.real&&n>1?`<small>Save up to ${inr((pi.hi-pi.lo)*d)} by comparing</small>`:pi.real?`<small>${esc(pi.offers[0].op.name)}</small>`:`<small class="est">Guwahati range ${inr(pi.lo)}–${inr(pi.hi)}</small>`}</div><span class="rent">${pi.real?"Rent now":"Get quotes"}</span></div>
   </article>`;
 }
 function renderResults(){
   const d=days(), cat=S.cat&&CATS[S.cat];
   let list=MODELS.filter(m=>(S.kind==="all"||m.kind===S.kind)&&(!S.type.size||S.type.has(m.sub))&&(!cat||cat.f(m)))
-    .map(m=>({m,offers:offersFor(m.id)})).filter(x=>x.offers.length);
-  if(S.sort==="price") list.sort((a,b)=>a.offers[0].price-b.offers[0].price);
-  if(S.sort==="rating") list.sort((a,b)=>Math.max(...b.offers.map(o=>o.op.rating))-Math.max(...a.offers.map(o=>o.op.rating)));
-  if(S.sort==="offers") list.sort((a,b)=>b.offers.length-a.offers.length);
-  const nOffers=list.reduce((s,x)=>s+x.offers.length,0);
+    .map(m=>({m,pi:priceInfo(m.id)})).filter(x=>x.pi&&(!S.ops.size||x.pi.offers.length));
+  if(S.sort==="price") list.sort((a,b)=>a.pi.lo-b.pi.lo);
+  if(S.sort==="rating"||S.sort==="offers") list.sort((a,b)=>(b.pi.real-a.pi.real)||(b.pi.offers.length-a.pi.offers.length)||(a.pi.lo-b.pi.lo));
+  const nOffers=list.filter(x=>x.pi.real).length;
   $("#r-title").textContent=`All rides in ${S.city}`;
   $("#r-cat").innerHTML=cat?`<button type="button" class="catchip" data-clearcat>${esc(cat.label)} ×</button>`:"";
-  $("#r-sub").textContent=`${list.length} models · ${nOffers} offers · ${fmtDate(S.from)} to ${fmtDate(S.to)} (${d} day${d>1?"s":""})`;
+  $("#r-sub").textContent=`${list.length} models · ${nOffers} bookable online · others by quote · ${fmtDate(S.from)} to ${fmtDate(S.to)} (${d} day${d>1?"s":""})`;
   if(!list.length){$("#results").innerHTML=`<div class="empty" style="grid-column:1/-1"><b>No rides match these filters.</b><br>Raise the price limit or clear a filter.</div>`;return}
   let n=0;
   $("#results").innerHTML=Object.entries(CATS).map(([k,c])=>{
     const g=list.filter(x=>catOf(x.m)===k); if(!g.length)return "";
     return `<div class="group"><h3>${esc(c.label)} <span>${g.length} model${g.length>1?"s":""}</span></h3>
-      <div class="cards">${g.map(x=>vcard(x.m,x.offers,n++,false)).join("")}</div></div>`}).join("");
+      <div class="cards">${g.map(x=>vcard(x.m,x.pi,n++,false)).join("")}</div></div>`}).join("");
 }
 const MAKERS=["Maruti Suzuki","Mahindra","Hyundai","Tata","Toyota","Kia","Royal Enfield","Honda"];
 const makerOf=m=>MAKERS.find(k=>m.name.startsWith(k)||m.name.startsWith(k.split(" ")[0]));
@@ -1080,7 +1162,7 @@ S.fleetCat=null; S.fleetMaker=null;
 /* Brand marks from Simple Icons (CC0). Royal Enfield and Mahindra are set as wordmarks. */
 const LOGOS={"Maruti Suzuki": "M17.369 19.995C13.51 22.39 12 24 12 24L.105 15.705s5.003-3.715 9.186-.87l5.61 3.882.683-.453L.106 7.321s2.226-.65 6.524-3.315C10.49 1.609 12 0 12 0l11.895 8.296s-5.003 3.715-9.187.87L9.1 5.281l-.683.454L23.893 16.68s-2.224.649-6.524 3.315Z", "Hyundai": "M12 18.1622c-6.6275 0-12-2.7586-12-6.163 0-3.4028 5.3725-6.1614 12-6.1614 6.6278 0 12 2.7586 12 6.1614 0 3.4044-5.3722 6.163-12 6.163zM7.6023 7.17C3.701 7.9784.973 9.8302.973 11.9844c0 1.1929.8382 2.2932 2.248 3.1757.1174.0724.1941.0862.251.0826.1019-.006.1593-.0698.201-.146.028-.0485.0631-.1225.0972-.1968.4601-1.0834 2.0776-4.8333 4.2023-7.3758a1.1775 1.1775 0 0 0 .1048-.1461c.046-.084.0356-.1513.0006-.192-.0593-.0647-.2247-.065-.4756-.016zM9.742 8.8995c-1.1728 2.8492 1.0473 2.4961 1.6478 2.3637 1.0203-.2258 1.9944-.6128 2.7746-.925 2.2216-.8887 3.4012-1.7804 3.7925-2.123a1.9839 1.9839 0 0 0 .1076-.0988c.0557-.058.0976-.1192.0976-.2002 0-.0936-.081-.1687-.2374-.2231-.012-.0049-.0517-.021-.0641-.025-1.698-.5415-3.724-.8563-5.9016-.8563-.0168 0-.0586-.0022-.1169 0-.2608.0078-.5509.0664-.787.1888-.7777.4049-1.1163 1.4235-1.313 1.899zm10.5851.0037c-.0268.0487-.0612.1224-.0962.1974-.4599 1.0826-2.0774 4.831-4.2018 7.3733-.0515.063-.0796.1031-.1042.1467-.0492.0846-.0388.1535 0 .1935.0572.0641.2235.0654.474.0157 3.8998-.81 6.628-2.6606 6.628-4.8149 0-1.1925-.836-2.2928-2.2472-3.1745-.1161-.073-.1934-.0871-.25-.083-.1028.0067-.16.0699-.2026.1458zM14.258 15.099c1.173-2.849-1.0483-2.494-1.6467-2.3622-1.0218.225-1.996.613-2.7757.924-2.2226.8883-3.4017 1.782-3.7944 2.1234-.0468.0428-.0833.0742-.1066.0995-.0564.0573-.0967.1178-.0967.2007 0 .0923.08.1688.2362.2229.012.0048.0511.0213.0657.0255 1.696.54 3.722.8557 5.9.8557.0177 0 .0592.0016.1178 0 .2609-.0081.5522-.0677.7871-.1888.7781-.4052 1.1169-1.4234 1.3133-1.9007z", "Tata": "M9.774 11.568c.193-1.322.168-2.013-1.768-1.906-2.223.124-4.476.265-7.849 1.027A5.63 5.63 0 0 0 0 12c0 1.52.618 2.99 1.787 4.254 1.06 1.144 2.556 2.095 4.326 2.752a15.48 15.48 0 0 0 2.014.588c.13-.527.959-3.907 1.616-7.823l.03-.202m14.07-.88c-3.372-.762-5.624-.902-7.846-1.026-1.937-.107-1.962.584-1.768 1.906l.046.298c.65 3.848 1.458 7.16 1.598 7.72C20.595 18.508 24 15.516 24 12c0-.443-.054-.88-.157-1.311m-.491-1.324a7.163 7.163 0 0 0-1.14-1.618c-1.06-1.144-2.555-2.095-4.325-2.752-1.784-.662-3.82-1.011-5.887-1.011-2.068 0-4.103.35-5.887 1.01-1.77.658-3.266 1.61-4.326 2.753A7.17 7.17 0 0 0 .648 9.366c2.304-.557 6.245-1.293 9.904-1.37.353-.008.596.105.756.307.196.248.18 1.128.175 1.522l-.104 10.18a18.507 18.507 0 0 0 1.244 0l-.104-10.18c-.005-.394-.02-1.274.175-1.522.16-.202.403-.315.756-.308 3.658.078 7.597.813 9.902 1.37z", "Toyota": "M12 3.848C5.223 3.848 0 7.298 0 12c0 4.702 5.224 8.152 12 8.152S24 16.702 24 12c0-4.702-5.223-8.152-12-8.152zm7.334 3.839c0 1.08-1.725 1.913-4.488 2.246-.26-2.58-1.005-4.279-1.963-4.913 2.948.184 6.45 1.227 6.45 2.667zM12 16.401c-.96 0-1.746-1.5-1.808-4.389.577.047 1.18.072 1.808.072.628 0 1.23-.025 1.807-.072-.061 2.89-.847 4.389-1.807 4.389zm0-6.308c-.59 0-1.155-.019-1.69-.054.261-1.728.92-3.15 1.69-3.15.77 0 1.428 1.422 1.689 3.15-.535.034-1.099.054-1.689.054zm-.882-5.075c-.956.633-1.706 2.333-1.964 4.915C6.391 9.6 4.665 8.767 4.665 7.687c0-1.44 3.504-2.49 6.453-2.669zM2.037 11.68a5.265 5.265 0 011.048-3.164c.27 1.547 2.522 2.881 5.972 3.37V12c0 3.772.879 6.203 2.087 6.97-5.107-.321-9.107-3.48-9.107-7.29zm10.823 7.29c1.207-.767 2.087-3.198 2.087-6.97v-.115c3.447-.488 5.704-1.826 5.972-3.37a5.26 5.26 0 011.049 3.165c-.004 3.81-4.008 6.969-9.109 7.29z", "Kia": "M13.923 14.175c0 .046.015.072.041.072a.123.123 0 0 0 .058-.024l7.48-4.854a.72.72 0 0 1 .432-.13h1.644c.252 0 .422.168.422.42v3.139c0 .38-.084.6-.42.801l-1.994 1.2a.137.137 0 0 1-.067.024c-.024 0-.048-.019-.048-.088v-3.663c0-.043-.012-.071-.041-.071a.113.113 0 0 0-.058.024l-5.466 3.551a.733.733 0 0 1-.42.127h-3.624c-.254 0-.422-.168-.422-.422V9.757c0-.033-.015-.064-.044-.064a.118.118 0 0 0-.057.024L7.732 11.88c-.036.024-.046.041-.046.058 0 .014.008.029.032.055l2.577 2.575c.034.034.058.06.058.089 0 .024-.039.043-.084.043H7.94c-.183 0-.324-.026-.423-.125l-1.562-1.56a.067.067 0 0 0-.048-.024.103.103 0 0 0-.048.015l-2.61 1.57a.72.72 0 0 1-.423.122H.425C.168 14.7 0 14.53 0 14.279v-3.08c0-.38.084-.6.422-.8L2.43 9.192a.103.103 0 0 1 .052-.016c.032 0 .048.03.048.1V13.4c0 .043.01.063.041.063a.144.144 0 0 0 .06-.024L9.407 9.36a.733.733 0 0 1 .446-.124h3.648c.252 0 .422.168.422.42l-.002 4.518z", "Honda": "M23.902 6.87c-.33-3.218-2.47-3.895-4.354-4.204-.946-.16-2.63-.3-3.716-.34-.946-.06-3.168-.09-3.835-.09-.657 0-2.89.03-3.835.09-1.076.04-2.77.18-3.716.34C2.563 2.985.42 3.66.092 6.87c-.08.877-.1 2.023-.09 3.248.03 2.031.2 3.406.3 4.363.07.657.338 2.62.687 3.636.478 1.395.916 1.803 1.424 2.222.937.757 2.471.996 2.79 1.056 1.733.31 5.24.368 6.784.368 1.544 0 5.05-.05 6.784-.368.329-.06 1.863-.29 2.79-1.056.508-.419.946-.827 1.424-2.222.35-1.016.628-2.979.698-3.636.1-.957.279-2.332.299-4.363.04-1.225.01-2.371-.08-3.248m-1.176 5.4c-.19 2.57-.418 4.104-.747 5.22-.29.976-.637 1.623-1.165 2.092-.867.787-2.063.956-2.76 1.056-1.514.23-4.055.3-6.057.3-2.002 0-4.543-.08-6.057-.3-.697-.1-1.893-.269-2.76-1.056-.518-.469-.876-1.126-1.155-2.093-.329-1.105-.558-2.65-.747-5.22-.11-1.543-.09-4.054.08-5.4.258-2.011 1.255-3.018 3.387-3.396.996-.18 2.34-.31 3.606-.37 1.016-.07 2.7-.1 3.636-.09.936-.01 2.62.03 3.636.09 1.275.06 2.61.19 3.606.37 2.142.378 3.139 1.395 3.388 3.397.199 1.345.229 3.856.11 5.4m-5.202-8.39c-.548 2.462-.767 3.588-1.216 5.37-.428 1.715-.767 3.298-1.335 4.065-.587.777-1.365.947-1.893 1.006-.279.03-.478.04-1.066.05-.596 0-.796-.02-1.075-.05-.528-.06-1.315-.229-1.892-1.006-.578-.767-.907-2.35-1.335-4.064-.47-1.773-.678-2.91-1.236-5.37 0 0-.548.02-.797.04-.329.02-.588.05-.867.09.343 5.372.692 11.079 1.126 16.13a21.983 21.983 0 002.39.169c.33-1.266.748-3.02 1.207-3.767.378-.608.966-.677 1.295-.717.518-.07.956-.08 1.165-.08.2-.01.637 0 1.165.08.33.05.917.11 1.295.717.47.747.877 2.5 1.206 3.766 0 0 .358-.01 1.165-.05.41-.018.82-.058 1.226-.12.458-5.39.785-10.728 1.126-16.128-.28-.04-.538-.07-.867-.09-.23-.02-.787-.04-.787-.04z"};
 function brandBtn(k){
-  const n=MODELS.filter(m=>makerOf(m)===k&&offersFor(m.id,true).length).length;
+  const n=MODELS.filter(m=>makerOf(m)===k&&priceInfo(m.id,true)).length;
   const WM={"Royal Enfield":'<span class="wm serif">ROYAL ENFIELD</span>',"Mahindra":'<span class="wm">mahindra</span>'};
   const mark=LOGOS[k]?`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${LOGOS[k]}"/></svg>`:(WM[k]||`<span class="wm">${esc(k)}</span>`);
   return `<button type="button" class="brand" data-maker="${esc(k)}" aria-pressed="${S.fleetMaker===k}" aria-label="${esc(k)}, ${n} model${n!==1?"s":""}">${mark}<span class="bn">${esc(k)}</span></button>`;
@@ -1097,14 +1179,14 @@ let refleet=0;
 function fleetList(){
   const c=S.fleetCat&&CATS[S.fleetCat];
   return MODELS.filter(m=>(!c||c.f(m))&&(!S.fleetMaker||makerOf(m)===S.fleetMaker))
-    .map(m=>({m,offers:offersFor(m.id,true)})).filter(x=>x.offers.length)
-    .sort((a,b)=>(hasPhoto(b.m.id)-hasPhoto(a.m.id))||(rank(a.m.id)-rank(b.m.id))||(a.offers[0].price-b.offers[0].price));
+    .map(m=>({m,pi:priceInfo(m.id,true)})).filter(x=>x.pi)
+    .sort((a,b)=>(hasPhoto(b.m.id)-hasPhoto(a.m.id))||(rank(a.m.id)-rank(b.m.id))||(a.pi.lo-b.pi.lo));
 }
 function ftile(x){
   const m=x.m, ph=hasPhoto(m.id);
-  return `<button type="button" class="ftile rv" data-model="${m.id}" aria-label="${esc(m.name)}, from ${inr(x.offers[0].price)} per day">
+  return `<button type="button" class="ftile rv" data-model="${m.id}" aria-label="${esc(m.name)}, ${x.pi.real?"from":"typically"} ${inr(x.pi.lo)} per day">
     ${ph?`<img data-photo="${m.id}" class="${STUDIO.has(m.id)?"studio":""}" src="${PHOTOS[m.id]}" alt="" loading="lazy">`:noImg(m)}
-    <span class="lab"><b>${esc(m.name)}</b><span>${inr(x.offers[0].price)}/day</span></span></button>`;
+    <span class="lab"><b>${esc(m.name)}</b><span>${x.pi.real?"":"~"}${inr(x.pi.lo)}/day</span></span>${x.pi.real?'<span class="live-dot">Book online</span>':""}</button>`;
 }
 function renderFleet(){
   $("#fleet-pills").innerHTML=[["","All"],...Object.entries(CATS).map(([k,c])=>[k,c.label])]
@@ -1114,15 +1196,15 @@ function renderFleet(){
   $("#fleet-grid").innerHTML=list.length
     ?`<div class="tiles-a">${a.map(ftile).join("")}</div>${b.length?`<div class="tiles-b">${b.map(ftile).join("")}</div>`:""}`
     :`<div class="empty">Nothing in this category in ${S.city} yet.</div>`;
-  const all=MODELS.filter(m=>offersFor(m.id,true).length).length;
+  const all=MODELS.filter(m=>priceInfo(m.id,true)).length;
   $("#showall").innerHTML=`Show all (${all} models) ${ARROW}`;
   document.querySelectorAll("#fleet-grid .ftile").forEach((el,i)=>el.style.setProperty("--d",i%4));
   observeRv();
 }
 function renderPhones(){
-  const pick=["scorpio","swift","classic","thar","i20"].filter(id=>offersFor(id,true).length).slice(0,3);
-  const rows=pick.map(id=>{const m=modelById[id], o=offersFor(id,true);
-    return `<div class="row"><span class="th">${hasPhoto(id)?`<img src="${PHOTOS[id]}" alt="">`:""}</span><div><b>${esc(m.name)}</b><span>${o.length} companies</span></div><em>${inr(o[0].price)}</em></div>`}).join("");
+  const pick=["xl6","classic","i20","scorpio","swift"].filter(id=>priceInfo(id,true)).slice(0,3);
+  const rows=pick.map(id=>{const m=modelById[id], pi=priceInfo(id,true);
+    return `<div class="row"><span class="th">${hasPhoto(id)?`<img src="${PHOTOS[id]}" alt="">`:""}</span><div><b>${esc(m.name)}</b><span>${pi.real?"Book online":"Get quotes"}</span></div><em>${pi.real?"":"~"}${inr(pi.lo)}</em></div>`}).join("");
   const car=pick[0]&&modelById[pick[0]];
   $("#phones").innerHTML=`
     <div class="phone p1" id="ph1"><div class="scr"><span class="notch"></span><div class="bar"><span>9:41</span><span>●●●</span></div>
@@ -1162,17 +1244,17 @@ function coFleet(op){
     .filter(x=>x.m).sort((a,b)=>(hasPhoto(b.m.id)-hasPhoto(a.m.id))||(a.price-b.price));
 }
 function renderHstats(){
-  const ops=OPS.filter(o=>o.city===S.city), veh=VEH.filter(v=>v.online&&opById[v.op].city===S.city);
+  const ops=OPS.filter(o=>o.city===S.city&&isReal(o)), types=MODELS.filter(m=>priceInfo(m.id,true)).length;
   const lo=Math.min(...LISTINGS.filter(l=>opById[l[0]].city===S.city).map(l=>l[2]));
   const dir=S.city==="Guwahati"?DIRECTORY.length:0;
-  $("#hstats").innerHTML=`<span><b>${ops.length+dir}</b> rental companies</span><span><b>${veh.length}</b> vehicles to book online</span><span>from <b>${inr(lo)}</b>/day</span>`;
+  $("#hstats").innerHTML=`<span><b>${ops.length+dir}</b> rental companies</span><span><b>${types}</b> vehicle types</span><span>scooters from <b>~${inr(lo)}</b>/day</span>`;
 }
 function coMatch(text){const q=S.coQ.trim().toLowerCase(); return !q||text.toLowerCase().includes(q)}
 function renderCompanies(){
   $("#cos-title").textContent=`Rental companies in ${S.city}`;
   $("#co-pills").innerHTML=CO_FILTERS.map(([k,l])=>`<button type="button" data-cofilter="${k}" aria-pressed="${S.coFilter===k}">${esc(l)}</button>`).join("");
   const f=S.coFilter;
-  const partners=OPS.filter(o=>o.city===S.city).map(o=>({o,fleet:coFleet(o)}))
+  const partners=OPS.filter(o=>o.city===S.city&&isReal(o)).map(o=>({o,fleet:coFleet(o)}))
     .filter(({o,fleet})=>fleet.length&&(f==="all"||f==="online"||(f==="deliv"?o.deliv:fleet.some(x=>x.m.kind===f)))
       &&coMatch(o.name+" "+o.area+" "+fleet.map(x=>x.m.name+" "+x.m.sub).join(" ")))
     .sort((a,b)=>(!!b.o.founding-!!a.o.founding)||(b.o.rating-a.o.rating));
@@ -1218,14 +1300,14 @@ function openCompany(opId){
           <div><small>Delivery</small><b>${o.deliv?"Airport & station":"Pick-up only"}</b></div>
           <div><small>One-way</small><b>${o.oneway?"Guwahati ⇄ Shillong":"No"}</b></div>
         </div>
-        <div class="sect-l">${fleet.length} models · ${fmtDate(S.from)} to ${fmtDate(S.to)}</div>
+        <div class="sect-l">${fleet.length} models · ${fmtDate(S.from)} to ${fmtDate(S.to)} · availability confirmed on WhatsApp</div>
         <div class="co-list">${fleet.map(x=>`<div class="co-row">
           <span class="th">${hasPhoto(x.m.id)?`<img class="${STUDIO.has(x.m.id)?"studio":""}" src="${PHOTOS[x.m.id]}" alt="">`:noImg(x.m)}</span>
-          <div><b>${esc(x.m.name)}</b><span>${x.m.sub} · ${x.m.gear} · ${x.m.seats} seats</span><span class="${x.avail?"ok":"no"}">${x.avail?x.avail+" free for your dates":"Booked for your dates"}</span></div>
+          <div><b>${esc(x.m.name)}</b><span>${x.m.sub} · ${x.m.gear} · ${x.m.seats} seats</span><span class="ok">${LIVE?"Request for your dates":(x.avail?x.avail+" free for your dates":"Booked for your dates")}</span></div>
           <div class="pr"><b class="num">${inr(x.price)}</b><span>/day · ${inr(x.price*d)} total</span>
-            <button type="button" class="btn acc sm" data-book="${o.id}|${x.m.id}" ${x.avail?"":"disabled"}>Book</button></div></div>`).join("")}</div>
+            <button type="button" class="btn acc sm" data-book="${o.id}|${x.m.id}" ${LIVE||x.avail?"":"disabled"}>Request</button></div></div>`).join("")}</div>
       </div>
-      <footer><span class="kv">Prices from ${esc(o.name)}. OPIIUS adds a small booking fee at checkout.</span></footer></aside>`;
+      <footer><span class="kv">Day prices from ${esc(o.name)}'s catalog. You pay them at pick-up; OPIIUS charges riders nothing.</span></footer></aside>`;
   document.body.style.overflow="hidden";
   requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.add("open")));
   setTimeout(()=>root.querySelector(".x")?.focus({preventScroll:true}),350);
@@ -1235,6 +1317,36 @@ function bookWith(opId,modelId){
   const op=opById[opId]; D.op=op; D.price=LISTINGS.find(l=>l[0]===opId&&l[1]===modelId)[2]; D.step=1; D.prevTotal=0; drawSheet();
 }
 function renderRent(){renderFilters();renderResults();renderMakers();renderHstats();renderCompanies();renderFleet();renderPhones()}
+
+/* =================== one search for everything (the OPIIUS promise) =================== */
+function routeQuery(raw){
+  const q=raw.toLowerCase().replace(/,/g,"");
+  const tourish=/(trip|tour|package|honeymoon|weekend|holiday|itinerar|visit|explore|meghalaya|sohra|cherrapunji|dawki|mawlynnong|root bridge|laitlum|nights?)/.test(q);
+  const rentish=/(rent|car|bike|scoot|scooty|activa|enfield|bullet|suv|seater|thar|scorpio|innova|swift|i20|xuv|brezza|punch|carens|xl6|hatch|self.?drive|vehicle)/.test(q);
+  if(tourish&&!rentish){
+    const n=(q.match(/(\d)\s*(day|d\b|-day)/)||[])[1], w=/weekend/.test(q);
+    const key=w?"p3":(n>=5?"p5":n==3||n==2?"p3":"p4");
+    location.href="tours/meghalaya.html#"+key; return;
+  }
+  // rentals
+  if(/shillong/.test(q)){S.city="Shillong";$("#s-city").value="Shillong"} else if(/guwahati|ghy/.test(q)){S.city="Guwahati";$("#s-city").value="Guwahati"}
+  S.kind=/(bike|scoot|scooty|activa|enfield|bullet|two.?wheeler|motorcycle)/.test(q)?"bike":/(car|suv|seater|thar|scorpio|innova|swift|i20|xuv|brezza|punch|carens|xl6|hatch)/.test(q)?"car":"all";
+  $("#s-kind").value=S.kind; S.type.clear();
+  S.cat=/(7|seven|6|six).?seat|family|innova|xl6|carens|xuv/.test(q)?"seven":/suv|thar|brezza|punch/.test(q)?"suv":/hatch|swift|i20/.test(q)?"hatch":/scoot|scooty|activa/.test(q)?"scooters":/enfield|bullet|motorcycle|gt 650|shine|himalayan/.test(q)?"bikes":null;
+  const under=q.match(/(under|below|less than|within|<)\s*₹?\s*(\d+)/); S.max=under?Math.max(400,+under[2]):5000;
+  $("#f-max").value=S.max; $("#f-maxv").textContent=inr(S.max);
+  const maker=MAKERS.find(k=>q.includes(k.toLowerCase())||q.includes(k.split(" ")[0].toLowerCase()));
+  S.fleetMaker=maker||null; S.fleetCat=S.cat;
+  if(S.view!=="rent")go("rent");
+  renderRent();
+  const model=MODELS.find(m=>q.includes(m.name.toLowerCase())||q.includes(m.id));
+  const label=[S.cat?CATS[S.cat].label:S.kind==="bike"?"Bikes and scooters":S.kind==="car"?"Cars":"Rides",maker?"by "+maker:"","in "+S.city,under?"under "+inr(S.max)+"/day":""].filter(Boolean).join(" ");
+  toast("Showing "+label.charAt(0).toLowerCase()+label.slice(1));
+  if(model&&priceInfo(model.id,true)){openModel(model.id);return}
+  $(maker?"#fleet":"#market").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});
+}
+document.getElementById("omni").addEventListener("submit",e=>{e.preventDefault();const v=$("#omni-q").value.trim();if(v)routeQuery(v)});
+document.getElementById("ideas").addEventListener("click",e=>{const b=e.target.closest("[data-q]");if(!b)return;$("#omni-q").value=b.dataset.q;routeQuery(b.dataset.q)});
 
 /* =================== scroll reveal + parallax =================== */
 let rvIO=null;
@@ -1273,7 +1385,7 @@ function heroCaption(){renderHstats();renderCompanies();renderFleet();renderPhon
 let D=null;
 function openModel(modelId){
   const m=modelById[modelId];
-  D={m,op:null,price:0,deliv:false,protect:true,oneway:false,step:0,rider:"",phone:"",dl:""};
+  D={m,op:null,price:0,deliv:false,protect:false,oneway:false,step:0,rider:"",phone:"",dl:"",note:"",mode:"book"};
   mountSheet(); drawSheet();
 }
 function mountSheet(){
@@ -1296,100 +1408,79 @@ function closeSheet(){
   setTimeout(()=>{if(!D)root.innerHTML=""},600);
   if(S.view==="rent")heroPause(false);
 }
+function newId(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `OP-${String(d.getFullYear()).slice(2)}${p(d.getMonth()+1)}${p(d.getDate())}-${Math.floor(100+Math.random()*900)}`}
 function drawSheet(){
-  const {m}=D, d=days();
+  const {m}=D, d=days(), quote=D.mode==="quote";
   $("#d-title").textContent=m.name;
-  $("#d-sub").textContent=D.op?`${D.op.name} · ★ ${D.op.rating}`:`${m.sub} · ${m.cc} · ${m.gear}`;
-  $("#d-steps").innerHTML=["Compare","Trip","Pay","Done"].map((s,i)=>`<span class="${i<=D.step?"on":""}">${s}</span>`).join("");
+  $("#d-sub").textContent=D.op?`${D.op.name}${D.op.founding?" · Founding partner":""}`:`${m.sub} · ${m.cc} · ${m.gear} · ${m.seats} seats`;
+  $("#d-steps").innerHTML=(quote?["Compare","Your details","Sent"]:["Compare","Trip","Your details","Sent"])
+    .map((s,i)=>`<span class="${i<=(quote&&D.step>0?D.step-1:D.step)?"on":""}">${s}</span>`).join("");
   let body="", foot="";
+  const est=estimateFor(m.id);
   if(D.step===0){
     const offers=offersFor(m.id,true);
-    body=`<div><div class="sect-l">${offers.length} rental compan${offers.length>1?"ies":"y"} in ${S.city} · ${d} day${d>1?"s":""}</div>
+    body=`<div>${offers.length?`<div class="sect-l">Book online · ${d} day${d>1?"s":""}</div>`:""}
       ${offers.map((o,i)=>{const km=o.op.km[m.kind];
         return `<button type="button" class="offer" data-pick="${o.op.id}" style="animation:panein .5s ${i*60}ms var(--ease) both">
-          <div class="op"><span class="av" style="background:${avColor(o.op)}">${initials(o.op.name)}</span><div><b>${esc(o.op.name)} ${o.op.founding?'<span class="tag founding">Founding partner</span>':o.op.assured?'<span class="tag good">Assured</span>':""}</b><span>${esc(o.op.area)}</span></div></div>
-          <div class="pr">${i===0&&offers.length>1?'<span class="best">Lowest</span><br>':""}<b class="num">${inr(o.price)}</b><span class="kv">/day</span></div>
-          <div class="meta">${o.op.founding?'<span class="stars">New on OPIIUS</span>':`<span class="stars">★ ${o.op.rating}</span><span>${o.op.trips.toLocaleString("en-IN")} trips</span>`}<span>${km?km+" km/day free":"Unlimited km"}</span><span>${o.op.deliv?"Delivers":"Pick-up only"}</span><span>${o.avail} free</span><span>Total ${inr(o.price*d)}</span></div>
-        </button>`}).join("")||`<div class="empty">None free for these dates in ${S.city}.</div>`}</div>`;
-    foot=`<span class="kv">Deposit ${inr(m.dep)} · halved with Protect</span>`;
+          <div class="op"><span class="av" style="background:${avColor(o.op)}">${initials(o.op.name)}</span><div><b>${esc(o.op.name)} ${o.op.founding?'<span class="tag founding">Founding partner</span>':""}</b><span>${esc(o.op.area)}</span></div></div>
+          <div class="pr"><b class="num">${inr(o.price)}</b><span class="kv">/day</span></div>
+          <div class="meta"><span class="stars">● Book online</span><span>${km?km+" km/day free":"Unlimited km"}</span><span>${o.op.deliv?"Delivers":"Pick-up only"}</span><span>About ${inr(o.price*d)} for ${d} days</span></div>
+        </button>`}).join("")}
+      ${est?`<button type="button" class="offer quote" id="d-quote" style="animation:panein .5s ${offers.length*60}ms var(--ease) both">
+          <div class="op"><span class="av" style="background:var(--ink)">+</span><div><b>${offers.length?"Get quotes from more companies":"Get quotes from Guwahati rental companies"}</b><span>We check ${DIRECTORY.filter(x=>x.kinds.includes(m.kind)).length+1}+ local companies and send you the best options on WhatsApp</span></div></div>
+          <div class="pr"><b class="num">~${inr(est.lo)}</b><span class="kv">/day typical</span></div>
+          <div class="meta"><span>Typical range ${inr(est.lo)}–${inr(est.hi)}/day in ${S.city}</span><span>Free, usually within 30 minutes</span></div>
+        </button>`:""}</div>`;
+    foot=`<span class="kv">Deposit is usually around ${inr(m.dep)} and is paid to the rental company.</span>`;
   } else if(D.step===1){
-    const {op,price}=D, q=quote({price,m,days:d,deliv:D.deliv,protect:D.protect,oneway:D.oneway});
+    const {op,price}=D;
     body=`
       <div><div class="sect-l">Your trip</div>
         <div class="bill"><div><span>Pick-up</span><span>${fmtDate(S.from)}</span></div><div><span>Return</span><span>${fmtDate(S.to)}</span></div>
         <div><span>From</span><span>${esc(op.area)}</span></div><div><span>Free km</span><span>${op.km[m.kind]?op.km[m.kind]*d+" km total":"Unlimited"}</span></div></div></div>
-      <div><div class="sect-l">Add to your trip</div>
-        <label class="opt"><input type="checkbox" id="o-protect" ${D.protect?"checked":""}><div><b>OPIIUS Protect</b><span>Covers accidental damage above ₹2,000. Deposit drops from ${inr(m.dep)} to ${inr(m.dep/2)}.</span></div><em>${inr(CFG.protect[m.kind])}/day</em></label>
-        <label class="opt ${op.deliv?"":"off"}"><input type="checkbox" id="o-deliv" ${D.deliv?"checked":""} ${op.deliv?"":"disabled"}><div><b>Deliver to LGBI Airport or railway station</b><span>${op.deliv?"Keys handed over at arrivals.":"This company does not deliver."}</span></div><em>${inr(CFG.delivery[m.kind])}</em></label>
-        <label class="opt ${op.oneway?"":"off"}"><input type="checkbox" id="o-oneway" ${D.oneway?"checked":""} ${op.oneway?"":"disabled"}><div><b>One-way: leave it in ${S.city==="Guwahati"?"Shillong":"Guwahati"}</b><span>${op.oneway?"Drop at a partner hub. No need to ride back.":"Return to the same place only."}</span></div><em>${inr(CFG.oneway[m.kind])}</em></label>
+      <div><div class="sect-l">Options</div>
+        <label class="opt ${op.deliv?"":"off"}"><input type="checkbox" id="o-deliv" ${D.deliv?"checked":""} ${op.deliv?"":"disabled"}><div><b>Deliver to LGBI Airport or railway station</b><span>${op.deliv?"Delivery charge confirmed by the company.":"This company does not deliver."}</span></div></label>
       </div>
-      <div><div class="sect-l">Price</div><div class="bill">
-        <div><span>Rent · ${inr(price)} × ${d} day${d>1?"s":""}</span><span class="num">${inr(q.rent)}</span></div>
-        ${q.prot?`<div><span>OPIIUS Protect</span><span class="num">${inr(q.prot)}</span></div>`:""}
-        ${q.del?`<div><span>Delivery</span><span class="num">${inr(q.del)}</span></div>`:""}
-        ${q.ow?`<div><span>One-way drop</span><span class="num">${inr(q.ow)}</span></div>`:""}
-        <div><span>Convenience fee</span><span class="num">${inr(q.fee)}</span></div>
-        <div class="t"><span>Pay now</span><span class="num">${inr(q.total)}</span></div>
-        <div class="d"><span>Refundable deposit at pick-up</span><span class="num">${inr(q.deposit)}</span></div></div></div>
-      ${splitBox(q)}`;
-    foot=`<button class="btn" id="d-back0">Back</button><div class="tot" style="margin-left:auto;text-align:right"><small>Pay now</small><b class="num" id="d-total">${inr(q.total)}</b></div><button class="btn acc" id="d-next">Continue</button>`;
-    D.q=q;
+      <div><div class="sect-l">Estimated price</div><div class="bill">
+        <div><span>Rent · ${inr(price)} × ${d} day${d>1?"s":""}</span><span class="num">${inr(price*d)}</span></div>
+        <div class="d"><span>Refundable deposit (usually)</span><span class="num">~${inr(m.dep)}</span></div>
+        <div class="t"><span>Pay now</span><span class="num">₹0</span></div></div>
+        <p class="kv" style="margin:8px 0 0">${esc(op.name)} confirms availability, deposit and km terms on WhatsApp. You pay them at pick-up.</p></div>`;
+    foot=`<button class="btn" id="d-back0">Back</button><button class="btn acc" id="d-next" style="margin-left:auto">Continue</button>`;
   } else if(D.step===2){
     body=`
-      <div class="field"><label class="sect-l" for="d-name">Full name as on licence</label><input id="d-name" value="${esc(D.rider)}" placeholder="e.g. Ananya Das"></div>
-      <div class="two"><div class="field"><label class="sect-l" for="d-phone">Mobile</label><input id="d-phone" inputmode="tel" value="${esc(D.phone)}" placeholder="98640 12345"></div>
-      <div class="field"><label class="sect-l" for="d-dl">Driving licence no.</label><input id="d-dl" value="${esc(D.dl)}" placeholder="AS01 20190012345"></div></div>
-      <p class="kv" style="margin:0">OPIIUS checks the licence once. Next time you rent from any company on OPIIUS, you skip this step.</p>
-      <div><div class="sect-l">Payment</div>
-        <label class="opt"><input type="radio" name="pay" checked><div><b>UPI</b><span>GPay, PhonePe, Paytm</span></div></label>
-        <label class="opt"><input type="radio" name="pay"><div><b>Card</b><span>Debit or credit</span></div></label></div>
+      ${quote?`<div class="bill"><div><span>Vehicle</span><span>${esc(m.name)}</span></div><div><span>Dates</span><span>${fmtDate(S.from)} → ${fmtDate(S.to)}</span></div><div><span>Typical price</span><span>~${inr(est.lo)}–${inr(est.hi)}/day</span></div></div>`:""}
+      <div class="field"><label class="sect-l" for="d-name">Your name</label><input id="d-name" autocomplete="name" value="${esc(D.rider)}" placeholder="e.g. Ananya Das"></div>
+      <div class="field"><label class="sect-l" for="d-phone">WhatsApp number</label><input id="d-phone" inputmode="tel" autocomplete="tel" value="${esc(D.phone)}" placeholder="98640 12345"></div>
+      <div class="field"><label class="sect-l" for="d-note">Anything else? (optional)</label><input id="d-note" value="${esc(D.note)}" placeholder="${quote?"Budget, pick-up area, trip plan":"Flight time, pick-up area"}"></div>
+      <p class="kv" style="margin:0">Your licence is checked by the rental company at pick-up. We never ask for payment on WhatsApp before a company confirms.</p>
       <p class="kv" style="margin:0;color:var(--bad)" id="d-err"></p>`;
-    foot=`<button class="btn" id="d-back">Back</button><button class="btn acc" id="d-pay" style="margin-left:auto">Pay ${inr(D.q.total)}</button>`;
+    foot=`<button class="btn" id="d-back">Back</button><button class="btn acc" id="d-pay" style="margin-left:auto">Send request</button>`;
   } else {
-    const b=D.booking;
+    const r=D.request;
     body=`<div class="ok"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="34" fill="none" stroke-width="4"/><path d="M25 41 L36 52 L56 30" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <h3 style="font-size:24px">Ride confirmed</h3>
-      <p class="kv" style="margin:0">${esc(D.op.name)} has your booking. Show this at pick-up.</p>
+      <h3 style="font-size:24px">Request sent</h3>
+      <p class="kv" style="margin:0">${quote?"We'll WhatsApp you options from local companies, usually within 30 minutes.":`We'll confirm with ${esc(D.op.name)} and reply on WhatsApp, usually within 30 minutes.`}</p>
       <div class="ticket">
-        <div><span>Booking</span><span class="mono">${b.id}</span></div>
-        <div><span>Vehicle</span><span>${esc(m.name)} · <span class="mono">${b.plate}</span></span></div>
-        <div><span>Pick-up</span><span>${fmtDate(b.from)}${b.deliv?" · Airport":""}</span></div>
-        <div><span>Return</span><span>${fmtDate(b.to)}${b.oneway?" · one-way":""}</span></div>
-        <div><span>Paid</span><span class="num">${inr(b.q.total)}</span></div>
-        <div><span>Deposit at pick-up</span><span class="num">${inr(b.q.deposit)}</span></div>
-      </div></div>
-      ${splitBox(b.q)}`;
-    foot=`<button class="btn" data-close>Keep browsing</button><button class="btn acc" id="d-partner" style="margin-left:auto">See it in ${esc(D.op.name)}'s app</button>`;
+        <div><span>Request</span><span class="mono">${r.id}</span></div>
+        <div><span>Vehicle</span><span>${esc(m.name)}</span></div>
+        <div><span>Dates</span><span>${fmtDate(S.from)} → ${fmtDate(S.to)}</span></div>
+        <div><span>${quote?"Typical price":"Estimated rent"}</span><span class="num">${quote?`~${inr(est.lo)}–${inr(est.hi)}/day`:inr(D.price*days())}</span></div>
+      </div>
+      <p class="kv" style="margin:0">Demo: in the real platform this request goes to the rental company on WhatsApp. Nothing was sent.</p></div>`;
+    foot=`<button class="btn" data-close>Done</button>`;
   }
   $("#d-pane").innerHTML=`<div class="pane">${body}</div>`;
   $("#d-foot").innerHTML=foot;
 }
-function refreshPrice(){ // update totals in place without re-animating the pane
-  const d=days(), q=quote({price:D.price,m:D.m,days:d,deliv:D.deliv,protect:D.protect,oneway:D.oneway});
-  const scroll=$(".sheet .body").scrollTop; drawSheet(); $(".sheet .body").scrollTop=scroll;
-  document.querySelector("#d-pane .pane").style.animation="none";
-  const el=$("#d-total"); el.dataset.v=D.prevTotal||q.total; countTo(el,q.total,inr,500); D.prevTotal=q.total;
-}
-function splitBox(q){
-  const parts=[["Rental company",q.opGets,"var(--chart3)"],["OPIIUS",q.rideme,"var(--chart2)"],["Insurer (Protect)",q.insurer,"var(--chart5)"],["Payment gateway",q.gateway,"var(--line2)"]];
-  const tot=parts.reduce((s,p)=>s+p[1],0);
-  return `<div class="split"><h5>Pitch view: where this money goes</h5>
-    <div class="bar">${parts.filter(p=>p[1]>0).map((p,i)=>`<i style="width:${p[1]/tot*100}%;background:${p[2]};animation-delay:${i*120}ms"></i>`).join("")}</div>
-    <div class="legend">${parts.map(p=>`<div><s style="background:${p[2]}"></s>${p[0]}<b class="num">${inr(p[1])}</b></div>`).join("")}</div>
-    <p class="kv" style="margin:8px 0 0">OPIIUS keeps ${(q.rideme/q.total*100).toFixed(1)}% of what the rider pays: ${Math.round(CFG.commission*100)}% commission on rent (${inr(q.commission)}), the ${inr(q.fee)} fee${q.protKeep?`, and ${inr(q.protKeep)} from Protect`:""}.</p></div>`;
-}
+function refreshPrice(){const sc=$(".sheet .body").scrollTop; drawSheet(); $(".sheet .body").scrollTop=sc; document.querySelector("#d-pane .pane").style.animation="none"}
 function confirmBooking(){
-  const name=$("#d-name").value.trim(), phone=$("#d-phone").value.trim(), dl=$("#d-dl").value.trim();
-  D.rider=name;D.phone=phone;D.dl=dl;
-  if(name.length<3){$("#d-err").textContent="Enter the rider's full name as it appears on the licence.";return}
-  if(phone.replace(/\D/g,"").length<10){$("#d-err").textContent="Enter a 10-digit mobile number so the rental company can reach you.";return}
-  const veh=VEH.find(v=>v.op===D.op.id&&v.model===D.m.id&&v.online&&isFree(v));
-  if(!veh){$("#d-err").textContent="That vehicle was just booked by someone else. Go back and pick another offer.";return}
-  const b=makeBooking({veh,m:D.m,op:D.op,from:new Date(S.from),to:new Date(S.to),days:days(),rider:name,deliv:D.deliv,protect:D.protect,oneway:D.oneway,status:"new"});
-  b.id="OP-"+(5000+S.bookings.filter(x=>x.mine).length); b.mine=true; b.fresh=true;
-  S.bookings.push(b);
-  store.set("mine",S.bookings.filter(x=>x.mine));
-  D.booking=b; D.step=3; drawSheet(); renderResults();
+  const name=$("#d-name").value.trim(), phone=$("#d-phone").value.trim(), note=$("#d-note").value.trim();
+  D.rider=name;D.phone=phone;D.note=note;
+  if(name.length<2){$("#d-err").textContent="Enter your name so the rental company knows who is coming.";return}
+  if(phone.replace(/\D/g,"").length<10){$("#d-err").textContent="Enter a 10-digit WhatsApp number so we can confirm your ride.";return}
+  const m=D.m, quote=D.mode==="quote", id=newId(), est=estimateFor(m.id);
+  D.request={id}; D.step=3; drawSheet();
 }
 
 /* =================== partner app =================== */
@@ -1471,7 +1562,7 @@ function go(view){
   if(document.startViewTransition&&!reduced&&S.view!==view) document.startViewTransition(apply); else apply();
 }
 document.addEventListener("click",e=>{
-  const t=e.target.closest("[data-go],[data-t],[data-model],[data-pick],[data-cat],[data-fcat],[data-maker],[data-scroll],[data-company],[data-cofilter],[data-book],[data-all],[data-clearcat],[data-oneway],[data-city],[data-close],[data-accept],[data-veh],#d-next,#d-back,#d-back0,#d-pay,#d-partner");
+  const t=e.target.closest("[data-go],[data-t],[data-model],[data-pick],[data-cat],[data-fcat],[data-maker],[data-scroll],[data-company],[data-cofilter],[data-book],[data-all],[data-clearcat],[data-oneway],[data-city],[data-close],[data-accept],[data-veh],#d-next,#d-back,#d-back0,#d-pay,#d-partner,#d-quote");
   if(!t)return;
   if(t.dataset.go){e.preventDefault();go(t.dataset.go);return}
   if(t.dataset.t){S.type.has(t.dataset.t)?S.type.delete(t.dataset.t):S.type.add(t.dataset.t);renderFilters();renderResults();return}
@@ -1489,12 +1580,13 @@ document.addEventListener("click",e=>{
   if(t.hasAttribute("data-oneway")){S.oneway=true;$("#f-oneway").checked=true;renderResults();toMarket();return}
   if(t.dataset.city){S.city=t.dataset.city;$("#s-city").value=S.city;S.ops.clear();if(S.view!=="rent")go("rent");else renderRent();window.scrollTo({top:0,behavior:reduced?"auto":"smooth"});return}
   if(t.dataset.model){openModel(t.dataset.model);return}
+  if(t.id==="d-quote"){D.mode="quote";D.op=null;D.step=2;drawSheet();return}
   if(t.dataset.pick){const op=opById[t.dataset.pick];D.op=op;D.price=LISTINGS.find(l=>l[0]===op.id&&l[1]===D.m.id)[2];
     D.deliv=false;D.oneway=false;D.step=1;D.prevTotal=0;drawSheet();$(".sheet .body").scrollTo({top:0,behavior:"smooth"});return}
   if(t.hasAttribute("data-close")){closeSheet();return}
   if(t.id==="d-back0"){D.step=0;D.op=null;drawSheet();return}
   if(t.id==="d-next"){D.step=2;drawSheet();return}
-  if(t.id==="d-back"){D.rider=$("#d-name").value;D.phone=$("#d-phone").value;D.dl=$("#d-dl").value;D.step=1;drawSheet();return}
+  if(t.id==="d-back"){D.rider=$("#d-name").value;D.phone=$("#d-phone").value;D.note=$("#d-note").value;if(D.mode==="quote"){D.mode="book";D.step=0}else D.step=1;drawSheet();return}
   if(t.id==="d-pay"){confirmBooking();return}
   if(t.id==="d-partner"){S.partner=D.op.id;closeSheet();go("partner");return}
   if(t.dataset.accept){const b=S.bookings.find(x=>x.id===t.dataset.accept);b.status="conf";
