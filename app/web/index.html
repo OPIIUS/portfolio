@@ -318,6 +318,8 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
    Everything is local; state is kept in localStorage so taps persist.
    ===================================================================== */
 var RS='₹';
+/* A preset (window.PRESET, inlined by tools/preset.py) turns the Rentals app into one business's own app. */
+var P=window.PRESET||null, PFX=P&&P.prefix||'WR-', KEY=P?'opiius_'+P.id:'opiius_demo';
 function money(n){return (n<0?'-':'')+RS+Math.abs(Math.round(n||0)).toLocaleString('en-IN');}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 function d2(n){return n<10?'0'+n:''+n;}
@@ -343,6 +345,7 @@ var ICON={
   map:'<path d="M9 4l-6 2v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/>',
   inbox:'<path d="M4 13l2-8h12l2 8v6H4z"/><path d="M4 13h5l1 2h4l1-2h5"/>',
   wallet:'<rect x="3" y="6" width="18" height="13" rx="3"/><path d="M16 12.5h2M3 10h18"/>',
+  car:'<path d="M5 16V11l2-5h10l2 5v5M3 16h18v3h-3v-1H6v1H3zM5 11h14"/><circle cx="7.5" cy="14" r="1"/><circle cx="16.5" cy="14" r="1"/>',
   plus:'<path d="M12 5v14M5 12h14"/>',
   x:'<path d="M6 6l12 12M18 6L6 18"/>',
   check:'<path d="M5 12l5 5 9-10"/>',
@@ -368,7 +371,7 @@ var PHOTO={
   kaz:'One-Horned_Rhino_at_the_Kaziranga_National_Park,_Assam.jpg',
   maj:'Ferry_service_connecting_Majuli_island.jpg'
 };
-function photoUrl(k,w){return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(PHOTO[k])+'?width='+(w||640);}
+function photoUrl(k,w){if(/^data:/.test(PHOTO[k]))return PHOTO[k];return 'https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(PHOTO[k])+'?width='+(w||640);}
 function ph(k,cls,em,w,cap){return '<div class="ph '+cls+'"><span>'+(em||'')+'</span>'+(PHOTO[k]?'<img alt="" src="'+photoUrl(k,w)+'" onload="this.classList.add(\'ok\')" onerror="this.remove()">':'')+(cap?'<div class="cap">'+cap+'</div>':'')+'</div>';}
 
 var BIKES={
@@ -380,10 +383,12 @@ var BIKES={
   thar:     {label:'Mahindra Thar 4x4',         short:'Thar 4x4',     em:'🚙', day:3499, wkend:3999, dep:10000,km:250, xkm:12,car:1},
   innova:   {label:'Toyota Innova Crysta',      short:'Innova Crysta',em:'🚐', day:3999, wkend:4499, dep:10000,km:300, xkm:14,car:1}
 };
+if(P){BIKES=P.vehicles;for(var pk in P.photos)PHOTO[pk]=P.photos[pk];}
 function isWk(s){var g=dt(s).getDay();return g===0||g===6;}
 function rentFor(type,start,days){var s=0;for(var i=0;i<days;i++)s+=isWk(addD(start,i))?BIKES[type].wkend:BIKES[type].day;return s;}
 
 function seedRent(){
+  if(P&&P.seedRent)return P.seedRent();
   var t=today(), sat=nextDow(6); if(sat===t)sat=addD(t,7);
   var units=[
     ['AS01 FR 2214','activa',8120],['AS01 FR 2215','activa',9406],['AS01 GC 1180','activa',4411],
@@ -396,7 +401,7 @@ function seedRent(){
   var seq=1040, bk=[];
   function b(name,phone,reg,start,days,status,trip,extra){
     seq++; var u=units.filter(function(x){return x.reg===reg;})[0], rent=rentFor(u.type,start,days);
-    var o={id:'WR-'+seq,name:name,phone:phone,reg:reg,type:u.type,start:start,days:days,rent:rent,adv:Math.round(rent*.3),
+    var o={id:PFX+seq,name:name,phone:phone,reg:reg,type:u.type,start:start,days:days,rent:rent,adv:Math.round(rent*.3),
       dep:BIKES[u.type].dep,status:status,trip:trip,src:extra&&extra.src||'WhatsApp AI'};
     for(var k in extra)o[k]=extra[k];
     bk.push(o); return o;
@@ -473,11 +478,11 @@ function seedTour(){
 /* state                                                                */
 /* =================================================================== */
 var ST;
-function fresh(){return {v:2,rent:seedRent(),tour:seedTour(),names:{rent:'Weekend Rides',tour:'NE Trails'},owner:'Owner',day:today()};}
-function load(){try{ST=JSON.parse(localStorage.getItem('opiius_demo')||'null');}catch(e){}
+function fresh(){return {v:2,rent:seedRent(),tour:seedTour(),names:{rent:P?P.name:'Weekend Rides',tour:'NE Trails'},owner:'Owner',day:today()};}
+function load(){try{ST=JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){}
   if(!ST||ST.day!==today()||ST.v!==2){var keep=ST;ST=fresh();          /* demo data is re-dated every day so "today" always has work */
     if(keep&&keep.names){ST.names=keep.names;ST.owner=keep.owner;}}}
-function save(){try{localStorage.setItem('opiius_demo',JSON.stringify(ST));}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(ST));}catch(e){}}
 load();
 
 var SYS=null, TAB='home', SUBTAB={}, FILTER={};
@@ -489,11 +494,11 @@ function showScreen(id){['splash','pick','app'].forEach(function(s){$(s).classLi
 function openSys(sys){
   SYS=sys; TAB='home'; document.body.className=sys; $('logo').textContent=initials(ST.names[sys]);
   $('bizName').textContent=ST.names[sys];
-  $('bizSub').textContent=sys==='rent'?'Bike & car rentals · Guwahati':'Tour desk · Guwahati';
+  $('bizSub').textContent=sys==='rent'?(P?P.sub:'Bike & car rentals · Guwahati'):'Tour desk · Guwahati';
   renderNav(); renderTab(); showScreen('app');
 }
 function tabs(){return SYS==='rent'
-  ?[['home','Today','home'],['fleet','Fleet','bike'],['book','Bookings','list'],['inbox','Inbox','chat'],['more','Reports','chart']]
+  ?[['home','Today','home'],['fleet','Fleet',P?'car':'bike'],['book','Bookings','list'],['inbox','Inbox','chat'],['more','Reports','chart']]
   :[['home','Today','home'],['trips','Trips','map'],['leads','Enquiries','inbox'],['pay','Payments','wallet'],['more','Reports','chart']];}
 function renderNav(){
   var need=SYS==='rent'?R().inbox.filter(function(x){return x.status==='need';}).length:T().leads.filter(function(x){return x.stage==='new';}).length;
@@ -534,7 +539,7 @@ function toast(title,sub,kind){
 /* Android back button: close sheet, then leave the app screen, then the picker */
 window.appBack=function(){
   if(sheetFn){closeSheet();return true;}
-  if(!$('app').classList.contains('hide')){if(TAB!=='home'){TAB='home';renderTab();}else showScreen('pick');return true;}
+  if(!$('app').classList.contains('hide')){if(TAB!=='home'){TAB='home';renderTab();}else showScreen(P?'splash':'pick');return true;}
   if(!$('pick').classList.contains('hide')){showScreen('splash');return true;}
   return false;
 };
@@ -589,7 +594,7 @@ var RENT_VIEWS={
     h+='<div class="kpis"><div class="kpi hero"><i>Bookings this week</i><b class="num">'+money(rev.reduce(function(a,b){return a+b;},0))+'</b><small>↑ 18% vs last week</small></div>'
       +'<div class="kpi"><i>Vehicles on the road</i><b class="num">'+act.length+' / '+d.units.length+'</b></div>'
       +'<div class="kpi"><i>Deposits held</i><b class="num">'+money(held)+'</b></div></div>';
-    h+='<div class="actions" style="margin-top:12px"><button class="btn pri" data-act="newRent">'+svg('plus',18)+'New booking</button><button class="btn sec2" data-act="tab" data-tab="fleet">'+svg('bike',18)+'Fleet</button></div>';
+    h+='<div class="actions" style="margin-top:12px"><button class="btn pri" data-act="newRent">'+svg('plus',18)+'New booking</button><button class="btn sec2" data-act="tab" data-tab="fleet">'+svg(P?'car':'bike',18)+'Fleet</button></div>';
     h+='<div class="sec"><h3>Pickups today</h3><a data-act="tab" data-tab="book">All</a></div>';
     h+=pick.length?'<div class="card">'+pick.map(function(b){return '<div class="row">'+ph(b.type,'thumb',BIKES[b.type].em,160)+'<div class="grow"><b>'+esc(b.name)+'</b><span>'+BIKES[b.type].short+' · 9:00 AM · '+esc(b.trip)+'</span></div><button class="btn sm pri" data-act="handover" data-id="'+b.id+'">Hand over</button></div>';}).join('')+'</div>'
       :'<div class="card"><div class="empty">No more pickups today</div></div>';
@@ -710,7 +715,7 @@ function unitSheet(reg){
   var earned=R().bk.filter(function(b){return b.reg===reg;}).reduce(function(a,b){return a+b.rent;},0);
   var h=sheetHead(B.short,reg)+'<div class="sb">'+ph(u.type,'hero',B.em,900,B.label);
   h+='<dl class="kv"><dt>Status</dt><dd><span class="chip '+s[0]+'">'+s[1]+'</span></dd><dt>Odometer</dt><dd>'+u.odo.toLocaleString('en-IN')+' km</dd>'
-    +'<dt>Rate</dt><dd>'+money(B.day)+' / '+money(B.wkend)+' wknd</dd><dt>Earned (shown)</dt><dd>'+money(earned)+'</dd>'
+    +'<dt>Rate</dt><dd>'+(B.day===B.wkend?money(B.day)+'/day':money(B.day)+' / '+money(B.wkend)+' wknd')+'</dd><dt>Earned (shown)</dt><dd>'+money(earned)+'</dd>'
     +(u.svc?'<dt>Service</dt><dd>'+esc(u.svc)+'</dd>':'')+'</dl>';
   h+='<div class="lbl">SCHEDULE</div>'+(next.length?'<div class="card">'+next.map(bRow).join('')+'</div>':'<div class="card"><div class="empty">No bookings — free to rent</div></div>');
   h+='<div class="actions">'+(u.svc?'<button class="btn pri" data-act="svcDone" data-reg="'+reg+'">Back from service</button>'
@@ -748,15 +753,16 @@ function chatSheet(id){
 var SIM=null;
 function simulate(){
   var t=today(), sat=nextDow(6); if(sat===t)sat=addD(t,7);
-  var free=freeUnits('classic',sat,2), type=free.length?'classic':'dominar'; free=freeUnits(type,sat,2);
-  if(!free.length){toast('Fleet is full for Saturday','Free a bike to run the demo again','bad');return;}
+  var SIM=P&&P.sim||{types:['classic','dominar'],noun:'bike'};
+  var type=SIM.types.filter(function(k){return freeUnits(k,sat,2).length;})[0], free=type?freeUnits(type,sat,2):[];
+  if(!free.length){toast('Fleet is full for Saturday','Free a '+SIM.noun+' to run the demo again','bad');return;}
   var rent=rentFor(type,sat,2), id=Date.now();
   var x={id:id,who:'Ankur Baishya',status:'faq',time:'Now',msgs:[]};
   R().inbox.unshift(x);
-  var script=[['in','Hi, need a bike for Shillong this Saturday, 2 days'],
+  var script=[['in','Hi, need a '+SIM.noun+' for Shillong this Saturday, 2 days'],
     ['bot','Hi Ankur! For Sat–Sun I have the '+BIKES[type].short+' free: '+money(rent)+' for 2 days, '+(BIKES[type].km*2)+' km free (Shillong is ~200 km). Deposit '+money(BIKES[type].dep)+' at pickup. Shall I book it?'],
     ['in','Yes please. Ankur Baishya, 94350 66120, DL AS01 20210034517'],
-    ['bot','Licence verified ✅ Pay the '+money(rent*.3)+' advance here to block the bike: upi://pay (demo)'],
+    ['bot','Licence verified ✅ Pay the '+money(rent*.3)+' advance here to block the '+SIM.noun+': upi://pay (demo)'],
     ['in','paid'],
     ['bot','Booked! 🎉 Your rental is confirmed for '+fmt(sat)+', 9 AM. Location pin and checklist sent.']];
   openChat(id);
@@ -764,7 +770,7 @@ function simulate(){
   (function next(){
     if(i>=script.length){
       x.status='booked';
-      ST.rent.seq++; var b={id:'WR-'+ST.rent.seq,name:'Ankur Baishya',phone:'94350 66120',reg:free[0].reg,type:type,start:sat,days:2,rent:rent,adv:Math.round(rent*.3),
+      ST.rent.seq++; var b={id:PFX+ST.rent.seq,name:'Ankur Baishya',phone:'94350 66120',reg:free[0].reg,type:type,start:sat,days:2,rent:rent,adv:Math.round(rent*.3),
         dep:BIKES[type].dep,status:'upcoming',trip:'Shillong',src:'WhatsApp AI',today:true};
       R().bk.push(b); save(); refresh(); if(on())drawSheet();
       toast('New booking by the AI','Ankur Baishya · '+BIKES[type].short+' · '+money(b.adv)+' advance paid');
@@ -919,8 +925,8 @@ function settingsBlock(){
   return '<div class="sec"><h3>Settings</h3></div><div class="card" style="padding:14px"><div class="lbl" style="margin-top:0">BUSINESS NAME</div>'
     +'<input class="field" id="fBiz" value="'+esc(ST.names[SYS])+'"><div class="lbl">YOUR NAME</div><input class="field" id="fOwner" value="'+esc(ST.owner)+'">'
     +'<div class="actions"><button class="btn sec2" data-act="resetDemo">Reset demo data</button><button class="btn pri" data-act="saveBiz">Save</button></div></div>'
-    +'<div class="sec"><h3>Photo credits</h3></div><div class="card credits">Photos load from Wikimedia Commons and are used under their Creative Commons licences. '
-    +'Files: '+Object.keys(PHOTO).map(function(k){return PHOTO[k].replace(/_/g,' ');}).join(' · ')+'. Demo prices, bookings and people are made up.</div>'
+    +'<div class="sec"><h3>'+(P?'About this demo':'Photo credits')+'</h3></div><div class="card credits">'
+    +(P?P.credits:'Photos load from Wikimedia Commons and are used under their Creative Commons licences. Files: '+Object.keys(PHOTO).map(function(k){return PHOTO[k].replace(/_/g,' ');}).join(' · ')+'. Demo prices, bookings and people are made up.')+'</div>'
     +'<div style="text-align:center;color:var(--dim2);font-size:12px;margin:22px 0 4px">Built by OPIIUS · Guwahati</div>';
 }
 
@@ -931,7 +937,7 @@ document.addEventListener('click',function(e){
   var el=e.target.closest('[data-act]'); if(!el||el.disabled)return;
   var a=el.getAttribute('data-act'), id=el.getAttribute('data-id'), v=el.getAttribute('data-v');
   var A={
-    enter:function(){showScreen('pick');},
+    enter:function(){if(P)openSys('rent');else showScreen('pick');},
     open:function(){openSys(el.getAttribute('data-sys'));},
     'switch':function(){closeSheet();showScreen('pick');},
     tab:function(){TAB=el.getAttribute('data-tab');renderTab();},
@@ -958,7 +964,7 @@ document.addEventListener('click',function(e){
     days:function(){keepInputs();FORM.days=Math.max(1,Math.min(14,FORM.days+(+v)));drawSheet();},
     doNewRent:function(){keepInputs();if(!FORM.name){toast('Add the rider’s name','','bad');return;}
       var u=freeUnits(FORM.type,FORM.start,FORM.days)[0],rent=rentFor(FORM.type,FORM.start,FORM.days);ST.rent.seq++;
-      var b={id:'WR-'+ST.rent.seq,name:FORM.name,phone:FORM.phone||'—',reg:u.reg,type:FORM.type,start:FORM.start,days:FORM.days,rent:rent,adv:Math.round(rent*.3),
+      var b={id:PFX+ST.rent.seq,name:FORM.name,phone:FORM.phone||'—',reg:u.reg,type:FORM.type,start:FORM.start,days:FORM.days,rent:rent,adv:Math.round(rent*.3),
         dep:BIKES[FORM.type].dep,status:'upcoming',trip:'City',src:'Walk-in',today:true};
       R().bk.push(b);closeSheet();refresh();toast('Booking '+b.id+' created',b.reg+' blocked for '+fmt(b.start)+' · confirmation sent');},
     openChat:function(){openChat(+id);},
@@ -999,6 +1005,8 @@ function keepInputs(){['fOdo','fName','fPhone'].forEach(function(k){var el=$(k);
 document.addEventListener('input',function(e){if(e.target.id==='fOdo'&&FORM.id&&bk(FORM.id)&&bk(FORM.id).status==='active'){FORM.odo=e.target.value;
   var pos=e.target.selectionStart;drawSheet();var n=$('fOdo');n.focus();try{n.setSelectionRange(pos,pos);}catch(x){}}});
 
+if(P){document.querySelector('.wordmark').textContent=P.brand;document.querySelector('.tagline').innerHTML=P.tagline;
+  document.querySelector('.madein').textContent='POWERED BY OPIIUS';document.querySelector('[data-act=switch]').style.display='none';document.title=P.name;}
 [].forEach.call(document.querySelectorAll('[data-photo]'),function(el){el.style.backgroundImage='url("'+photoUrl(el.getAttribute('data-photo'),900)+'")';});
 /* open straight into a system for testing: #rent or #tour */
 if(/^#(rent|tour)$/.test(location.hash))openSys(location.hash.slice(1));

@@ -1,10 +1,13 @@
 #!/bin/bash
-# Builds OPIIUS.apk from app/web/index.html without the Android SDK.
+# Builds an APK from the web app without the Android SDK.
+#   ./build.sh                 -> OPIIUS.apk (Rentals + Tours demo)
+#   APP=realdrive ./build.sh   -> RealDrive.apk (one business's own copy, from presets/realdrive)
 # Tools come from Maven Central and PyPI: aapt2 (PyPI "aapt2"), the framework
 # resources in Robolectric's android-all jar, dx for the dex file, and
 # Google's apksig library to sign with the v2 scheme.
 set -e
 cd "$(dirname "$0")"
+APP=${APP:-web}
 T=.tools; M=https://repo.maven.apache.org/maven2
 mkdir -p $T
 AJ=$T/android-all-10.jar
@@ -15,10 +18,18 @@ if [ ! -x $T/aapt2 ]; then
   pip download -q --no-deps aapt2==0.2.1 -d $T/py
   unzip -q -o -j $T/py/aapt2-0.2.1-py3-none-any.whl 'aapt2/bin/Linux/aapt2' -d $T && chmod +x $T/aapt2
 fi
-O=$T/out; rm -rf $O; mkdir -p $O/classes $O/signer $O/assets
-cp web/index.html $O/assets/index.html
-$T/aapt2 compile --dir android/res -o $O/res.zip
-$T/aapt2 link -I $AJ --manifest android/AndroidManifest.xml --min-sdk-version 24 --target-sdk-version 34 \
+O=$T/out-$APP; rm -rf $O; mkdir -p $O/classes $O/signer $O/assets $O/res
+cp -r android/res/. $O/res/
+if [ "$APP" = web ]; then
+  cp web/index.html $O/assets/index.html; PKG=in.opiius.demo; OUT=OPIIUS.apk
+else
+  python3 tools/preset.py $APP
+  cp $APP/index.html $O/assets/index.html; PKG=in.opiius.$APP; OUT=$(cat presets/$APP/apk-name)
+  sed -i "s#<string name=\"app_name\">[^<]*#<string name=\"app_name\">$(cat presets/$APP/label)#" $O/res/values/values.xml
+  [ -f presets/$APP/icon.png ] && cp presets/$APP/icon.png $O/res/mipmap-xxxhdpi/ic_launcher.png
+fi
+$T/aapt2 compile --dir $O/res -o $O/res.zip
+$T/aapt2 link -I $AJ --manifest android/AndroidManifest.xml --rename-manifest-package $PKG --min-sdk-version 24 --target-sdk-version 34 \
   --version-code ${VC:-1} --version-name ${VN:-1.0} --replace-version -A $O/assets -o $O/base.apk $O/res.zip
 javac -nowarn --release 8 -cp $AJ -d $O/classes $(find android/src -name '*.java') 2>&1 | grep -v 'warning: \[options\]' || true
 java -cp $T/dx.jar com.android.dx.command.Main --dex --min-sdk-version=24 --output=$O/classes.dex $O/classes
@@ -30,5 +41,5 @@ KS=${KEYSTORE:-$T/opiius.p12}; KP=${KEYPASS:-opiius-demo}
   -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=OPIIUS, O=OPIIUS, L=Guwahati, C=IN" 2>/dev/null
 javac -nowarn -cp $T/apksig.jar -d $O/signer tools/Sign.java
 java --add-exports java.base/sun.security.x509=ALL-UNNAMED --add-exports java.base/sun.security.pkcs=ALL-UNNAMED \
-  --add-exports java.base/sun.security.util=ALL-UNNAMED -cp $T/apksig.jar:$O/signer Sign $O/aligned.apk OPIIUS.apk $KS $KP
-ls -la OPIIUS.apk
+  --add-exports java.base/sun.security.util=ALL-UNNAMED -cp $T/apksig.jar:$O/signer Sign $O/aligned.apk $OUT $KS $KP
+ls -la $OUT
