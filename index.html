@@ -103,6 +103,58 @@ a{color:inherit}
   .qs{grid-template-columns:1fr 1fr}.qs > div:nth-of-type(3){border-left:0}.qs > div:nth-of-type(n+3){border-top:1px solid var(--line)}.qs .go{grid-column:1/-1;padding:12px}}
 @media(max-width:420px){.qs{grid-template-columns:1fr}.qs > div{border-left:0!important;border-top:1px solid var(--line)}.qs > div:first-of-type{border-top:0}}
 
+.hstats{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;font-size:13.5px;color:var(--dim)}
+.hstats b{color:var(--ink);font-weight:800}
+
+/* ---------- rental companies ---------- */
+.cos{padding-block:80px 10px}
+.cos-h{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.cos h2{font-size:clamp(32px,4.2vw,54px);font-weight:800;letter-spacing:-.04em}
+.cos-h .pills{margin:0 0 0 auto;justify-content:flex-end}
+@media(max-width:700px){.cos-h .pills{margin:0;justify-content:flex-start}}
+.cos > p{color:var(--dim);max-width:60ch;margin:14px 0 28px}
+.cogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.co{border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px;background:#fff;cursor:pointer;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .3s}
+.co:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--line2)}
+.co-top{display:flex;gap:10px;align-items:center}
+.co-top .av{width:42px;height:42px;border-radius:12px;font-size:14px}
+.co-n{min-width:0}
+.co-n b{display:block;font-size:15.5px;letter-spacing:-.01em}
+.co-n span{display:block;font-size:12.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.co-r{margin-left:auto;font-size:12.5px;font-weight:800;color:var(--warn);white-space:nowrap}
+.co-ph{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.co-ph span{aspect-ratio:4/3;max-width:100%;border-radius:10px;background:var(--stage);overflow:hidden;position:relative}
+.co-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 85%;transition:transform .8s var(--ease)}
+.co-ph img.studio{object-fit:contain;padding:6%;mix-blend-mode:multiply}
+.co:hover .co-ph img{transform:scale(1.07)}
+.co-tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--glass2);color:var(--dim);font-weight:700}
+.tag.good{background:var(--goodbg);color:var(--good)}
+.tag.founding{background:var(--ink);color:#fff}
+.co-foot{display:flex;align-items:center;gap:8px;margin-top:auto;font-size:13px;color:var(--dim)}
+.co-foot b{color:var(--ink)}
+.co:hover .rent{background:var(--ink);border-color:var(--ink);color:#fff}
+.co-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-top:16px}
+.co-facts div{background:var(--solid2);border:1px solid var(--line);border-radius:12px;padding:9px 11px}
+.co-facts small{display:block;font-size:11px;color:var(--dim);font-weight:600}
+.co-facts b{font-size:12.5px}
+.co-list{display:grid;gap:8px}
+.co-row{display:grid;grid-template-columns:92px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:8px}
+.co-row > *{min-width:0}
+.co-row .th{position:relative;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:var(--stage)}
+.co-row .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 85%}
+.co-row .th img.studio{object-fit:contain;padding:6%;mix-blend-mode:multiply}
+.co-row .th .noimg svg{width:50%}
+.co-row .th .noimg b{display:none}
+.co-row b{display:block;font-size:14px}
+.co-row span{display:block;font-size:12px;color:var(--dim)}
+.co-row span.ok{color:var(--good);font-weight:600}
+.co-row span.no{color:var(--bad);font-weight:600}
+.co-row .pr{text-align:right;display:grid;gap:4px;justify-items:end}
+.co-row .pr b{font-size:16px}
+@media(max-width:480px){.co-row{grid-template-columns:72px 1fr}.co-row .pr{grid-column:1/-1;grid-template-columns:auto 1fr auto;align-items:center;justify-items:start}.co-facts{grid-template-columns:1fr}}
+
 /* ---------- app section with phones ---------- */
 .app{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding-block:90px 60px}
 .app > *{min-width:0}
@@ -480,6 +532,7 @@ main{animation:viewin .55s var(--ease) both}
       <button role="tab" id="t-partner" data-go="partner" aria-selected="false">Partner app</button>
       <button role="tab" id="t-biz" data-go="biz" aria-selected="false">Business model</button>
     </nav>
+    <button type="button" class="bizlink navlk" data-scroll="companies">Companies</button>
     <button type="button" class="bizlink navlk" data-scroll="fleet">Fleet</button>
     <button type="button" class="bizlink navlk" data-scroll="features">Features</button>
     <a class="bizlink" href="business.html">For businesses</a>
@@ -491,8 +544,9 @@ main{animation:viewin .55s var(--ease) both}
 <main id="v-rent">
   <section class="hx wrap">
     <div class="hx-copy">
-      <h1 class="rv">Self-Drive Rentals in Guwahati</h1>
-      <p class="rv" style="--d:1">Every rental company in one place. Compare cars, bikes and scooters, pick the best price and pay once.</p>
+      <h1 class="rv">All Guwahati Rentals in One Place</h1>
+      <p class="rv" style="--d:1">Cars, bikes and scooters from every rental company in town. Compare their prices, pick the one you like and pay once.</p>
+      <div class="hstats rv" style="--d:1" id="hstats"></div>
       <form class="qs rv" style="--d:2" id="search" autocomplete="off">
         <input type="hidden" id="s-kind" value="all">
         <div><label for="s-city">City</label>
@@ -509,6 +563,16 @@ main{animation:viewin .55s var(--ease) both}
       <img id="hero-car" src="rideme/img/scorpio.png" alt="">
     </div>
     <div class="makers rv" style="--d:3" id="makers" aria-label="Filter by maker"></div>
+  </section>
+
+  <section class="cos wrap" id="companies">
+    <span class="eyebrow rv">Choose who you rent from</span>
+    <div class="cos-h">
+      <h2 class="rv" id="cos-title">Rental companies in Guwahati</h2>
+      <div class="pills rv" style="--d:1" id="co-pills" role="group" aria-label="Filter rental companies"></div>
+    </div>
+    <p class="rv" style="--d:1">Every company runs its own fleet. Open one to see all its vehicles, or compare the same car across companies in the fleet below.</p>
+    <div class="cogrid" id="cogrid"></div>
   </section>
 
   <section class="app wrap" id="app">
@@ -786,6 +850,8 @@ const OPS = [
   {id:"rl", name:"Riverline Self-Drive", area:"Fancy Bazar", city:"Guwahati", rating:4.3, trips:540, assured:false, deliv:false, oneway:true, km:{bike:0,car:300}, hue:205},
   {id:"tl", name:"Tealeaf Tours & Rentals", area:"Six Mile, GS Road", city:"Guwahati", rating:4.8, trips:1510, assured:true, deliv:true, oneway:true, km:{bike:200,car:300}, hue:95},
   {id:"eg", name:"Eastgate Motors", area:"Beltola Chariali", city:"Guwahati", rating:4.1, trips:310, assured:false, deliv:true, oneway:false, km:{bike:100,car:200}, hue:330},
+  {id:"ls", name:"Lakeside Rides", area:"Dispur, near Last Gate", city:"Guwahati", rating:4.6, trips:690, assured:true, deliv:false, oneway:false, km:{bike:150,car:0}, hue:185},
+  {id:"ax", name:"Airport Express Rentals", area:"Borjhar, 2 km from LGBI Airport", city:"Guwahati", rating:4.4, trips:420, assured:false, deliv:true, oneway:true, km:{bike:0,car:250}, hue:12},
   {id:"pw", name:"Pinewood Wheels", area:"Police Bazar", city:"Shillong", rating:4.6, trips:720, assured:true, deliv:true, oneway:true, km:{bike:150,car:250}, hue:170},
   {id:"cl", name:"Cloudline Rentals", area:"Laitumkhrah", city:"Shillong", rating:4.4, trips:430, assured:false, deliv:false, oneway:false, km:{bike:120,car:200}, hue:260}
 ];
@@ -820,6 +886,8 @@ const LISTINGS = [
   ["hr","gt650",2200,2],["tl","gt650",2400,1],["hr","shine",550,4],["eg","shine",500,3],["nb","shine",580,3],["cl","shine",600,2],
   ["nb","xuv700",4200,2],["tl","xuv700",4400,1],["rl","xuv700",4000,1],
   ["nb","scorpio",3400,2],["rl","scorpio",3200,2],["tl","scorpio",3500,1],["pw","scorpio",3800,1],
+  ["ls","activa",430,6],["ls","shine",520,4],["ls","classic",1150,3],["ls","gt650",2300,1],["ls","himalayan",2000,1],
+  ["ax","swift",1750,3],["ax","i20",1550,2],["ax","scorpio",3300,2],["ax","xuv700",4100,1],["ax","innova",4400,1],["ax","thar",3800,1],
   ["pw","activa",500,6],["cl","activa",470,4],["pw","classic",1350,3],["cl","classic",1250,2],
   ["pw","himalayan",2200,2],["pw","swift",2000,2],["cl","swift",1900,2],["pw","thar",4200,1],
 ];
@@ -1020,7 +1088,71 @@ function renderPhones(){
       <div class="tk"><small>Pick-up · Paltan Bazar</small><b>${car?esc(car.name):""}</b></div>
       <div class="btn2">Show at counter</div></div></div>`;
 }
-function renderRent(){renderFilters();renderResults();renderMakers();renderFleet();renderPhones()}
+/* =================== rental companies =================== */
+S.coFilter="all";
+const CO_FILTERS=[["all","All"],["car","Cars"],["bike","Bikes & scooters"],["deliv","Airport delivery"]];
+function coFleet(op){
+  return LISTINGS.filter(l=>l[0]===op.id).map(([,mid,price])=>{const m=modelById[mid];
+    return {m,price,avail:VEH.filter(v=>v.op===op.id&&v.model===mid&&v.online&&isFree(v)).length,units:VEH.filter(v=>v.op===op.id&&v.model===mid&&v.online).length}})
+    .filter(x=>x.m).sort((a,b)=>(hasPhoto(b.m.id)-hasPhoto(a.m.id))||(a.price-b.price));
+}
+function renderHstats(){
+  const ops=OPS.filter(o=>o.city===S.city), veh=VEH.filter(v=>v.online&&opById[v.op].city===S.city);
+  const lo=Math.min(...LISTINGS.filter(l=>opById[l[0]].city===S.city).map(l=>l[2]));
+  $("#hstats").innerHTML=`<span><b>${ops.length}</b> rental companies</span><span><b>${veh.length}</b> vehicles</span><span>from <b>${inr(lo)}</b>/day</span>`;
+}
+function renderCompanies(){
+  $("#cos-title").textContent=`Rental companies in ${S.city}`;
+  $("#co-pills").innerHTML=CO_FILTERS.map(([k,l])=>`<button type="button" data-cofilter="${k}" aria-pressed="${S.coFilter===k}">${esc(l)}</button>`).join("");
+  const f=S.coFilter;
+  const ops=OPS.filter(o=>o.city===S.city).map(o=>({o,fleet:coFleet(o)}))
+    .filter(({o,fleet})=>fleet.length&&(f==="all"||(f==="deliv"?o.deliv:fleet.some(x=>x.m.kind===f))))
+    .sort((a,b)=>(!!b.o.founding-!!a.o.founding)||(b.o.rating-a.o.rating));
+  $("#cogrid").innerHTML=ops.length?ops.map(({o,fleet},i)=>{
+    const cars=fleet.filter(x=>x.m.kind==="car").length, bikes=fleet.length-cars, units=fleet.reduce((s,x)=>s+x.units,0);
+    const what=cars&&bikes?"Cars & bikes":cars?"Cars":"Bikes & scooters";
+    const th=fleet.filter(x=>hasPhoto(x.m.id)).slice(0,3);
+    return `<article class="co rv" style="--d:${i%4}" role="button" tabindex="0" data-company="${o.id}" aria-label="${esc(o.name)}, ${units} vehicles, see fleet">
+      <div class="co-top"><span class="av" style="background:${avColor(o)}">${initials(o.name)}</span>
+        <div class="co-n"><b>${esc(o.name)}</b><span>${esc(o.area)}</span></div>
+        <span class="co-r">${o.founding?"New":"★ "+o.rating}</span></div>
+      <div class="co-ph">${th.map(x=>`<span><img class="${STUDIO.has(x.m.id)?"studio":""}" src="${PHOTOS[x.m.id]}" alt="" loading="lazy"></span>`).join("")}</div>
+      <div class="co-tags">${o.founding?'<span class="tag founding">Founding partner</span>':o.assured?'<span class="tag good">Assured</span>':""}<span class="tag">${what}</span>${o.deliv?'<span class="tag">Airport delivery</span>':""}${o.oneway?'<span class="tag">One-way</span>':""}</div>
+      <div class="co-foot"><span><b>${units} vehicles</b> · from ${inr(fleet.reduce((m,x)=>Math.min(m,x.price),1e9))}/day</span><span class="rent">See fleet</span></div>
+    </article>`}).join(""):`<div class="empty">No companies match this filter in ${S.city}.</div>`;
+  observeRv();
+}
+function openCompany(opId){
+  const o=opById[opId], fleet=coFleet(o), root=$("#sheet-root"), d=days();
+  D=null;
+  root.innerHTML=`<div class="scrim" data-close></div>
+    <aside class="sheet" role="dialog" aria-modal="true" aria-labelledby="c-title">
+      <header><span class="av" style="background:${avColor(o)};width:42px;height:42px;border-radius:12px">${initials(o.name)}</span>
+        <div><h3 id="c-title">${esc(o.name)}</h3><p>${esc(o.area)} · ${o.founding?"New on OPIIUS":"★ "+o.rating+" · "+o.trips.toLocaleString("en-IN")+" trips"}</p></div>
+        <button class="x" data-close aria-label="Close">×</button></header>
+      <div class="body">
+        <div class="co-facts">
+          <div><small>Free km</small><b>${[o.km.car&&o.km.car+"/day cars",o.km.bike&&o.km.bike+"/day bikes"].filter(Boolean).join(" · ")||"Unlimited"}</b></div>
+          <div><small>Delivery</small><b>${o.deliv?"Airport & station":"Pick-up only"}</b></div>
+          <div><small>One-way</small><b>${o.oneway?"Guwahati ⇄ Shillong":"No"}</b></div>
+        </div>
+        <div class="sect-l">${fleet.length} models · ${fmtDate(S.from)} to ${fmtDate(S.to)}</div>
+        <div class="co-list">${fleet.map(x=>`<div class="co-row">
+          <span class="th">${hasPhoto(x.m.id)?`<img class="${STUDIO.has(x.m.id)?"studio":""}" src="${PHOTOS[x.m.id]}" alt="">`:noImg(x.m)}</span>
+          <div><b>${esc(x.m.name)}</b><span>${x.m.sub} · ${x.m.gear} · ${x.m.seats} seats</span><span class="${x.avail?"ok":"no"}">${x.avail?x.avail+" free for your dates":"Booked for your dates"}</span></div>
+          <div class="pr"><b class="num">${inr(x.price)}</b><span>/day · ${inr(x.price*d)} total</span>
+            <button type="button" class="btn acc sm" data-book="${o.id}|${x.m.id}" ${x.avail?"":"disabled"}>Book</button></div></div>`).join("")}</div>
+      </div>
+      <footer><span class="kv">Prices from ${esc(o.name)}. OPIIUS adds a small booking fee at checkout.</span></footer></aside>`;
+  document.body.style.overflow="hidden";
+  requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.add("open")));
+  setTimeout(()=>root.querySelector(".x")?.focus({preventScroll:true}),350);
+}
+function bookWith(opId,modelId){
+  openModel(modelId);
+  const op=opById[opId]; D.op=op; D.price=LISTINGS.find(l=>l[0]===opId&&l[1]===modelId)[2]; D.step=1; D.prevTotal=0; drawSheet();
+}
+function renderRent(){renderFilters();renderResults();renderMakers();renderHstats();renderCompanies();renderFleet();renderPhones()}
 
 /* =================== scroll reveal + parallax =================== */
 let rvIO=null;
@@ -1053,7 +1185,7 @@ function initHero(){
   addEventListener("resize",frame); frame();
 }
 function heroPause(){}
-function heroCaption(){renderFleet();renderPhones()}
+function heroCaption(){renderHstats();renderCompanies();renderFleet();renderPhones()}
 
 /* =================== vehicle sheet =================== */
 let D=null;
@@ -1257,13 +1389,16 @@ function go(view){
   if(document.startViewTransition&&!reduced&&S.view!==view) document.startViewTransition(apply); else apply();
 }
 document.addEventListener("click",e=>{
-  const t=e.target.closest("[data-go],[data-t],[data-model],[data-pick],[data-cat],[data-fcat],[data-maker],[data-scroll],[data-all],[data-clearcat],[data-oneway],[data-city],[data-close],[data-accept],[data-veh],#d-next,#d-back,#d-back0,#d-pay,#d-partner");
+  const t=e.target.closest("[data-go],[data-t],[data-model],[data-pick],[data-cat],[data-fcat],[data-maker],[data-scroll],[data-company],[data-cofilter],[data-book],[data-all],[data-clearcat],[data-oneway],[data-city],[data-close],[data-accept],[data-veh],#d-next,#d-back,#d-back0,#d-pay,#d-partner");
   if(!t)return;
   if(t.dataset.go){e.preventDefault();go(t.dataset.go);return}
   if(t.dataset.t){S.type.has(t.dataset.t)?S.type.delete(t.dataset.t):S.type.add(t.dataset.t);renderFilters();renderResults();return}
   const toMarket=()=>{if(S.view!=="rent")go("rent"); setTimeout(()=>$("#market").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"}),S.view==="rent"?0:60)};
   const toId=id=>{if(S.view!=="rent")go("rent"); setTimeout(()=>document.getElementById(id).scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"}),S.view==="rent"?0:60)};
   if(t.dataset.scroll){toId(t.dataset.scroll);return}
+  if(t.dataset.cofilter){S.coFilter=t.dataset.cofilter;renderCompanies();return}
+  if(t.dataset.company){openCompany(t.dataset.company);return}
+  if(t.dataset.book){const [o,m]=t.dataset.book.split("|");bookWith(o,m);return}
   if(t.dataset.fcat!==undefined){S.fleetCat=t.dataset.fcat||null;renderFleet();return}
   if(t.dataset.maker){S.fleetMaker=S.fleetMaker===t.dataset.maker?null:t.dataset.maker;renderMakers();renderFleet();if(t.closest("#makers"))toId("fleet");return}
   if(t.dataset.cat){S.fleetCat=t.dataset.cat;renderFleet();toId("fleet");return}
@@ -1310,6 +1445,7 @@ document.addEventListener("input",e=>{
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape"&&D)closeSheet();
   if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("vcard")){e.preventDefault();openModel(e.target.dataset.model)}
+  if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("co")){e.preventDefault();openCompany(e.target.dataset.company)}
 });
 addEventListener("resize",movePill);
 function readDates(){
