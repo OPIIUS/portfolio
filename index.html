@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>OPIIUS</title>
-<meta name="description" content="Compare self-drive cars, bikes and scooters from verified rental companies in Guwahati and Shillong, and book in one payment.">
+<meta name="description" content="OPIIUS: rent a car, bike or scooter from Guwahati and Shillong rental companies, or plan a Meghalaya trip, all in one place.">
 <link rel="canonical" href="https://opiius.online/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="OPIIUS: every rental company, one search">
+<meta property="og:title" content="OPIIUS: the Northeast, sorted. Rent, ride, explore.">
 <meta property="og:description" content="Compare self-drive cars, bikes and scooters from verified rental companies in Guwahati and Shillong.">
 <meta property="og:url" content="https://opiius.online/">
 <meta property="og:image" content="https://opiius.online/rideme/img/xl6.jpg">
@@ -80,7 +80,7 @@ a{color:inherit}
 .hx-copy{position:relative;z-index:2}
 .hx h1{font-size:clamp(42px,6.2vw,84px);font-weight:800;line-height:.98;letter-spacing:-.045em}
 .hx-copy p{margin:20px 0 0;color:var(--dim);font-size:16px;max-width:38ch}
-.qs{margin-top:28px;display:grid;grid-template-columns:1fr 1.35fr 1.35fr auto;border:1px solid var(--line2);border-radius:18px;background:#fff;box-shadow:var(--shadow);overflow:hidden;max-width:620px}
+.qs{margin:0 0 22px;display:grid;grid-template-columns:1fr 1.35fr 1.35fr auto;border:1px solid var(--line2);border-radius:18px;background:#fff;box-shadow:var(--shadow);overflow:hidden;max-width:620px}
 .qs > div{padding:9px 14px;border-left:1px solid var(--line);min-width:0}
 .qs > div:first-of-type{border-left:0}
 .qs label{display:block;font-size:11px;color:var(--dim);font-weight:600}
@@ -116,6 +116,38 @@ a{color:inherit}
   .qs{grid-template-columns:1fr 1fr}.qs > div:nth-of-type(3){border-left:0}.qs > div:nth-of-type(n+3){border-top:1px solid var(--line)}.qs .go{grid-column:1/-1;padding:12px}}
 @media(max-width:420px){.qs{grid-template-columns:1fr}.qs > div{border-left:0!important;border-top:1px solid var(--line)}.qs > div:first-of-type{border-top:0}}
 
+.omni{display:flex;align-items:center;gap:10px;margin-top:22px;max-width:560px;background:#fff;border:1.5px solid var(--ink);border-radius:18px;padding:6px 6px 6px 16px;box-shadow:var(--shadow)}
+.omni svg{width:20px;height:20px;flex:none;color:var(--dim)}
+.omni input{flex:1;min-width:0;border:0;outline:0;font-size:15.5px;padding:10px 0;background:transparent}
+.omni button{border:0;background:var(--ink);color:#fff;border-radius:13px;padding:11px 20px;font-weight:700;font-size:14.5px;transition:background .25s}
+.omni button:hover{background:var(--accent)}
+.ideas{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;max-width:560px}
+.ideas button{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;color:var(--dim);transition:all .25s var(--ease)}
+.ideas button:hover{border-color:var(--ink);color:var(--ink)}
+.choose{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px;max-width:520px}
+.ch{display:flex;align-items:center;gap:12px;border:1px solid var(--line2);background:#fff;border-radius:16px;padding:14px 16px;text-align:left;text-decoration:none;color:var(--ink);cursor:pointer;transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+.ch:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--ink)}
+.ch .ic{width:42px;height:42px;border-radius:12px;background:var(--ink);color:#fff;display:grid;place-items:center;flex:none}
+.ch .ic svg{width:22px;height:22px}
+.ch b{display:block;font-size:15.5px}
+.ch small{display:block;font-size:12.5px;color:var(--dim)}
+@media(max-width:420px){.choose{grid-template-columns:1fr}}
+.tz{padding-block:80px 10px}
+.tz h2{font-size:clamp(32px,4.2vw,54px);font-weight:800;letter-spacing:-.04em}
+.tz > p{color:var(--dim);max-width:60ch;margin:14px 0 28px}
+.tzgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:1000px){.tzgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.tzgrid{grid-template-columns:1fr}}
+.tzc{display:flex;flex-direction:column;gap:8px;min-height:210px;border-radius:20px;padding:20px;text-decoration:none;color:#fff;border:0;text-align:left;cursor:pointer;
+  background:linear-gradient(160deg,#1d4d3b,#0f2a22);transition:transform .5s var(--ease),box-shadow .5s}
+.tzc:nth-child(2){background:linear-gradient(160deg,#1f3f63,#10233a)}
+.tzc:nth-child(3){background:linear-gradient(160deg,#4a3a20,#2a200f)}
+.tzc.self{background:#fff;color:var(--ink);border:1px dashed var(--line2)}
+.tzc:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.tzc small{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.7}
+.tzc b{font-size:20px;letter-spacing:-.02em;line-height:1.15}
+.tzc span{font-size:13.5px;opacity:.8}
+.tzc em{margin-top:auto;font-style:normal;font-weight:700;font-size:13.5px}
 .hstats{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;font-size:13.5px;color:var(--dim)}
 .hstats b{color:var(--ink);font-weight:800}
 
@@ -568,6 +600,7 @@ main{animation:viewin .55s var(--ease) both}
       <button role="tab" id="t-biz" data-go="biz" aria-selected="false">Business model</button>
     </nav>
     <button type="button" class="bizlink navlk" data-scroll="companies">Companies</button>
+    <a class="bizlink" href="tours/meghalaya.html">Tours</a>
     <button type="button" class="bizlink navlk" data-scroll="fleet">Fleet</button>
     <button type="button" class="bizlink navlk" data-scroll="features">Features</button>
     <a class="bizlink" href="business.html">For businesses</a>
@@ -579,17 +612,26 @@ main{animation:viewin .55s var(--ease) both}
 <main id="v-rent">
   <section class="hx wrap">
     <div class="hx-copy">
-      <h1 class="rv">All Guwahati Rentals in One Place</h1>
-      <p class="rv" style="--d:1">Cars, bikes and scooters from every rental company in town. Compare their prices, pick the one you like and pay once.</p>
-      <div class="hstats rv" style="--d:1" id="hstats"></div>
-      <form class="qs rv" style="--d:2" id="search" autocomplete="off">
-        <input type="hidden" id="s-kind" value="all">
-        <div><label for="s-city">City</label>
-          <select id="s-city"><option value="Guwahati">Guwahati</option><option value="Shillong">Shillong</option></select></div>
-        <div><label for="s-from">Pick-up</label><input id="s-from" type="datetime-local"></div>
-        <div><label for="s-to">Return</label><input id="s-to" type="datetime-local"></div>
-        <button class="go" type="submit">Search</button>
+      <span class="eyebrow rv">OPIIUS · Rent, ride, explore</span>
+      <h1 class="rv">Where do you want to go?</h1>
+      <p class="rv" style="--d:1">Every rental company and tour in the Northeast, in one place. Ask for a car, a bike or a trip.</p>
+      <form class="omni rv" style="--d:1" id="omni" autocomplete="off" role="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input type="search" id="omni-q" aria-label="Search rentals and tours" placeholder="Try &quot;SUV in Shillong&quot; or &quot;Meghalaya 4 day trip&quot;">
+        <button type="submit">Go</button>
       </form>
+      <div class="ideas rv" style="--d:2" id="ideas">
+        <button type="button" data-q="Cars in Guwahati under ₹2,000">Cars under ₹2,000</button>
+        <button type="button" data-q="Royal Enfield in Guwahati">Royal Enfield</button>
+        <button type="button" data-q="7 seater for family">7-seater for family</button>
+        <button type="button" data-q="Meghalaya 4 day trip">Meghalaya 4-day trip</button>
+        <button type="button" data-q="Weekend trip from Guwahati">Weekend trip</button>
+      </div>
+      <div class="choose rv" style="--d:1">
+        <button type="button" class="ch" data-scroll="companies"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16l1.5-5A2 2 0 0 1 8.4 9.6h7.2a2 2 0 0 1 1.9 1.4L19 16"/><rect x="3" y="16" width="18" height="4" rx="1.5"/><circle cx="7.5" cy="20" r="1.2"/><circle cx="16.5" cy="20" r="1.2"/></svg></span><span><b>Rent a vehicle</b><small>Cars, bikes, scooters</small></span></button>
+        <a class="ch" href="tours/meghalaya.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l6-11 4 7 3-4 5 8z"/><circle cx="17" cy="6" r="2"/></svg></span><span><b>Explore tours</b><small>Meghalaya, 3 to 5 days</small></span></a>
+      </div>
+      <div class="hstats rv" style="--d:1" id="hstats"></div>
     </div>
     <div class="hx-car" id="hx-car" aria-hidden="true">
       <span class="pin" style="--x:12%;--y:14%;--k:0"></span><span class="pin" style="--x:44%;--y:6%;--k:1"></span>
@@ -613,6 +655,18 @@ main{animation:viewin .55s var(--ease) both}
     <div class="cosearch rv" style="--d:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
       <input type="search" id="co-q" placeholder="Search a company, area or vehicle (e.g. Thar, Paltan Bazar, scooty)" aria-label="Search rental companies"></div>
     <div class="cogrid" id="cogrid"></div>
+  </section>
+
+  <section class="tz wrap" id="tours">
+    <span class="eyebrow rv">OPIIUS Tours</span>
+    <div class="cos-h"><h2 class="rv">Planning Meghalaya?</h2><a class="pillbtn rv" href="tours/meghalaya.html">See the Meghalaya guide</a></div>
+    <p class="rv" style="--d:1">Take a tour with a local operator, or drive it yourself with a rented car. OPIIUS shows you both, with honest costs.</p>
+    <div class="tzgrid">
+      <a class="tzc rv" style="--d:0" href="tours/meghalaya.html#p3"><small>3 days · 2 nights</small><b>Shillong &amp; Sohra</b><span>Umiam Lake, Laitlum, Nohkalikai, Mawsmai cave</span><em>Typically ₹9,000–13,000 per person</em></a>
+      <a class="tzc rv" style="--d:1" href="tours/meghalaya.html#p4"><small>4 days · 3 nights</small><b>Shillong, Sohra &amp; Dawki</b><span>Adds the Umngot river and Mawlynnong village</span><em>Typically ₹12,000–18,000 per person</em></a>
+      <a class="tzc rv" style="--d:2" href="tours/meghalaya.html#p5"><small>5 days · 4 nights</small><b>Meghalaya with root bridges</b><span>Adds the trek to Nongriat's double-decker bridge</span><em>Typically ₹15,000–22,000 per person</em></a>
+      <button type="button" class="tzc self rv" style="--d:3" data-cat="seven"><small>Self-drive</small><b>Drive it yourself</b><span>SUVs and 7-seaters for Meghalaya roads, with a free day-by-day plan</span><em>Cars from ₹1,500/day</em></button>
+    </div>
   </section>
 
   <section class="app wrap" id="app">
@@ -666,6 +720,14 @@ main{animation:viewin .55s var(--ease) both}
       <p class="note">Every company on OPIIUS runs its own fleet. OPIIUS checks their papers, collects payment and handles disputes.</p>
     </aside>
     <section aria-live="polite">
+      <form class="qs" id="search" autocomplete="off">
+        <input type="hidden" id="s-kind" value="all">
+        <div><label for="s-city">City</label>
+          <select id="s-city"><option value="Guwahati">Guwahati</option><option value="Shillong">Shillong</option></select></div>
+        <div><label for="s-from">Pick-up</label><input id="s-from" type="datetime-local"></div>
+        <div><label for="s-to">Return</label><input id="s-to" type="datetime-local"></div>
+        <button class="go" type="submit">Search</button>
+      </form>
       <div class="resbar">
         <h2 id="r-title">All rides in Guwahati</h2>
         <span id="r-cat"></span>
@@ -847,8 +909,8 @@ main{animation:viewin .55s var(--ease) both}
       <li><button type="button" class="lk" data-city="Shillong">Shillong</button></li>
       <li><span class="kv">Tawang, Gangtok: coming next</span></li></ul></div>
   </div>
-  <div class="fine">OPIIUS is in early launch. Real Drive Ghy is our founding partner, with cars, photos and day prices from their WhatsApp catalog. Companies marked "Demo partner", and all riders and bookings, are sample data to show how booking works.
-    Companies under "More rental companies in Guwahati" are not affiliated with OPIIUS: their details come from their own public websites and listings, and their cover photos show the type of vehicle they rent, not their actual fleet. To update or remove a listing, use "List your business".
+  <div class="fine">This is a demo of the OPIIUS platform for rental companies and tour operators. Real Drive Ghy's cars, photos and day prices come from their catalog; companies marked "Demo partner", tour prices, riders and bookings are sample data, and booking requests are not sent anywhere.
+    Companies under "More rental companies in Guwahati" are not affiliated with OPIIUS: their details come from their own public websites and listings, and their cover photos show the type of vehicle they rent.
     Other photos load from Wikimedia Commons under Creative Commons licences: <span id="credits"></span>.</div>
 </div></footer>
 
@@ -857,12 +919,10 @@ main{animation:viewin .55s var(--ease) both}
 
 <script>
 /* =================== CONFIG: edit to re-skin for a pitch =================== */
-/* LIVE: real customers use this page. Only REAL partners can be requested directly; every other vehicle shows a
-   typical Guwahati price (from sample market data) and a "get quotes" request that comes to the OPIIUS WhatsApp. */
-const LIVE = true;
+/* DEMO for rental-company owners: shows how OPIIUS looks and works. Nothing typed here leaves the page.
+   LIVE=false shows every sample company as bookable so owners can see side-by-side comparison. */
+const LIVE = false;
 const REAL_OPS = new Set(["rd"]);
-const WA_NUMBER = "918638830682";            // OPIIUS concierge WhatsApp, receives every request
-const SHEET_URL = "";                        // Google Apps Script web-app URL (see ops/README.md); empty = WhatsApp only
 const isReal = op => !LIVE || REAL_OPS.has(op.id);
 const CFG = {
   commission: 0.12,          // share of rent OPIIUS keeps
@@ -1258,6 +1318,36 @@ function bookWith(opId,modelId){
 }
 function renderRent(){renderFilters();renderResults();renderMakers();renderHstats();renderCompanies();renderFleet();renderPhones()}
 
+/* =================== one search for everything (the OPIIUS promise) =================== */
+function routeQuery(raw){
+  const q=raw.toLowerCase().replace(/,/g,"");
+  const tourish=/(trip|tour|package|honeymoon|weekend|holiday|itinerar|visit|explore|meghalaya|sohra|cherrapunji|dawki|mawlynnong|root bridge|laitlum|nights?)/.test(q);
+  const rentish=/(rent|car|bike|scoot|scooty|activa|enfield|bullet|suv|seater|thar|scorpio|innova|swift|i20|xuv|brezza|punch|carens|xl6|hatch|self.?drive|vehicle)/.test(q);
+  if(tourish&&!rentish){
+    const n=(q.match(/(\d)\s*(day|d\b|-day)/)||[])[1], w=/weekend/.test(q);
+    const key=w?"p3":(n>=5?"p5":n==3||n==2?"p3":"p4");
+    location.href="tours/meghalaya.html#"+key; return;
+  }
+  // rentals
+  if(/shillong/.test(q)){S.city="Shillong";$("#s-city").value="Shillong"} else if(/guwahati|ghy/.test(q)){S.city="Guwahati";$("#s-city").value="Guwahati"}
+  S.kind=/(bike|scoot|scooty|activa|enfield|bullet|two.?wheeler|motorcycle)/.test(q)?"bike":/(car|suv|seater|thar|scorpio|innova|swift|i20|xuv|brezza|punch|carens|xl6|hatch)/.test(q)?"car":"all";
+  $("#s-kind").value=S.kind; S.type.clear();
+  S.cat=/(7|seven|6|six).?seat|family|innova|xl6|carens|xuv/.test(q)?"seven":/suv|thar|brezza|punch/.test(q)?"suv":/hatch|swift|i20/.test(q)?"hatch":/scoot|scooty|activa/.test(q)?"scooters":/enfield|bullet|motorcycle|gt 650|shine|himalayan/.test(q)?"bikes":null;
+  const under=q.match(/(under|below|less than|within|<)\s*₹?\s*(\d+)/); S.max=under?Math.max(400,+under[2]):5000;
+  $("#f-max").value=S.max; $("#f-maxv").textContent=inr(S.max);
+  const maker=MAKERS.find(k=>q.includes(k.toLowerCase())||q.includes(k.split(" ")[0].toLowerCase()));
+  S.fleetMaker=maker||null; S.fleetCat=S.cat;
+  if(S.view!=="rent")go("rent");
+  renderRent();
+  const model=MODELS.find(m=>q.includes(m.name.toLowerCase())||q.includes(m.id));
+  const label=[S.cat?CATS[S.cat].label:S.kind==="bike"?"Bikes and scooters":S.kind==="car"?"Cars":"Rides",maker?"by "+maker:"","in "+S.city,under?"under "+inr(S.max)+"/day":""].filter(Boolean).join(" ");
+  toast("Showing "+label.charAt(0).toLowerCase()+label.slice(1));
+  if(model&&priceInfo(model.id,true)){openModel(model.id);return}
+  $(maker?"#fleet":"#market").scrollIntoView({behavior:reduced?"auto":"smooth",block:"start"});
+}
+document.getElementById("omni").addEventListener("submit",e=>{e.preventDefault();const v=$("#omni-q").value.trim();if(v)routeQuery(v)});
+document.getElementById("ideas").addEventListener("click",e=>{const b=e.target.closest("[data-q]");if(!b)return;$("#omni-q").value=b.dataset.q;routeQuery(b.dataset.q)});
+
 /* =================== scroll reveal + parallax =================== */
 let rvIO=null;
 function observeRv(){
@@ -1318,12 +1408,7 @@ function closeSheet(){
   setTimeout(()=>{if(!D)root.innerHTML=""},600);
   if(S.view==="rent")heroPause(false);
 }
-function waLink(text){return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`}
 function newId(){const d=new Date(),p=n=>String(n).padStart(2,"0");return `OP-${String(d.getFullYear()).slice(2)}${p(d.getMonth()+1)}${p(d.getDate())}-${Math.floor(100+Math.random()*900)}`}
-function logRequest(rec){
-  if(!SHEET_URL)return;
-  try{fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(rec)})}catch(e){}
-}
 function drawSheet(){
   const {m}=D, d=days(), quote=D.mode==="quote";
   $("#d-title").textContent=m.name;
@@ -1370,7 +1455,7 @@ function drawSheet(){
       <div class="field"><label class="sect-l" for="d-note">Anything else? (optional)</label><input id="d-note" value="${esc(D.note)}" placeholder="${quote?"Budget, pick-up area, trip plan":"Flight time, pick-up area"}"></div>
       <p class="kv" style="margin:0">Your licence is checked by the rental company at pick-up. We never ask for payment on WhatsApp before a company confirms.</p>
       <p class="kv" style="margin:0;color:var(--bad)" id="d-err"></p>`;
-    foot=`<button class="btn" id="d-back">Back</button><button class="btn acc" id="d-pay" style="margin-left:auto">Send request on WhatsApp</button>`;
+    foot=`<button class="btn" id="d-back">Back</button><button class="btn acc" id="d-pay" style="margin-left:auto">Send request</button>`;
   } else {
     const r=D.request;
     body=`<div class="ok"><svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="34" fill="none" stroke-width="4"/><path d="M25 41 L36 52 L56 30" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1382,8 +1467,8 @@ function drawSheet(){
         <div><span>Dates</span><span>${fmtDate(S.from)} → ${fmtDate(S.to)}</span></div>
         <div><span>${quote?"Typical price":"Estimated rent"}</span><span class="num">${quote?`~${inr(est.lo)}–${inr(est.hi)}/day`:inr(D.price*days())}</span></div>
       </div>
-      <p class="kv" style="margin:0">WhatsApp didn't open? <a href="${r.link}" target="_blank" rel="noopener">Open it again</a> and press send. Keep your request number <b class="mono">${r.id}</b>.</p></div>`;
-    foot=`<button class="btn" data-close>Done</button><a class="btn acc" style="margin-left:auto;text-decoration:none" href="${r.link}" target="_blank" rel="noopener">Open WhatsApp</a>`;
+      <p class="kv" style="margin:0">Demo: in the real platform this request goes to the rental company on WhatsApp. Nothing was sent.</p></div>`;
+    foot=`<button class="btn" data-close>Done</button>`;
   }
   $("#d-pane").innerHTML=`<div class="pane">${body}</div>`;
   $("#d-foot").innerHTML=foot;
@@ -1395,20 +1480,7 @@ function confirmBooking(){
   if(name.length<2){$("#d-err").textContent="Enter your name so the rental company knows who is coming.";return}
   if(phone.replace(/\D/g,"").length<10){$("#d-err").textContent="Enter a 10-digit WhatsApp number so we can confirm your ride.";return}
   const m=D.m, quote=D.mode==="quote", id=newId(), est=estimateFor(m.id);
-  const lines=[
-    `Hi OPIIUS, ${quote?"please get me quotes":"I'd like to book"}. Request ${id}`,
-    `Vehicle: ${m.name}`,
-    quote?`Typical price: ~${inr(est.lo)}-${inr(est.hi)}/day`:`Company: ${D.op.name} at ${inr(D.price)}/day`,
-    `City: ${S.city}`,
-    `Pick-up: ${fmtDate(S.from)}`,
-    `Return: ${fmtDate(S.to)} (${days()} days)`,
-    !quote&&D.deliv?"Delivery: airport / railway station":"",
-    note?`Note: ${note}`:"",
-    `Name: ${name}`,`WhatsApp: ${phone}`];
-  const text=lines.filter(Boolean).join("\n"), link=waLink(text);
-  logRequest({id,type:quote?"rental-quote":"rental-booking",name,phone,item:m.name,company:quote?"":D.op.name,city:S.city,from:S.from.toISOString(),to:S.to.toISOString(),details:note+(D.deliv?" | delivery":""),page:location.href});
-  D.request={id,link}; D.step=3; drawSheet();
-  window.open(link,"_blank","noopener");
+  D.request={id}; D.step=3; drawSheet();
 }
 
 /* =================== partner app =================== */

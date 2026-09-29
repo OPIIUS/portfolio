@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Meghalaya Tours · OPIIUS</title>
+<meta name="description" content="Plan a Meghalaya trip: Shillong, Sohra, Dawki, Mawlynnong and the living root bridges. Compare 3, 4 and 5 day tour packages or self-drive with a rented car.">
+<link rel="canonical" href="https://opiius.online/tours/meghalaya.html">
+<meta property="og:title" content="Meghalaya: tours or self-drive, compared · OPIIUS">
+<meta property="og:description" content="3 to 5 day Meghalaya trips from Guwahati, with typical costs for a tour package and for driving it yourself.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Destination hub: photo hero with key facts, places grid, package tabs with operator comparison,
+   tour-vs-self-drive calculator, practical notes. Same light showroom language as the homepage. */
+:root{
+  --bg:#ffffff; --stage:#f2f3f6; --glass2:#eef0f4; --solid2:#f6f7f9;
+  --line:#e7e9ee; --line2:#d8dbe2; --ink:#0e1014; --dim:#646b78; --dim2:#8b919c;
+  --accent:#4d7cfe; --soft:#e4ecff; --dark:#0c0d10; --good:#1f8a4c; --goodbg:#e3f5ec; --moss:#1d4d3b;
+  --shadow:0 18px 40px -22px rgba(14,16,20,.35),0 2px 6px rgba(14,16,20,.06);
+  --f:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{margin:0;line-height:1.08;letter-spacing:-.03em;text-wrap:balance}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px}
+.eyebrow{display:block;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--dim2);margin-bottom:10px}
+.anim .rv{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:calc(var(--d,0)*80ms)}
+.anim .rv.in{opacity:1;transform:none}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:18px;padding-block:12px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:20px;letter-spacing:-.03em;text-decoration:none}
+.logo em{font-style:normal;color:var(--accent)}
+.nav{display:flex;gap:4px;margin-left:auto}
+.nav a{text-decoration:none;font-weight:600;font-size:14px;color:var(--dim);padding:8px 13px;border-radius:999px}
+.nav a:hover{color:var(--ink)}
+.nav a[aria-current="page"]{color:var(--ink);background:var(--glass2)}
+.cta{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:9px 16px;font-weight:700;font-size:14px;text-decoration:none;white-space:nowrap}
+@media(max-width:640px){.nav a.hide-s{display:none}.cta{display:none}}
+
+/* hero */
+.hero{padding-block:14px 0}
+.hcard{position:relative;border-radius:28px;overflow:hidden;min-height:clamp(420px,52vw,560px);display:flex;align-items:flex-end;color:#fff;
+  background:radial-gradient(ellipse 80% 60% at 70% 20%,#3f7a5f,transparent 60%),linear-gradient(160deg,#1d4d3b,#0b1f18)}
+.hcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:settle 2.4s var(--ease) both}
+@keyframes settle{from{transform:scale(1.08)}to{transform:none}}
+.hcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,14,10,.2),rgba(6,14,10,.15) 40%,rgba(6,14,10,.8))}
+.hcopy{position:relative;z-index:1;padding:32px 36px;width:100%}
+.hcopy h1{font-size:clamp(48px,9vw,120px);font-weight:800;letter-spacing:-.05em}
+.hcopy p{max-width:56ch;color:rgba(255,255,255,.85);margin:12px 0 0;font-size:16px}
+.facts{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:-40px auto 0;width:min(1060px,calc(100% - 32px));background:#fff;color:var(--ink);border-radius:20px;box-shadow:var(--shadow);padding:16px}
+.facts div{padding:4px 10px;border-left:1px solid var(--line)}
+.facts div:first-child{border-left:0}
+.facts small{display:block;font-size:11.5px;color:var(--dim);font-weight:600}
+.facts b{font-size:15px}
+@media(max-width:760px){.facts{grid-template-columns:1fr 1fr}.facts div:nth-child(3){border-left:0}.hcopy{padding:24px 20px 60px}}
+
+.sec{padding-block:72px 0}
+.sec h2{font-size:clamp(30px,4vw,48px);font-weight:800}
+.sec > p{color:var(--dim);max-width:62ch;margin:12px 0 26px}
+
+/* places */
+.places{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.places{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.places{grid-template-columns:1fr}}
+.place{border:1px solid var(--line);border-radius:20px;padding:20px;display:grid;gap:8px;align-content:start;background:#fff;transition:transform .5s var(--ease),box-shadow .5s}
+.place:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.place .km{font-size:11.5px;font-weight:700;color:var(--moss);background:#e4f0ea;border-radius:999px;padding:3px 9px;justify-self:start}
+.place h3{font-size:19px}
+.place p{margin:0;font-size:13.5px;color:var(--dim)}
+
+/* packages */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.tabs button{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:9px 16px;font-weight:700;font-size:13.5px;color:var(--dim);transition:all .3s var(--ease)}
+.tabs button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.pkg{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start}
+.pkg > *{min-width:0}
+@media(max-width:900px){.pkg{grid-template-columns:1fr}}
+.itin{border:1px solid var(--line);border-radius:20px;padding:20px;background:var(--solid2)}
+.itin h3{font-size:22px}
+.itin .sub{color:var(--dim);font-size:13.5px;margin:4px 0 14px}
+.day{display:grid;grid-template-columns:48px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.day b{font-size:12px;color:var(--moss);letter-spacing:.5px}
+.day span{font-size:14px}
+.ops{display:grid;gap:10px}
+.opc{border:1px solid var(--line);border-radius:18px;padding:16px;display:grid;grid-template-columns:1fr auto;gap:8px 14px;background:#fff;transition:border-color .3s,box-shadow .3s}
+.opc:hover{border-color:var(--line2);box-shadow:var(--shadow)}
+.opc .n{display:flex;gap:10px;align-items:center}
+.av{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;flex:none}
+.opc .n b{display:block}
+.opc .n span{font-size:12.5px;color:var(--dim)}
+.opc .pr{text-align:right}
+.opc .pr b{font-size:20px;letter-spacing:-.02em}
+.opc .pr span{display:block;font-size:12px;color:var(--dim)}
+.opc ul{grid-column:1/-1;list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.opc li{font-size:11.5px;font-weight:700;background:var(--glass2);color:var(--dim);padding:3px 8px;border-radius:6px}
+.opc li.yes{background:var(--goodbg);color:var(--good)}
+.opc .act{grid-column:1/-1;display:flex;align-items:center;gap:10px}
+.tag{font-size:11px;font-weight:700;color:var(--dim);border:1px solid var(--line2);border-radius:6px;padding:2px 7px}
+.btn{border:1px solid var(--line2);background:#fff;border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:700;transition:all .25s var(--ease);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--ink)}
+.btn.dark{background:var(--ink);border-color:var(--ink);color:#fff;margin-left:auto}
+.best{font-size:10.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;background:var(--accent);color:#fff;padding:2px 7px;border-radius:5px}
+
+/* calculator */
+.calc{display:grid;grid-template-columns:320px 1fr;border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.calc > *{min-width:0}
+@media(max-width:860px){.calc{grid-template-columns:1fr}}
+.cin{padding:20px;background:var(--solid2);display:grid;gap:16px;align-content:start}
+.cin label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:600}
+.cin label b{color:var(--accent)}
+.cin input[type=range]{width:100%;accent-color:var(--accent)}
+.cout{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.cout{grid-template-columns:1fr}}
+.opt{border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;gap:10px;align-content:start}
+.opt.win{border-color:var(--ink);box-shadow:var(--shadow)}
+.opt h3{font-size:18px}
+.opt .tot{font-size:30px;font-weight:800;letter-spacing:-.03em}
+.opt .pp{font-size:13px;color:var(--dim)}
+.opt dl{margin:0;display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:13px}
+.opt dt{color:var(--dim)}
+.opt dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.opt .why{font-size:12.5px;color:var(--dim);margin:0}
+.note{font-size:12.5px;color:var(--dim2);grid-column:1/-1;margin:0}
+
+/* notes */
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:860px){.tips{grid-template-columns:1fr}}
+.tip{border-left:3px solid var(--moss);padding:4px 0 4px 14px}
+.tip b{display:block;font-size:15px}
+.tip span{font-size:13.5px;color:var(--dim)}
+
+/* request modal (demo) */
+.scrim{position:fixed;inset:0;background:rgba(3,8,5,.5);backdrop-filter:blur(3px);z-index:40;opacity:0;transition:opacity .4s var(--ease)}
+.modal{position:fixed;left:50%;top:50%;z-index:41;width:min(440px,calc(100% - 32px));background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:22px;
+  transform:translate(-50%,-44%) scale(.97);opacity:0;transition:transform .5s var(--ease),opacity .4s}
+.open .scrim{opacity:1}.open .modal{opacity:1;transform:translate(-50%,-50%)}
+.modal h3{font-size:20px}
+.modal p{color:var(--dim);font-size:13.5px}
+.field{display:grid;gap:4px;margin-bottom:12px}
+.field label{font-size:12px;font-weight:700;color:var(--dim)}
+.field input,.field select{border:1px solid var(--line2);border-radius:10px;padding:10px 12px}
+.mrow{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.done{text-align:center}
+.done .ck{width:56px;height:56px;border-radius:50%;background:var(--goodbg);color:var(--good);display:grid;place-items:center;font-size:26px;font-weight:800;margin:0 auto 10px}
+
+footer{border-top:1px solid var(--line);margin-top:80px;padding-block:28px;color:var(--dim2);font-size:12.5px}
+footer .wrap{display:grid;gap:8px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="wrap">
+  <a class="logo" href="../" aria-label="OPIIUS home"><svg width="26" height="26" viewBox="0 0 30 30" aria-hidden="true"><rect width="30" height="30" rx="9" fill="#0e1014"/><path d="M7 21 L13 9 L17 17 L19.5 13 L23 21 Z" fill="#fff"/><rect x="6" y="22.5" width="18" height="2" rx="1" fill="#4d7cfe"/></svg><span>OPI<em>IUS</em></span></a>
+  <nav class="nav" aria-label="Main">
+    <a href="../#companies">Rentals</a>
+    <a href="./meghalaya.html" aria-current="page">Tours</a>
+    <a class="hide-s" href="../business.html">For businesses</a>
+  </nav>
+  <a class="cta" href="#packages">See packages</a>
+</div></div>
+
+<main>
+  <section class="hero wrap">
+    <div class="hcard">
+      <img id="hero-img" src="https://commons.wikimedia.org/wiki/Special:FilePath/Double_Decker_Living_Tree_Root_Bridges%2C_Meghalaya.jpg?width=1800" alt="The double-decker living root bridge at Nongriat, Meghalaya">
+      <div class="hcopy">
+        <span class="eyebrow" style="color:rgba(255,255,255,.7)">OPIIUS Tours · Northeast India</span>
+        <h1>Meghalaya</h1>
+        <p>Cloud-covered hills, root bridges grown by hand, and a river so clear the boats look like they float in air. Most trips start in Guwahati and take 3 to 5 days.</p>
+      </div>
+    </div>
+    <div class="facts">
+      <div><small>Best time</small><b>October to May</b></div>
+      <div><small>Guwahati to Shillong</small><b>About 100 km · 3 hrs</b></div>
+      <div><small>Ideal trip</small><b>4 to 5 days</b></div>
+      <div><small>Monsoon</small><b>June to Sept, very wet</b></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="places">
+    <span class="eyebrow rv">Where to go</span>
+    <h2 class="rv">Places worth the drive</h2>
+    <p class="rv">Distances are from Shillong, where most trips are based.</p>
+    <div class="places">
+      <article class="place rv" style="--d:0"><span class="km">Base</span><h3>Shillong</h3><p>The hill capital. Police Bazar, Ward's Lake and the view from Shillong Peak. Umiam Lake sits on the way in from Guwahati.</p></article>
+      <article class="place rv" style="--d:1"><span class="km">~55 km</span><h3>Sohra (Cherrapunji)</h3><p>Nohkalikai and Seven Sisters falls, Mawsmai cave and some of the heaviest rainfall on earth. Mornings are often foggy.</p></article>
+      <article class="place rv" style="--d:2"><span class="km">~20 km</span><h3>Laitlum Canyons</h3><p>A ridge that drops into deep green valleys. Best at sunrise or late afternoon, and an easy half-day from Shillong.</p></article>
+      <article class="place rv" style="--d:0"><span class="km">~82 km</span><h3>Dawki &amp; Shnongpdeng</h3><p>Boating on the Umngot river near the Bangladesh border. The water is clearest from about November to April.</p></article>
+      <article class="place rv" style="--d:1"><span class="km">~78 km</span><h3>Mawlynnong</h3><p>A tidy village known for its sky walk and the single-decker root bridge at Riwai, usually paired with Dawki.</p></article>
+      <article class="place rv" style="--d:2"><span class="km">Trek from Tyrna</span><h3>Nongriat root bridges</h3><p>The double-decker living root bridge, reached by a steep walk of about 3,500 steps each way. Plan a full day.</p></article>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="packages">
+    <span class="eyebrow rv">Tour packages</span>
+    <h2 class="rv">Compare Meghalaya packages</h2>
+    <p class="rv">Pick a trip length, then compare local operators side by side: price, stay, cab and what is included.</p>
+    <div class="tabs rv" role="tablist" id="tabs"></div>
+    <div id="pkg"></div>
+  </section>
+
+  <section class="sec wrap" id="compare">
+    <span class="eyebrow rv">Tour or self-drive?</span>
+    <h2 class="rv">What your trip really costs</h2>
+    <p class="rv">A package includes a driver, stays and planning. Self-drive gives you freedom and is often cheaper for 3 or more people. Move the sliders.</p>
+    <div class="calc rv">
+      <div class="cin">
+        <div><label for="c-days">Days <b id="v-days">4</b></label><input type="range" id="c-days" min="3" max="5" value="4"></div>
+        <div><label for="c-ppl">People <b id="v-ppl">2</b></label><input type="range" id="c-ppl" min="1" max="7" value="2"></div>
+        <div><label for="c-stay">Stay per room per night <b id="v-stay">₹2,500</b></label><input type="range" id="c-stay" min="1200" max="6000" step="100" value="2500"></div>
+      </div>
+      <div class="cout" id="cout"></div>
+    </div>
+  </section>
+
+  <section class="sec wrap">
+    <span class="eyebrow rv">Before you go</span>
+    <h2 class="rv">Good to know</h2>
+    <div class="tips" style="margin-top:26px">
+      <div class="tip rv"><b>Carry some cash</b><span>ATMs are common in Shillong but scarce in villages. Many viewpoints, parking lots and boats take cash only.</span></div>
+      <div class="tip rv" style="--d:1"><b>Drive in daylight</b><span>Hill roads are narrow, fog can roll in fast around Sohra, and monsoon rain can cause slides. Plan to reach your stay before dark.</span></div>
+      <div class="tip rv" style="--d:2"><b>Check the season</b><span>The Umngot at Dawki is clearest in the dry months. In the monsoon, waterfalls are at their best but some treks close.</span></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div>This page is a demo of OPIIUS Tours. Tour operators, their prices and ratings are sample data, typical price ranges are estimates, and package requests are not sent anywhere.</div>
+  <div>Hero photo: "Double Decker Living Tree Root Bridges, Meghalaya", Wikimedia Commons, used under its Creative Commons licence.</div>
+</div></footer>
+
+<div id="mroot"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const inr=n=>"₹"+Math.round(n).toLocaleString("en-IN");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Sample operators (fictional) to show how comparison works. */
+const OPERATORS={
+  pc:{name:"Pinecone Travel Co.", base:"Shillong", rating:4.7, hue:150},
+  rl:{name:"Rainline Journeys", base:"Guwahati", rating:4.5, hue:210},
+  tl:{name:"Tealeaf Tours & Rentals", base:"Guwahati · Six Mile", rating:4.8, hue:95}
+};
+const PACKAGES={
+  p3:{label:"3 days · 2 nights", title:"Shillong & Sohra", range:[9000,13000],
+    days:["Guwahati to Shillong via Umiam Lake. Evening at Police Bazar.","Sohra day trip: Nohkalikai falls, Mawsmai cave, Seven Sisters falls.","Laitlum Canyons at sunrise, Shillong Peak, drive back to Guwahati."],
+    offers:[["rl",9499,"3-star hotel","Sedan (Dzire)",["Breakfast","Pick-up at Guwahati airport"]],["pc",10999,"Boutique homestay","SUV (Innova)",["Breakfast & dinner","Local guide in Sohra"]],["tl",11999,"3-star hotel","SUV (Innova)",["Breakfast","Airport + station pick-up","Entry tickets"]]]},
+  p4:{label:"4 days · 3 nights", title:"Shillong, Sohra & Dawki", range:[12000,18000],
+    days:["Guwahati to Shillong via Umiam Lake.","Sohra: Nohkalikai, Mawsmai cave, Arwah cave.","Dawki boating on the Umngot, Mawlynnong village and sky walk.","Laitlum Canyons, then back to Guwahati."],
+    offers:[["pc",12999,"Boutique homestay","SUV (Innova)",["Breakfast & dinner","Dawki boat ride"]],["rl",13499,"3-star hotel","Sedan (Dzire)",["Breakfast","Airport pick-up"]],["tl",15499,"3-star hotel","SUV (Innova)",["Breakfast","Dawki boat ride","Entry tickets"]]]},
+  p5:{label:"5 days · 4 nights", title:"Meghalaya with root bridges", range:[15000,22000],
+    days:["Guwahati to Shillong via Umiam Lake.","Sohra viewpoints and caves, overnight near Sohra.","Trek to the Nongriat double-decker root bridge (about 3,500 steps).","Dawki and Mawlynnong.","Laitlum at sunrise, back to Guwahati."],
+    offers:[["tl",16999,"Hotel + Sohra homestay","SUV (Innova)",["Breakfast & dinner","Trek guide","Dawki boat ride"]],["pc",17499,"Boutique homestays","SUV (Innova)",["All meals","Trek guide"]],["rl",18999,"3-star hotels","SUV (Innova)",["Breakfast","Airport + station pick-up","Entry tickets"]]]}
+};
+let cur=(location.hash.match(/^#(p[345])$/)||[])[1]||"p4";
+
+function renderTabs(){
+  $("#tabs").innerHTML=Object.entries(PACKAGES).map(([k,p])=>`<button type="button" role="tab" data-p="${k}" aria-selected="${k===cur}">${p.label}</button>`).join("");
+}
+function renderPkg(){
+  const p=PACKAGES[cur], offers=[...p.offers].sort((a,b)=>a[1]-b[1]);
+  $("#pkg").innerHTML=`<div class="pkg">
+    <div class="itin rv"><h3>${esc(p.title)}</h3><div class="sub">${esc(p.label)} · typically ${inr(p.range[0])}–${inr(p.range[1])} per person (2 people)</div>
+      ${p.days.map((d,i)=>`<div class="day"><b>DAY ${i+1}</b><span>${esc(d)}</span></div>`).join("")}</div>
+    <div class="ops">${offers.map(([id,price,stay,cab,inc],i)=>{const o=OPERATORS[id];
+      return `<article class="opc rv" style="--d:${i}">
+        <div class="n"><span class="av" style="background:hsl(${o.hue} 40% 34%)">${o.name.split(/\s+/).map(w=>w[0]).join("").slice(0,2)}</span><div><b>${esc(o.name)}</b><span>${esc(o.base)} · ★ ${o.rating}</span></div></div>
+        <div class="pr">${i===0?'<span class="best">Lowest</span>':""}<b class="num">${inr(price)}</b><span>per person</span></div>
+        <ul><li>${esc(stay)}</li><li>${esc(cab)}</li>${inc.map(x=>`<li class="yes">✓ ${esc(x)}</li>`).join("")}</ul>
+        <div class="act"><span class="tag">Demo operator</span><button type="button" class="btn dark" data-req="${id}">Request this trip</button></div>
+      </article>`}).join("")}</div></div>`;
+  observe();
+}
+
+/* tour vs self-drive */
+function calc(){
+  const days=+$("#c-days").value, ppl=+$("#c-ppl").value, stay=+$("#c-stay").value;
+  $("#v-days").textContent=days; $("#v-ppl").textContent=ppl; $("#v-stay").textContent=inr(stay);
+  const p=PACKAGES["p"+days], pkgPP=(p.range[0]+p.range[1])/2, pkgTotal=pkgPP*ppl*(ppl===1?1.35:1);
+  const car=ppl<=4?{name:"Maruti Brezza",rate:2400}:{name:"Maruti XL6",rate:3100};
+  const km=days*150, fuel=km/14*100, rooms=Math.ceil(ppl/2), nights=days-1, stays=rooms*nights*stay, food=ppl*days*600;
+  const self=car.rate*days+fuel+stays+food;
+  const win=self<pkgTotal?"self":"pkg";
+  $("#cout").innerHTML=`
+    <div class="opt ${win==="pkg"?"win":""}"><h3>Tour package</h3><div class="tot num">${inr(pkgTotal)}</div><div class="pp">${inr(pkgTotal/ppl)} per person</div>
+      <dl><dt>Typical package</dt><dd>${inr(pkgPP)}/person</dd><dt>Includes</dt><dd>Cab, driver, stays, plan</dd></dl>
+      <p class="why">No driving on hill roads, and someone else handles the plan.${ppl===1?" Solo travellers usually pay a single-room supplement.":""}</p>
+      <a class="btn" href="#packages">Compare packages</a></div>
+    <div class="opt ${win==="self"?"win":""}"><h3>Self-drive</h3><div class="tot num">${inr(self)}</div><div class="pp">${inr(self/ppl)} per person</div>
+      <dl><dt>${car.name}, ${days} days</dt><dd>${inr(car.rate*days)}</dd><dt>Fuel, ~${km} km</dt><dd>${inr(fuel)}</dd><dt>${rooms} room${rooms>1?"s":""} × ${nights} nights</dt><dd>${inr(stays)}</dd><dt>Food</dt><dd>${inr(food)}</dd></dl>
+      <p class="why">Stop wherever you like. You need a driving licence and should be comfortable on narrow hill roads.</p>
+      <a class="btn" href="../#fleet">Rent a car</a></div>
+    <p class="note">Estimates only: package prices are the typical range for 2 people sharing; self-drive uses Real Drive Ghy's day rates, 150 km a day at 14 km/l and ₹100/l fuel, and ₹600 per person per day for food. Deposits are refundable and not included.</p>`;
+}
+
+/* request (demo only: nothing is sent) */
+function openReq(opId){
+  const o=OPERATORS[opId], p=PACKAGES[cur];
+  $("#mroot").innerHTML=`<div class="scrim" data-x></div><div class="modal" role="dialog" aria-modal="true" aria-labelledby="m-t">
+    <h3 id="m-t">${esc(p.title)}</h3><p>${esc(p.label)} with ${esc(o.name)}</p>
+    <div class="field"><label for="m-date">Start date</label><input type="date" id="m-date"></div>
+    <div class="field"><label for="m-ppl">Travellers</label><select id="m-ppl">${[1,2,3,4,5,6,7,8].map(n=>`<option ${n===2?"selected":""}>${n}</option>`).join("")}</select></div>
+    <div class="field"><label for="m-rent">Also need a rental car?</label><select id="m-rent"><option>No, the package cab is enough</option><option>Yes, show me cars for extra days</option></select></div>
+    <div class="mrow"><button type="button" class="btn" data-x>Cancel</button><button type="button" class="btn dark" id="m-send" style="margin-left:0">Send request</button></div></div>`;
+  const d=new Date(Date.now()+14*864e5); $("#m-date").value=d.toISOString().slice(0,10);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>$("#mroot").classList.add("open")));
+}
+function sent(){
+  const id="OP-T"+Math.floor(1000+Math.random()*9000);
+  $(".modal").innerHTML=`<div class="done"><div class="ck">✓</div><h3>Request sent</h3>
+    <p>Request <b>${id}</b>. In the real platform the operator replies on WhatsApp with availability and the final price.<br><br>Demo: nothing was sent.</p>
+    <div class="mrow" style="justify-content:center"><button type="button" class="btn" data-x>Done</button></div></div>`;
+}
+function closeM(){const r=$("#mroot"); r.classList.remove("open"); setTimeout(()=>r.innerHTML="",400)}
+
+/* scroll reveal */
+let io=null;
+function observe(){
+  if(!io){document.querySelectorAll(".rv").forEach(e=>e.classList.add("in"));return}
+  document.querySelectorAll(".rv:not(.in)").forEach(e=>io.observe(e));
+}
+if(!reduced&&"IntersectionObserver" in window){
+  document.documentElement.classList.add("anim");
+  io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+}
+
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-p],[data-req],[data-x],#m-send"); if(!t)return;
+  if(t.dataset.p){cur=t.dataset.p;renderTabs();renderPkg();history.replaceState(null,"","#"+cur);return}
+  if(t.dataset.req){openReq(t.dataset.req);return}
+  if(t.id==="m-send"){sent();return}
+  if(t.hasAttribute("data-x"))closeM();
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("#mroot").innerHTML)closeM()});
+document.addEventListener("input",e=>{if(e.target.closest(".cin"))calc()});
+$("#hero-img").addEventListener("error",e=>e.target.remove());
+
+renderTabs(); renderPkg(); calc(); observe();
+if(/^#p[345]$/.test(location.hash)) setTimeout(()=>$("#packages").scrollIntoView(),50);
+</script>
+</body>
+</html>
