@@ -816,3 +816,90 @@ body.scrolled .hdr{box-shadow:0 8px 24px -18px rgba(0,0,0,.35)}
 @media (prefers-reduced-motion: reduce){.rv{opacity:1;transform:none}.mq-t{animation:none}.hhero .phx,.pghero .phx{transform:none}}
 .pdoor.in,.dphoto.in,.xtile.in,.banner.in{transform:perspective(900px) rotateX(var(--rx,0)) rotateY(var(--ry,0))}
 .pdoor:hover,.pdoor.in:hover{transform:perspective(900px) rotateX(var(--rx,0)) rotateY(var(--ry,0)) translateY(-4px)}
+
+/* ================= mockup round 4: full photo heroes, mobile controls, type + story cards ================= */
+.phx.full .sharp{width:100%;-webkit-mask-image:none;mask-image:none}
+.phx.full::after{background:linear-gradient(90deg,rgba(8,20,16,.72),rgba(8,20,16,.3) 48%,rgba(8,20,16,0) 75%),linear-gradient(180deg,rgba(8,20,16,.35),transparent 30%,transparent 70%,rgba(8,20,16,.35))}
+.hhero{padding:calc(var(--hdr) + clamp(44px,6vw,84px)) 0 clamp(56px,6vw,80px)}
+.hhero h1{font-size:clamp(38px,5.2vw,70px);margin-top:0}
+.hhero .sub{font-size:clamp(16px,1.6vw,21px)}
+.pdoor{min-height:clamp(220px,17vw,250px)}
+.pdoor h2{margin-top:10px}
+.pdoor p{margin-top:4px;font-size:15px}
+.dphotos{grid-template-columns:repeat(4,1fr);gap:12px}
+.dphotos .dphoto{aspect-ratio:2.25}
+@media(max-width:860px){.dphotos{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.dphotos{grid-template-columns:none;grid-auto-columns:78%}}
+
+/* header: wishlist heart replaces the avatar on phones */
+.mob-heart{display:none}
+@media(max-width:860px){
+  .mob-heart{display:grid}.hdr .hprof{display:none}
+  body.overhero .hdr,body.overhero:not(.scrolled) .hdr{background:#fff;color:var(--ink);border-bottom-color:var(--line);backdrop-filter:none}
+  body.overhero .hdr .hsearch,body.overhero .hdr .hsearch svg{color:var(--ink);border-color:transparent}
+  .hhero,.pghero{margin-top:0;padding-top:clamp(36px,9vw,56px)}
+  .pghero h1{font-size:clamp(36px,10vw,46px)}
+  .pghero .eyebrow{display:none}
+  .pghero.tall{padding-bottom:28px}
+}
+/* bottom bar: 4 tabs with an active line */
+@media(max-width:860px){
+  .bnav{grid-template-columns:repeat(4,1fr)}
+  .bnav a[aria-current="page"]{color:var(--pine)}
+  .bnav a[aria-current="page"]::after{content:"";position:absolute;bottom:3px;left:50%;width:22px;height:3px;margin-left:-11px;border-radius:2px;background:var(--pine)}
+}
+
+/* compact hero controls on phones (the big search card is hidden there) */
+.mctrl{display:none}
+@media(max-width:760px){
+  .mctrl{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+  .pghero + .wrap > .sbox{display:none}
+  .pghero .sub{display:none}
+}
+.pill{display:flex;align-items:center;gap:10px;min-height:52px;padding:0 14px;border:0;border-radius:14px;background:#fff;color:var(--ink);font-weight:700;font-size:15px;text-align:left;box-shadow:0 10px 24px -14px rgba(0,0,0,.45);min-width:0;position:relative}
+.pill.wide{grid-column:1/-1;font-weight:500;color:var(--dim)}
+.pill>svg{width:20px;height:20px;flex:none;color:var(--pine)}
+.pill>svg:last-child{width:16px;height:16px;color:var(--ink);margin-left:auto}
+.pill span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill select{flex:1;min-width:0;border:0;background:transparent;font:inherit;color:inherit;-webkit-appearance:none;appearance:none;padding:0;outline:0}
+
+/* cars / bikes toggle */
+.cats-sec{padding-top:clamp(24px,4vw,40px)}
+.seg2{display:inline-grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--mist);border:1px solid var(--line);margin-bottom:18px;min-width:min(360px,100%)}
+.seg2 button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:46px;border:0;border-radius:999px;background:transparent;font-weight:700;font-size:15px;color:var(--ink2);transition:background .3s var(--ease),color .3s}
+.seg2 button svg{width:22px;height:22px}
+.seg2 button[aria-pressed="true"]{background:var(--pine);color:#fff;box-shadow:0 6px 16px -8px rgba(21,48,42,.7)}
+@media(max-width:760px){.seg2{display:grid;width:100%}}
+
+/* type cards and trip story cards */
+.ccards,.scards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:1000px){.ccards,.scards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.ccards,.scards{grid-template-columns:1fr;gap:14px}}
+.ccards .nokind{grid-column:1/-1}
+.ccard,.scard{display:flex;flex-direction:column;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-lift);text-decoration:none;color:var(--ink);transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.ccard:hover,.scard:hover{transform:translateY(-4px)}
+.ccard .cm,.scard .sm{position:relative;display:block;aspect-ratio:2.5;overflow:hidden;background:var(--mist)}
+.ccard .cm img,.scard .sm img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.ccard .cm img.studio{object-fit:contain;padding:6% 18%;mix-blend-mode:multiply}
+.ccard:hover .cm img,.scard:hover .sm img{transform:scale(1.05)}
+.ccard .cb,.scard .sb{display:flex;align-items:center;gap:14px;padding:16px 18px 18px}
+.ccard .cb>div,.scard .sb>div{flex:1;min-width:0}
+.ccard h3,.scard h3{font-family:var(--f-display);font-weight:800;font-size:clamp(22px,2vw,26px);letter-spacing:-.02em}
+.ccard p,.scard p{color:var(--dim);font-size:15px;margin-top:2px}
+.ccard small{display:block;margin-top:6px;color:var(--pine);font-weight:700;font-size:12.5px}
+.scard .reg{display:flex;align-items:center;gap:6px;font-size:13.5px;color:var(--dim);margin-bottom:4px}
+.scard .reg svg{width:15px;height:15px;color:var(--ink)}
+.ccard .btn,.scard .btn{flex:none;min-height:46px;border-radius:14px;padding:0 18px}
+@media(max-width:380px){.ccard .cb,.scard .sb{flex-wrap:wrap}.ccard .btn,.scard .btn{width:100%}}
+
+/* wishlist: link to bookings */
+.blink{display:flex;align-items:center;gap:12px;margin-top:22px;padding:14px 18px;border:1px solid var(--line);border-radius:16px;text-decoration:none;font-weight:700}
+.blink svg{width:20px;height:20px;color:var(--pine)}
+.blink b{margin-left:auto;min-width:24px;height:24px;border-radius:12px;background:var(--mist);display:grid;place-items:center;font-size:12.5px}
+.blink b+svg{margin-left:4px}
+.ccard .cb,.scard .cb{display:grid;grid-template-columns:1fr auto;grid-template-areas:"t t" "m b";align-items:center;gap:10px 14px;padding:16px 18px 18px}
+.cb .ct{grid-area:t;min-width:0}.cb small{grid-area:m;margin:0}.cb .btn{grid-area:b}
+.cb small.tag{color:var(--dim);font-weight:500;font-size:14.5px;line-height:1.4}
+.pill{gap:8px;padding:0 12px;font-size:14px;font-weight:600}
+.pill>svg{width:18px;height:18px}
+.pill>svg:last-child{width:14px;height:14px}

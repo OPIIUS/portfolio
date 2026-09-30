@@ -262,52 +262,52 @@ function listParam(q,k){return (q.get(k)||"").split(",").filter(Boolean)}
 
 /* ================= HOME: photo hero, two doors, destinations ================= */
 const IMG_HOME="assets/opiius/img/";
-const phPanel=src=>`<div class="phx" aria-hidden="true"><img class="soft" src="${src}" alt=""><img class="sharp" src="${src}" alt=""></div>`;
+const phPanel=(src,full)=>`<div class="phx ${full?"full":""}" aria-hidden="true"><img class="soft" src="${src}" alt=""><img class="sharp" src="${src}" alt=""></div>`;
 const HOME_DEST=["meghalaya","shillong","dawki","kaziranga","sohra","tawang"];
+const TRIP_STORIES=[["dawki","Dawki escape","Clear waters. Unforgettable views."],["tawang","Tawang trails","Mountain air. A different pace."],["meghalaya","Meghalaya waterfalls","Root bridges and a hundred falls."],["shillong","Shillong weekend","Pine hills and café evenings."],["kaziranga","Kaziranga safari","Rhinos at sunrise."],["sohra","Sohra in the clouds","The greenest place you'll ever see."]];
+const TYPE_META={SUV:["cat-suv.jpg","Space for every adventure"],Hatchback:["cat-hatch.jpg","Made for city escapes"],MUV:["door-rent.jpg","Room for the whole family"],Sedan:["cat-hatch.jpg","Comfort for long drives"],Motorcycle:["","Built for mountain roads"],Scooter:["","Easy rides around town"]};
 const destPhoto=d=>HOME_DEST.includes(d)?`${IMG_HOME}d-${d}.jpg`:null;
 /* a package's photo: one of its photographed stops, varied per package so neighbouring cards differ */
 const pkgPhoto=p=>{const c=[...new Set([p.dest,...p.stops])].filter(d=>destPhoto(d)&&d!=="meghalaya");if(!c.length)return destPhoto(p.dest);
   let h=0;for(const ch of p.id)h=(h*31+ch.charCodeAt(0))>>>0;return destPhoto(c[h%c.length])};
 /* full-bleed photo hero shared by the section pages; the header floats over it (view.hero) */
 const lines=t=>t.split(/<br\s*\/?>/).map((x,i)=>`<span class="ln"><span style="--li:${i}">${x}</span></span>`).join("");
-const pageHero=(img,eyebrow,title,sub,{vt="",tall=false,extra=""}={})=>`<section class="pghero ${tall?"tall":""}" ${vt?`style="view-transition-name:${vt}"`:""}>${phPanel(IMG_HOME+img)}
+const pageHero=(img,eyebrow,title,sub,{vt="",tall=false,extra="",full=false}={})=>`<section class="pghero ${tall?"tall":""}" ${vt?`style="view-transition-name:${vt}"`:""}>${phPanel(IMG_HOME+img,full)}
   <div class="wrap">${eyebrow?`<span class="eyebrow">${eyebrow}</span>`:""}<h1>${lines(title)}</h1>${sub?`<p class="sub">${sub}</p>`:""}${extra}</div></section>`;
 function vHome(){
   const tomorrow=toDay(new Date(Date.now()+864e5));
   const where=`<option value="">Anywhere in the Northeast</option><optgroup label="Destinations">${DESTINATIONS.map(d=>`<option value="${d}">${esc(placeName(d))}</option>`).join("")}</optgroup><optgroup label="Rent a vehicle in">${RENTAL_CITIES.filter(c=>!DESTINATIONS.includes(c)).map(c=>`<option value="${c}">${esc(placeName(c))}</option>`).join("")}</optgroup>`;
   const trust=[[I.shield,"Trusted partners","Verified agencies & operators"],[I.check,"Clear terms","Deposit, km & fuel up front"],[I.msg,"Talk to them first","Enquire before you book"],[I.star,"Best prices","Compare & save"],[I.heart,"Save & plan","Wishlist your favourites"]];
   return {title:"",section:"home",cls:"at-home-main",html:`
-  <section class="hhero">${phPanel(IMG_HOME+"hero.jpg")}
+  <section class="hhero">${phPanel(IMG_HOME+"cat-suv.jpg",true)}
     <div class="wrap">
-      <span class="eyebrow">Travel, rentals &amp; experiences</span>
       <h1>${lines("Where do you want<br>to go today?")}</h1>
-      <p class="sub">Book vehicles, discover tour packages and explore the most beautiful places in the Northeast, all in one place.</p>
+      <p class="sub">Rentals, tours and unforgettable places.</p>
       <form class="hsb" id="hform" autocomplete="off">
-        <div class="f">${I.pin}<div><label for="h-where">Where are you going?</label><select id="h-where">${where}</select></div></div>
-        <div class="f">${I.cal}<div><label for="h-date">When?</label><input type="date" id="h-date" value="${tomorrow}" min="${toDay(new Date())}"></div></div>
-        <div class="f">${I.user}<div><label for="h-trav">Travellers</label><select id="h-trav">${[1,2,3,4,5,6,7,8].map(n=>`<option value="${n}" ${n===S.trav?"selected":""}>${n} ${n===1?"adult":"adults"}</option>`).join("")}</select></div></div>
+        <div class="f">${I.pin}<div><label for="h-where">Destination</label><select id="h-where">${where}</select></div></div>
+        <div class="f">${I.cal}<div><label for="h-date">Travel dates</label><input type="date" id="h-date" value="${tomorrow}" min="${toDay(new Date())}"></div></div>
+        <div class="f">${I.user}<div><label for="h-trav">Travelers</label><select id="h-trav">${[1,2,3,4,5,6,7,8].map(n=>`<option value="${n}" ${n===S.trav?"selected":""}>${n} ${n===1?"adult":"adults"}</option>`).join("")}</select></div></div>
         <button type="submit">${I.search}Search</button>
       </form>
     </div>
-    <span class="script" aria-hidden="true">More journeys,<br>more stories</span>
   </section>
   <div class="wrap">
     <section class="hsec"><div class="pdoors">
       <a class="pdoor" href="#/rentals" style="view-transition-name:door-rentals">${phPanel(IMG_HOME+"door-rent.jpg")}
-        <div class="in"><span class="ic">${I.car}</span><h2>Rentals</h2><h3>Cars &amp; Bikes</h3><p>Find the perfect ride from trusted rental agencies.</p><span class="obtn">Explore Rentals ${I.arrow}</span></div></a>
+        <div class="in"><span class="ic">${I.car}</span><h2>Find your ride</h2><p>Cars &amp; bikes for every journey.</p><span class="obtn">Explore Rentals ${I.arrow}</span></div></a>
       <a class="pdoor tour" href="#/tours" style="view-transition-name:door-tours">${phPanel(IMG_HOME+"door-tour.jpg")}
-        <div class="in"><span class="ic">${I.peak}</span><h2>Tours</h2><h3>Tour Packages</h3><p>Discover amazing destinations and compare tour packages.</p><span class="obtn">Explore Tours ${I.arrow}</span></div></a>
+        <div class="in"><span class="ic">${I.peak}</span><h2>Discover tours</h2><p>Curated experiences in incredible destinations.</p><span class="obtn">Explore Tours ${I.arrow}</span></div></a>
     </div></section>
     <section class="hsec">
-      <div class="shead"><div><h2>Popular Destinations</h2><p>Explore top places and plan your next adventure</p></div><a href="#/explore">View all destinations ${I.arrow}</a></div>
-      <div class="dphotos">${HOME_DEST.map(d=>`<a class="dphoto" href="#/destination/${d}"><img src="${IMG_HOME}d-${d}.jpg" alt="" loading="lazy" decoding="async"><b>${esc(placeName(d))}</b></a>`).join("")}</div>
+      <div class="shead"><div><h2>Popular destinations</h2></div><a href="#/explore">View all destinations ${I.arrow}</a></div>
+      <div class="dphotos">${["meghalaya","shillong","dawki","tawang"].map(d=>`<a class="dphoto" href="#/destination/${d}"><img src="${IMG_HOME}d-${d}.jpg" alt="" loading="lazy" decoding="async"><b>${esc(placeName(d))}</b></a>`).join("")}</div>
     </section>
   </div>
   ${(()=>{const bs=Object.keys(BRANDS).filter(b=>ALL_L.some(l=>MODELS[l.model].brand===b));if(!bs.length)return "";const row=bs.map(b=>`<a class="mq-i" href="#/brand/${b}" aria-label="${esc(BRANDS[b].name)}">${brandMark(b)}<span>${esc(BRANDS[b].name)}</span></a>`).join("");const reps=Math.max(2,Math.ceil(10/bs.length));
     return `<section class="marquee" aria-label="Brands on OPIIUS"><div class="mq-t">${Array(reps*2).fill(row).join("")}</div></section>`})()}
   <section class="trust"><div class="wrap">${trust.map(([ic,t,d])=>`<div class="t">${ic}<b>${t}</b><span>${d}</span></div>`).join("")}</div></section>
   <div class="banners">
-    <a class="banner" href="#/rentals">${phPanel(IMG_HOME+"ban-rent.jpg")}<div class="in"><small>Drive your freedom</small><h2>Rent a Vehicle</h2><p>Cars, bikes and scooters from local agencies, prices side by side.</p><span class="obtn">Browse Rentals ${I.arrow}</span></div></a>
+    <a class="banner" href="#/rentals">${phPanel(IMG_HOME+"cat-hatch.jpg")}<div class="in"><small>Drive your freedom</small><h2>Rent a Vehicle</h2><p>Cars, bikes and scooters from local agencies, prices side by side.</p><span class="obtn">Browse Rentals ${I.arrow}</span></div></a>
     <a class="banner tour" href="#/tours">${phPanel(IMG_HOME+"ban-tour.jpg")}<div class="in"><small>Explore the extraordinary</small><h2>Book a Tour</h2><p>Curated packages for every kind of traveller, from weekend getaways to week-long trips.</p><span class="obtn">Explore Tours ${I.arrow}</span></div></a>
   </div>`,
   mount(){
@@ -337,8 +337,10 @@ function vRentals(){
   const city=S.prefs.city||"guwahati";
   const popular=ALL_L.filter(l=>AGENCIES[l.agency].city===city).sort((a,b)=>recScore(b)-recScore(a)).filter((l,i,arr)=>arr.findIndex(x=>x.model===l.model)===i).slice(0,8);
   const ags=Object.keys(AGENCIES).filter(id=>AGENCIES[id].city===city).sort((a,b)=>(AGENCIES[b].real?1:0)-(AGENCIES[a].real?1:0)||(AGENCIES[b].rating||0)-(AGENCIES[a].rating||0)).slice(0,6);
-  return {title:"Rentals",section:"rentals",hero:true,html:`${pageHero("hero.jpg","Car &amp; bike rentals","Your journey<br>starts here","Reliable vehicles from trusted local agencies for unforgettable journeys.",{vt:"door-rentals",tall:true})}<div class="wrap">
+  return {title:"Rentals",section:"rentals",hero:true,html:`${pageHero("cat-suv.jpg","Car &amp; bike rentals","Find your ride","Cars and bikes from trusted local agencies, for every journey.",{vt:"door-rentals",tall:true,full:true,extra:`<div class="mctrl"><label class="pill">${I.pin}<select id="m-city" aria-label="City">${RENTAL_CITIES.map(c=>`<option value="${c}" ${c===city?"selected":""}>${esc(placeName(c))}</option>`).join("")}</select>${I.down}</label><button type="button" class="pill" data-edit="rent">${I.cal}<span>Pick dates</span>${I.down}</button></div>`})}<div class="wrap">
     ${rentalSearchForm(city)}
+    <section class="sec cats-sec"><div class="seg2" id="catseg" role="group" aria-label="Vehicle kind"><button type="button" aria-pressed="true" data-kind="car">${I.car}Cars</button><button type="button" aria-pressed="false" data-kind="bike">${bikeIcon}Bikes</button></div>
+      <div class="ccards" id="ccards">${typeCards(city)}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Popular rentals</h2><p>Highly rated in ${esc(placeName(city))}, one per model.</p></div><a class="btn sm more" href="#/rentals/in/${city}">View all rentals ${I.arrow}</a></div>
       <div class="row-scroll">${popular.filter(l=>MODELS[l.model].photo).slice(0,4).map((l,i)=>vehCard(l,{i,nocmp:true})).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Rent a vehicle in</h2><p>Pick a place to see every agency's vehicles there.</p></div></div>
@@ -349,16 +351,32 @@ function vRentals(){
       <div class="grid">${ags.map(agencyCard).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>How renting on OPIIUS works</h2></div></div>
       <div class="steps3"><div><b>1. Compare</b><span>Same car, different agencies, prices and terms.</span></div><div><b>2. Request</b><span>Pick dates and send a booking request.</span></div><div><b>3. Agency confirms</b><span>Availability, deposit and pickup are confirmed.</span></div><div><b>4. Drive</b><span>Show your licence, pay the agency and go.</span></div></div></section>
-  </div>`,mount(){bindRentalForm()}};
+  </div>`,mount(){bindRentalForm();
+    const mc=$("#m-city");if(mc)mc.addEventListener("change",()=>{S.prefs.city=mc.value;saveState();location.hash="#/rentals/in/"+mc.value});
+    $("#catseg").addEventListener("click",e=>{const b=e.target.closest("[data-kind]");if(!b)return;$$("#catseg button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+      $$("#ccards [data-kind]").forEach(c=>c.hidden=c.dataset.kind!==b.dataset.kind);const none=!$$(`#ccards [data-kind="${b.dataset.kind}"]`).length;const nk=$("#ccards .nokind");if(nk)nk.hidden=!none||nk.dataset.for!==b.dataset.kind;});
+  }};
 }
-function bindRentalForm(){
-  const f=$("#rform");if(!f)return;
+const bikeIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5.5" cy="16.5" r="3.2"/><circle cx="18.5" cy="16.5" r="3.2"/><path d="M5.5 16.5l4-6h5l4 6M9.5 10.5l-1.5-3H6M14.5 10.5l1.5-3h2.5"/></svg>';
+function typeCards(city){
+  const ls=ALL_L.filter(l=>AGENCIES[l.agency].city===city), types={};
+  ls.forEach(l=>{const m=MODELS[l.model];(types[m.type]=types[m.type]||[]).push(l)});
+  const order=["SUV","Hatchback","MUV","Sedan","Motorcycle","Scooter"].filter(t=>types[t]);
+  const card=t=>{const g=types[t],m0=MODELS[g.sort((a,b)=>a.price-b.price)[0].model],kind=m0.kind==="bike"?"bike":"car",meta=TYPE_META[t]||["",""];
+    const img=meta[0]?`<img src="${IMG_HOME+meta[0]}" alt="" loading="lazy">`:(m0.photo?`<img src="${m0.photo}" alt="" loading="lazy" class="studio">`:"");
+    return `<a class="ccard" data-kind="${kind}" ${kind==="bike"?"hidden":""} href="#/rentals/search?city=${city}&type=${encodeURIComponent(t)}"><span class="cm">${img}</span><div class="cb"><div class="ct"><h3>${esc(t)}</h3><p>${esc(meta[1])}</p></div><small>${plural(g.length,"vehicle")} · from ${inr(Math.min(...g.map(x=>x.price)))}/day</small><span class="btn dark">View vehicles ${I.arrow}</span></div></a>`};
+  const hasBike=order.some(t=>MODELS[types[t][0].model].kind==="bike"), hasCar=order.some(t=>MODELS[types[t][0].model].kind!=="bike");
+  return order.map(card).join("")+(hasBike?"":`<div class="nokind" data-for="bike" hidden>${LIVE?requestCard("rent",{city,cat:"bike",title:"Bikes are coming soon. Tell us what you need."}):empty("No bikes here yet","Try another city.")}</div>`)+(hasCar?"":`<div class="nokind" data-for="car">${LIVE?requestCard("rent",{city,cat:"car"}):empty("No cars here yet","Try another city.")}</div>`);
+}
+/* forms are scoped to their own element: the edit sheet holds a second copy with the same field ids */
+function bindRentalForm(root=document){
+  const f=$("#rform",root);if(!f)return;const $f=id=>f.querySelector("#"+id);
   f.addEventListener("submit",e=>{e.preventDefault();
-    const from=$("#r-from").value,to=$("#r-to").value;
+    const from=$f("r-from").value,to=$f("r-to").value;
     if(from&&to&&new Date(to)<=new Date(from)){toast("Return must be after pickup.");return}
     if(from&&to)S.dates=[from,to];
-    const city=$("#r-city").value;S.prefs.city=city;saveState();
-    const q=new URLSearchParams();q.set("city",city);q.set("from",S.dates[0]);q.set("to",S.dates[1]);const c=$("#r-cat").value;if(c!=="all")q.set("cat",c);
+    const city=$f("r-city").value;S.prefs.city=city;saveState();
+    const q=new URLSearchParams();q.set("city",city);q.set("from",S.dates[0]);q.set("to",S.dates[1]);const c=$f("r-cat").value;if(c!=="all")q.set("cat",c);
     closeSheet();location.hash="#/rentals/search?"+q.toString();
   });
 }
@@ -608,18 +626,20 @@ function tourSearchForm(p={}){
     <div class="sf"><label for="t-bud">Budget per person</label><select id="t-bud"><option value="">Any budget</option><option value="0-10000">Under ₹10,000</option><option value="10000-20000">₹10,000 to ₹20,000</option><option value="20000-30000">₹20,000 to ₹30,000</option><option value="30000-">₹30,000+</option></select></div>
     <button class="sgo" type="submit">${I.search}Explore packages</button></div></form>`;
 }
-function bindTourForm(){
-  const f=$("#tform");if(!f)return;
+function bindTourForm(root=document){
+  const f=$("#tform",root);if(!f)return;const $f=id=>f.querySelector("#"+id);
   f.addEventListener("submit",e=>{e.preventDefault();const q=new URLSearchParams();
-    const d=$("#t-dest").value;if(d)q.set("dest",d);q.set("date",$("#t-date").value);q.set("trav",S.trav);
-    const b=$("#t-bud").value;if(b){const [lo,hi]=b.split("-");if(+lo)q.set("pmin",lo);if(hi)q.set("pmax",hi)}
+    const d=$f("t-dest").value;if(d)q.set("dest",d);q.set("date",$f("t-date").value);q.set("trav",S.trav);
+    const b=$f("t-bud").value;if(b){const [lo,hi]=b.split("-");if(+lo)q.set("pmin",lo);if(hi)q.set("pmax",hi)}
     closeSheet();location.hash="#/tours/search?"+q.toString()});
 }
 function vTours(){
   const top=pkgList().sort((a,b)=>b.rating*Math.log10(b.reviews+10)-a.rating*Math.log10(a.reviews+10)).slice(0,8);
   const styles=[["Weekend","Short breaks from Guwahati"],["Honeymoon","Private and romantic"],["Adventure","Treks, rivers and passes"],["Family","Easy days for all ages"],["Budget","Great value trips"],["Luxury","Premium stays"]];
-  return {title:"Tours",section:"tours",hero:true,html:`${pageHero("ban-tour.jpg","Tour packages","Curated journeys<br>for every traveller","Discover unique experiences, from nature escapes to cultural adventures, with local operators.",{vt:"door-tours",tall:true})}<div class="wrap">
+  return {title:"Tours",section:"tours",hero:true,html:`${pageHero("d-dawki.jpg","Tours &amp; experiences","Discover your<br>next story","Nature escapes and cultural journeys across the Northeast, planned with local operators.",{vt:"door-tours",tall:true,full:true,extra:`<div class="mctrl t"><button type="button" class="pill wide" data-open-search>${I.pin}<span>Where do you want to go?</span>${I.search}</button><label class="pill">${I.pin}<select id="m-dest" aria-label="Destination"><option value="">Destination</option>${DESTINATIONS.map(d=>`<option value="${d}">${esc(placeName(d))}</option>`).join("")}</select>${I.down}</label><label class="pill">${I.cal}<select id="m-dur" aria-label="Duration"><option value="">Duration</option>${[["1-2","1–2 days"],["3-4","3–4 days"],["5-7","5–7 days"],["7+","7+ days"]].map(([v,l])=>`<option value="${v}">${l}</option>`).join("")}</select>${I.down}</label></div>`})}<div class="wrap">
     ${tourSearchForm()}
+    <section class="sec"><div class="sec-h"><div><h2>Trips to take</h2><p>Stories from across the Northeast, planned with local operators.</p></div></div>
+      <div class="scards">${TRIP_STORIES.map(([d,t,sub])=>`<a class="scard" href="#/destination/${d}"><span class="sm"><img src="${destPhoto(d)}" alt="" loading="lazy"></span><div class="cb"><div class="ct"><span class="reg">${I.pin}${esc(PLACES[d].state)}</span><h3>${esc(t)}</h3></div><small class="tag">${esc(sub)}</small><span class="btn dark">Explore tour ${I.arrow}</span></div></a>`).join("")}</div></section>
     ${top.length?`<section class="sec"><div class="sec-h"><div><h2>Featured tour packages</h2><p>Top rated by travellers across operators.</p></div><a class="btn sm more" href="#/tours/search">View all tours ${I.arrow}</a></div>
       <div class="grid">${top.slice(0,4).map((p,i)=>pkgCard(p,{i})).join("")}</div></section>`:`<section class="sec">${requestCard("tour",{title:"Tell us your trip. We'll plan it with local operators."})}</section>`}
     <section class="sec"><div class="sec-h"><div><h2>Explore destinations</h2></div><a class="btn sm more" href="#/explore">Explore all ${I.arrow}</a></div>
@@ -630,7 +650,9 @@ function vTours(){
       <div class="grid">${top.slice(4).map((p,i)=>pkgCard(p,{i})).join("")}</div></section>`:""}
     ${Object.keys(OPERATORS).length?`<section class="sec"><div class="sec-h"><div><h2>Tour operators</h2><p>Every package comes from a local operator with its own profile.</p></div></div>
       <div class="grid">${Object.keys(OPERATORS).map(operatorCard).join("")}</div></section>`:""}
-  </div>`,mount(){bindTourForm()}};
+  </div>`,mount(){bindTourForm();
+    const md=$("#m-dest");if(md)md.addEventListener("change",()=>{if(md.value)location.hash="#/destination/"+md.value});
+    const mu=$("#m-dur");if(mu)mu.addEventListener("change",()=>{if(mu.value)location.hash="#/tours/search?dur="+mu.value});}};
 }
 
 /* ================= TOUR results ================= */
@@ -788,7 +810,7 @@ function vOperator(id){
 function vExplore(){
   const REG=[["all","All"],["Meghalaya","Meghalaya"],["Assam","Assam"],["Arunachal Pradesh","Arunachal Pradesh"]];
   const ds=HOME_DEST;
-  return {title:"Explore",section:"explore",hero:true,html:`${pageHero("door-tour.jpg","","Explore incredible<br>destinations","Discover hidden gems, popular getaways and plan your next adventure.",{extra:`<button type="button" class="hbar" data-open-search>${I.search}<span>Search destinations, cities, vehicles or trips…</span></button>`})}
+  return {title:"Explore",section:"explore",hero:true,html:`${pageHero("d-tawang.jpg","","Explore incredible<br>destinations","Discover hidden gems, popular getaways and plan your next adventure.",{extra:`<button type="button" class="hbar" data-open-search>${I.search}<span>Search destinations, cities, vehicles or trips…</span></button>`})}
   <div class="wrap">
     <section class="sec" style="padding-top:34px"><div class="sec-h"><div><h2>Explore by region</h2></div></div>
       <div class="fchips" id="xreg">${REG.map(([k,l],i)=>`<button type="button" class="chip ${i?"":"on"}" data-region="${k}">${l}</button>`).join("")}</div></section>
@@ -815,7 +837,8 @@ function vSaved(q){
   if(tab==="destinations"){const ds=of("d:").filter(id=>PLACES[id]);body=ds.length?`<div class="tiles">${ds.map((d,i)=>placeTile(d,PLACES[d].tagline,`#/destination/${d}`,i)).join("")}</div>`:empty("No saved destinations","Save a destination to plan it later.",`<a class="btn dark" href="#/explore">Explore destinations</a>`)}
   const sd=of("d:").filter(d=>DESTINATIONS.includes(d));
   return {title:"Wishlist",section:"saved",hero:true,html:`${pageHero("ban-tour.jpg","","My wishlist","Your saved rentals, tours and destinations for future adventures. Kept on this device.")}<div class="wrap">
-    <div class="tabs" style="margin-top:26px">${tabs.map(([k,l,p])=>`<a class="chip ${k===tab?"on":""}" href="#/saved?tab=${k}">${l} (${of(p).length})</a>`).join("")}</div>${body}
+    <a class="blink" href="#/bookings">${I.bag}<span>Your bookings</span><b>${S.bookings.filter(b=>b.status!=="cancelled").length}</b>${I.arrow}</a>
+    <div class="tabs" style="margin-top:18px">${tabs.map(([k,l,p])=>`<a class="chip ${k===tab?"on":""}" href="#/saved?tab=${k}">${l} (${of(p).length})</a>`).join("")}</div>${body}
     <div class="plan">${I.compass}<div><b>Plan your next trip</b><span>${sd.length?`See tour packages that cover your saved destinations.`:`Save a few destinations, then see which packages cover them.`}</span></div><a class="btn dark" href="#/tours/search${sd.length?"?dest="+sd.join(","):""}">Start planning ${I.arrow}</a></div></div>`};
 }
 
@@ -999,8 +1022,8 @@ function sendRequest(kind){
   closeSheet();toast("Opening WhatsApp…");
 }
 function openEditSearch(kind){
-  if(kind==="rent"){const {q}=parse(),f=rf(q);openSheet("edit","Edit search",rentalSearchForm(f.city,f.cat).replace('class="sbox"','class="sbox" style="margin:0;width:100%;box-shadow:none;border:0;padding:0"'));bindRentalForm()}
-  else{const {q}=parse(),f=tf(q);openSheet("edit","Edit search",tourSearchForm({dest:f.dest[0],date:f.date}).replace('class="sbox"','class="sbox" style="margin:0;width:100%;box-shadow:none;border:0;padding:0"'));bindTourForm()}
+  if(kind==="rent"){const {q}=parse(),f=rf(q);openSheet("edit","Edit search",rentalSearchForm(f.city,f.cat).replace('class="sbox"','class="sbox" style="margin:0;width:100%;box-shadow:none;border:0;padding:0;display:block"'));bindRentalForm($("#sheet-root"))}
+  else{const {q}=parse(),f=tf(q);openSheet("edit","Edit search",tourSearchForm({dest:f.dest[0],date:f.date}).replace('class="sbox"','class="sbox" style="margin:0;width:100%;box-shadow:none;border:0;padding:0;display:block"'));bindTourForm($("#sheet-root"))}
 }
 
 /* ================= global search ================= */
@@ -1089,7 +1112,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.confirmTour){const p=PACKAGES[t.dataset.confirmTour];const b={id:newId(),kind:"tour",ref:t.dataset.confirmTour,date:t.dataset.date,trav:S.trav,total:p.price*S.trav,note:($("#bk-note")||{}).value||"",status:"requested",created:Date.now()};
     S.bookings.push(b);saveState();closeSheet();location.hash="#/booking/"+b.id;return}
   if(t.hasAttribute("data-x")){closeSheet();return}
-  if(t.dataset.rcat){$$("[data-rcat]").forEach(b=>b.setAttribute("aria-pressed",b===t));$("#r-cat").value=t.dataset.rcat;return}
+  if(t.dataset.rcat){const f=t.closest("form");$$("[data-rcat]",f).forEach(b=>b.setAttribute("aria-pressed",b===t));f.querySelector("#r-cat").value=t.dataset.rcat;return}
   if(t.dataset.trav){S.trav=Math.min(12,Math.max(1,S.trav+(+t.dataset.trav)));$$("#t-trav").forEach(x=>x.textContent=S.trav);return}
   if(t.dataset.btrav){S.trav=Math.min(12,Math.max(1,S.trav+(+t.dataset.btrav)));const p=PACKAGES[parse().path.split("/")[2]];
     $("#bt-trav").textContent=S.trav;$("#bt-n").textContent=plural(S.trav,"traveller");$("#bt-tot").textContent=inr(p.price*S.trav);$("#bt-tot2").textContent=inr(p.price*S.trav);$("#bt-now").textContent=inr(tourAdvance(p.price*S.trav));$("#bt-later").textContent=inr(p.price*S.trav-tourAdvance(p.price*S.trav));const mt=$("#m-tot");if(mt)mt.textContent=`${inr(p.price*S.trav)} for ${plural(S.trav,"traveller")}`;return}
