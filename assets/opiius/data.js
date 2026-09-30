@@ -170,7 +170,8 @@ const L = [
   ["hp","scorpio",4200,2,4.7,38,2023],["hp","thar",4500,2,4.8,41,2023],["hp","xuv700",4800,1,4.8,15,2024],["hp","himalayan",2400,4,4.9,66,2024],["hp","classic",1600,3,4.6,30,2022]
 ];
 const LISTINGS = {};
-L.forEach(([a,m,price,units,rating,trips,year])=>{LISTINGS[a+"-"+m]={id:a+"-"+m,agency:a,model:m,price,units,rating,trips,year}});
+/* row: [agency, model, price per day, units, rating, trips, year, optional own photo path] */
+L.forEach(([a,m,price,units,rating,trips,year,photo])=>{LISTINGS[a+"-"+m]={id:a+"-"+m,agency:a,model:m,price,units,rating,trips,year,photo}});
 
 /* ---------- tour operators ---------- */
 const OPERATORS = {
