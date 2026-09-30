@@ -167,7 +167,7 @@ function operatorCard(id,i=0){
 function pkgCard(p,opts={}){
   const o=OPERATORS[p.op], trav=opts.trav||S.trav, stops=[...new Set(p.stops.filter(s=>s!=="guwahati"&&!PLACES[s].point||["umiam","laitlum","nongriat","shnongpdeng","sela"].includes(s)))].slice(0,4);
   return `<article class="card pcard rise" style="--i:${opts.i||0}">
-    <a class="media" href="#/package/${p.id}" aria-label="${esc(p.title)}">${artBox(ARTS[p.dest]?p.dest:"meghalaya")}<span class="tl">${demoBadge(o)}</span><span class="dur">${p.days} days · ${p.nights} ${p.nights===1?"night":"nights"}</span></a>
+    <a class="media" href="#/package/${p.id}" aria-label="${esc(p.title)}">${artBox(ARTS[p.dest]?p.dest:"meghalaya")}${pkgPhoto(p)?`<img class="art" src="${pkgPhoto(p)}" alt="" loading="lazy" style="object-fit:cover;width:100%;height:100%">`:""}<span class="tl">${demoBadge(o)}</span><span class="dur">${p.days} days · ${p.nights} ${p.nights===1?"night":"nights"}</span></a>
     ${heartBtn("p:"+p.id,p.title)}
     <a class="body" href="#/package/${p.id}" style="text-decoration:none">
       <div class="t"><h3>${esc(p.title)}</h3>${stars(p.rating)}</div>
@@ -177,7 +177,7 @@ function pkgCard(p,opts={}){
     </a></article>`;
 }
 function placeTile(id,sub,href,i=0){
-  const photo=["meghalaya","shillong","dawki","kaziranga","sohra","tawang"].includes(id)?`<img class="art" src="assets/opiius/img/d-${id}.jpg" alt="" loading="lazy" style="object-fit:cover;width:100%;height:100%">`:"";
+  const photo=destPhoto(id)?`<img class="art" src="${destPhoto(id)}" alt="" loading="lazy" style="object-fit:cover;width:100%;height:100%">`:"";
   return `<a class="ptile rise" style="--i:${i}" href="${href}">${artBox(PLACES[id].art||id)}${photo}<b>${esc(placeName(id))}</b><span>${esc(sub)}</span></a>`;
 }
 function empty(title,text,action=""){return `<div class="empty">${I.compass.replace("<svg",'<svg width="34" height="34"')}<h3>${esc(title)}</h3><p>${text}</p>${action}</div>`}
@@ -200,7 +200,7 @@ const ROUTES=[
   [/^\/operator\/([\w-]+)$/,m=>vOperator(m[1])],
   [/^\/explore$/,()=>vExplore()],
   [/^\/saved$/,(m,q)=>vSaved(q)],
-  [/^\/bookings$/,()=>vBookings()],
+  [/^\/bookings$/,(m,q)=>vBookings(q)],
   [/^\/booking\/([\w-]+)$/,m=>vBooking(m[1])],
   [/^\/profile$/,()=>vProfile()],
   [/^\/compare$/,()=>vCompare()]
@@ -216,7 +216,7 @@ function render(){
   el.innerHTML=`<div class="view-in ${v.cls||""}">${v.html}</div>`;
   document.title=v.title?`${v.title} · OPIIUS`:"OPIIUS · Rentals and tours in the Northeast";
   $$("[data-nav]").forEach(a=>a.setAttribute("aria-current",a.dataset.nav===v.section?"page":"false"));
-  document.body.classList.toggle("at-home",v.section==="home");document.body.classList.toggle("scrolled",scrollY>40);
+  document.body.classList.toggle("at-home",v.section==="home");document.body.classList.toggle("overhero",v.section==="home"||!!v.hero);document.body.classList.toggle("scrolled",scrollY>40);
   if(v.mount)v.mount();
   updateBadges(); renderTray();
 }
@@ -234,6 +234,13 @@ function listParam(q,k){return (q.get(k)||"").split(",").filter(Boolean)}
 const IMG_HOME="assets/opiius/img/";
 const phPanel=src=>`<div class="phx" aria-hidden="true"><img class="soft" src="${src}" alt=""><img class="sharp" src="${src}" alt=""></div>`;
 const HOME_DEST=["meghalaya","shillong","dawki","kaziranga","sohra","tawang"];
+const destPhoto=d=>HOME_DEST.includes(d)?`${IMG_HOME}d-${d}.jpg`:null;
+/* a package's photo: one of its photographed stops, varied per package so neighbouring cards differ */
+const pkgPhoto=p=>{const c=[...new Set([p.dest,...p.stops])].filter(d=>destPhoto(d)&&d!=="meghalaya");if(!c.length)return destPhoto(p.dest);
+  let h=0;for(const ch of p.id)h=(h*31+ch.charCodeAt(0))>>>0;return destPhoto(c[h%c.length])};
+/* full-bleed photo hero shared by the section pages; the header floats over it (view.hero) */
+const pageHero=(img,eyebrow,title,sub,{vt="",tall=false,extra=""}={})=>`<section class="pghero ${tall?"tall":""}" ${vt?`style="view-transition-name:${vt}"`:""}>${phPanel(IMG_HOME+img)}
+  <div class="wrap">${eyebrow?`<span class="eyebrow">${eyebrow}</span>`:""}<h1>${title}</h1>${sub?`<p class="sub">${sub}</p>`:""}${extra}</div></section>`;
 function vHome(){
   const tomorrow=toDay(new Date(Date.now()+864e5));
   const where=`<option value="">Anywhere in the Northeast</option><optgroup label="Destinations">${DESTINATIONS.map(d=>`<option value="${d}">${esc(placeName(d))}</option>`).join("")}</optgroup><optgroup label="Rent a vehicle in">${RENTAL_CITIES.filter(c=>!DESTINATIONS.includes(c)).map(c=>`<option value="${c}">${esc(placeName(c))}</option>`).join("")}</optgroup>`;
@@ -297,17 +304,14 @@ function vRentals(){
   const city=S.prefs.city||"guwahati";
   const popular=ALL_L.filter(l=>AGENCIES[l.agency].city===city).sort((a,b)=>recScore(b)-recScore(a)).filter((l,i,arr)=>arr.findIndex(x=>x.model===l.model)===i).slice(0,8);
   const ags=Object.keys(AGENCIES).filter(id=>AGENCIES[id].city===city).sort((a,b)=>(AGENCIES[b].real?1:0)-(AGENCIES[a].real?1:0)||(AGENCIES[b].rating||0)-(AGENCIES[a].rating||0)).slice(0,6);
-  return {title:"Rentals",section:"rentals",html:`<div class="wrap">
-    <section class="phero" style="view-transition-name:door-rentals">${artBox("guwahati")}<img class="veh" src="rideme/img/xuv700.png" alt="">
-      <span class="eyebrow" style="color:rgba(255,255,255,.8)">OPIIUS Rentals</span><h1>Find your vehicle</h1>
-      <p>Cars, bikes and scooters from rental agencies across the Northeast. Compare prices, agencies and terms in one place.</p></section>
+  return {title:"Rentals",section:"rentals",hero:true,html:`${pageHero("hero.jpg","Car &amp; bike rentals","Your journey<br>starts here","Reliable vehicles from trusted local agencies for unforgettable journeys.",{vt:"door-rentals",tall:true})}<div class="wrap">
     ${rentalSearchForm(city)}
+    <section class="sec"><div class="sec-h"><div><h2>Popular rentals</h2><p>Highly rated in ${esc(placeName(city))}, one per model.</p></div><a class="btn sm more" href="#/rentals/in/${city}">View all rentals ${I.arrow}</a></div>
+      <div class="row-scroll">${popular.filter(l=>MODELS[l.model].photo).slice(0,4).map((l,i)=>vehCard(l,{i,nocmp:true})).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Rent a vehicle in</h2><p>Pick a place to see every agency's vehicles there.</p></div></div>
       <div class="tiles">${RENTAL_CITIES.map((c,i)=>{const n=ALL_L.filter(l=>AGENCIES[l.agency].city===c).length;return placeTile(c,n?`${plural(n,"vehicle")} listed`:"Get vehicles from Shillong",`#/rentals/in/${c}`,i)}).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Explore by brand</h2><p>See which agencies carry the model you want.</p></div></div>
       <div class="brands">${Object.keys(BRANDS).map(b=>{const n=new Set(ALL_L.filter(l=>MODELS[l.model].brand===b).map(l=>l.model)).size;return `<a class="btile" href="#/brand/${b}">${brandMark(b)}<span>${esc(BRANDS[b].name)}</span><small>${plural(n,"model")}</small></a>`}).join("")}</div></section>
-    <section class="sec"><div class="sec-h"><div><h2>Popular in ${esc(placeName(city))}</h2><p>Highly rated vehicles, one per model.</p></div><a class="btn sm more" href="#/rentals/in/${city}">See all ${I.arrow}</a></div>
-      <div class="row-scroll">${popular.map((l,i)=>vehCard(l,{i,nocmp:true})).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Rental agencies in ${esc(placeName(city))}</h2><p>Every agency has its own page with fleet, policies and reviews.</p></div><a class="btn sm more" href="#/agencies?city=${city}">All agencies ${I.arrow}</a></div>
       <div class="grid">${ags.map(agencyCard).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>How renting on OPIIUS works</h2></div></div>
@@ -573,19 +577,18 @@ function bindTourForm(){
     closeSheet();location.hash="#/tours/search?"+q.toString()});
 }
 function vTours(){
-  const top=pkgList().sort((a,b)=>b.rating*Math.log10(b.reviews+10)-a.rating*Math.log10(a.reviews+10)).slice(0,6);
+  const top=pkgList().sort((a,b)=>b.rating*Math.log10(b.reviews+10)-a.rating*Math.log10(a.reviews+10)).slice(0,8);
   const styles=[["Weekend","Short breaks from Guwahati"],["Honeymoon","Private and romantic"],["Adventure","Treks, rivers and passes"],["Family","Easy days for all ages"],["Budget","Great value trips"],["Luxury","Premium stays"]];
-  return {title:"Tours",section:"tours",html:`<div class="wrap">
-    <section class="phero" style="view-transition-name:door-tours">${artBox("meghalaya")}
-      <span class="eyebrow" style="color:rgba(255,255,255,.8)">OPIIUS Tours</span><h1>Where do you want to go?</h1>
-      <p>Destinations across the Northeast, with packages from local tour operators you can compare side by side.</p></section>
+  return {title:"Tours",section:"tours",hero:true,html:`${pageHero("ban-tour.jpg","Tour packages","Curated journeys<br>for every traveller","Discover unique experiences, from nature escapes to cultural adventures, with local operators.",{vt:"door-tours",tall:true})}<div class="wrap">
     ${tourSearchForm()}
+    <section class="sec"><div class="sec-h"><div><h2>Featured tour packages</h2><p>Top rated by travellers across operators.</p></div><a class="btn sm more" href="#/tours/search">View all tours ${I.arrow}</a></div>
+      <div class="grid">${top.slice(0,4).map((p,i)=>pkgCard(p,{i})).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Explore destinations</h2></div><a class="btn sm more" href="#/explore">Explore all ${I.arrow}</a></div>
       <div class="dtiles">${["meghalaya","tawang","kaziranga","dawki","sohra"].map((d,i)=>{const n=pkgList().filter(p=>pkgMatchesDest(p,d)).length;return placeTile(d,`${plural(n,"package")} · ${PLACES[d].tagline}`,`#/destination/${d}`,i)}).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Trips for every kind of traveller</h2></div></div>
       <div class="fchips">${styles.map(([t,s])=>`<a class="chip" href="#/tours/search?type=${t}" title="${esc(s)}">${esc(t)}</a>`).join("")}</div></section>
-    <section class="sec"><div class="sec-h"><div><h2>Popular packages</h2><p>Top rated by travellers across operators.</p></div><a class="btn sm more" href="#/tours/search">All packages ${I.arrow}</a></div>
-      <div class="grid">${top.map((p,i)=>pkgCard(p,{i})).join("")}</div></section>
+    <section class="sec"><div class="sec-h"><div><h2>More popular packages</h2></div><a class="btn sm more" href="#/tours/search">All packages ${I.arrow}</a></div>
+      <div class="grid">${top.slice(4).map((p,i)=>pkgCard(p,{i})).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Tour operators</h2><p>Every package comes from a local operator with its own profile.</p></div></div>
       <div class="grid">${Object.keys(OPERATORS).map(operatorCard).join("")}</div></section>
   </div>`,mount(){bindTourForm()}};
@@ -743,30 +746,37 @@ function vOperator(id){
 
 /* ================= EXPLORE ================= */
 function vExplore(){
-  return {title:"Explore",section:"explore",html:`<div class="wrap">
-    <div class="ptitle"><span class="eyebrow">Explore</span><h1>Explore the Northeast</h1><p>Destinations, places to rent, brands and the agencies and operators behind them.</p>
-      <button type="button" class="hsearch" style="margin-top:16px;min-width:min(420px,100%)" data-open-search>${I.search}<span>Search places, vehicles, agencies or trips</span></button></div>
-    <section class="sec" style="padding-top:20px"><div class="sec-h"><div><h2>Destinations</h2></div></div>
-      <div class="dtiles">${DESTINATIONS.filter(d=>d!=="mawlynnong").map((d,i)=>placeTile(d,PLACES[d].tagline,`#/destination/${d}`,i)).join("")}</div></section>
+  const REG=[["all","All"],["Meghalaya","Meghalaya"],["Assam","Assam"],["Arunachal Pradesh","Arunachal Pradesh"]];
+  const ds=HOME_DEST;
+  return {title:"Explore",section:"explore",hero:true,html:`${pageHero("door-tour.jpg","","Explore incredible<br>destinations","Discover hidden gems, popular getaways and plan your next adventure.",{extra:`<button type="button" class="hbar" data-open-search>${I.search}<span>Search destinations, cities, vehicles or trips…</span></button>`})}
+  <div class="wrap">
+    <section class="sec" style="padding-top:34px"><div class="sec-h"><div><h2>Explore by region</h2></div></div>
+      <div class="fchips" id="xreg">${REG.map(([k,l],i)=>`<button type="button" class="chip ${i?"":"on"}" data-region="${k}">${l}</button>`).join("")}</div></section>
+    <section class="sec" style="padding-top:22px"><div class="sec-h"><div><h2>Popular destinations</h2></div><a class="btn sm more" href="#/tours/search">All tour packages ${I.arrow}</a></div>
+      <div class="xgrid">${ds.map(d=>`<a class="xtile" data-state="${esc(PLACES[d].state)}" href="#/destination/${d}">${destPhoto(d)?`<img src="${destPhoto(d)}" alt="" loading="lazy">`:artBox(PLACES[d].art||d)}<b>${esc(placeName(d))}</b><span>${esc(PLACES[d].tagline)}</span></a>`).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Rent a vehicle in</h2></div></div><div class="tiles">${RENTAL_CITIES.map((c,i)=>placeTile(c,PLACES[c].state,`#/rentals/in/${c}`,i)).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Brands</h2></div></div><div class="brands">${Object.keys(BRANDS).map(b=>`<a class="btile" href="#/brand/${b}">${brandMark(b)}<span>${esc(BRANDS[b].name)}</span></a>`).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Rental agencies</h2></div><a class="btn sm more" href="#/agencies">All agencies ${I.arrow}</a></div><div class="row-scroll">${Object.keys(AGENCIES).slice(0,8).map(agencyCard).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Tour operators</h2></div></div><div class="row-scroll">${Object.keys(OPERATORS).map(operatorCard).join("")}</div></section>
-  </div>`};
+  </div>`,
+  mount(){$("#xreg").addEventListener("click",e=>{const b=e.target.closest("[data-region]");if(!b)return;const r=b.dataset.region;
+    $$("#xreg .chip").forEach(c=>c.classList.toggle("on",c===b));$$(".xtile").forEach(t=>t.hidden=r!=="all"&&t.dataset.state!==r)})}};
 }
 
 /* ================= SAVED ================= */
 function vSaved(q){
   const tab=q.get("tab")||"vehicles";
   const keys=[...S.saved], of=p=>keys.filter(k=>k.startsWith(p)).map(k=>k.slice(2));
-  const tabs=[["vehicles","Vehicles","v:"],["agencies","Agencies","a:"],["packages","Packages","p:"],["destinations","Destinations","d:"]];
+  const tabs=[["vehicles","Saved rentals","v:"],["packages","Saved tours","p:"],["destinations","Saved destinations","d:"],["agencies","Agencies","a:"]];
   let body="";
   if(tab==="vehicles"){const ls=of("v:").map(id=>LISTINGS[id]).filter(Boolean);body=ls.length?`<div class="grid">${ls.map((l,i)=>vehCard(l,{i})).join("")}</div>`:empty("No saved vehicles","Tap the heart on any vehicle to save it here.",`<a class="btn dark" href="#/rentals">Browse rentals</a>`)}
   if(tab==="agencies"){const ids=of("a:").filter(id=>AGENCIES[id]);body=ids.length?`<div class="grid">${ids.map(agencyCard).join("")}</div>`:empty("No saved agencies","Save an agency from its page to find it again quickly.",`<a class="btn dark" href="#/agencies">Browse agencies</a>`)}
   if(tab==="packages"){const ps=of("p:").filter(id=>PACKAGES[id]).map(id=>({id,...PACKAGES[id]}));body=ps.length?`<div class="grid">${ps.map((p,i)=>pkgCard(p,{i})).join("")}</div>`:empty("No saved packages","Save packages to compare them later.",`<a class="btn dark" href="#/tours">Browse tours</a>`)}
   if(tab==="destinations"){const ds=of("d:").filter(id=>PLACES[id]);body=ds.length?`<div class="tiles">${ds.map((d,i)=>placeTile(d,PLACES[d].tagline,`#/destination/${d}`,i)).join("")}</div>`:empty("No saved destinations","Save a destination to plan it later.",`<a class="btn dark" href="#/explore">Explore destinations</a>`)}
-  return {title:"Saved",section:"saved",html:`<div class="wrap"><div class="ptitle"><h1>Saved</h1><p>Kept on this device.</p></div>
-    <div class="tabs">${tabs.map(([k,l,p])=>`<a class="chip ${k===tab?"on":""}" href="#/saved?tab=${k}">${l} (${of(p).length})</a>`).join("")}</div>${body}</div>`};
+  const sd=of("d:").filter(d=>DESTINATIONS.includes(d));
+  return {title:"Wishlist",section:"saved",hero:true,html:`${pageHero("ban-tour.jpg","","My wishlist","Your saved rentals, tours and destinations for future adventures. Kept on this device.")}<div class="wrap">
+    <div class="tabs" style="margin-top:26px">${tabs.map(([k,l,p])=>`<a class="chip ${k===tab?"on":""}" href="#/saved?tab=${k}">${l} (${of(p).length})</a>`).join("")}</div>${body}
+    <div class="plan">${I.compass}<div><b>Plan your next trip</b><span>${sd.length?`See tour packages that cover your saved destinations.`:`Save a few destinations, then see which packages cover them.`}</span></div><a class="btn dark" href="#/tours/search${sd.length?"?dest="+sd.join(","):""}">Start planning ${I.arrow}</a></div></div>`};
 }
 
 /* ================= BOOKINGS ================= */
@@ -774,11 +784,22 @@ function bookingSummary(b){
   if(b.kind==="rental"){const l=LISTINGS[b.ref];if(!l)return null;const v=vinfo(l);return {title:v.name,sub:`${esc(v.a.name)} · ${fmtDT(b.from)} → ${fmtDT(b.to)}`,img:v.m.photo,studio:v.m.studio,href:"#/vehicle/"+b.ref}}
   const p=PACKAGES[b.ref];if(!p)return null;return {title:p.title,sub:`${esc(OPERATORS[p.op].name)} · ${fmtD(b.date)} · ${plural(b.trav,"traveller")}`,art:ARTS[p.dest]?p.dest:"meghalaya",href:"#/package/"+b.ref};
 }
-function vBookings(){
-  const list=[...S.bookings].reverse();
-  return {title:"Bookings",section:"bookings",html:`<div class="wrap"><div class="ptitle"><h1>Your bookings</h1><p>Requests you've sent. In this demo they stay on your device.</p></div>
-    ${list.length?`<div class="blist">${list.map(b=>{const s=bookingSummary(b);if(!s)return "";return `<a class="bitem" href="#/booking/${b.id}"><span class="th">${s.img?`<img src="${s.img}" alt="" class="${s.studio?"studio":""}">`:`<span class="art">${art(s.art)}</span>`}</span><div><b>${esc(s.title)}</b><span>${s.sub}</span><br><span class="mono" style="font-size:12px">${b.id}</span></div><span class="status st">${b.status==="cancelled"?"Cancelled":"Requested · demo"}</span></a>`}).join("")}</div>`
-      :empty("No bookings yet","When you request a vehicle or a tour, it shows up here.",`<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><a class="btn dark" href="#/rentals">Rent a vehicle</a><a class="btn" href="#/tours">Explore tours</a></div>`)}</div>`};
+function vBookings(q){
+  const tab=q&&q.get("tab")==="past"?"past":"upcoming", now=Date.now();
+  const past=b=>b.status==="cancelled"||new Date(b.kind==="rental"?b.to:b.date+"T23:59")<now;
+  const all=[...S.bookings].reverse(), up=all.filter(b=>!past(b)), pa=all.filter(past), list=tab==="past"?pa:up;
+  const row=b=>{const s=bookingSummary(b);if(!s)return "";const rental=b.kind==="rental",cx=b.status==="cancelled";
+    const when=rental?`${fmtDT(b.from)} → ${fmtDT(b.to)} (${plural(daysBetween(b.from,b.to),"day")})`:`${fmtD(b.date)} · ${PACKAGES[b.ref].days} days`;
+    const route=rental?`${esc(AGENCIES[LISTINGS[b.ref].agency].name)} · pickup at ${esc(b.pickup||"agency office")}`:PACKAGES[b.ref].stops.filter(x=>!PLACES[x].point).map(placeName).map(esc).join(" → ");
+    const who=rental?`${esc(s.title)}`:`${plural(b.trav,"traveller")}`;
+    return `<article class="bcard"><a class="th" href="#/booking/${b.id}">${s.img?`<img src="${s.img}" alt="" class="${s.studio?"studio":""}">`:PACKAGES[b.ref]&&pkgPhoto({id:b.ref,...PACKAGES[b.ref]})?`<img src="${pkgPhoto({id:b.ref,...PACKAGES[b.ref]})}" alt="">`:`<span class="art">${art(s.art)}</span>`}</a>
+      <div class="bi"><div class="bt"><b>${esc(rental?s.title:s.title)}</b><span class="status ${cx?"":"ok"}">${cx?"Cancelled":"Requested"}</span></div>
+        <div class="bl">${I.cal}<span>${when}</span></div><div class="bl">${I.pin}<span>${route}</span></div><div class="bl">${rental?I.car:I.user}<span>${who} · <span class="mono">${b.id}</span></span></div></div>
+      <div class="ba"><a class="btn dark sm" href="#/booking/${b.id}">View details</a><a class="btn sm" href="${s.href}">${cx?"Book again":"Modify"}</a>${cx?"":`<button type="button" class="btn sm" data-cancel="${b.id}">Cancel</button>`}</div></article>`};
+  return {title:"Bookings",section:"bookings",hero:true,html:`${pageHero("door-rent.jpg","","My bookings","Track your trips, manage your requests and get ready for your next adventure. In this demo they stay on your device.")}<div class="wrap">
+    <div class="utabs"><a href="#/bookings" class="${tab==="upcoming"?"on":""}">Upcoming trips (${up.length})</a><a href="#/bookings?tab=past" class="${tab==="past"?"on":""}">Past &amp; cancelled (${pa.length})</a></div>
+    ${list.length?`<div class="blist">${list.map(row).join("")}</div>`
+      :empty(tab==="past"?"Nothing here yet":"No upcoming trips",tab==="past"?"Cancelled and completed requests show up here.":"When you request a vehicle or a tour, it shows up here.",`<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><a class="btn dark" href="#/rentals">Rent a vehicle</a><a class="btn" href="#/tours">Explore tours</a></div>`)}</div>`};
 }
 function vBooking(id){
   const b=S.bookings.find(x=>x.id===id);if(!b)return vNotFound();
