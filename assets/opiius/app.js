@@ -304,7 +304,7 @@ function vHome(){
     </section>
   </div>
   ${(()=>{const bs=Object.keys(BRANDS).filter(b=>ALL_L.some(l=>MODELS[l.model].brand===b));if(!bs.length)return "";const row=bs.map(b=>`<a class="mq-i" href="#/brand/${b}" aria-label="${esc(BRANDS[b].name)}">${brandMark(b)}<span>${esc(BRANDS[b].name)}</span></a>`).join("");const reps=Math.max(2,Math.ceil(10/bs.length));
-    return `<section class="marquee" aria-label="Brands on OPIIUS"><div class="mq-t">${Array(reps*2).fill(row).join("")}</div></section>`})()}
+    return `<div class="wrap mq-head"><div class="shead"><div><h2>Cars you can book from</h2><p>Brands available from our partner agencies right now.</p></div><a href="#/rentals">Browse rentals ${I.arrow}</a></div></div><section class="marquee" aria-label="Brands on OPIIUS"><div class="mq-t">${Array(reps*2).fill(row).join("")}</div></section>`})()}
   <section class="trust"><div class="wrap">${trust.map(([ic,t,d])=>`<div class="t">${ic}<b>${t}</b><span>${d}</span></div>`).join("")}</div></section>
   <div class="banners">
     <a class="banner" href="#/rentals">${phPanel(IMG_HOME+"cat-hatch.jpg")}<div class="in"><small>Drive your freedom</small><h2>Rent a Vehicle</h2><p>Cars, bikes and scooters from local agencies, prices side by side.</p><span class="obtn">Browse Rentals ${I.arrow}</span></div></a>
