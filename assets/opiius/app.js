@@ -177,7 +177,8 @@ function pkgCard(p,opts={}){
     </a></article>`;
 }
 function placeTile(id,sub,href,i=0){
-  return `<a class="ptile rise" style="--i:${i}" href="${href}">${artBox(PLACES[id].art||id)}<b>${esc(placeName(id))}</b><span>${esc(sub)}</span></a>`;
+  const photo=["meghalaya","shillong","dawki","kaziranga","sohra","tawang"].includes(id)?`<img class="art" src="assets/opiius/img/d-${id}.jpg" alt="" loading="lazy" style="object-fit:cover;width:100%;height:100%">`:"";
+  return `<a class="ptile rise" style="--i:${i}" href="${href}">${artBox(PLACES[id].art||id)}${photo}<b>${esc(placeName(id))}</b><span>${esc(sub)}</span></a>`;
 }
 function empty(title,text,action=""){return `<div class="empty">${I.compass.replace("<svg",'<svg width="34" height="34"')}<h3>${esc(title)}</h3><p>${text}</p>${action}</div>`}
 
@@ -215,6 +216,7 @@ function render(){
   el.innerHTML=`<div class="view-in ${v.cls||""}">${v.html}</div>`;
   document.title=v.title?`${v.title} · OPIIUS`:"OPIIUS · Rentals and tours in the Northeast";
   $$("[data-nav]").forEach(a=>a.setAttribute("aria-current",a.dataset.nav===v.section?"page":"false"));
+  document.body.classList.toggle("at-home",v.section==="home");document.body.classList.toggle("scrolled",scrollY>40);
   if(v.mount)v.mount();
   updateBadges(); renderTray();
 }
@@ -228,26 +230,54 @@ function navigate(){
 function replaceQuery(q){const {path}=parse();const s=q.toString();history.replaceState(null,"","#"+path+(s?"?"+s:""));S.shown=12;if(current&&current.view.update)current.view.update()}
 function listParam(q,k){return (q.get(k)||"").split(",").filter(Boolean)}
 
-/* ================= HOME: two doors ================= */
+/* ================= HOME: photo hero, two doors, destinations ================= */
+const IMG_HOME="assets/opiius/img/";
+const phPanel=src=>`<div class="phx" aria-hidden="true"><img class="soft" src="${src}" alt=""><img class="sharp" src="${src}" alt=""></div>`;
+const HOME_DEST=["meghalaya","shillong","dawki","kaziranga","sohra","tawang"];
 function vHome(){
-  return {title:"",section:"home",html:`<section class="home wrap">
-    <span class="eyebrow">OPIIUS · Northeast India</span>
-    <h1 style="margin-top:10px">What are you<br>looking for?</h1>
-    <p class="lede">One marketplace for rental agencies and tour operators across Guwahati, Shillong and beyond.</p>
-    <div class="doors">
-      <a class="door" href="#/rentals" style="view-transition-name:door-rentals">${artBox("guwahati")}<img class="veh" src="rideme/img/scorpio.png" alt="" onerror="this.remove()">
-        <div class="in"><span class="k">Rentals</span><h2>Cars &amp; Bikes</h2><p>Compare vehicles from rental agencies near your destination.</p><span class="go">Explore Rentals ${I.arrow}</span></div></a>
-      <a class="door" href="#/tours" style="view-transition-name:door-tours">${artBox("meghalaya")}
-        <div class="in"><span class="k">Tours</span><h2>Tour Packages</h2><p>Discover destinations and compare packages from local operators.</p><span class="go">Explore Tours ${I.arrow}</span></div></a>
+  const tomorrow=toDay(new Date(Date.now()+864e5));
+  const where=`<option value="">Anywhere in the Northeast</option><optgroup label="Destinations">${DESTINATIONS.map(d=>`<option value="${d}">${esc(placeName(d))}</option>`).join("")}</optgroup><optgroup label="Rent a vehicle in">${RENTAL_CITIES.filter(c=>!DESTINATIONS.includes(c)).map(c=>`<option value="${c}">${esc(placeName(c))}</option>`).join("")}</optgroup>`;
+  const trust=[[I.shield,"Trusted partners","Verified agencies & operators"],[I.check,"Clear terms","Deposit, km & fuel up front"],[I.msg,"Talk to them first","Enquire before you book"],[I.star,"Best prices","Compare & save"],[I.heart,"Save & plan","Wishlist your favourites"]];
+  return {title:"",section:"home",cls:"at-home-main",html:`
+  <section class="hhero">${phPanel(IMG_HOME+"hero.jpg")}
+    <div class="wrap">
+      <span class="eyebrow">Travel, rentals &amp; experiences</span>
+      <h1>Where do you want to go today?</h1>
+      <p class="sub">Book vehicles, discover tour packages and explore the most beautiful places in the Northeast, all in one place.</p>
+      <form class="hsb" id="hform" autocomplete="off">
+        <div class="f">${I.pin}<div><label for="h-where">Where are you going?</label><select id="h-where">${where}</select></div></div>
+        <div class="f">${I.cal}<div><label for="h-date">When?</label><input type="date" id="h-date" value="${tomorrow}" min="${toDay(new Date())}"></div></div>
+        <div class="f">${I.user}<div><label for="h-trav">Travellers</label><select id="h-trav">${[1,2,3,4,5,6,7,8].map(n=>`<option value="${n}" ${n===S.trav?"selected":""}>${n} ${n===1?"adult":"adults"}</option>`).join("")}</select></div></div>
+        <button type="submit">${I.search}Search</button>
+      </form>
     </div>
-    <div class="quick"><span class="l">Popular right now</span>
-      <a class="chip" href="#/rentals/in/guwahati?cat=car&type=SUV">SUVs in Guwahati</a>
-      <a class="chip" href="#/rentals/in/shillong">Rent in Shillong</a>
-      <a class="chip" href="#/brand/royalenfield">Royal Enfield</a>
-      <a class="chip" href="#/tours/search?dest=meghalaya&dur=3-4">Meghalaya, 4 days</a>
-      <a class="chip" href="#/destination/tawang">Tawang</a>
-    </div>
-  </section>`};
+    <span class="script" aria-hidden="true">More journeys,<br>more stories</span>
+  </section>
+  <div class="wrap">
+    <section class="hsec"><div class="pdoors">
+      <a class="pdoor" href="#/rentals" style="view-transition-name:door-rentals">${phPanel(IMG_HOME+"door-rent.jpg")}
+        <div class="in"><span class="ic">${I.car}</span><h2>Rentals</h2><h3>Cars &amp; Bikes</h3><p>Find the perfect ride from trusted rental agencies.</p><span class="obtn">Explore Rentals ${I.arrow}</span></div></a>
+      <a class="pdoor tour" href="#/tours" style="view-transition-name:door-tours">${phPanel(IMG_HOME+"door-tour.jpg")}
+        <div class="in"><span class="ic">${I.peak}</span><h2>Tours</h2><h3>Tour Packages</h3><p>Discover amazing destinations and compare tour packages.</p><span class="obtn">Explore Tours ${I.arrow}</span></div></a>
+    </div></section>
+    <section class="hsec">
+      <div class="shead"><div><h2>Popular Destinations</h2><p>Explore top places and plan your next adventure</p></div><a href="#/explore">View all destinations ${I.arrow}</a></div>
+      <div class="dphotos">${HOME_DEST.map(d=>`<a class="dphoto" href="#/destination/${d}"><img src="${IMG_HOME}d-${d}.jpg" alt="" loading="lazy" decoding="async"><b>${esc(placeName(d))}</b></a>`).join("")}</div>
+    </section>
+  </div>
+  <section class="trust"><div class="wrap">${trust.map(([ic,t,d])=>`<div class="t">${ic}<b>${t}</b><span>${d}</span></div>`).join("")}</div></section>
+  <div class="banners">
+    <a class="banner" href="#/rentals">${phPanel(IMG_HOME+"ban-rent.jpg")}<div class="in"><small>Drive your freedom</small><h2>Rent a Vehicle</h2><p>Cars, bikes and scooters from local agencies, prices side by side.</p><span class="obtn">Browse Rentals ${I.arrow}</span></div></a>
+    <a class="banner tour" href="#/tours">${phPanel(IMG_HOME+"ban-tour.jpg")}<div class="in"><small>Explore the extraordinary</small><h2>Book a Tour</h2><p>Curated packages for every kind of traveller, from weekend getaways to week-long trips.</p><span class="obtn">Explore Tours ${I.arrow}</span></div></a>
+  </div>`,
+  mount(){
+    $("#hform").addEventListener("submit",e=>{e.preventDefault();
+      const w=$("#h-where").value,d=$("#h-date").value;S.trav=+$("#h-trav").value||2;
+      if(d){const f=new Date(d+"T10:00"),t=new Date(f);t.setDate(t.getDate()+2);S.dates=[toLocal(f),toLocal(t)]}
+      if(!w){location.hash="#/tours/search?"+new URLSearchParams({date:d,trav:S.trav});return}
+      location.hash=DESTINATIONS.includes(w)?`#/destination/${w}`:`#/rentals/search?city=${w}&from=${encodeURIComponent(S.dates[0])}&to=${encodeURIComponent(S.dates[1])}`;
+    });
+  }};
 }
 
 /* ================= RENTALS landing ================= */
@@ -672,7 +702,7 @@ function vPackage(id){
   const ALLINC=["Hotel","Meals","Transport","Guide","Activities"],LBL={Hotel:"Accommodation",Meals:"Meals",Transport:"Transportation",Guide:"Local guide",Activities:"Activities and tickets"};
   return {title:p.title,section:"tours",cls:"has-mcta",html:`<div class="wrap">
     <nav class="crumbs"><a href="${S.last.tours}">Back to packages</a><span>/</span><a href="#/destination/${p.dest}">${esc(placeName(p.dest))}</a><span>/</span><span>${esc(p.title)}</span></nav>
-    <section class="dhero" style="min-height:clamp(300px,38vw,440px)">${artBox(ARTS[p.dest]?p.dest:"meghalaya")}<div class="in"><span class="eyebrow" style="color:rgba(255,255,255,.85)">${p.days} days · ${p.nights} ${p.nights===1?"night":"nights"}</span><h1 style="font-size:clamp(40px,6vw,76px)">${esc(p.title)}</h1><p>${esc(p.blurb)}</p></div></section>
+    <section class="dhero" style="min-height:clamp(300px,38vw,440px)">${artBox(ARTS[p.dest]?p.dest:"meghalaya")}<div class="in"><span class="eyebrow" style="color:rgba(255,255,255,.85)">${p.days} days · ${p.nights} ${p.nights===1?"night":"nights"}</span><h1 style="font-size:clamp(32px,4.6vw,58px)">${esc(p.title)}</h1><p>${esc(p.blurb)}</p></div></section>
     <div class="dtitle" style="margin-top:18px"><div class="meta" style="margin:0">${stars(p.rating,p.reviews)}<span>${esc([...new Set(p.stops)].map(placeName).join(" · "))}</span>${demoBadge(o)}</div>
       <div class="acts">${heartBtn("p:"+id,p.title).replace('class="heart"','class="btn sm" style="position:static;width:auto;box-shadow:none"').replace(`${I.heart}</button>`,`${I.heart}Save</button>`)}</div></div>
     <div class="dlay"><div>
@@ -959,6 +989,7 @@ document.addEventListener("toggle",e=>{const g=e.target.closest&&e.target.closes
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet();if((e.key==="/"&&!/input|textarea|select/i.test(document.activeElement.tagName))||(e.key==="k"&&(e.metaKey||e.ctrlKey))){e.preventDefault();openSearch()}});
 /* shared-element hint: name the tapped vehicle image so it can morph into the detail gallery */
 document.addEventListener("pointerdown",e=>{const a=e.target.closest("a[data-vt]");if(!a)return;$$("[data-vtimg]").forEach(i=>i.style.viewTransitionName="");const img=a.querySelector("[data-vtimg]");if(img)img.style.viewTransitionName=a.dataset.vt},true);
+addEventListener("scroll",()=>document.body.classList.toggle("scrolled",scrollY>40),{passive:true});
 window.addEventListener("hashchange",()=>{S.prevFrom=S.lastHash;S.lastHash=location.hash;closeSheet();navigate()});
 
 S.lastHash=location.hash;S.prevPath=parse().path;

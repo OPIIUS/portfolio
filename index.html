@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://opiius.online/rideme/img/xl6.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Caveat:wght@500&display=swap">
 <link rel="stylesheet" href="assets/opiius/styles.css">
 </head>
 <body>
@@ -23,27 +23,21 @@
 <header class="hdr">
   <div class="wrap">
     <a class="logo" href="#/" data-nav="home" aria-label="OPIIUS home">
-      <span class="mk"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M4 18l5.5-9.5 3.4 5.6 2-3.3L19.5 18z"/><rect x="4" y="19.2" width="15.5" height="1.6" rx=".8" fill="#34c38f"/></svg></span>
+      <span class="mk"><svg viewBox="0 0 38 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 21L11 5l6 10"/><path d="M13 21l9-16 14 16"/><path d="M19 21l3-5"/></svg></span>
       <b>OPIIUS</b>
     </a>
     <nav class="nav" aria-label="Main">
       <a href="#/rentals" data-nav="rentals">Rentals</a>
       <a href="#/tours" data-nav="tours">Tours</a>
       <a href="#/explore" data-nav="explore">Explore</a>
+      <a href="#/bookings" data-nav="bookings">Bookings<span class="cnt" data-count="bookings" hidden></span></a>
+      <a href="#/saved" data-nav="saved">Wishlist<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg><span class="cnt" data-count="saved" hidden></span></a>
     </nav>
     <div class="right">
       <button class="hsearch" type="button" data-open-search aria-label="Search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg>
-        <span class="lbl">Search places, vehicles, trips</span>
+        <span class="lbl">Search</span>
       </button>
-      <a class="ibtn desk" href="#/saved" data-nav="saved" aria-label="Wishlist">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg>
-        <span class="dot" data-count="saved" hidden></span>
-      </a>
-      <a class="ibtn desk" href="#/bookings" data-nav="bookings" aria-label="Bookings">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="6" width="16" height="13" rx="2.5"/><path d="M9 6V4.5h6V6M4 11h16"/></svg>
-        <span class="dot" data-count="bookings" hidden></span>
-      </a>
       <a class="ibtn" href="#/profile" data-nav="profile" aria-label="Profile"><span class="avatar">U</span></a>
     </div>
   </div>
@@ -55,8 +49,8 @@
   <div class="wrap">
     <div class="cols">
       <div>
-        <a class="logo" href="#/"><span class="mk"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M4 18l5.5-9.5 3.4 5.6 2-3.3L19.5 18z"/><rect x="4" y="19.2" width="15.5" height="1.6" rx=".8" fill="#34c38f"/></svg></span><b>OPIIUS</b></a>
-        <p style="color:var(--dim);font-size:13.5px;line-height:1.6;max-width:34ch;margin:12px 0 0">Every rental agency and tour operator in the Northeast, in one place. Rent the ride, book the trip.</p>
+        <a class="logo" href="#/"><span class="mk"><svg viewBox="0 0 38 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 21L11 5l6 10"/><path d="M13 21l9-16 14 16"/><path d="M19 21l3-5"/></svg></span><b>OPIIUS</b></a>
+        <p class="tag"><b style="color:#fff">Think travel. Think OPIIUS.</b><br>Every rental agency and tour operator in the Northeast, in one place.</p>
       </div>
       <div><h5>Rentals</h5><ul>
         <li><a href="#/rentals">Rent a car or bike</a></li>
@@ -77,7 +71,7 @@
         <li><a href="business.html">For businesses</a></li>
       </ul></div>
     </div>
-    <p class="fine">This is a product preview. Agencies, operators, prices and reviews marked DEMO are sample data made up for this preview, not real businesses. Real Drive Ghy is the founding partner; its prices come from its own catalogue. Companies listed under "Other rental companies" are real Guwahati businesses shown with links only; they are not on OPIIUS and nothing here is said on their behalf. Destination photos: Wikimedia Commons contributors, used under their Creative Commons licences. Vehicle photos: Real Drive Ghy and partner uploads. Brand marks: Simple Icons (CC0), trademarks of their owners.</p>
+    <p class="fine">This is a product preview. Agencies, operators, prices and reviews marked DEMO are sample data made up for this preview, not real businesses. Real Drive Ghy is the founding partner; its prices come from its own catalogue. Companies listed under "Other rental companies" are real Guwahati businesses shown with links only; they are not on OPIIUS and nothing here is said on their behalf. Home page imagery is illustrative artwork for this preview. Vehicle photos: Real Drive Ghy and partner uploads. Brand marks: Simple Icons (CC0), trademarks of their owners.</p>
   </div>
 </footer>
 
