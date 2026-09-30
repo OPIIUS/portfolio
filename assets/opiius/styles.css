@@ -908,3 +908,27 @@ body.scrolled .hdr{box-shadow:0 8px 24px -18px rgba(0,0,0,.35)}
 .mq-head + .marquee{margin-top:0}
 .mq-t{gap:64px}
 .mq-i{opacity:.85}.mq-i svg{width:38px;height:38px}.mq-i span{font-size:16px}
+
+/* ================= brand story: why OPIIUS + moments ================= */
+.why{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,56px);align-items:center;padding:clamp(24px,4vw,48px);border-radius:24px;background:var(--pine);color:#fff;position:relative;overflow:hidden}
+.why::before{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(52,195,143,.22),transparent 65%)}
+.why .eyebrow{color:#34c38f;letter-spacing:2px}
+.why h2{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,3.6vw,48px);line-height:1.08;letter-spacing:-.025em;margin-top:10px}
+.why-l p{margin-top:16px;font-size:16.5px;line-height:1.6;color:rgba(255,255,255,.85);max-width:48ch}
+.why-l small{display:block;margin-top:14px;font-size:12px;color:rgba(255,255,255,.55)}
+.why-r{position:relative;display:grid;gap:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:22px}
+.why-t{font-size:13px;letter-spacing:1.6px;text-transform:uppercase;color:#34c38f}
+.why-i{display:flex;gap:14px;align-items:flex-start}
+.why-i>svg{width:26px;height:26px;flex:none;color:#34c38f;margin-top:2px}
+.why-i b{display:block;font-size:16.5px}
+.why-i span{display:block;color:rgba(255,255,255,.78);font-size:14.5px;line-height:1.5;margin-top:2px}
+@media(max-width:860px){.why{grid-template-columns:1fr}}
+.moments{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:1000px){.moments{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.moments{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:76%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}.moments::-webkit-scrollbar{display:none}.moment{scroll-snap-align:start}}
+.moment{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--ink)}
+.moment .mm{position:relative;display:block;aspect-ratio:4/3;border-radius:18px;overflow:hidden;margin-bottom:10px;box-shadow:var(--sh-lift)}
+.moment .mm img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
+.moment:hover .mm img{transform:scale(1.05)}
+.moment b{font-family:var(--f-display);font-weight:800;font-size:19px;letter-spacing:-.01em}
+.moment span{color:var(--dim);font-size:14.5px}
