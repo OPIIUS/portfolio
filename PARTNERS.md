@@ -1,28 +1,18 @@
-# Adding a partner to OPIIUS
+# Adding a partner agency to OPIIUS
 
-When an agency or tour operator agrees to join, collect the details below and send them to Claude
-(paste the text, attach the photos). Claude adds them to `assets/opiius/data.js` and puts the photos in
-`assets/partners/<agency-id>/`. Only partners marked `real: true` appear on the live site.
+1. At the agency, open **opiius.online/onboard.html** on your phone and fill it in with the owner
+   (takes about 10 minutes). The draft is kept on your phone if you close the page.
+2. Take 2 or 3 clear daylight photos of each vehicle (whole car in frame, number plate optional).
+3. Tap **Create the block**, then **Copy block**.
+4. Paste the block into the chat with Claude and attach the photos, in the same order as the vehicles.
+5. Claude adds the entry to `assets/opiius/partners.js`, puts the photos in `assets/partners/<agency-id>/`,
+   checks the pages and publishes. The agency is live on opiius.online a minute later.
 
-## Rental agency
-- Agency name, and the area in the city (e.g. "Six Mile, GS Road")
-- City: Guwahati, Shillong, Kaziranga, Sohra, Dawki or Tawang
-- Pickup points (and airport or railway delivery, with the charge if any)
-- Since which year they have been renting
-- Terms: security deposit, km limit per day, fuel policy, cancellation policy, documents needed
-- Has a valid self-drive rental permit and commercial insurance? (needed for the Verified badge)
-- For every vehicle:
-  - Make and model (e.g. Maruti Ertiga), year, manual or automatic, fuel, seats
-  - Price per day, and how many of that vehicle they have
-  - 2 or 3 clear photos of their own vehicle (daylight, whole car in frame)
-- A short line about the agency (what they are good at)
+Rules
+- Only list an agency whose owner has agreed (the form will not create a block without it).
+- "Verified" is shown only when you have seen their self-drive permit and commercial insurance.
+- Prices and terms must be exactly what the owner told you; customers see them before booking.
+- Owner phone numbers are never put on the site. Reservations come to the OPIIUS WhatsApp number
+  (assets/opiius/config.js) and you forward them.
 
-## Tour operator
-- Name, base city, since which year, registration details
-- For every package: title, days and nights, price per person, places covered, day-by-day plan,
-  what is included and not included, trip style (family, honeymoon, adventure...)
-- 2 or 3 photos per package
-
-## Where reservations go
-Reservations and requests open WhatsApp to the number in `assets/opiius/config.js`. You forward each one to
-the agency, so every lead is counted before you ask anyone to pay.
+To change prices or remove an agency later, just tell Claude ("Change X's Swift to ₹1,900" / "Remove X").
