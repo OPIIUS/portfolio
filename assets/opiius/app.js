@@ -205,6 +205,13 @@ function pkgCard(p,opts={}){
       <div class="price"><b class="num">${inr(p.price)}</b><span>/ person</span><span class="tot">${inr(p.price*trav)} for ${plural(trav,"traveller")}</span></div>
     </a></article>`;
 }
+/* rental cities: only places that have vehicles listed right now; a single city becomes one wide photo card */
+function cityTiles(){
+  const cs=RENTAL_CITIES.filter(c=>ALL_L.some(l=>AGENCIES[l.agency].city===c));
+  if(cs.length===1){const c=cs[0],n=ALL_L.filter(l=>AGENCIES[l.agency].city===c).length,ag=new Set(ALL_L.filter(l=>AGENCIES[l.agency].city===c).map(l=>l.agency)).size;
+    return `<a class="citywide" href="#/rentals/in/${c}"><img src="${IMG_HOME}cat-suv.jpg" alt="" loading="lazy"><div class="in"><span class="eyebrow">${esc(PLACES[c].state)}</span><b>${esc(placeName(c))}</b><span>${plural(n,"vehicle")} from ${plural(ag,"agency","agencies")} · More cities soon</span><span class="obtn">See vehicles ${I.arrow}</span></div></a>`}
+  return `<div class="tiles">${cs.map((c,i)=>{const n=ALL_L.filter(l=>AGENCIES[l.agency].city===c).length;return placeTile(c,`${plural(n,"vehicle")} listed`,`#/rentals/in/${c}`,i)}).join("")}</div>`;
+}
 function placeTile(id,sub,href,i=0){
   const photo=destPhoto(id)?`<img class="art" src="${destPhoto(id)}" alt="" loading="lazy" style="object-fit:cover;width:100%;height:100%">`:"";
   return `<a class="ptile rise" style="--i:${i}" href="${href}">${artBox(PLACES[id].art||id)}${photo}<b>${esc(placeName(id))}</b><span>${esc(sub)}</span></a>`;
@@ -363,7 +370,7 @@ function vRentals(){
     <section class="sec"><div class="sec-h"><div><h2>Popular rentals</h2><p>Highly rated in ${esc(placeName(city))}, one per model.</p></div><a class="btn sm more" href="#/rentals/in/${city}">View all rentals ${I.arrow}</a></div>
       <div class="row-scroll">${popular.filter(l=>MODELS[l.model].photo).slice(0,4).map((l,i)=>vehCard(l,{i,nocmp:true})).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Rent a vehicle in</h2><p>Pick a place to see every agency's vehicles there.</p></div></div>
-      <div class="tiles">${RENTAL_CITIES.map((c,i)=>{const n=ALL_L.filter(l=>AGENCIES[l.agency].city===c).length;return placeTile(c,n?`${plural(n,"vehicle")} listed`:LIVE?"Request on WhatsApp":"Get vehicles from Shillong",`#/rentals/in/${c}`,i)}).join("")}</div></section>
+      ${cityTiles()}</section>
     <section class="sec"><div class="sec-h"><div><h2>Explore by brand</h2><p>See which agencies carry the model you want.</p></div></div>
       <div class="brands">${Object.keys(BRANDS).filter(b=>!LIVE||ALL_L.some(l=>MODELS[l.model].brand===b)).map(b=>{const n=new Set(ALL_L.filter(l=>MODELS[l.model].brand===b).map(l=>l.model)).size;return `<a class="btile" href="#/brand/${b}">${brandMark(b)}<span>${esc(BRANDS[b].name)}</span><small>${plural(n,"model")}</small></a>`}).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Rental agencies in ${esc(placeName(city))}</h2><p>Every agency has its own page with fleet, policies and reviews.</p></div><a class="btn sm more" href="#/agencies?city=${city}">All agencies ${I.arrow}</a></div>
@@ -846,7 +853,7 @@ function vExplore(){
       <div class="fchips" id="xreg">${REG.map(([k,l],i)=>`<button type="button" class="chip ${i?"":"on"}" data-region="${k}">${l}</button>`).join("")}</div></section>
     <section class="sec" style="padding-top:22px"><div class="sec-h"><div><h2>Popular destinations</h2></div><a class="btn sm more" href="#/tours/search">All tour packages ${I.arrow}</a></div>
       <div class="xgrid">${ds.map(d=>`<a class="xtile" data-state="${esc(PLACES[d].state)}" href="#/destination/${d}">${destPhoto(d)?`<img src="${destPhoto(d)}" alt="" loading="lazy">`:artBox(PLACES[d].art||d)}<b>${esc(placeName(d))}</b><span>${esc(PLACES[d].tagline)}</span></a>`).join("")}</div></section>
-    <section class="sec"><div class="sec-h"><div><h2>Rent a vehicle in</h2></div></div><div class="tiles">${RENTAL_CITIES.map((c,i)=>placeTile(c,PLACES[c].state,`#/rentals/in/${c}`,i)).join("")}</div></section>
+    <section class="sec"><div class="sec-h"><div><h2>Rent a vehicle in</h2></div></div>${cityTiles()}</section>
     <section class="sec"><div class="sec-h"><div><h2>Brands</h2></div></div><div class="brands">${Object.keys(BRANDS).filter(b=>!LIVE||ALL_L.some(l=>MODELS[l.model].brand===b)).map(b=>`<a class="btile" href="#/brand/${b}">${brandMark(b)}<span>${esc(BRANDS[b].name)}</span></a>`).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Rental agencies</h2></div><a class="btn sm more" href="#/agencies">All agencies ${I.arrow}</a></div><div class="row-scroll">${Object.keys(AGENCIES).slice(0,8).map(agencyCard).join("")}</div></section>
     ${Object.keys(OPERATORS).length?`<section class="sec"><div class="sec-h"><div><h2>Tour operators</h2></div></div><div class="row-scroll">${Object.keys(OPERATORS).map(operatorCard).join("")}</div></section>`:""}
