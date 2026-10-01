@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Add a tour operator · OPIIUS</title>
+<style>
+:root{--pine:#15302a;--brand:#1d4b3f;--soft:#e3efe9;--ink:#14201b;--dim:#5f6b65;--line:#dfe5e1;--bg:#f4f6f4;--bad:#b83a2e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:var(--pine);color:#fff;padding:18px 16px 22px}
+header b{font-size:20px;letter-spacing:.04em}
+header p{margin:6px 0 0;opacity:.8;font-size:14px}
+main{max-width:720px;margin:0 auto;padding:16px 16px 140px}
+section{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:16px}
+h2{font-size:17px;margin:0 0 4px}
+.hint{color:var(--dim);font-size:13.5px;margin:0 0 12px}
+label{display:block;font-weight:650;font-size:14px;margin:14px 0 6px}
+label small{font-weight:400;color:var(--dim)}
+input,select,textarea{width:100%;font:inherit;padding:12px;border:1px solid #c9d2cd;border-radius:12px;background:#fff;color:inherit}
+textarea{min-height:76px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:500;margin:12px 0 0}
+.check input{width:22px;height:22px;flex:none;margin-top:2px}
+.veh{border:1px dashed #c9d2cd;border-radius:14px;padding:14px;margin-top:14px;position:relative}
+.veh .n{font-weight:800;font-size:14px;color:var(--brand)}
+.veh .rm{position:absolute;right:10px;top:8px;border:0;background:none;color:var(--bad);font-weight:700;padding:6px}
+.other{display:none}.veh.is-other .other{display:block}
+button.main,button.alt{font:inherit;font-weight:750;border-radius:14px;padding:14px 18px;border:0;cursor:pointer}
+button.main{background:var(--brand);color:#fff;width:100%}
+button.alt{background:var(--soft);color:var(--brand);width:100%;margin-top:12px}
+#out{display:none}
+#out pre{white-space:pre-wrap;word-break:break-word;background:#0f1d19;color:#d9efe5;border-radius:12px;padding:14px;font-size:12.5px;max-height:320px;overflow:auto}
+.bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.bar div{max-width:720px;margin:0 auto}
+.err{color:var(--bad);font-weight:650;font-size:14px;margin:8px 0 0;display:none}
+.ok{background:var(--soft);border-radius:12px;padding:12px;font-size:14px;margin-top:12px}
+@media(max-width:420px){.row3{grid-template-columns:1fr 1fr}}
+.stops{display:flex;flex-wrap:wrap;gap:8px}
+.stops button{font:inherit;font-size:14px;font-weight:650;padding:9px 12px;border-radius:999px;border:1px solid #c9d2cd;background:#fff;color:var(--ink);width:auto}
+.stops button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.stops button i{font-style:normal;display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:10px;background:#fff;color:var(--brand);font-size:12px;margin-right:6px}
+.ticks{display:flex;flex-wrap:wrap;gap:6px 14px}.ticks label{display:flex;gap:8px;align-items:center;font-weight:500;margin:6px 0 0}.ticks input{width:20px;height:20px}
+.day{display:grid;grid-template-columns:70px 1fr;gap:8px;align-items:start;margin-top:10px}.day b{padding-top:12px;font-size:14px;color:var(--brand)}
+.day input{margin-bottom:6px}
+.route{font-size:13.5px;color:var(--dim);margin-top:8px}
+button.wa{background:#25d366;color:#fff;border:0;font-weight:700;padding:12px 16px;border-radius:12px;font-size:15px;cursor:pointer;margin:0 8px 8px 0}
+</style>
+</head>
+<body>
+<header><b>OPIIUS · Add a tour operator</b><p>Car or bike rental? Use <a href="onboard.html" style="color:#fff">the rentals form</a>. Fill this in yourself, or with OPIIUS. At the end, tap <b>Send to OPIIUS on WhatsApp</b> and attach 1–2 photos per package in the same chat. Nothing goes live until OPIIUS checks it with you.</p></header>
+<main>
+<form id="f" autocomplete="off">
+<section>
+  <h2>1. The operator</h2>
+  <label for="name">Operator name *</label><input id="name" required placeholder="e.g. Luit Tours &amp; Travels">
+  <div class="row">
+    <div><label for="base">Based in *</label><select id="base"></select></div>
+    <div><label for="since">Running since</label><input id="since" type="number" inputmode="numeric" placeholder="2015"></div>
+  </div>
+  <label for="about">One line about them <small>what they are best at</small></label><textarea id="about" placeholder="Family trips across Meghalaya with their own cars and drivers, and homestays run by local families."></textarea>
+</section>
+
+<section>
+  <h2>2. Packages</h2>
+  <p class="hint">One entry per package. Write prices and inclusions exactly as the operator quotes them; families see this before they enquire.</p>
+  <div id="pkgs"></div>
+  <button type="button" class="alt" id="addp">+ Add a package</button>
+</section>
+
+<section>
+  <h2>3. Checks</h2>
+  <label class="check"><input type="checkbox" id="consent"> <span><b>We agree to be listed on OPIIUS</b> with these packages and prices, and to receive trip requests from OPIIUS on WhatsApp. *</span></label>
+  <label class="check"><input type="checkbox" id="reg"> We are a registered business / registered with the tourism department (we will show it to OPIIUS)</label>
+  <label class="check"><input type="checkbox" id="vehicles"> Our tour vehicles have valid commercial permits and insurance (we will show them to OPIIUS)</label>
+  <p class="hint" style="margin-top:10px">The Verified badge is shown only after OPIIUS has seen these documents.</p>
+</section>
+
+<section id="out">
+  <h2>Done. Send it to OPIIUS</h2>
+  <p class="hint">Tap the green button: WhatsApp opens with your details filled in. Send it, then attach 1–2 photos per package in the same chat. OPIIUS checks everything with you before it goes live.</p>
+  <pre id="block"></pre>
+  <button type="button" class="wa" id="wa">Send to OPIIUS on WhatsApp</button>
+  <button type="button" class="alt" id="copy">Copy block</button>
+  <button type="button" class="alt" id="share">Share…</button>
+  <div class="ok" id="copied" style="display:none">Copied. Paste it in WhatsApp to OPIIUS (86388 30682) with the photos.</div>
+</section>
+</form>
+</main>
+<div class="bar"><div><button class="main" id="make" type="button">Create the block</button><p class="err" id="err"></p></div></div>
+
+<script src="assets/opiius/config.js"></script>
+<script src="assets/opiius/partners.js"></script>
+<script src="assets/opiius/data.js"></script>
+<script>
+(function(){
+const O=window.OP,$=id=>document.getElementById(id),KEY="opiius:onboard-tours-draft";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const bases=["guwahati","shillong","tawang","kaziranga","sohra","dawki","tezpur"];
+$("base").innerHTML=bases.map(c=>`<option value="${c}">${O.PLACES[c].name}</option>`).join("");
+const DEST=O.DESTINATIONS, STOPS=Object.keys(O.PLACES).filter(k=>!O.PLACES[k].region);
+const TYPES=["Family","Weekend","Honeymoon","Adventure","Group","Budget","Luxury","Solo"],ACTS=["Sightseeing","Waterfalls","Trekking","Camping","Boating","Wildlife","Culture"];
+const INC=[["Hotel","Stay"],["Meals","Meals"],["Transport","Car / transport"],["Guide","Local guide"],["Activities","Activities & tickets"]];
+const pname=k=>O.PLACES[k].short||O.PLACES[k].name;
+function ticks(cls,list,sel=[]){return `<div class="ticks">${list.map(x=>{const [v,l]=Array.isArray(x)?x:[x,x];return `<label><input type="checkbox" class="${cls}" value="${v}" ${sel.includes(v)?"checked":""}>${l}</label>`}).join("")}</div>`}
+function addPkg(v={}){
+  const d=document.createElement("div");d.className="veh";d.dataset.stops=JSON.stringify(v.stops||["guwahati"]);
+  d.innerHTML=`<span class="n">Package</span><button type="button" class="rm">Remove</button>
+  <label>Package name *</label><input class="t" placeholder="e.g. Meghalaya Family Escape" value="${esc(v.t||"")}">
+  <div class="row3"><div><label>Days *</label><input class="days" type="number" inputmode="numeric" min="1" max="15" value="${v.days||3}"></div>
+    <div><label>Nights</label><input class="nights" type="number" inputmode="numeric" min="0" value="${v.nights??2}"></div>
+    <div><label>Price / person ₹ *</label><input class="price" type="number" inputmode="numeric" placeholder="9999" value="${v.price||""}"></div></div>
+  <label>Main destination *</label><select class="dest">${DEST.map(x=>`<option value="${x}" ${x===v.dest?"selected":""}>${O.PLACES[x].name}</option>`).join("")}</select>
+  <label>Route <small>tap the places in the order they visit</small></label><div class="stops">${STOPS.map(s=>`<button type="button" data-s="${s}">${pname(s)}</button>`).join("")}</div><p class="route"></p>
+  <label>One-line summary</label><input class="blurb" placeholder="Waterfalls, root bridges and Dawki's clear river, at an easy pace for kids." value="${esc(v.blurb||"")}">
+  <label>Trip style</label>${ticks("ty",TYPES,v.ty)}
+  <label>Activities</label>${ticks("ac",ACTS,v.ac)}
+  <label>Included</label>${ticks("in",INC,v.in||["Hotel","Transport"])}
+  <label>Not included <small>comma separated</small></label><input class="ni" placeholder="Flights / train, lunch, entry tickets" value="${esc(v.ni||"")}">
+  <label>Day by day</label><div class="itin"></div>`;
+  $("pkgs").appendChild(d);
+  const drawStops=()=>{const st=JSON.parse(d.dataset.stops);d.querySelectorAll(".stops button").forEach(b=>{const i=st.indexOf(b.dataset.s);b.classList.toggle("on",i>=0);b.innerHTML=(i>=0?`<i>${i+1}</i>`:"")+pname(b.dataset.s)});
+    d.querySelector(".route").textContent=st.length?"Route: "+st.map(pname).join(" → "):""};
+  d.querySelector(".stops").addEventListener("click",e=>{const b=e.target.closest("[data-s]");if(!b)return;let st=JSON.parse(d.dataset.stops);const s=b.dataset.s;
+    if(st[st.length-1]===s)st.pop();else st.push(s);d.dataset.stops=JSON.stringify(st);drawStops();save()});
+  const it=v.itin||[];
+  const drawDays=()=>{const n=Math.max(1,Math.min(15,+d.querySelector(".days").value||1)),box=d.querySelector(".itin"),old=[...box.querySelectorAll(".day")].map(x=>[x.querySelector(".dt").value,x.querySelector(".dd").value]);
+    box.innerHTML=Array.from({length:n},(_,i)=>{const o=old[i]||it[i]||["",""];return `<div class="day"><b>Day ${i+1}</b><div><input class="dt" placeholder="Title, e.g. Guwahati to Shillong" value="${esc(o[0])}"><input class="dd" placeholder="What happens that day" value="${esc(o[1])}"></div></div>`}).join("")};
+  d.querySelector(".days").addEventListener("input",()=>{drawDays();const nn=d.querySelector(".nights");nn.value=Math.max(0,(+d.querySelector(".days").value||1)-1)});
+  d.querySelector(".rm").addEventListener("click",()=>{d.remove();renumber();save()});
+  drawStops();drawDays();renumber();
+}
+function renumber(){[...document.querySelectorAll(".veh .n")].forEach((e,i)=>e.textContent="Package "+(i+1))}
+const vals=(d,c)=>[...d.querySelectorAll("."+c+":checked")].map(x=>x.value);
+function readPkg(d){const g=c=>d.querySelector("."+c).value.trim();
+  return {t:g("t"),days:+g("days")||1,nights:+g("nights"),price:+g("price")||0,dest:g("dest"),stops:JSON.parse(d.dataset.stops),blurb:g("blurb"),ty:vals(d,"ty"),ac:vals(d,"ac"),in:vals(d,"in"),ni:g("ni"),
+    itin:[...d.querySelectorAll(".day")].map(x=>[x.querySelector(".dt").value.trim(),x.querySelector(".dd").value.trim()])}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({name:$("name").value,base:$("base").value,since:$("since").value,about:$("about").value,consent:$("consent").checked,reg:$("reg").checked,vehicles:$("vehicles").checked,p:[...document.querySelectorAll(".veh")].map(readPkg)}))}catch(e){}}
+function load(){let s=null;try{s=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+  if(!s){addPkg();return}["name","base","since","about"].forEach(k=>{if(s[k]!=null)$(k).value=s[k]});["consent","reg","vehicles"].forEach(k=>$(k).checked=!!s[k]);(s.p&&s.p.length?s.p:[{}]).forEach(addPkg)}
+document.addEventListener("input",save);document.addEventListener("change",save);
+$("addp").addEventListener("click",()=>{addPkg();save()});
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,24);
+$("make").addEventListener("click",()=>{
+  const err=m=>{$("err").textContent=m;$("err").style.display="block"};$("err").style.display="none";
+  if(!$("name").value.trim())return err("Add the operator name.");
+  if(!$("consent").checked)return err("Please tick “We agree to be listed on OPIIUS” to continue.");
+  const ps=[...document.querySelectorAll(".veh")].map(readPkg).filter(p=>p.t&&p.price>0);
+  if(!ps.length)return err("Add at least one package with a name and a price.");
+  const bad=ps.find(p=>p.stops.length<2);if(bad)return err(`Pick the route for "${bad.t}" (at least 2 places).`);
+  const id=slug($("name").value);
+  const entry={id,name:$("name").value.trim(),base:$("base").value,since:+$("since").value||undefined,about:$("about").value.trim(),verified:$("reg").checked&&$("vehicles").checked,
+    packages:ps.map(p=>({title:p.t,dest:p.dest,days:p.days,nights:p.nights,price:p.price,stops:p.stops,blurb:p.blurb,types:p.ty,acts:p.ac,inc:p.in,
+      notInc:p.ni.split(",").map(s=>s.trim()).filter(Boolean),itin:p.itin.filter(x=>x[0]),photo:`assets/partners/${id}/${slug(p.t)}-1.jpg`}))};
+  $("block").textContent=`OPIIUS NEW TOUR OPERATOR\nPlease add this operator to opiius.online. Photos attached, in the same order as the packages.\n\n${JSON.stringify(entry,null,2)}`;
+  $("out").style.display="block";$("out").scrollIntoView({behavior:"smooth"});
+});
+$("copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("block").textContent)}catch(e){const r=document.createRange();r.selectNodeContents($("block"));getSelection().removeAllRanges();getSelection().addRange(r);document.execCommand("copy")}$("copied").style.display="block"});
+$("share").addEventListener("click",()=>{if(navigator.share)navigator.share({text:$("block").textContent}).catch(()=>{});else $("copy").click()});
+$("wa").addEventListener("click",()=>{const n=((window.OPIIUS_CONFIG||{}).whatsapp)||"918638830682";window.open("https://wa.me/"+n+"?text="+encodeURIComponent($("block").textContent),"_blank","noopener")});
+load();
+})();
+</script>
+</body>
+</html>

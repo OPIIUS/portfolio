@@ -1,16 +1,20 @@
-# Adding a partner agency to OPIIUS
+# Adding a partner agency or tour operator to OPIIUS
 
-1. At the agency, open **opiius.online/onboard.html** on your phone and fill it in with the owner
-   (takes about 10 minutes). The draft is kept on your phone if you close the page.
-2. Take 2 or 3 clear daylight photos of each vehicle (whole car in frame, number plate optional).
-3. Tap **Create the block**, then **Copy block**.
-4. Paste the block into the chat with Claude and attach the photos, in the same order as the vehicles.
-5. Claude adds the entry to `assets/opiius/partners.js`, puts the photos in `assets/partners/<agency-id>/`,
-   checks the pages and publishes. The agency is live on opiius.online a minute later.
+- Rental agencies: **opiius.online/onboard.html**
+- Tour operators: **opiius.online/onboard-tours.html** (packages, route in visiting order, day-by-day plan, inclusions; 1–2 photos per package)
+
+Both work the same way:
+
+1. Send the owner the right link (or fill it in with them). The draft is kept on their phone if they close the page.
+2. They tap **Create the block**, then **Send to OPIIUS on WhatsApp**: it opens a chat to 86388 30682
+   with all their details filled in. They send it and attach 2–3 daylight photos per vehicle / 1–2 per package.
+3. Forward that WhatsApp message and the photos to Claude.
+4. Claude adds the entry to `assets/opiius/partners.js`, puts the photos in `assets/partners/<id>/`,
+   checks the pages and publishes. They are live on opiius.online a minute later.
 
 Rules
 - Only list an agency whose owner has agreed (the form will not create a block without it).
-- "Verified" is shown only when you have seen their self-drive permit and commercial insurance.
+- "Verified" is shown only when you (OPIIUS) have seen their permit and insurance / registration yourself. Owners can now fill the forms themselves and tick those boxes; Claude treats a self-filled tick as "to check" and asks you before adding the badge.
 - Prices and terms must be exactly what the owner told you; customers see them before booking.
 - Owner phone numbers are never put on the site. Reservations come to the OPIIUS WhatsApp number
   (assets/opiius/config.js) and you forward them.

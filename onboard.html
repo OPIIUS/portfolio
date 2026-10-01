@@ -38,10 +38,11 @@ button.alt{background:var(--soft);color:var(--brand);width:100%;margin-top:12px}
 .err{color:var(--bad);font-weight:650;font-size:14px;margin:8px 0 0;display:none}
 .ok{background:var(--soft);border-radius:12px;padding:12px;font-size:14px;margin-top:12px}
 @media(max-width:420px){.row3{grid-template-columns:1fr 1fr}}
+button.wa{background:#25d366;color:#fff;border:0;font-weight:700;padding:12px 16px;border-radius:12px;font-size:15px;cursor:pointer;margin:0 8px 8px 0}
 </style>
 </head>
 <body>
-<header><b>OPIIUS · Add an agency</b><p>Fill this in at the agency. Nothing is sent anywhere: at the end you copy one block and send it to Claude with the photos.</p></header>
+<header><b>OPIIUS · Add an agency</b><p>Tour operator? Use <a href="onboard-tours.html" style="color:#fff">the tours form</a>. Fill this in yourself, or with OPIIUS. At the end, tap <b>Send to OPIIUS on WhatsApp</b> and attach the vehicle photos in the same chat. Nothing goes live until OPIIUS checks it with you.</p></header>
 <main>
 <form id="f" autocomplete="off">
 <section>
@@ -78,24 +79,26 @@ button.alt{background:var(--soft);color:var(--brand);width:100%;margin-top:12px}
 
 <section>
   <h2>4. Checks</h2>
-  <label class="check"><input type="checkbox" id="consent"> <span><b>The owner agreed to be listed on OPIIUS</b> with these prices and terms, and to receive reservations from OPIIUS on WhatsApp. *</span></label>
-  <label class="check"><input type="checkbox" id="permit"> I saw their self-drive rental permit</label>
-  <label class="check"><input type="checkbox" id="insurance"> I saw valid commercial insurance for the vehicles</label>
-  <p class="hint" style="margin-top:10px">The Verified badge is shown only if both boxes above are ticked.</p>
+  <label class="check"><input type="checkbox" id="consent"> <span><b>We agree to be listed on OPIIUS</b> with these prices and terms, and to receive reservations from OPIIUS on WhatsApp. *</span></label>
+  <label class="check"><input type="checkbox" id="permit"> We have a valid self-drive rental permit (we will show it to OPIIUS)</label>
+  <label class="check"><input type="checkbox" id="insurance"> Our vehicles have valid commercial insurance (we will show it to OPIIUS)</label>
+  <p class="hint" style="margin-top:10px">The Verified badge is shown only after OPIIUS has seen these documents.</p>
 </section>
 
 <section id="out">
-  <h2>Done. Send this to Claude</h2>
-  <p class="hint">Copy the block, paste it in the chat with Claude and attach the photos. Claude adds the agency to opiius.online.</p>
+  <h2>Done. Send it to OPIIUS</h2>
+  <p class="hint">Tap the green button: WhatsApp opens with your details filled in. Send it, then attach the vehicle photos in the same chat. OPIIUS checks everything with you before it goes live.</p>
   <pre id="block"></pre>
+  <button type="button" class="wa" id="wa">Send to OPIIUS on WhatsApp</button>
   <button type="button" class="alt" id="copy">Copy block</button>
   <button type="button" class="alt" id="share">Share…</button>
-  <div class="ok" id="copied" style="display:none">Copied. Paste it to Claude with the photos.</div>
+  <div class="ok" id="copied" style="display:none">Copied. Paste it in WhatsApp to OPIIUS (86388 30682) with the photos.</div>
 </section>
 </form>
 </main>
 <div class="bar"><div><button class="main" id="make" type="button">Create the block</button><p class="err" id="err"></p></div></div>
 
+<script src="assets/opiius/config.js"></script>
 <script src="assets/opiius/partners.js"></script>
 <script src="assets/opiius/data.js"></script>
 <script>
@@ -134,7 +137,7 @@ $("make").addEventListener("click",()=>{
   const err=m=>{$("err").textContent=m;$("err").style.display="block"};$("err").style.display="none";
   if(!$("name").value.trim())return err("Add the agency name.");
   if(!$("area").value.trim())return err("Add the area or landmark.");
-  if(!$("consent").checked)return err("Only list agencies whose owner has agreed. Tick the consent box.");
+  if(!$("consent").checked)return err("Please tick “We agree to be listed on OPIIUS” to continue.");
   const vs=[...document.querySelectorAll(".veh")].map(d=>{const g=c=>d.querySelector("."+c).value.trim();const m=g("m");
     const v={price:+g("p"),units:+g("u")||1,year:+g("y")||null};
     if(m&&m!=="other")v.model=m;else Object.assign(v,{brand:g("ob"),name:g("on"),type:g("ot"),seats:+g("os")||5,fuel:g("of"),trans:g("og")});
@@ -152,6 +155,7 @@ $("make").addEventListener("click",()=>{
 });
 $("copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("block").textContent)}catch(e){const r=document.createRange();r.selectNodeContents($("block"));getSelection().removeAllRanges();getSelection().addRange(r);document.execCommand("copy")}$("copied").style.display="block"});
 $("share").addEventListener("click",()=>{if(navigator.share)navigator.share({text:$("block").textContent}).catch(()=>{});else $("copy").click()});
+$("wa").addEventListener("click",()=>{const n=((window.OPIIUS_CONFIG||{}).whatsapp)||"918638830682";window.open("https://wa.me/"+n+"?text="+encodeURIComponent($("block").textContent),"_blank","noopener")});
 load();
 })();
 </script>
