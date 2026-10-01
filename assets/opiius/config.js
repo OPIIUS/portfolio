@@ -5,10 +5,12 @@
                false = pitch mode: sample (DEMO) listings everywhere, no WhatsApp.
                Anyone can preview pitch mode on the live site with  opiius.online/?demo=1  (and ?demo=0 to leave).
    whatsapp    number that receives reservations and trip requests, country code first, digits only.
+   bookingLog  URL of the OPIIUS booking-log Google Apps Script (see DASHBOARD-SETUP.md). Empty = not recorded.
    goatcounter your GoatCounter code (the "xxx" in https://xxx.goatcounter.com). Empty = no analytics. */
 window.OPIIUS_CONFIG = {
   live: true,
   whatsapp: "918638830682",
   phoneDisplay: "86388 30682",
+  bookingLog: "",
   goatcounter: ""
 };

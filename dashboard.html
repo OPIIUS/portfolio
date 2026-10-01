@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Bookings dashboard · OPIIUS</title>
+<style>
+:root{--pine:#15302a;--brand:#1d4b3f;--soft:#e3efe9;--ink:#14201b;--dim:#5f6b65;--line:#dfe5e1;--bg:#f4f6f4;--bad:#b83a2e;--warn:#9a6b00}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:var(--pine);color:#fff;padding:16px}
+header .w{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header b{font-size:19px;letter-spacing:.04em}
+header span{opacity:.75;font-size:13.5px}
+header .r{margin-left:auto;display:flex;gap:8px}
+main{max-width:1100px;margin:0 auto;padding:16px 16px 60px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:14px}
+h2{font-size:17px;margin:0 0 10px}
+label{display:block;font-weight:650;font-size:13.5px;margin:10px 0 4px}
+input,select{font:inherit;padding:10px 12px;border:1px solid #c9d2cd;border-radius:10px;background:#fff;color:inherit;width:100%}
+button{font:inherit;font-weight:700;border-radius:10px;padding:10px 14px;border:1px solid #c9d2cd;background:#fff;color:var(--ink);cursor:pointer}
+button.p{background:var(--brand);border-color:var(--brand);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:14px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpi b{display:block;font-size:24px;font-weight:800}
+.kpi span{color:var(--dim);font-size:12.5px}
+.filters{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-top:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--dim);border-top:0}
+td.num,th.num{text-align:right;white-space:nowrap}
+.tw{overflow-x:auto}
+.st{font-size:12px;font-weight:800;padding:3px 8px;border-radius:999px;background:#eef1ef;white-space:nowrap}
+.st.Confirmed,.st.Completed{background:var(--soft);color:var(--brand)}
+.st.Declined,.st.Cancelled,.st.No.reply{background:#fbe9e7;color:var(--bad)}
+.st.Sent{background:#fff4dc;color:var(--warn)}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.row-actions select{width:auto;padding:6px 8px;font-size:13px}
+.row-actions input{width:150px;padding:6px 8px;font-size:13px}
+.muted{color:var(--dim)}
+.err{color:var(--bad);font-weight:650}
+.agl{cursor:pointer;color:var(--brand);text-decoration:underline;background:none;border:0;padding:0;font-weight:700}
+#report{display:none}
+@media(max-width:860px){.kpis{grid-template-columns:repeat(3,1fr)}.filters{grid-template-columns:1fr 1fr}}
+@media print{header,.noprint{display:none!important}body{background:#fff}main{padding:0}.card{border:0;padding:0}#report{display:block!important}#app,#settings{display:none!important}}
+</style>
+</head>
+<body>
+<header class="noprint"><div class="w"><b>OPIIUS</b><span>Bookings dashboard · private</span>
+  <div class="r"><button id="refresh">Refresh</button><button id="csv">Download CSV</button><button id="settingsBtn">Settings</button></div></div></header>
+<main>
+<section class="card noprint" id="settings">
+  <h2>Connect your booking log</h2>
+  <p class="muted">Paste the Web app URL and the key from your Google Apps Script (see DASHBOARD-SETUP.md). They are saved only in this browser.</p>
+  <label for="url">Web app URL</label><input id="url" placeholder="https://script.google.com/macros/s/…/exec">
+  <label for="key">Dashboard key</label><input id="key" type="password">
+  <p><button class="p" id="save">Save and load</button></p>
+  <p class="err" id="serr"></p>
+</section>
+
+<div id="app" style="display:none">
+  <section class="card noprint">
+    <div class="filters">
+      <div><label for="fm">Month</label><select id="fm"></select></div>
+      <div><label for="fa">Agency</label><select id="fa"></select></div>
+      <div><label for="ft">Type</label><select id="ft"><option value="">All types</option><option value="rental">Reservations (vehicle)</option><option value="vehicle-request">Vehicle requests</option><option value="trip-request">Trip requests</option></select></div>
+      <div><label for="fs">Status</label><select id="fs"><option value="">All statuses</option></select></div>
+    </div>
+  </section>
+  <div class="kpis" id="kpis"></div>
+  <section class="card"><h2>By agency</h2><div class="tw"><table id="agt"></table></div>
+    <p class="muted" style="font-size:13px;margin:10px 0 0">Click an agency to filter, then <b>Print report</b> to give the owner a dated list of every booking OPIIUS sent them.</p>
+    <p class="noprint"><button id="print">Print report for current filter</button></p></section>
+  <section class="card"><h2>Bookings <span class="muted" id="cnt"></span></h2><div class="tw"><table id="bt"></table></div></section>
+</div>
+
+<section id="report"></section>
+</main>
+<script>
+(function(){
+const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const inr=n=>n?"₹"+Math.round(n).toLocaleString("en-IN"):"";
+const ST=["New","Sent to agency","Confirmed","Declined","Completed","Cancelled","No reply"];
+const TY={"rental":"Reservation","vehicle-request":"Vehicle request","trip-request":"Trip request"};
+const get=k=>{try{return localStorage.getItem("opiius:dash:"+k)||""}catch(e){return ""}}, set=(k,v)=>{try{localStorage.setItem("opiius:dash:"+k,v)}catch(e){}};
+let rows=[];
+$("url").value=get("url");$("key").value=get("key");
+$("fs").innerHTML+=ST.map(s=>`<option>${s}</option>`).join("");
+const fmt=d=>{if(!d)return "";const x=new Date(d);return isNaN(x)?String(d):x.toLocaleString("en-IN",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})};
+const fd=d=>{if(!d)return "";const x=new Date(d);return isNaN(x)?String(d):x.toLocaleDateString("en-IN",{day:"numeric",month:"short"})};
+async function api(params){
+  const u=new URL(get("url"));Object.entries({key:get("key"),...params}).forEach(([k,v])=>u.searchParams.set(k,v));
+  const r=await fetch(u.toString());const j=await r.json();if(!j.ok)throw new Error(j.error||"error");return j;
+}
+async function load(){
+  $("serr").textContent="";
+  try{
+    const j=await api({action:"list"});
+    rows=j.rows.map(r=>Object.fromEntries(j.head.map((h,i)=>[h,r[i]]))).reverse();
+    $("settings").style.display="none";$("app").style.display="block";fillFilters();render();
+  }catch(e){$("settings").style.display="block";$("app").style.display="none";$("serr").textContent="Could not load: "+e.message+". Check the URL and key."}
+}
+function fillFilters(){
+  const months=[...new Set(rows.map(r=>String(r.Received).slice(0,7)))].sort().reverse();
+  const cur=$("fm").value;$("fm").innerHTML=`<option value="">All months</option>`+months.map(m=>`<option value="${m}">${new Date(m+"-01").toLocaleDateString("en-IN",{month:"long",year:"numeric"})}</option>`).join("");$("fm").value=cur;
+  const ags=[...new Set(rows.map(r=>r.Agency||"(no agency: request)"))].sort();
+  const ca=$("fa").value;$("fa").innerHTML=`<option value="">All agencies</option>`+ags.map(a=>`<option>${esc(a)}</option>`).join("");$("fa").value=ca;
+}
+function filtered(){const m=$("fm").value,a=$("fa").value,t=$("ft").value,s=$("fs").value;
+  return rows.filter(r=>(!m||String(r.Received).startsWith(m))&&(!a||(r.Agency||"(no agency: request)")===a)&&(!t||r.Type===t)&&(!s||r.Status===s))}
+function render(){
+  const f=filtered(),c=s=>f.filter(r=>r.Status===s).length,done=f.filter(r=>r.Status==="Completed");
+  const kp=[[f.length,"Leads sent"],[f.filter(r=>r.Type==="rental").length,"Reservations"],[c("Confirmed")+c("Completed"),"Confirmed"],[done.length,"Completed"],[c("Declined")+c("No reply"),"Declined / no reply"],[inr(done.reduce((s,r)=>s+(+r.Total||0),0))||"₹0","Completed value"]];
+  $("kpis").innerHTML=kp.map(([v,l])=>`<div class="kpi"><b>${v}</b><span>${l}</span></div>`).join("");
+  const by={};f.forEach(r=>{const a=r.Agency||"(no agency: request)";const o=by[a]=by[a]||{n:0,conf:0,done:0,dec:0,val:0,sent:0};o.n++;if(r.Status==="Sent to agency")o.sent++;if(r.Status==="Confirmed"||r.Status==="Completed")o.conf++;if(r.Status==="Completed"){o.done++;o.val+=+r.Total||0}if(r.Status==="Declined"||r.Status==="No reply")o.dec++});
+  $("agt").innerHTML=`<tr><th>Agency</th><th class="num">Leads</th><th class="num">Confirmed</th><th class="num">Completed</th><th class="num">Declined / no reply</th><th class="num">Completed value</th></tr>`+
+    Object.entries(by).sort((a,b)=>b[1].n-a[1].n).map(([a,o])=>`<tr><td><button class="agl" data-ag="${esc(a)}">${esc(a)}</button></td><td class="num">${o.n}</td><td class="num">${o.conf}</td><td class="num">${o.done}</td><td class="num">${o.dec}</td><td class="num">${inr(o.val)}</td></tr>`).join("")||`<tr><td colspan="6" class="muted">No bookings yet.</td></tr>`;
+  $("cnt").textContent=`(${f.length})`;
+  $("bt").innerHTML=`<tr><th>Received</th><th>Ref</th><th>Type</th><th>Agency</th><th>Vehicle / trip</th><th>Dates</th><th class="num">Total</th><th>Status</th><th class="noprint">Update</th></tr>`+
+    f.map(r=>`<tr><td>${fmt(r.Received)}</td><td><b>${esc(r.Ref)}</b></td><td>${TY[r.Type]||esc(r.Type)}</td><td>${esc(r.Agency||"")}</td><td>${esc(r["Vehicle / trip"])}${r.City?`<br><span class="muted">${esc(r.City)}</span>`:""}</td>
+      <td>${fd(r.From)}${r.To?" → "+fd(r.To):""}${r.Days?`<br><span class="muted">${r.Days} days</span>`:""}</td><td class="num">${inr(r.Total)}</td>
+      <td><span class="st ${esc(String(r.Status).split(" ")[0])}">${esc(r.Status)}</span>${r.Note?`<br><span class="muted">${esc(r.Note)}</span>`:""}</td>
+      <td class="noprint"><div class="row-actions"><select data-ref="${esc(r.Ref)}">${ST.map(s=>`<option ${s===r.Status?"selected":""}>${s}</option>`).join("")}</select><input data-note="${esc(r.Ref)}" placeholder="Note (e.g. owner said YES 10:05)" value="${esc(r.Note||"")}"><button data-save="${esc(r.Ref)}">Save</button></div></td></tr>`).join("")||`<tr><td colspan="9" class="muted">Nothing for this filter.</td></tr>`;
+}
+["fm","fa","ft","fs"].forEach(id=>$(id).addEventListener("change",render));
+document.addEventListener("click",async e=>{
+  const ag=e.target.closest("[data-ag]");if(ag){$("fa").value=ag.dataset.ag;render();return}
+  const sv=e.target.closest("[data-save]");if(sv){const ref=sv.dataset.save,st=document.querySelector(`select[data-ref="${ref}"]`).value,note=document.querySelector(`input[data-note="${ref}"]`).value;
+    sv.textContent="Saving…";try{await api({action:"status",ref,status:st,note});const r=rows.find(x=>x.Ref===ref);r.Status=st;r.Note=note;sv.textContent="Saved";setTimeout(render,600)}catch(err){sv.textContent="Failed";alert("Could not save: "+err.message)}}
+});
+$("save").addEventListener("click",()=>{set("url",$("url").value.trim());set("key",$("key").value.trim());load()});
+$("settingsBtn").addEventListener("click",()=>{$("settings").style.display=$("settings").style.display==="none"?"block":"none"});
+$("refresh").addEventListener("click",load);
+$("csv").addEventListener("click",()=>{const f=filtered();if(!f.length)return;const H=Object.keys(f[0]);
+  const csv=[H.join(","),...f.map(r=>H.map(h=>`"${String(r[h]??"").replace(/"/g,'""')}"`).join(","))].join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="opiius-bookings.csv";a.click()});
+$("print").addEventListener("click",()=>{const f=filtered(),ag=$("fa").value||"All agencies",m=$("fm").selectedOptions[0].textContent;
+  const done=f.filter(r=>r.Status==="Completed");
+  $("report").innerHTML=`<h1 style="font-size:22px;margin:0">OPIIUS · Bookings sent to ${esc(ag)}</h1><p class="muted">${esc(m)} · generated ${new Date().toLocaleString("en-IN")} · opiius.online</p>
+    <p><b>${f.length}</b> leads sent · <b>${f.filter(r=>r.Status==="Confirmed"||r.Status==="Completed").length}</b> confirmed · <b>${done.length}</b> completed · completed value <b>${inr(done.reduce((s,r)=>s+(+r.Total||0),0))||"₹0"}</b></p>
+    <table><tr><th>Received</th><th>Ref</th><th>Vehicle / trip</th><th>Dates</th><th class="num">Total</th><th>Status</th><th>Note</th></tr>${f.map(r=>`<tr><td>${fmt(r.Received)}</td><td>${esc(r.Ref)}</td><td>${esc(r["Vehicle / trip"])}</td><td>${fd(r.From)}${r.To?" → "+fd(r.To):""}</td><td class="num">${inr(r.Total)}</td><td>${esc(r.Status)}</td><td>${esc(r.Note||"")}</td></tr>`).join("")}</table>
+    <p class="muted" style="margin-top:16px">Each reference is the code the customer sent on WhatsApp and that was forwarded to the agency. Times are recorded automatically by the OPIIUS booking log.</p>`;
+  window.print()});
+if(get("url")&&get("key"))load();
+})();
+</script>
+</body>
+</html>

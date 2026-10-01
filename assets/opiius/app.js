@@ -33,7 +33,7 @@ const initials=n=>n.split(/[\s&.-]+/).filter(w=>/^[A-Za-z]/.test(w)).slice(0,2).
 const plural=(n,w,p)=>`${n} ${n===1?w:(p||w+"s")}`;
 const store={get(k,d){try{const v=localStorage.getItem("opiius:"+k);return v?JSON.parse(v):d}catch(e){return d}},
              set(k,v){try{localStorage.setItem("opiius:"+k,JSON.stringify(v))}catch(e){}}};
-const newId=()=>{const d=new Date();return `OP-${String(d.getFullYear()).slice(2)}${pad(d.getMonth()+1)}${pad(d.getDate())}-${Math.floor(100+Math.random()*900)}`};
+const newId=()=>{const d=new Date(),A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let r="";for(let i=0;i<5;i++)r+=A[Math.floor(Math.random()*A.length)];return `OP-${String(d.getFullYear()).slice(2)}${pad(d.getMonth()+1)}${pad(d.getDate())}-${r}`};
 const placeName=id=>PLACES[id]?(PLACES[id].short||PLACES[id].name):id;
 
 /* ================= icons ================= */
@@ -141,6 +141,14 @@ const durBucket=d=>d<=2?"1-2":d<=4?"3-4":d<=7?"5-7":"7+";
 
 /* ================= WhatsApp + analytics ================= */
 const waLink=text=>`https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(text)}`;
+/* booking log: every reservation / request is appended to the OPIIUS Google Sheet (config.bookingLog) as proof of
+   leads sent to each agency. No customer name or phone number is recorded. */
+function logBooking(rec){
+  if(!LIVE||!CFG.bookingLog)return;
+  const body=JSON.stringify({...rec,page:location.hash.slice(0,120),ua:/Mobi/i.test(navigator.userAgent)?"mobile":"desktop"});
+  try{if(navigator.sendBeacon&&navigator.sendBeacon(CFG.bookingLog,new Blob([body],{type:"text/plain"})))return}catch(e){}
+  try{fetch(CFG.bookingLog,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain"},body})}catch(e){}
+}
 function track(ev){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:"event/"+ev,title:ev,event:true})}catch(e){}}
 function openWA(text,ev){track(ev||"whatsapp");const u=waLink(text),w=window.open(u,"_blank");if(w){try{w.opener=null}catch(e){}}else location.href=u}
 if(CFG.goatcounter){window.goatcounter={no_onload:true};const sc=document.createElement("script");sc.async=true;sc.src="https://gc.zgo.at/count.js";sc.dataset.goatcounter=`https://${CFG.goatcounter}.goatcounter.com/count`;document.head.appendChild(sc)}
@@ -1052,10 +1060,12 @@ function openTourRequest(dest){
     `<button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn brand" style="margin-left:auto" data-req-send="tour">${I.msg}Continue on WhatsApp</button>`);
 }
 function sendRequest(kind){
-  const v=id=>(($("#"+id)||{}).value||"").trim(), note=v("rq-note");
+  const v=id=>(($("#"+id)||{}).value||"").trim(), note=v("rq-note"), ref=newId();
   if(kind==="rent"){const f=v("rq-from"),to=v("rq-to");if(f&&to&&new Date(to)<=new Date(f)){toast("Return must be after pickup.");return}
-    openWA(`Hi OPIIUS, I need a vehicle:\nWhere: ${placeName(v("rq-city"))}\nVehicle: ${v("rq-type")}\nPickup: ${f?fmtDT(f):"flexible"}\nReturn: ${to?fmtDT(to):"flexible"}${note?"\nNote: "+note:""}`,"request-rental");}
-  else openWA(`Hi OPIIUS, please plan a trip for me:\nWhere: ${v("rq-dest")?placeName(v("rq-dest")):"Not sure yet"}\nStart: ${v("rq-date")?fmtD(v("rq-date")):"flexible"}\nDays: ${v("rq-days")}\nTravellers: ${v("rq-trav")}\nBudget per person: ${v("rq-bud")}\nStyle: ${v("rq-style")}${note?"\nNote: "+note:""}`,"request-tour");
+    logBooking({type:"vehicle-request",ref,city:v("rq-city"),vehicle:v("rq-type"),from:f,to});
+    openWA(`Hi OPIIUS, I need a vehicle:\nWhere: ${placeName(v("rq-city"))}\nVehicle: ${v("rq-type")}\nPickup: ${f?fmtDT(f):"flexible"}\nReturn: ${to?fmtDT(to):"flexible"}${note?"\nNote: "+note:""}\nRef: ${ref}`,"request-rental");}
+  else{logBooking({type:"trip-request",ref,city:v("rq-dest"),vehicle:v("rq-days")+" days, "+v("rq-trav")+" travellers",from:v("rq-date"),budget:v("rq-bud"),style:v("rq-style")});
+  openWA(`Hi OPIIUS, please plan a trip for me:\nWhere: ${v("rq-dest")?placeName(v("rq-dest")):"Not sure yet"}\nStart: ${v("rq-date")?fmtD(v("rq-date")):"flexible"}\nDays: ${v("rq-days")}\nTravellers: ${v("rq-trav")}\nBudget per person: ${v("rq-bud")}\nStyle: ${v("rq-style")}${note?"\nNote: "+note:""}\nRef: ${ref}`,"request-tour");}
   closeSheet();toast("Opening WhatsApp…");
 }
 function openEditSearch(kind){
@@ -1144,7 +1154,7 @@ document.addEventListener("click",e=>{
   if(t.dataset.book){openBooking(t.dataset.book);return}
   if(t.dataset.bookTour){openTourBooking(t.dataset.bookTour);return}
   if(t.dataset.confirmRent){const l=LISTINGS[t.dataset.confirmRent],d=daysBetween(S.dates[0],S.dates[1]);const b={id:newId(),kind:"rental",ref:l.id,from:S.dates[0],to:S.dates[1],pickup:t.dataset.pick,total:l.price*d,note:($("#bk-note")||{}).value||"",status:"requested",created:Date.now()};
-    if(LIVE)openWA(rentMsg(b),"reserve-rental");
+    if(LIVE){const l2=LISTINGS[b.ref],v2=l2&&vinfo(l2);logBooking({type:"rental",ref:b.id,agency:l2&&l2.agency,agencyName:v2&&v2.a.name,vehicle:v2&&v2.name,city:v2&&v2.a.city,from:b.from,to:b.to,days:daysBetween(b.from,b.to),pricePerDay:l2&&l2.price,total:b.total,pickup:b.pickup});openWA(rentMsg(b),"reserve-rental")}
     S.bookings.push(b);saveState();closeSheet();location.hash="#/booking/"+b.id;return}
   if(t.dataset.confirmTour){const p=PACKAGES[t.dataset.confirmTour];const b={id:newId(),kind:"tour",ref:t.dataset.confirmTour,date:t.dataset.date,trav:S.trav,total:p.price*S.trav,note:($("#bk-note")||{}).value||"",status:"requested",created:Date.now()};
     S.bookings.push(b);saveState();closeSheet();location.hash="#/booking/"+b.id;return}
@@ -1218,7 +1228,7 @@ function progress(){const b=$("#nprog");if(!b)return;b.classList.remove("go");vo
 window.addEventListener("hashchange",()=>{S.prevFrom=S.lastHash;S.lastHash=location.hash;closeSheet();navigate()});
 
 {const nb=$(".notice");if(nb)nb.innerHTML=LIVE?`No car at home? Now there's one waiting for you in Guwahati · No advance, pay at pickup`:`Demo mode: listings marked <b>DEMO</b> are sample data.${CFG.live?` <a href="./?demo=0" style="color:#fff">Exit demo</a>`:""}`;
- const fine=$(".foot .fine");if(fine&&LIVE)fine.innerHTML=`Vehicles on OPIIUS come from partner agencies, with prices from their own catalogues. Reservations are confirmed by the agency and paid to them directly. Companies listed under "Other rental companies" are shown with links only; they are not on OPIIUS. Questions: WhatsApp ${esc(CFG.phoneDisplay||"")}. Home page imagery is illustrative. Brand marks: Simple Icons (CC0), trademarks of their owners.`;}
+ const fine=$(".foot .fine");if(fine&&LIVE)fine.innerHTML=`Vehicles on OPIIUS come from partner agencies, with prices from their own catalogues. Reservations are confirmed by the agency and paid to them directly. Companies listed under "Other rental companies" are shown with links only; they are not on OPIIUS. Booking requests (reference, vehicle, dates, price) are recorded so we can forward them to the agency; no names or phone numbers are stored by the site. Questions: WhatsApp ${esc(CFG.phoneDisplay||"")}. Home page imagery is illustrative. Brand marks: Simple Icons (CC0), trademarks of their owners.`;}
 S.lastHash=location.hash;S.prevPath=parse().path;
 render();
 })();
