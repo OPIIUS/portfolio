@@ -321,16 +321,6 @@ function vHome(){
     </div>
   </section>
   <div class="wrap">
-    <section class="hsec"><div class="why">
-      <div class="why-l"><span class="eyebrow">Why we built OPIIUS</span><h2>Only 8 in 100 Indian families own a car.</h2>
-        <p>The rest of us squeeze into shared cabs that charge per head, borrow a relative's car, or quietly skip the trip. Renting should fix that, but too often it comes with hidden km charges, surprise fuel bills and deposits that take weeks to come back.</p>
-        <small>Source: National Family Health Survey (NFHS-5), Government of India</small></div>
-      <div class="why-r"><b class="why-t">OPIIUS changes that</b>
-        <div class="why-i">${I.car}<div><b>It feels like your own car</b><span>The whole car is yours for the day, the weekend or the trip. Your family, your music, your stops.</span></div></div>
-        <div class="why-i">${I.user}<div><b>Pay per car, not per head</b><span>${mMuv?`A 7-seater from ${inr(mMuv)} a day, for everyone in it.`:`One price for the whole car, however many of you there are.`}</span></div></div>
-        <div class="why-i">${I.check}<div><b>The price you see is the price you pay</b><span>Km limit, fuel rule and deposit are shown before you book. No surprises at return.</span></div></div>
-        <div class="why-i">${I.shield}<div><b>Real agencies, a real person</b><span>We meet every agency ourselves, and someone from OPIIUS answers you on WhatsApp.</span></div></div>
-      </div></div></section>
     <section class="hsec">
       <div class="shead"><div><h2>For the days that matter</h2><p>The moments you'd want your own car for.</p></div><a href="#/rentals">Find your car ${I.arrow}</a></div>
       <div class="moments">${moments.map(([img,t,d,h])=>`<a class="moment" href="${h}"><span class="mm"><img src="${IMG_HOME+img}" alt="" loading="lazy"></span><b>${t}</b><span>${d}</span></a>`).join("")}</div>
@@ -675,15 +665,6 @@ function vTours(){
   const styles=[["Family","Easy days for all ages"],["Weekend","Short breaks from Guwahati"],["Honeymoon","Private and romantic"],["Adventure","Treks, rivers and passes"],["Budget","Great value trips"],["Luxury","Premium stays"]];
   return {title:"Tours",section:"tours",hero:true,html:`${pageHero("d-dawki.jpg","Family trips &amp; tours","The trip you keep<br>promising, planned.","Tell us where, when and your budget. We plan it with trusted local operators, and your family travels together in its own car.",{vt:"door-tours",tall:true,full:true,extra:`<div class="mctrl t"><button type="button" class="pill wide" data-open-search>${I.pin}<span>Where do you want to go?</span>${I.search}</button><label class="pill">${I.pin}<select id="m-dest" aria-label="Destination"><option value="">Destination</option>${DESTINATIONS.map(d=>`<option value="${d}">${esc(placeName(d))}</option>`).join("")}</select>${I.down}</label><label class="pill">${I.cal}<select id="m-dur" aria-label="Duration"><option value="">Duration</option>${[["1-2","1–2 days"],["3-4","3–4 days"],["5-7","5–7 days"],["7+","7+ days"]].map(([v,l])=>`<option value="${v}">${l}</option>`).join("")}</select>${I.down}</label></div>`})}<div class="wrap">
     ${tourSearchForm()}
-    <section class="sec"><div class="why">
-      <div class="why-l"><span class="eyebrow">Why families put trips off</span><h2>Planning a family trip shouldn't feel like work.</h2>
-        <p>Which operator can you trust? Will the price change at the hotel? Shared cabs that charge per head, drivers you haggle with at every stop, and a plan that falls apart the week before. So the trip gets pushed to "next year".</p></div>
-      <div class="why-r"><b class="why-t">How OPIIUS plans it</b>
-        <div class="why-i">${I.msg}<div><b>A real person plans it with you</b><span>Tell us on WhatsApp who's coming and what you love. We come back with options, not a sales pitch.</span></div></div>
-        <div class="why-i">${I.car}<div><b>Your own car, not a shared cab</b><span>The whole family travels together, at your pace, stopping where the kids want to.</span></div></div>
-        <div class="why-i">${I.check}<div><b>One clear price, before you go</b><span>Stay, car, driver and what's included, written down. No surprises on the road.</span></div></div>
-        <div class="why-i">${I.shield}<div><b>Local operators we trust</b><span>People who know these hills, checked by us, with someone from OPIIUS a message away.</span></div></div>
-      </div></div></section>
     <section class="sec"><div class="sec-h"><div><h2>Trips families remember</h2><p>The ones you'll still talk about years later.</p></div><button type="button" class="btn sm more" data-req-tour="">Plan my trip ${I.arrow}</button></div>
       <div class="moments">${[["d-meghalaya.jpg","The kids' first waterfall","Meghalaya, 3 to 4 days","meghalaya"],["d-tawang.jpg","Your parents' first snow","Tawang, 6 to 7 days","tawang"],["d-kaziranga.jpg","A rhino, up close","Kaziranga, a weekend","kaziranga"],["d-shillong.jpg","A slow weekend together","Shillong, 2 to 3 days","shillong"]].map(([img,t,d,dest])=>`<a class="moment" href="#/destination/${dest}"><span class="mm"><img src="${IMG_HOME+img}" alt="" loading="lazy"></span><b>${t}</b><span>${d}</span></a>`).join("")}</div></section>
     <section class="sec"><div class="sec-h"><div><h2>Trips to take</h2><p>Stories from across the Northeast, planned with local operators.</p></div></div>
@@ -1235,7 +1216,7 @@ function tilt(){}
 function progress(){const b=$("#nprog");if(!b)return;b.classList.remove("go");void b.offsetWidth;b.classList.add("go")}
 window.addEventListener("hashchange",()=>{S.prevFrom=S.lastHash;S.lastHash=location.hash;closeSheet();navigate()});
 
-{const nb=$(".notice");if(nb)nb.innerHTML=LIVE?`Self-drive cars and family trips across the Northeast · Now live in Guwahati · No advance`:`Demo mode: listings marked <b>DEMO</b> are sample data.${CFG.live?` <a href="./?demo=0" style="color:#fff">Exit demo</a>`:""}`;
+{const nb=$(".notice");if(nb)nb.innerHTML=LIVE?`<span class="nd">Self-drive cars and family trips across the Northeast · </span>Now live in Guwahati · No advance`:`Demo mode: listings marked <b>DEMO</b> are sample data.${CFG.live?` <a href="./?demo=0" style="color:#fff">Exit demo</a>`:""}`;
  const fine=$(".foot .fine");if(fine&&LIVE)fine.innerHTML=`Vehicles on OPIIUS come from partner agencies, with prices from their own catalogues. Reservations are confirmed by the agency and paid to them directly. Companies listed under "Other rental companies" are shown with links only; they are not on OPIIUS. Booking requests (reference, vehicle, dates, price) are recorded so we can forward them to the agency; no names or phone numbers are stored by the site. Questions: WhatsApp ${esc(CFG.phoneDisplay||"")}. Home page imagery is illustrative. Brand marks: Simple Icons (CC0), trademarks of their owners.`;}
 S.lastHash=location.hash;S.prevPath=parse().path;
 render();
