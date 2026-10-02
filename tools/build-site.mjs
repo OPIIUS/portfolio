@@ -146,7 +146,7 @@ function footer() {
   <div class="cols">
     <div><a class="logo" href="/">${LOGO}OPIIUS</a><p class="about">Rentals and tours from trusted local agencies in Guwahati and the Northeast. Real photos, clear prices, inquiries on WhatsApp.</p></div>
     <div><h4>Rentals &amp; tours</h4><ul>
-      <li><a href="/rentals/">Rentals</a></li><li><a href="${sdcUrl}">Self-drive cars in Guwahati</a></li><li><a href="/rentals/#more">Cars with driver</a></li>
+      <li><a href="/rentals/">Rentals</a></li><li><a href="${sdcUrl}">Self-drive cars in Guwahati</a></li><li><a href="/get-matched/?need=cars-with-driver">Cars with driver</a></li>
       <li><a href="/tours/">Tours</a></li><li><a href="/tours/#destinations">Meghalaya, Kaziranga &amp; Tawang</a></li></ul></div>
     <div><h4>Agencies</h4><ul>${AGENCIES.map(a => `<li><a href="${urlOf(agencyPath(a))}">${esc(a.name)}</a></li>`).join("")}<li><a href="/agency/">All agencies</a></li><li><a href="/get-matched/">Get matched</a></li></ul></div>
     <div><h4>For agencies</h4><ul>
@@ -277,7 +277,8 @@ const allCars = carsOf(c => c.m.kind === "car");
 const sdcUrl = sdcCities.length ? urlOf(listingPath("self-drive-cars", sdcCities[0])) : "/rentals/";
 
 /* ---------- shared page sections ---------- */
-const stickyNav = items => `<div class="stick"><div class="wrap"><nav class="chips" aria-label="On this page">${items.map(([h, t], i) => `<a class="chip" href="#${h}" data-nav="${h}" aria-current="${i === 0}">${t}</a>`).join("")}</nav></div></div>`;
+/* items: [anchor, label] or [anchor, label, need] — a "need" chip jumps to the request form with that option selected */
+const stickyNav = items => `<div class="stick"><div class="wrap"><nav class="chips" aria-label="On this page">${items.map(([h, t, need], i) => `<a class="chip" href="#${h}" data-nav="${h}"${need ? ` data-need="${need}"` : ""} aria-current="${i === 0}">${t}</a>`).join("")}</nav></div></div>`;
 const arrow = (n = 18) => I.arrow.replace("<svg", `<svg width="${n}" height="${n}"`);
 const howItWorks = (steps, id = "how") => `<section class="sec mist" id="${id}"><div class="wrap">
   <div class="sec-h"><div><span class="eyebrow">How it works</span><h2>Three steps. No guesswork.</h2></div></div>
@@ -304,7 +305,8 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
   if (!BRAND_LIST.length) return "";
   const item = b => `<a class="brand" href="${urlOf(brandPath(b.k))}">${brandLogo(b)}<span class="bn">${esc(b.name)}</span><span class="bc">${plural(b.cars.length, "car")}</span></a>`;
   const row = BRAND_LIST.map(item).join("");
-  return `<section class="brands"><div class="wrap"><div class="brands-h"><div><span class="eyebrow">Rentals</span><h2>${heading}</h2></div><p>${sub}</p></div></div>
+  return `<section class="brands"><div class="wrap"><div class="brands-h"><div><span class="eyebrow">Rentals</span><h2>${heading}</h2><p style="margin-top:6px">${sub} Swipe or drag to browse.</p></div>
+    <div class="bnav"><button type="button" data-bscroll="-1" aria-label="Previous brands">${I.arrow.replace("<svg", '<svg style="transform:rotate(180deg)"')}</button><button type="button" data-bscroll="1" aria-label="Next brands">${I.arrow}</button></div></div></div>
   <div class="marquee" aria-label="Car brands"><div class="track">${row}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}</div></div></section>`;
 }
 
@@ -370,7 +372,7 @@ function agencyRow(a) {
   <h1>Choose a rental agency</h1>
   <p class="lede">Pick the type of rental, then open an agency to see its whole fleet, prices and terms.</p>
 </div></section>
-${stickyNav([...cat.subs.map(s => [s.id, s.name]), ["how", "How it works"], ["faq", "FAQ"]])}
+${stickyNav([...cat.subs.map(s => typeAgencies(s).length ? [s.id, s.name] : ["match", s.name, s.id]), ["how", "How it works"], ["faq", "FAQ"]])}
 <div class="wrap">${sections}</div>
 ${brandStrip("Or select from brand", "See every car of a brand across agencies.")}
 ${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Real photos, gearbox, model year and day price. Tap “Check availability”."], ["Confirm on WhatsApp", "The agency confirms the car and pickup. You pay them directly. No booking fee."]])}
