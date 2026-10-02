@@ -26,6 +26,11 @@
     if(to){location.replace(to);return}
   }
 
+  /* background video: still image for reduced motion or data saver */
+  var vid=$(".vbg");
+  if(vid){var still=(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)||(navigator.connection&&navigator.connection.saveData);
+    if(still){vid.removeAttribute("autoplay");vid.pause();vid.preload="none"}else{var pl=vid.play();if(pl&&pl.catch)pl.catch(function(){})}}
+
   /* mobile menu */
   var mb=$(".menu-btn"),mn=$(".mnav");
   if(mb&&mn){mb.addEventListener("click",function(){var o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o);document.body.style.overflow=o?"hidden":""})}
