@@ -1,6 +1,6 @@
 # OPIIUS bookings dashboard: one-time setup (about 10 minutes)
 
-Every Reserve / vehicle request / trip request on opiius.online is written to a Google Sheet that only you own,
+Every "Check availability" and "Get matched" request on opiius.online is written to a Google Sheet that only you own,
 with the time, reference (e.g. OP-261001-HKCD4), agency, vehicle, dates and price. No customer name or phone number.
 opiius.online/dashboard.html shows it per agency and prints a dated report for any agency.
 
