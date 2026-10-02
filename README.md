@@ -1,7 +1,7 @@
 # OPIIUS
 
-A trust-first local marketplace: customers compare rental, tour, experience and event agencies in Guwahati and the
-Northeast; agencies showcase their services and receive inquiries on WhatsApp.
+A trust-first local marketplace for two things only: rentals and tours. Customers compare local rental agencies and tour
+operators in Guwahati and the Northeast; agencies showcase their cars and tours and receive inquiries on WhatsApp.
 
 Live: https://opiius.online/
 
@@ -18,9 +18,9 @@ After changing any data file, rebuild and commit the result:
 
     node tools/build-site.mjs
 
-Pages: home, `rentals/` (with `rentals/self-drive-cars/<city>/` for live listings), `tours/`, `experiences/`,
-`events/`, `travel-services/`, `agency/<slug>/` (one per partner), `for-agencies/`, `verification/`, `about/`,
-`get-matched/`, `404.html`. `terms.html`, the onboarding forms and `dashboard.html` are hand-written.
+Pages: home (two options only: Rentals and Tours), `rentals/` (all rental details, including every self-drive car),
+`rentals/self-drive-cars/<city>/`, `tours/`, `agency/<slug>/` (one per partner), `for-agencies/`, `verification/`,
+`about/`, `get-matched/`, `404.html`. `terms.html`, the onboarding forms and `dashboard.html` are hand-written.
 
 Other projects in this repo (`business.html`, `global.html`, `demos/`, `coaching/`, `profile.html`, `rideme/`,
 `agency/hotels.html`) are not linked from the marketplace.
