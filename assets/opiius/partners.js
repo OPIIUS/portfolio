@@ -3,21 +3,22 @@
    verified:true only after the self-drive permit and commercial insurance have been checked in person. */
 window.OPIIUS_PARTNERS = [
   /* Saraighat Travels: from the owner's onboarding block (Oct 2026). Owner phone numbers removed from "about" (never shown on the site).
-     No photos received yet: add "photos":["assets/partners/saraighat-travels/<model>.jpg"] to a vehicle once its photo is in that folder. */
+     Photos (Oct 2026): i20, Fronx (sent as "breeza") and the white Thar. Swift, Baleno, Brezza and Scorpio photos still to come;
+     they also sent a Creta and a Dzire, which are not in their block and so are not listed. */
   {
     id: "saraighat-travels", name: "Saraighat Travels", city: "guwahati", area: "Basistha, Barpathar", since: 2026,
     pickups: ["Basistha Natun Bazar, Guwahati"], delivery: false, verified: false,
     about: "Self-drive cars in Basistha, Guwahati, for daily, weekly and monthly rentals. Drive and explore Guwahati, or ask about their tour packages and road trips.",
     policies: {deposit: "No security deposit", km: "300 km per day", fuel: "Same level as pick-up", cancel: "", docs: "Original driving licence and Aadhaar card"},
-    trims: {thar: "Thar"},
+    trims: {thar: "Thar"}, cover: "assets/partners/saraighat-travels/thar.jpg", coverAlt: "Saraighat Travels' white Mahindra Thar",
     vehicles: [
       {model: "swift", price: 1700, units: 1, year: 2025},
       {model: "baleno", price: 1800, units: 1, year: 2022},
-      {model: "fronx", price: 2000, units: 1, year: 2026},
-      {model: "i20", price: 2000, units: 1, year: 2026},
+      {model: "fronx", price: 2000, units: 1, year: 2026, photos: ["assets/partners/saraighat-travels/fronx.jpg"]},
+      {model: "i20", price: 2000, units: 1, year: 2026, photos: ["assets/partners/saraighat-travels/i20.jpg"]},
       {model: "brezza", price: 2600, units: 1, year: 2025},
       {model: "scorpio", price: 3700, units: 1, year: 2023},
-      {model: "thar", price: 4500, units: 1, year: 2026}
+      {model: "thar", price: 4500, units: 1, year: 2026, photos: ["assets/partners/saraighat-travels/thar.jpg"]}
     ]
   }
 ];
