@@ -108,8 +108,8 @@ const MODELS = {
 const P = (deposit,km,fuel,cancel,docs)=>({deposit,km,fuel,cancel,docs});
 const STD_DOCS = "Original driving licence and a government photo ID";
 const AGENCIES = {
-  rd:{name:"Real Drive Guwahati", slug:"real-drive-ghy", category:"self-drive-cars", city:"guwahati", area:"Hatigaon, Puberun Path", real:true, founding:true, verified:false, verifiedOn:"",
-    cover:"assets/partners/real-drive-ghy/ignis-hills.jpg", coverAlt:"A Real Drive Maruti Suzuki Ignis on a Meghalaya hill road", trims:{i20:"Elite i20", scorpio:"Scorpio S11"}, trans:{swift:"Automatic", fronx:"Automatic"},
+  rd:{name:"Real Drive Guwahati", slug:"real-drive-ghy", category:"self-drive-cars", city:"guwahati", area:"Hatigaon, Puberun Path", real:true, founding:true, verified:true, verifiedOn:"Oct 2026",
+    cover:"assets/partners/real-drive-ghy/xl6.jpg", coverAlt:"A Real Drive Maruti Suzuki XL6", trims:{i20:"Elite i20", scorpio:"Scorpio S11"}, trans:{swift:"Automatic", fronx:"Automatic"},
     travel:"Meghalaya and Arunachal Pradesh allowed (Arunachal needs an Inner Line Permit)", deliveryNote:"Airport, railway station or your address in Guwahati, for a delivery charge",
     rating:null, reviews:0, bookings:0, since:2024, hue:48,
     about:"Well-maintained, clean self-drive cars from Hatigaon, Guwahati, with a hassle-free booking process. City hatchbacks, compact SUVs and 7-seaters, including an automatic Swift and Fronx. Take the car to Meghalaya or Arunachal, or have it delivered to the airport, railway station or your door.",

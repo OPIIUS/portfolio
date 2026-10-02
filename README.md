@@ -18,8 +18,8 @@ After changing any data file, rebuild and commit the result:
 
     node tools/build-site.mjs
 
-Pages: home (two options only: Rentals and Tours), `rentals/` (all rental details, including every self-drive car),
-`rentals/self-drive-cars/<city>/`, `tours/`, `agency/<slug>/` (one per partner), `for-agencies/`, `verification/`,
+Pages: home (video background, two options: Rentals and Tours, and a moving brand line), `rentals/` (agencies by rental type),
+`rentals/self-drive-cars/<city>/`, `rentals/brands/<brand>/`, `tours/`, `agency/<slug>/` (one per partner), `for-agencies/`, `verification/`,
 `about/`, `get-matched/`, `404.html`. `terms.html`, the onboarding forms and `dashboard.html` are hand-written.
 
 Other projects in this repo (`business.html`, `global.html`, `demos/`, `coaching/`, `profile.html`, `rideme/`,
