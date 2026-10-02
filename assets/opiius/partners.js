@@ -10,7 +10,7 @@ window.OPIIUS_PARTNERS = [
     pickups: ["Basistha Natun Bazar, Guwahati"], delivery: false, verified: false,
     about: "Self-drive cars in Basistha, Guwahati, for daily, weekly and monthly rentals. Drive and explore Guwahati, or ask about their tour packages and road trips.",
     policies: {deposit: "No security deposit", km: "300 km per day", fuel: "Same level as pick-up", cancel: "", docs: "Original driving licence and Aadhaar card"},
-    trims: {thar: "Thar"}, cover: "assets/partners/saraighat-travels/thar.jpg", coverAlt: "Saraighat Travels' white Mahindra Thar",
+    trims: {thar: "Thar"}, cover: "assets/partners/saraighat-travels/banner.jpg", coverAlt: "Saraighat Rentals banner: safe, reliable, comfortable", coverPos: "50% 50%",
     vehicles: [
       {model: "swift", price: 1700, units: 1, year: 2025},
       {model: "baleno", price: 1800, units: 1, year: 2022},

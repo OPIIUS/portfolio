@@ -264,7 +264,7 @@ function faqBlock(items, heading = "Questions, answered") {
 function agencyCard(a) {
   const list = CARS.filter(c => c.a.id === a.id);
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
-  return `<a class="acard rv" href="${urlOf(agencyPath(a))}"><div class="ph">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy">` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}${badge(a, "onph")}</div>
+  return `<a class="acard rv" href="${urlOf(agencyPath(a))}"><div class="ph">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}${badge(a, "onph")}</div>
   <div class="bd"><h3>${esc(a.name)}</h3><div class="row"><span>${I.car}${esc(SUB[a.category] ? SUB[a.category].name : "Rentals")}</span><span>${I.pin}${esc(cityName(a.city))}</span></div>
   <div class="row"><span>${plural(list.length, "model")} · ${inr(minP(list))}–${inr(maxP(list))} / day</span></div>
   <div class="ft"><span>View agency</span>${I.arrow.replace("<svg", '<svg width="18" height="18"')}</div></div></a>`;
@@ -343,7 +343,7 @@ function agencyRow(a) {
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
   const autos = list.filter(c => /auto/i.test(c.trans)).length;
   const chips = [/agency/i.test(pol.deposit || "") ? "" : /^no /i.test(pol.deposit || "") ? pol.deposit : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : ""].filter(Boolean);
-  return `<a class="arow rv" href="${urlOf(agencyPath(a))}"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy">` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
+  return `<a class="arow rv" href="${urlOf(agencyPath(a))}"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
   <div class="bd"><div class="badges">${badge(a)}</div><h3>${esc(a.name)}</h3><p class="loc">${I.pin.replace("<svg", '<svg width="16" height="16"')}${esc(a.area ? a.area + ", " : "")}${esc(cityName(a.city))}</p>
     <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div>
     <div class="ft"><div class="price"><b class="num">${inr(minP(list))}</b><span>– ${inr(maxP(list))} / day</span></div><span class="btn dark">View all ${list.length} cars ${arrow()}</span></div></div></a>`;
