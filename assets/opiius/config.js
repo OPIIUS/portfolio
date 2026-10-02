@@ -1,12 +1,8 @@
-/* OPIIUS site settings. Edit these, not the app code.
+/* OPIIUS site settings. Edit these, not the page code.
 
-   live        true  = only real partner agencies/operators (real:true in data.js) are shown and
-                       "Reserve" opens WhatsApp to the number below.
-               false = pitch mode: sample (DEMO) listings everywhere, no WhatsApp.
-               Anyone can preview pitch mode on the live site with  opiius.online/?demo=1  (and ?demo=0 to leave).
-   whatsapp    number that receives reservations and trip requests, country code first, digits only.
+   whatsapp    number that receives every inquiry and "get matched" request, country code first, digits only.
    bookingLog  URL of the OPIIUS booking-log Google Apps Script (see DASHBOARD-SETUP.md). Empty = not recorded.
-   goatcounter your GoatCounter code (the "xxx" in https://xxx.goatcounter.com). Empty = no analytics. */
+   live, goatcounter: left over from the old single-page site; not used. */
 window.OPIIUS_CONFIG = {
   live: true,
   whatsapp: "918638830682",
