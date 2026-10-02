@@ -20,3 +20,9 @@ Rules
   (assets/opiius/config.js) and you forward them.
 
 To change prices or remove an agency later, just tell Claude ("Change X's Swift to ₹1,900" / "Remove X").
+
+Partner catalogue pages
+- Real Drive Ghy: **opiius.online/agency/real-drive-ghy/**. It reads the fleet and prices from `assets/opiius/data.js`
+  (agency `rd`), so a price change there updates the site and the catalogue together.
+- Photos live in `assets/partners/real-drive-ghy/<model>.jpg` (only the agency's own cars). A model with no photo shows a
+  name tile; drop in a photo and add its path as the 8th value of that model's row in `data.js`.

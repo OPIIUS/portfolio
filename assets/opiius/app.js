@@ -606,7 +606,7 @@ function vAgency(id){
     <nav class="crumbs"><a href="#/agencies?city=${a.city}">Agencies in ${esc(placeName(a.city))}</a><span>/</span><span>${esc(a.name)}</span></nav>
     <div class="cover">${artBox(PLACES[a.city].art||a.city)}</div>
     <div class="vhead">${avatar(a.name,a.hue,"lg")}<div><h1>${esc(a.name)}</h1><div class="meta"><span>${I.pin.replace("<svg",'<svg width="15" height="15"')} ${esc(locOf(a))}</span>${stars(a.rating,a.reviews||null)}${demoBadge(a)}${verBadge(a)}</div></div>
-      <div class="acts">${heartBtn("a:"+id,a.name).replace('class="heart"','class="btn sm" style="position:static;width:auto;box-shadow:none"').replace(`${I.heart}</button>`,`${I.heart}Save</button>`)}<button type="button" class="btn sm dark" data-enquire-agency="${id}">${I.msg}Enquire</button></div></div>
+      <div class="acts">${heartBtn("a:"+id,a.name).replace('class="heart"','class="btn sm" style="position:static;width:auto;box-shadow:none"').replace(`${I.heart}</button>`,`${I.heart}Save</button>`)}${a.catalog?`<a class="btn sm" href="${a.catalog}">Full catalogue</a>`:""}<button type="button" class="btn sm dark" data-enquire-agency="${id}">${I.msg}Enquire</button></div></div>
     <div class="stats"><div><b>${a.rating?a.rating.toFixed(1):"New"}</b><span>${a.reviews?plural(a.reviews,"review"):"No reviews yet"}</span></div><div><b>${a.bookings?a.bookings.toLocaleString("en-IN"):"New"}</b><span>bookings</span></div><div><b>${agencyUnits(id)}</b><span>vehicles</span></div><div><b>${inr(lo)}</b><span>lowest day price</span></div></div>
     <div class="dlay" style="grid-template-columns:1fr 340px"><div>
       <div class="dsec"><h2>About</h2><p>${esc(a.about)}</p></div>
