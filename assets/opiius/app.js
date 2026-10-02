@@ -579,7 +579,7 @@ function bookPanelVehicle(l){
       <div class="tot"><span>Total</span><span>${inr(l.price*d)}</span></div>
       ${LIVE?`<div class="now"><span>Pay ${esc(a.name)} at pickup</span><span>${inr(l.price*d)}</span></div></div>
     <button type="button" class="btn brand block" data-book="${l.id}">${I.msg}Reserve on WhatsApp</button>
-    <p class="bnote">No advance and no booking fee. We confirm with ${esc(a.name)} on WhatsApp, usually within 30 minutes.</p>`
+    <p class="bnote">No advance and no booking fee. OPIIUS confirms every request with you on WhatsApp before it goes to ${esc(a.name)}, usually within 30 minutes. <b>Bring your driving licence and ID to pickup.</b></p>`
       :`<div class="now"><span>Pay now to confirm</span><span>${inr(rentAdvance(l.price*d))}</span></div><div><span>Pay ${esc(a.name)} at pickup</span><span>${inr(l.price*d-rentAdvance(l.price*d))}</span></div></div>
     <button type="button" class="btn brand block" data-book="${l.id}">Reserve</button>
     <p class="bnote">Free cancellation up to 24 hours before pickup. The deposit is paid to the agency at pickup and refunded on return.</p>`}${promise("rent",a.verified)}`;
@@ -1005,7 +1005,7 @@ function openBooking(listingId){
       <div><span>${inr(l.price)} × ${plural(d,"day")}</span><span>${inr(l.price*d)}</span></div><div><span>Refundable deposit</span><span style="text-align:right">${esc(v.a.policies.deposit)}</span></div>
       <div class="tot"><span>Total</span><span>${inr(l.price*d)}</span></div>${LIVE?`<div class="now"><span>Pay at pickup</span><span>${inr(l.price*d)}</span></div>`:`<div class="now"><span>Pay now to confirm</span><span>${inr(rentAdvance(l.price*d))}</span></div><div><span>Pay at pickup</span><span>${inr(l.price*d-rentAdvance(l.price*d))}</span></div>`}</div>
     <div class="sf" style="padding:14px 0 0;border:0"><label for="bk-note">Message to ${esc(v.a.name)} (optional)</label><textarea id="bk-note" rows="3" style="border:1px solid var(--line2);border-radius:12px;padding:10px;resize:vertical" placeholder="Arrival time, trip plan or questions"></textarea></div>
-    <p class="bnote" style="margin-top:10px">${LIVE?`This opens WhatsApp with your request filled in. Nothing is charged. We confirm availability with ${esc(v.a.name)} and reply there.`:"Demo: no payment is taken and nothing is sent. Live, you pay the advance by UPI or card and the agency's number is shared once it's confirmed."}</p>`,
+    <p class="bnote" style="margin-top:10px">${LIVE?`This opens WhatsApp with your request filled in. Nothing is charged. OPIIUS confirms the request with you, then checks availability with ${esc(v.a.name)}. <b>Bring your driving licence and ID to pickup.</b>`:"Demo: no payment is taken and nothing is sent. Live, you pay the advance by UPI or card and the agency's number is shared once it's confirmed."}</p>`,
     `<button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn brand" style="margin-left:auto" data-confirm-rent="${listingId}" data-pick="${esc(pick)}">${LIVE?`${I.msg}Continue on WhatsApp`:`Pay ${inr(rentAdvance(l.price*d))} (demo)`}</button>`);
 }
 function openTourBooking(pid){
