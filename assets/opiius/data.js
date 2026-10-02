@@ -144,6 +144,8 @@ const TYPE_KIND={Hatchback:"car",Sedan:"car",SUV:"car",MUV:"car",Motorcycle:"bik
     since:pa.since||new Date().getFullYear(),hue:pa.hue||(pa.id.split("").reduce((h,c)=>h*31+c.charCodeAt(0),7)%360),
     about:pa.about||"",policies:P(pol.deposit||"Confirmed by the agency",pol.km||"Confirmed by the agency",pol.fuel||"Same level as pick-up",pol.cancel||"Confirmed by the agency",pol.docs||STD_DOCS),
     pickups:(pa.pickups&&pa.pickups.length)?pa.pickups:[(pa.area||"")+" (address shared on confirmation)"],delivery:!!pa.delivery};
+  /* optional profile fields OPIIUS may add by hand */
+  ["slug","category","founding","verifiedOn","cover","coverAlt","trims","trans","travel","deliveryNote"].forEach(k=>{if(pa[k]!=null)AGENCIES[pa.id][k]=pa[k]});
   (pa.vehicles||[]).forEach(v=>{
     let mk=v.model&&MODELS[v.model]?v.model:null;
     if(!mk){

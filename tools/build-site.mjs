@@ -121,7 +121,7 @@ const agencyPath = a => `agency/${a.slug}/index.html`;
 function badge(a, cls = "") {
   if (a.verified) return `<span class="badge ver ${cls}">${I.shield}Verified${a.verifiedOn ? " · " + esc(a.verifiedOn) : ""}</span>`;
   if (a.founding) return `<span class="badge fp ${cls}">${I.star}Founding partner</span>`;
-  return `<span class="badge ${cls}" style="background:var(--mist)">Listed</span>`;
+  return `<span class="badge lst ${cls}">${I.check}Listed on OPIIUS</span>`;
 }
 const initials = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
 
@@ -264,7 +264,7 @@ function faqBlock(items, heading = "Questions, answered") {
 function agencyCard(a) {
   const list = CARS.filter(c => c.a.id === a.id);
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
-  return `<a class="acard rv" href="${urlOf(agencyPath(a))}"><div class="ph">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy">` : ""}${badge(a, "onph")}</div>
+  return `<a class="acard rv" href="${urlOf(agencyPath(a))}"><div class="ph">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy">` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}${badge(a, "onph")}</div>
   <div class="bd"><h3>${esc(a.name)}</h3><div class="row"><span>${I.car}${esc(SUB[a.category] ? SUB[a.category].name : "Rentals")}</span><span>${I.pin}${esc(cityName(a.city))}</span></div>
   <div class="row"><span>${plural(list.length, "model")} · ${inr(minP(list))}–${inr(maxP(list))} / day</span></div>
   <div class="ft"><span>View agency</span>${I.arrow.replace("<svg", '<svg width="18" height="18"')}</div></div></a>`;
@@ -342,8 +342,8 @@ function agencyRow(a) {
   const list = CARS.filter(c => c.a.id === a.id), pol = a.policies || {};
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
   const autos = list.filter(c => /auto/i.test(c.trans)).length;
-  const chips = [/agency/i.test(pol.deposit || "") ? "" : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : ""].filter(Boolean);
-  return `<a class="arow rv" href="${urlOf(agencyPath(a))}"><div class="ph">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy">` : ""}</div>
+  const chips = [/agency/i.test(pol.deposit || "") ? "" : /^no /i.test(pol.deposit || "") ? pol.deposit : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : ""].filter(Boolean);
+  return `<a class="arow rv" href="${urlOf(agencyPath(a))}"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy">` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
   <div class="bd"><div class="badges">${badge(a)}</div><h3>${esc(a.name)}</h3><p class="loc">${I.pin.replace("<svg", '<svg width="16" height="16"')}${esc(a.area ? a.area + ", " : "")}${esc(cityName(a.city))}</p>
     <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div>
     <div class="ft"><div class="price"><b class="num">${inr(minP(list))}</b><span>– ${inr(maxP(list))} / day</span></div><span class="btn dark">View all ${list.length} cars ${arrow()}</span></div></div></a>`;
@@ -606,7 +606,7 @@ write("verification/index.html", layout({rel: "verification/index.html", title: 
 <section class="sec"><div class="wrap">
   <div class="sec-h"><div><span class="eyebrow">Badges</span><h2>What you'll see on a profile</h2></div></div>
   <div class="agrid">
-    <div class="panel rv"><span class="badge" style="background:var(--mist)">Listed</span><h3 style="margin-top:14px;font-size:20px">Listed</h3><p>The owner agreed to be listed and confirmed their prices and terms. Documents not yet checked.</p></div>
+    <div class="panel rv"><span class="badge lst">${I.check}Listed on OPIIUS</span><h3 style="margin-top:14px;font-size:20px">Listed</h3><p>The owner agreed to be listed and confirmed their prices and terms. Documents not yet checked.</p></div>
     <div class="panel rv"><span class="badge fp">${I.star}Founding partner</span><h3 style="margin-top:14px;font-size:20px">Founding partner</h3><p>One of the first agencies on OPIIUS. Listed with the owner's prices and photos; verification follows.</p></div>
     <div class="panel rv"><span class="badge ver">${I.shield}Verified · Mar 2026</span><h3 style="margin-top:14px;font-size:20px">Verified</h3><p>OPIIUS checked the documents, owner, vehicles and location. The date shows when.</p></div>
     <div class="panel rv"><span class="badge feat">Featured</span><h3 style="margin-top:14px;font-size:20px">Featured</h3><p>A paid top placement, always labelled. Only Verified agencies can be Featured.</p></div>
