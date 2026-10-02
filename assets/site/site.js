@@ -31,6 +31,36 @@
   if(vid){var still=(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)||(navigator.connection&&navigator.connection.saveData);
     if(still){vid.removeAttribute("autoplay");vid.pause();vid.preload="none"}else{var pl=vid.play();if(pl&&pl.catch)pl.catch(function(){})}}
 
+  /* brand line: moves on its own, and can be swiped, dragged, scrolled or stepped with the arrows */
+  $$(".brands").forEach(function(sec){
+    var mq=sec.querySelector(".marquee"),tr=mq&&mq.querySelector(".track");if(!tr)return;
+    var still=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var setW=function(){return tr.scrollWidth/4},pos=setW(),hold=0,drag=null,moved=false,last=0;
+    mq.scrollLeft=pos;
+    var pause=function(ms){hold=Math.max(hold,performance.now()+(ms||0))};
+    /* keep the view inside the middle copies so it loops forever in both directions; returns the jump made */
+    function wrap(){var w=setW(),d=0;if(w<=0)return 0;if(mq.scrollLeft>=w*2.5)d=-w;else if(mq.scrollLeft<w*0.5)d=w;if(d)mq.scrollLeft+=d;return d}
+    function tick(t){
+      var dt=last?Math.min(t-last,50):16;last=t;
+      if(Math.abs(mq.scrollLeft-pos)>2)pos=mq.scrollLeft;          /* the visitor scrolled: follow them */
+      if(!still&&!drag&&t>hold&&!sec.matches(":hover")){pos+=dt*0.035;mq.scrollLeft=pos}
+      pos+=wrap();
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    mq.addEventListener("touchstart",function(){pause(2500)},{passive:true});
+    mq.addEventListener("touchmove",function(){pause(2500)},{passive:true});
+    mq.addEventListener("wheel",function(){pause(2000)},{passive:true});
+    mq.addEventListener("focusin",function(){pause(4000)});
+    mq.addEventListener("pointerdown",function(e){if(e.pointerType!=="mouse")return;drag={x:e.clientX,l:mq.scrollLeft};moved=false;mq.classList.add("drag")});
+    window.addEventListener("pointermove",function(e){if(!drag)return;var dx=e.clientX-drag.x;if(Math.abs(dx)>4)moved=true;mq.scrollLeft=drag.l-dx;var d=wrap();drag.l+=d;pos=mq.scrollLeft});
+    window.addEventListener("pointerup",function(){if(!drag)return;drag=null;mq.classList.remove("drag");pause(1500)});
+    mq.addEventListener("click",function(e){if(moved){e.preventDefault();moved=false}},true);
+    mq.addEventListener("dragstart",function(e){e.preventDefault()});
+    sec.querySelectorAll("[data-bscroll]").forEach(function(b){b.addEventListener("click",function(){
+      pause(900);mq.scrollBy({left:+b.dataset.bscroll*Math.max(300,mq.clientWidth*0.6),behavior:"smooth"})})});
+  });
+
   /* mobile menu */
   var mb=$(".menu-btn"),mn=$(".mnav");
   if(mb&&mn){mb.addEventListener("click",function(){var o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o);document.body.style.overflow=o?"hidden":""})}
@@ -50,7 +80,8 @@
   if(chips.length&&"IntersectionObserver" in window){
     var co=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;
       chips.forEach(function(a){a.setAttribute("aria-current",String(a.dataset.nav===e.target.id))});
-      var on=$('.stick [aria-current="true"]');if(on)on.scrollIntoView({block:"nearest",inline:"center"})})},{rootMargin:"-40% 0px -55% 0px"});
+      /* scroll only the chip bar sideways; scrollIntoView here would interrupt the page's own smooth scroll */
+      var on=$('.stick [aria-current="true"]'),bar=on&&on.parentNode;if(bar)bar.scrollTo({left:on.offsetLeft-(bar.clientWidth-on.offsetWidth)/2,behavior:"smooth"})})},{rootMargin:"-40% 0px -55% 0px"});
     chips.forEach(function(a){var t=document.getElementById(a.dataset.nav);if(t)co.observe(t)});
   }
 
@@ -119,6 +150,8 @@
     var b=e.target.closest("[data-need]");if(!b)return;
     var f=$("form[data-match]");if(!f)return;e.preventDefault();
     var s=f.querySelector("[name=need]");if(s)s.value=b.dataset.need;
-    f.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){var n=f.querySelector("[name=name]");if(n)n.focus({preventScroll:true})},500);
+    var hdr=($(".hdr")||{offsetHeight:0}).offsetHeight+(($(".stick")||{offsetHeight:0}).offsetHeight||0);
+    var box=f.closest(".panel")||f;window.scrollTo({top:box.getBoundingClientRect().top+window.pageYOffset-hdr-12,behavior:"smooth"});
+    setTimeout(function(){var n=f.querySelector("[name=name]");if(n)n.focus({preventScroll:true})},700);
   });
 })();

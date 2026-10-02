@@ -424,17 +424,22 @@ dialog::backdrop{background:rgba(10,18,15,.55);backdrop-filter:blur(3px)}
 .brands-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:26px}
 .brands-h h2{font-size:clamp(26px,3.4vw,36px);font-weight:800;margin-top:6px}
 .brands-h p{color:var(--dim);max-width:44ch}
-.marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.track{display:flex;width:max-content;animation:marq 38s linear infinite;padding:6px 0}
-.marquee:hover .track,.marquee:focus-within .track{animation-play-state:paused}
-@keyframes marq{to{transform:translateX(-25%)}}
+.marquee{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;cursor:grab;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee::-webkit-scrollbar{display:none}
+.marquee.drag{cursor:grabbing;user-select:none}
+.track{display:flex;width:max-content;padding:6px 0}
 .brand{flex:none;display:flex;flex-direction:column;align-items:center;gap:8px;width:170px;margin-right:16px;padding:22px 14px 18px;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--paper);text-decoration:none;color:var(--ink);transition:border-color .2s,box-shadow .3s var(--ease),transform .3s var(--ease)}
 .brand:hover{border-color:var(--ink);box-shadow:var(--sh-lift);transform:translateY(-2px)}
 .brand svg{width:46px;height:46px;color:var(--ink)}
 .brand .wm{height:46px;display:grid;place-items:center;font:800 19px var(--f-d);letter-spacing:.06em;text-transform:uppercase}
 .brand .bn{font-weight:800;font-size:15px}
 .brand .bc{font-size:13px;color:var(--dim);font-weight:600}
-@media(prefers-reduced-motion:reduce){.track{animation:none;flex-wrap:wrap;width:auto;justify-content:center}.track [aria-hidden="true"]{display:none}}
+@media(prefers-reduced-motion:reduce){.track [aria-hidden="true"]{display:none}}
+.bnav{display:flex;gap:8px}
+.bnav button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);background:var(--paper);display:grid;place-items:center}
+.bnav button:hover{border-color:var(--ink)}
+.bnav svg{width:18px;height:18px}
+@media(max-width:700px){.bnav{display:none}}
 
 /* ---------- rentals: agency types and agency rows ---------- */
 .atype{padding-top:52px;scroll-margin-top:calc(var(--hdr) + 64px)}
