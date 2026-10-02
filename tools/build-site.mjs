@@ -75,11 +75,11 @@ const CHECKS = {
 };
 /* OPIIUS covers two things only: rentals and tours. */
 const CATS = [
-  {id: "rentals", name: "Rentals", icon: "car", menu: "Self-drive cars, cars with driver, bikes", agencyNoun: "rental agency", subs: [
+  {id: "rentals", name: "Rentals", icon: "car", menu: "Self-drive cars and cars with driver", agencyNoun: "rental agency", subs: [
       {id: "self-drive-cars", name: "Self-drive cars", icon: "car", desc: "Hatchbacks, compact SUVs and 7-seaters you drive yourself.", kind: "car"},
       {id: "cars-with-driver", name: "Cars with driver", icon: "users", desc: "Innova, Ertiga and SUVs with an experienced local driver."},
-      {id: "bikes", name: "Bikes & scooters", icon: "bike", desc: "Scooters for the city, Royal Enfields for the hills.", kind: "bike"},
-      {id: "tempo-travellers", name: "Tempo travellers", icon: "van", desc: "12 to 26 seats for groups, colleges and weddings."}]},
+      {id: "bikes", name: "Bikes & scooters", icon: "bike", desc: "Scooters for the city, Royal Enfields for the hills.", kind: "bike", onlyWhenLive: true},
+      {id: "tempo-travellers", name: "Tempo travellers", icon: "van", desc: "12 to 26 seats for groups, colleges and weddings.", onlyWhenLive: true}]},
   {id: "tours", name: "Tours", icon: "map", menu: "Meghalaya, Kaziranga, Tawang, Sikkim", agencyNoun: "tour operator", subs: [
       {id: "meghalaya-tours", name: "Meghalaya", icon: "map", desc: "Shillong, Sohra, Dawki and the living root bridges.", dest: "meghalaya"},
       {id: "kaziranga-tours", name: "Kaziranga", icon: "compass", desc: "Rhino safaris, tea gardens and Majuli add-ons.", dest: "kaziranga"},
@@ -108,6 +108,8 @@ const CARS = Object.values(O.LISTINGS).filter(l => AGENCIES.some(a => a.id === l
   return {id: l.id, model: l.model, m, a, brand: b, nm, name: `${b} ${nm}`.trim(), price: l.price, units: l.units, year: l.year, trans: (a.trans && a.trans[l.model]) || m.trans, photo: l.photo ? "/" + l.photo.replace(/^\//, "") : ""};
 }).sort((x, y) => x.price - y.price || x.name.localeCompare(y.name));
 const carsOf = (pred) => CARS.filter(pred);
+/* rental types marked onlyWhenLive (bikes, tempo travellers) appear only once an agency offers them */
+for (const c of CATS) c.subs = c.subs.filter(s => !s.onlyWhenLive || AGENCIES.some(a => a.category === s.id) || (s.kind && CARS.some(x => x.m.kind === s.kind)));
 const groupsOf = list => GROUPS.map(g => ({g, list: list.filter(c => g.test(c.m))})).filter(x => x.list.length);
 const minP = list => Math.min(...list.map(c => c.price)), maxP = list => Math.max(...list.map(c => c.price));
 const subLive = sub => sub.kind ? carsOf(c => c.m.kind === sub.kind) : [];
@@ -373,7 +375,7 @@ ${stickyNav([...cat.subs.map(s => [s.id, s.name]), ["how", "How it works"], ["fa
 ${brandStrip("Or select from brand", "See every car of a brand across agencies.")}
 ${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Real photos, gearbox, model year and day price. Tap “Check availability”."], ["Confirm on WhatsApp", "The agency confirms the car and pickup. You pay them directly. No booking fee."]])}
 <div id="faq">${faq.html}</div>
-${matchSection("cars-with-driver", "Need something else?", "A car with driver, a bike or a tempo traveller? Tell us the dates and where you're going, and we'll find a local agency.")}
+${matchSection("cars-with-driver", "Need something else?", "Need a car with driver, or a car that isn't listed? Tell us the dates and where you're going, and we'll find a local agency.")}
 ${agencyBand("Run a rental agency?", "Showcase your cars to customers searching for rentals in Guwahati: a full profile, real photos, day prices and inquiries with dates. Basic listing is free.")}`;
   write("rentals/index.html", layout({rel: "rentals/index.html", title: "Rentals in Guwahati · Choose a verified local agency | OPIIUS", active: "rentals",
     desc: `Rent a car in Guwahati from verified local agencies${allCars.length ? `: ${plural(allCars.length, "car")} from ${inr(minP(allCars))}/day` : ""}. Open an agency to see its whole fleet, prices and terms.`,
@@ -650,7 +652,7 @@ write("get-matched/index.html", layout({rel: "get-matched/index.html", title: "G
   body: `<section class="sec mist" style="padding-top:64px"><div class="wrap matchbox">
   <div><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Get matched</span></nav><span class="eyebrow">Get matched</span>
     <h1 style="font-size:clamp(34px,5vw,54px);font-weight:800;margin-top:10px">Tell us what you need. We'll find the agency.</h1>
-    <p class="muted" style="margin-top:16px;font-size:17px;max-width:46ch">A self-drive car, a car with driver, a tempo traveller or a tour. Share the details once and get a reply on WhatsApp.</p>
+    <p class="muted" style="margin-top:16px;font-size:17px;max-width:46ch">A self-drive car, a car with driver or a tour. Share the details once and get a reply on WhatsApp.</p>
     <ol class="steps3" style="grid-template-columns:1fr;gap:12px;margin-top:26px"><li style="padding:18px"><b style="margin-top:10px">Send your request</b><span>It opens WhatsApp with your details and a reference number.</span></li><li style="padding:18px"><b style="margin-top:10px">We find a suitable agency</b><span>Your request goes to a local agency that fits.</span></li><li style="padding:18px"><b style="margin-top:10px">Get details before you commit</b><span>Prices, inclusions and availability on WhatsApp.</span></li></ol></div>
   ${matchForm("self-drive-cars", {title: "Your request"})}
 </div></section>`}));
