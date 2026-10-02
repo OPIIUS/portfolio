@@ -58,7 +58,7 @@
     var days=function(){if(!from.value||!to.value)return 0;var n=Math.round((new Date(to.value)-new Date(from.value))/864e5);return n<0?-1:Math.max(1,n)};
     var update=function(){
       var c=byId[sel.value];if(!c)return;
-      $("#aSel").innerHTML='<div class="t">'+(c.photo?'<img src="'+esc(c.photo)+'" alt="">':"")+'</div><div><b>'+esc(c.name)+'</b><span>'+esc(c.agencyName)+" · "+c.seats+" seats · "+inr(c.price)+" / day</span></div>";
+      $("#aSel").innerHTML='<div class="t">'+(c.photo?'<img src="'+esc(c.photo)+'" alt="">':"")+'</div><div><b>'+esc(c.name)+'</b><span>'+esc(c.agencyName)+" · "+c.seats+" seats"+(c.trans?" · "+esc(c.trans):"")+" · "+inr(c.price)+" / day</span></div>";
       var n=days();$("#aDays").textContent=n>0?"Estimate for "+n+(n===1?" day":" days"):"Estimate";$("#aEst").textContent=n>0?inr(n*c.price):"—";
     };
     var open=function(id){

@@ -133,7 +133,7 @@ const AGENCIES = Object.entries(O.AGENCIES).filter(([, a]) => a.real && !a.demo)
 const CARS = Object.values(O.LISTINGS).filter(l => AGENCIES.some(a => a.id === l.agency)).map(l => {
   const m = O.MODELS[l.model], a = AGENCIES.find(x => x.id === l.agency), b = (O.BRANDS[m.brand] || {name: ""}).name;
   const nm = (a.trims && a.trims[l.model]) || m.name;
-  return {id: l.id, model: l.model, m, a, brand: b, nm, name: `${b} ${nm}`.trim(), price: l.price, units: l.units, photo: l.photo ? "/" + l.photo.replace(/^\//, "") : ""};
+  return {id: l.id, model: l.model, m, a, brand: b, nm, name: `${b} ${nm}`.trim(), price: l.price, units: l.units, year: l.year, trans: (a.trans && a.trans[l.model]) || m.trans, photo: l.photo ? "/" + l.photo.replace(/^\//, "") : ""};
 }).sort((x, y) => x.price - y.price || x.name.localeCompare(y.name));
 const carsOf = (pred) => CARS.filter(pred);
 const groupsOf = list => GROUPS.map(g => ({g, list: list.filter(c => g.test(c.m))})).filter(x => x.list.length);
@@ -188,7 +188,7 @@ function footer() {
   <div class="base"><span>© ${YEAR} OPIIUS · Guwahati, Assam</span><span><b>Featured placements are paid and always labelled. Verification is never sold.</b></span></div>
 </div></footer>`;
 }
-function layout({rel, title, desc, active = "", body, og = "/assets/partners/real-drive-ghy/ignis.jpg", jsonld = [], noindex = false, extraHead = ""}) {
+function layout({rel, title, desc, active = "", body, og = "/assets/partners/real-drive-ghy/ignis-hills.jpg", jsonld = [], noindex = false, extraHead = ""}) {
   const url = SITE + urlOf(rel);
   return `<!doctype html>
 <html lang="en">
@@ -230,11 +230,10 @@ ${footer()}
 function carCard(c, {showAgency = false} = {}) {
   const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">`
     : `<div class="nametile"><small>${esc(c.brand)}</small><b>${esc(c.nm)}</b>${CAR_LINE}</div>`;
-  const feat = (c.m.features || []).filter(f => f !== "AC").slice(0, 1);
   return `<article class="car"><div class="ph">${ph}${c.units > 1 ? `<span class="badge onph">${c.units} in the fleet</span>` : ""}</div>
   <div class="bd"><div class="nm"><small>${esc(c.brand)}</small><h3>${esc(c.nm)}</h3></div>
     ${showAgency ? `<p class="by">By <a href="${urlOf(agencyPath(c.a))}">${esc(c.a.name)}</a></p>` : ""}
-    <div class="specs"><span>${c.m.seats} seats</span><span>${esc(c.m.fuel)}</span><span>${esc(c.m.type)}</span>${feat.map(f => `<span>${esc(f)}</span>`).join("")}</div>
+    <div class="specs"><span>${c.m.seats} seats</span><span>${esc(c.trans)}</span><span>${esc(c.m.fuel)}</span>${c.year ? `<span>${c.year} model</span>` : ""}</div>
     <div class="ft"><div class="price"><b class="num">${inr(c.price)}</b><span>/ day</span></div><button type="button" class="btn dark sm" data-ask="${c.id}">Check availability</button></div></div></article>`;
 }
 function fleetBlocks(list, opts) {
@@ -247,7 +246,7 @@ function chipsNav(list, extra = []) {
   return `<div class="stick"><div class="wrap"><nav class="chips" aria-label="Categories">${gs.map((x, i) => `<a class="chip" href="#${x.g.id}" data-nav="${x.g.id}" aria-current="${i === 0}">${esc(x.g.nav)}<span>${x.list.length}</span></a>`).join("")}${extra.map(([h, t]) => `<a class="chip" href="#${h}" data-nav="${h}" aria-current="false">${t}</a>`).join("")}</nav></div></div>`;
 }
 function askDialog(list) {
-  const data = list.map(c => ({id: c.id, name: c.name, price: c.price, seats: c.m.seats, photo: c.photo, agency: c.a.id, agencyName: c.a.name, city: c.a.city}));
+  const data = list.map(c => ({id: c.id, name: c.name, price: c.price, seats: c.m.seats, trans: c.trans, photo: c.photo, agency: c.a.id, agencyName: c.a.name, city: c.a.city}));
   return `<dialog id="ask" aria-labelledby="askT"><form class="sheet form" id="askF" method="dialog" novalidate>
   <button type="button" class="x" aria-label="Close" data-close>×</button>
   <div><h2 id="askT">Check availability</h2><p class="sub">Sent to the agency through OPIIUS · reply on WhatsApp</p></div>
@@ -327,7 +326,7 @@ const sdcUrl = sdcCities.length ? urlOf(listingPath("self-drive-cars", sdcCities
     ["What if something goes wrong?", `Tell us on WhatsApp from the agency's page. We follow up with the agency, and unresolved complaints cost them the Verified badge.`],
     ["Can I list my agency?", `Yes. Basic listing is free. <a href="/for-agencies/">See how it works</a>.`]]);
   const body = `
-<section class="hero"><div class="bg" style="background-image:url(/assets/partners/real-drive-ghy/ignis.jpg);background-position:60% 62%" role="img" aria-label="A Real Drive car on a Meghalaya hill road"></div>
+<section class="hero"><div class="bg" style="background-image:url(/assets/partners/real-drive-ghy/ignis-hills.jpg);background-position:60% 62%" role="img" aria-label="A Real Drive car on a Meghalaya hill road"></div>
   <div class="wrap in">
     <span class="eyebrow">Trusted local agencies · Guwahati &amp; the Northeast</span>
     <h1>Find trusted local agencies for rentals, tours and events.</h1>
@@ -486,7 +485,7 @@ ${chipsNav(list, [["info", "Price list & terms"]])}
 <div class="wrap">${fleetBlocks(list)}</div>
 <section class="sec mist" id="info" style="margin-top:72px"><div class="wrap two">
   <div class="panel"><h2>Price list</h2><p>Day prices set by ${esc(a.name)}. You pay the agency directly, at these prices. OPIIUS adds no booking fee.</p>
-    <table class="plist"><tbody>${gs.map(x => `<tr><th colspan="2">${esc(x.g.t)}</th></tr>${x.list.map(c => `<tr><td>${esc(c.name)}<small>${c.m.seats} seats${c.units > 1 ? " · " + c.units + " cars" : ""}</small></td><td>${inr(c.price)}/day</td></tr>`).join("")}`).join("")}</tbody></table>
+    <table class="plist"><tbody>${gs.map(x => `<tr><th colspan="2">${esc(x.g.t)}</th></tr>${x.list.map(c => `<tr><td>${esc(c.name)}<small>${c.m.seats} seats · ${esc(c.trans)}${c.units > 1 ? " · " + c.units + " cars" : ""}</small></td><td>${inr(c.price)}/day</td></tr>`).join("")}`).join("")}</tbody></table>
     <button type="button" class="btn outline sm no-print" style="margin-top:20px" onclick="window.print()">Print or save as PDF</button></div>
   <div style="display:grid;gap:20px">
     <div class="panel"><h2>Terms</h2><div class="kv">
@@ -495,7 +494,9 @@ ${chipsNav(list, [["info", "Price list & terms"]])}
       <div><span>Deposit</span><span>${esc(/agency/i.test(pol.deposit || "") ? "Confirmed with your quote" : pol.deposit)}</span></div>
       <div><span>Km limit</span><span>${esc(/agency/i.test(pol.km || "") ? "Confirmed with your quote" : pol.km)}</span></div>
       <div><span>Cancellation</span><span>${esc(/agency/i.test(pol.cancel || "") ? "Confirmed with your quote" : pol.cancel)}</span></div>
-      <div><span>Pickup</span><span>${esc((a.pickups || []).join(", "))}</span></div></div></div>
+      <div><span>Pickup</span><span>${esc((a.pickups || []).join(", "))}</span></div>
+      ${a.deliveryNote ? `<div><span>Delivery</span><span>${esc(a.deliveryNote)}</span></div>` : ""}
+      ${a.travel ? `<div><span>Out of state</span><span>${esc(a.travel)}</span></div>` : ""}</div></div>
     <div class="panel"><h2>Verification</h2>${a.verified
       ? `<p>OPIIUS checked this agency${a.verifiedOn ? " in " + esc(a.verifiedOn) : ""}.</p><ul class="ticks">${CHECKS.rentals.map(t => `<li>${I.check}<span>${esc(t)}</span></li>`).join("")}</ul>`
       : `<p>${a.founding ? `${esc(a.name)} is a founding partner on OPIIUS. ` : ""}The Verified badge is added after OPIIUS checks the permit, insurance, fleet and owner ID. <a class="link" href="/verification/">What we check</a></p>`}
@@ -537,7 +538,7 @@ write("agency/index.html", layout({rel: "agency/index.html", title: "Agencies on
     ["What do I need to send?", `Your agency details, prices and terms, and 2–3 clear daylight photos of each vehicle or package. Rental agencies can use the <a href="/onboard.html">rental form</a>, tour operators the <a href="/onboard-tours.html">tours form</a>. Everyone else can message us on WhatsApp.`],
     ["Who receives customer inquiries?", "Inquiries arrive on the OPIIUS WhatsApp with an OPIIUS reference and are passed to you straight away. Your phone number is not published unless your plan includes call and WhatsApp buttons."]]);
   const body = `
-<section class="hero"><div class="bg" style="background-image:url(/assets/partners/real-drive-ghy/i20.jpg);background-position:50% 60%" role="img" aria-label="A partner car at night in Guwahati"></div><div class="wrap in">
+<section class="hero"><div class="bg" style="background-image:url(/assets/partners/real-drive-ghy/i20-night.jpg);background-position:50% 60%" role="img" aria-label="A partner car at night in Guwahati"></div><div class="wrap in">
   <span class="eyebrow">For rental, tour, experience and event agencies</span>
   <h1>Get discovered by customers who are already searching.</h1>
   <p class="lede">Showcase your agency on high-intent pages, earn the Verified badge customers trust, and receive inquiries with dates, group size and budget. Every month you get a report of every inquiry we sent you.</p>
