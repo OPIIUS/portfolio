@@ -109,7 +109,7 @@ const P = (deposit,km,fuel,cancel,docs)=>({deposit,km,fuel,cancel,docs});
 const STD_DOCS = "Original driving licence and a government photo ID";
 const AGENCIES = {
   rd:{name:"Real Drive Guwahati", slug:"real-drive-ghy", category:"self-drive-cars", city:"guwahati", area:"Guwahati", real:true, founding:true, verified:false, verifiedOn:"",
-    cover:"assets/partners/real-drive-ghy/ignis.jpg", coverAlt:"A Real Drive Maruti Suzuki Ignis on a Meghalaya hill road", trims:{i20:"Elite i20", scorpio:"Scorpio S11"},
+    cover:"assets/partners/real-drive-ghy/ignis-hills.jpg", coverAlt:"A Real Drive Maruti Suzuki Ignis on a Meghalaya hill road", trims:{i20:"Elite i20", scorpio:"Scorpio S11"},
     rating:null, reviews:0, bookings:0, since:2023, hue:48,
     about:"Self-drive cars in Guwahati: city hatchbacks, compact SUVs and 7-seaters for family trips and the road to Meghalaya. Day prices are set by Real Drive; the deposit, km limit and pickup point are confirmed with your quote.",
     policies:P("Confirmed by the agency","Confirmed by the agency","Same level as pick-up","Confirmed by the agency",STD_DOCS),
@@ -118,11 +118,12 @@ const AGENCIES = {
 
 /* ---------- listings: [agency, model, price/day, units, rating, trips, year] ---------- */
 const L = [
-  /* Real Drive Ghy: day prices from the owner's price list (Oct 2026). XL6, Carens and Innova keep their earlier catalogue prices. */
-  ["rd","i20",1500,1,null,0,null,"assets/partners/real-drive-ghy/i20.jpg"],["rd","nios",1600,1,null,0,null],["rd","ignis",1600,2,null,0,null,"assets/partners/real-drive-ghy/ignis.jpg"],
-  ["rd","swift",1700,1,null,0,null],["rd","baleno",1800,1,null,0,null],["rd","glanza",1800,1,null,0,null],
-  ["rd","punch",1800,1,null,0,null,"assets/partners/real-drive-ghy/punch.jpg"],["rd","fronx",2200,1,null,0,null],["rd","urbancruiser",2400,1,null,0,null],
-  ["rd","scorpio",3000,1,null,0,null],["rd","xl6",3100,1,null,0,2022,"assets/partners/real-drive-ghy/xl6.jpg"],["rd","carens",3300,1,null,0,2023,"assets/partners/real-drive-ghy/carens.jpg"],
+  /* Real Drive Ghy: day prices from the owner's price list (Oct 2026). XL6, Carens and Innova keep their earlier catalogue prices.
+     Photos: the agency's own cars (Oct 2026), cropped 4:3. Fronx has no photo of their own car yet. */
+  ["rd","i20",1500,1,null,0,null,"assets/partners/real-drive-ghy/i20.jpg"],["rd","nios",1600,1,null,0,null,"assets/partners/real-drive-ghy/nios.jpg"],["rd","ignis",1600,2,null,0,null,"assets/partners/real-drive-ghy/ignis.jpg"],
+  ["rd","swift",1700,1,null,0,null,"assets/partners/real-drive-ghy/swift.jpg"],["rd","baleno",1800,1,null,0,null,"assets/partners/real-drive-ghy/baleno.jpg"],["rd","glanza",1800,1,null,0,null,"assets/partners/real-drive-ghy/glanza.jpg"],
+  ["rd","punch",1800,1,null,0,null,"assets/partners/real-drive-ghy/punch.jpg"],["rd","fronx",2200,1,null,0,null],["rd","urbancruiser",2400,1,null,0,null,"assets/partners/real-drive-ghy/urbancruiser.jpg"],
+  ["rd","scorpio",3000,1,null,0,null,"assets/partners/real-drive-ghy/scorpio.jpg"],["rd","xl6",3100,1,null,0,2022,"assets/partners/real-drive-ghy/xl6.jpg"],["rd","carens",3300,1,null,0,2023,"assets/partners/real-drive-ghy/carens.jpg"],
   ["rd","innova",3500,2,null,0,2021,"assets/partners/real-drive-ghy/innova.jpg"],
 ];
 const LISTINGS = {};

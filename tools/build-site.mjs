@@ -188,7 +188,7 @@ function footer() {
   <div class="base"><span>© ${YEAR} OPIIUS · Guwahati, Assam</span><span><b>Featured placements are paid and always labelled. Verification is never sold.</b></span></div>
 </div></footer>`;
 }
-function layout({rel, title, desc, active = "", body, og = "/assets/partners/real-drive-ghy/ignis.jpg", jsonld = [], noindex = false, extraHead = ""}) {
+function layout({rel, title, desc, active = "", body, og = "/assets/partners/real-drive-ghy/ignis-hills.jpg", jsonld = [], noindex = false, extraHead = ""}) {
   const url = SITE + urlOf(rel);
   return `<!doctype html>
 <html lang="en">
@@ -327,7 +327,7 @@ const sdcUrl = sdcCities.length ? urlOf(listingPath("self-drive-cars", sdcCities
     ["What if something goes wrong?", `Tell us on WhatsApp from the agency's page. We follow up with the agency, and unresolved complaints cost them the Verified badge.`],
     ["Can I list my agency?", `Yes. Basic listing is free. <a href="/for-agencies/">See how it works</a>.`]]);
   const body = `
-<section class="hero"><div class="bg" style="background-image:url(/assets/partners/real-drive-ghy/ignis.jpg);background-position:60% 62%" role="img" aria-label="A Real Drive car on a Meghalaya hill road"></div>
+<section class="hero"><div class="bg" style="background-image:url(/assets/partners/real-drive-ghy/ignis-hills.jpg);background-position:60% 62%" role="img" aria-label="A Real Drive car on a Meghalaya hill road"></div>
   <div class="wrap in">
     <span class="eyebrow">Trusted local agencies · Guwahati &amp; the Northeast</span>
     <h1>Find trusted local agencies for rentals, tours and events.</h1>
@@ -537,7 +537,7 @@ write("agency/index.html", layout({rel: "agency/index.html", title: "Agencies on
     ["What do I need to send?", `Your agency details, prices and terms, and 2–3 clear daylight photos of each vehicle or package. Rental agencies can use the <a href="/onboard.html">rental form</a>, tour operators the <a href="/onboard-tours.html">tours form</a>. Everyone else can message us on WhatsApp.`],
     ["Who receives customer inquiries?", "Inquiries arrive on the OPIIUS WhatsApp with an OPIIUS reference and are passed to you straight away. Your phone number is not published unless your plan includes call and WhatsApp buttons."]]);
   const body = `
-<section class="hero"><div class="bg" style="background-image:url(/assets/partners/real-drive-ghy/i20.jpg);background-position:50% 60%" role="img" aria-label="A partner car at night in Guwahati"></div><div class="wrap in">
+<section class="hero"><div class="bg" style="background-image:url(/assets/partners/real-drive-ghy/i20-night.jpg);background-position:50% 60%" role="img" aria-label="A partner car at night in Guwahati"></div><div class="wrap in">
   <span class="eyebrow">For rental, tour, experience and event agencies</span>
   <h1>Get discovered by customers who are already searching.</h1>
   <p class="lede">Showcase your agency on high-intent pages, earn the Verified badge customers trust, and receive inquiries with dates, group size and budget. Every month you get a report of every inquiry we sent you.</p>
