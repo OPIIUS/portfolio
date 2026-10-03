@@ -395,29 +395,48 @@ dialog::backdrop{background:rgba(10,18,15,.55);backdrop-filter:blur(3px)}
 .vhero{position:relative;overflow:hidden;isolation:isolate;color:#fff;background:#0f231c url(/assets/site/media/hills.jpg) center/cover no-repeat}
 .vhero .vbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
 .vhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(9,22,17,.55) 0%,rgba(9,22,17,.35) 40%,rgba(9,22,17,.75) 100%)}
-.vhero .in{padding-top:64px;padding-bottom:48px}
+.vhero .in{padding-top:48px;padding-bottom:40px}
 .vh{text-align:center;max-width:820px;margin:0 auto}
 .vh .eyebrow{color:#f0dcae}
-.vh h1{font-size:clamp(34px,5.2vw,62px);font-weight:800;margin-top:12px;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.vh h1{font-size:clamp(34px,4.4vw,54px);font-weight:800;margin-top:12px;text-shadow:0 2px 24px rgba(0,0,0,.35)}
 .vh .lede{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.9);margin-top:12px}
-.choose2{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:1000px;margin:34px auto 0}
+.choose2{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:860px;margin:28px auto 0}
 .opt2{display:flex;flex-direction:column;background:var(--paper);color:var(--ink);border-radius:var(--r-xl);overflow:hidden;text-decoration:none;box-shadow:0 30px 60px -30px rgba(0,0,0,.65);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
 .opt2:hover{transform:translateY(-4px);box-shadow:0 40px 70px -30px rgba(0,0,0,.75)}
-.opt2 .ph{aspect-ratio:16/8;overflow:hidden;background:var(--mist2)}
+.opt2 .ph{aspect-ratio:16/7;overflow:hidden;background:var(--mist2)}
 .opt2 .ph img{width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease)}
 .opt2:hover .ph img{transform:scale(1.05)}
-.opt2 .bd{padding:22px 24px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
+.opt2 .bd{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
 .opt2 .top{display:flex;justify-content:space-between;align-items:center}
 .opt2 .ic{width:44px;height:44px;border-radius:14px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center}
 .opt2 .ic svg{width:24px;height:24px}
 .opt2 .meta{font-weight:800;font-size:14px;color:var(--brand);background:var(--brand-soft);padding:6px 12px;border-radius:999px}
-.opt2 h2{font-size:clamp(28px,3.2vw,38px);font-weight:800}
-.opt2 p{color:var(--dim);font-size:15.5px}
+.opt2 h2{font-size:clamp(26px,2.6vw,32px);font-weight:800}
+.opt2 p{color:var(--dim);font-size:14.5px}
 .opt2 .subs{list-style:none;padding:0;margin:2px 0 6px;display:flex;flex-wrap:wrap;gap:6px}
 .opt2 .subs li{font-size:13px;font-weight:700;color:var(--ink2);background:var(--mist);border-radius:999px;padding:5px 11px}
-.opt2 .btn{margin-top:auto;padding:14px}
+.opt2 .btn{margin-top:auto;padding:12px}
+.opt2 .btn .sm{display:none}
 .vhero .trust{justify-content:center;margin-top:28px}
-@media(max-width:760px){.choose2{grid-template-columns:1fr;gap:16px}.vhero .in{padding-top:40px;padding-bottom:36px}.vh{text-align:left}.vhero .trust{justify-content:flex-start}}
+/* phones: same layout as desktop, just smaller, so the video stays visible around the two options */
+@media(max-width:760px){
+  .vhero .in{min-height:calc(100svh - var(--hdr));display:flex;flex-direction:column;justify-content:center;padding-top:28px;padding-bottom:28px}
+  .vh h1{font-size:clamp(26px,7.4vw,34px)}
+  .vh .lede{font-size:15px;margin-top:8px}
+  .vh .eyebrow{font-size:10.5px}
+  .choose2{grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+  .opt2{border-radius:18px;box-shadow:0 20px 40px -24px rgba(0,0,0,.7)}
+  .opt2 .ph{aspect-ratio:16/10}
+  .opt2 .bd{padding:12px 12px 12px;gap:6px}
+  .opt2 .top,.opt2 p,.opt2 .subs{display:none}
+  .opt2 h2{font-size:20px}
+  .opt2 .btn{padding:9px 8px;font-size:12.5px;gap:4px;white-space:normal;text-align:center;line-height:1.2}
+  .opt2 .btn svg{width:14px;height:14px}
+  .opt2 .btn .lg{display:none}.opt2 .btn .sm{display:inline}
+  .vhero .trust{gap:6px 14px;margin-top:18px;justify-content:center}
+  .vhero .trust li{font-size:12px}
+  .vhero .trust svg{width:14px;height:14px}
+}
 
 /* ---------- moving brand line ---------- */
 .brands{padding:56px 0 64px;background:var(--paper);border-bottom:1px solid var(--line)}
