@@ -325,8 +325,8 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
       <h1>Rentals and tours from trusted local agencies.</h1>
       <p class="lede">Choose a service to get started.</p></div>
     <div class="choose2">
-      ${opt("/rentals/", "/assets/opiius/img/ban-rent.jpg", "car", "Rentals", "Rent a car from a verified local agency. See the whole fleet and the day price upfront.", rentalSubs, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "Choose a rental agency")}
-      ${opt("/tours/", "/assets/opiius/img/ban-tour.jpg", "map", "Tours", "Plan a trip with a local tour operator and get a day-by-day plan on WhatsApp.", tourSubs, "", "Plan a tour")}
+      ${opt("/rentals/", "/assets/opiius/img/card-rent.jpg", "car", "Rentals", "Rent a car from a verified local agency. See the whole fleet and the day price upfront.", rentalSubs, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "Choose a rental agency")}
+      ${opt("/tours/", "/assets/opiius/img/card-tour.jpg", "map", "Tours", "Plan a trip with a local tour operator and get a day-by-day plan on WhatsApp.", tourSubs, "", "Plan a tour")}
     </div>
     <ul class="trust"><li>${I.shield}Verified agencies</li><li>${I.camera}Real photos of every car</li><li>${I.tag}Prices shown upfront</li><li>${I.check}No booking fee</li></ul>
   </div>
