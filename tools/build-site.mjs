@@ -315,7 +315,7 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
   const rentalSubs = CATS[0].subs.map(s => s.name), tourSubs = CATS[1].subs.filter(s => !s.type).map(s => s.name);
   const opt = (href, img, ic, h, p, subs, meta, cta) => `<a class="opt2" href="${href}"><div class="ph"><img src="${img}" alt="" loading="eager"></div>
     <div class="bd"><div class="top"><span class="ic">${I[ic]}</span>${meta ? `<span class="meta">${meta}</span>` : ""}</div><h2>${h}</h2><p>${p}</p>
-    <ul class="subs">${subs.map(t => `<li>${esc(t)}</li>`).join("")}</ul><span class="btn primary block">${cta} ${arrow()}</span></div></a>`;
+    <ul class="subs">${subs.map(t => `<li>${esc(t)}</li>`).join("")}</ul><span class="btn primary block"><span class="lg">${cta}</span><span class="sm">Explore</span> ${arrow()}</span></div></a>`;
   const body = `
 <section class="vhero">
   <video class="vbg" autoplay muted loop playsinline preload="auto" poster="/assets/site/media/hills.jpg" aria-hidden="true">
