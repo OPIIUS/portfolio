@@ -67,7 +67,8 @@ const I = {
   compass: P('<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>'),
   wa: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.3.3c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 2 1.1.9 2 1.2 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.2 1.4z"/></svg>'
 };
-const LOGO = `<svg viewBox="0 0 38 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 21L11 5l6 10"/><path d="M13 21l9-16 14 16"/></svg>`;
+const WORDMARK = fs.readFileSync(path.join(ROOT, "assets/site/logo/opiius-wordmark.svg"), "utf8").replace("<svg ", '<svg class="wm" aria-hidden="true" focusable="false" ');
+const LOGO = `<img class="bdg" src="/assets/site/logo/opiius-badge.svg" width="40" height="40" alt="">${WORDMARK}<span class="sr">OPIIUS</span>`;
 const CAR_LINE = '<svg viewBox="0 0 200 70" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M8 52h14m36 0h76m36 0h22v-12c0-5-3-8-8-9l-28-5-22-15c-4-3-8-4-13-4H74c-6 0-11 2-15 6L44 26l-24 4c-6 1-10 5-10 11v11"/><circle cx="40" cy="52" r="12"/><circle cx="152" cy="52" r="12"/></svg>';
 
 /* ---------- marketplace structure ---------- */
@@ -132,7 +133,7 @@ const NAV = [["rentals/", "Rentals", "rentals"], ["tours/", "Tours", "tours"], [
 function header(active) {
   return `<a class="skip" href="#main">Skip to content</a>
 <header class="hdr"><div class="wrap">
-  <a class="logo" href="/" aria-label="OPIIUS home">${LOGO}OPIIUS</a>
+  <a class="logo" href="/" aria-label="OPIIUS home">${LOGO}</a>
   <nav class="nav" aria-label="Main">${NAV.map(([h, t, k]) => `<a href="/${h}"${active === k ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
   <div class="cta"><a class="btn outline sm hide-m" href="/for-agencies/"${active === "agencies" ? ' aria-current="page"' : ""}>For agencies</a>
     <button type="button" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mnav">${I.menu}</button></div>
@@ -146,7 +147,7 @@ function header(active) {
 function footer() {
   return `<footer class="ftr"><div class="wrap">
   <div class="cols">
-    <div><a class="logo" href="/">${LOGO}OPIIUS</a><p class="about">Rentals and tours from trusted local agencies in Guwahati and the Northeast. Real photos, clear prices, inquiries on WhatsApp.</p></div>
+    <div><a class="logo" href="/">${LOGO}</a><p class="about">Rentals and tours from trusted local agencies in Guwahati and the Northeast. Real photos, clear prices, inquiries on WhatsApp.</p></div>
     <div><h4>Rentals &amp; tours</h4><ul>
       <li><a href="/rentals/">Rentals</a></li><li><a href="${sdcUrl}">Self-drive cars in Guwahati</a></li><li><a href="/get-matched/?need=cars-with-driver">Cars with driver</a></li>
       <li><a href="/tours/">Tours</a></li><li><a href="/tours/#destinations">Meghalaya, Kaziranga &amp; Tawang</a></li></ul></div>
@@ -181,19 +182,22 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${SITE}${og}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="10" fill="#11261f"/><g fill="none" stroke="#c9a45c" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"><path d="M4 30l8-15 5 9"/><path d="M14 30l8-15 13 15"/></g></svg>')}">
+<link rel="icon" type="image/svg+xml" href="/assets/site/logo/opiius-badge.svg">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/site/logo/favicon-48.png">
+<link rel="apple-touch-icon" href="/assets/site/logo/apple-touch-icon.png">
+<link rel="preload" as="image" href="/assets/site/logo/opiius-3d.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/site/site.css?v=${ASSET_V}">
-<style>/* splash styles live in the page so a stale cached stylesheet can never break it */#splash{display:none}.splash #splash{position:fixed;inset:0;z-index:1000;display:grid!important;place-items:center;background:#11261f;color:#fff;animation:spAuto .5s ease 3.2s forwards}#splash.out{animation:spOut .55s cubic-bezier(.22,1,.36,1) forwards}.sp-in{display:flex;flex-direction:column;align-items:center;text-align:center}.sp-mark{width:120px;height:76px;color:#c9a45c}.sp-mark path{stroke-dasharray:1;stroke-dashoffset:1;animation:spDraw .9s cubic-bezier(.22,1,.36,1) forwards}.sp-mark .p2{animation-delay:.25s}.sp-word{font:800 40px/1 "Plus Jakarta Sans",system-ui,sans-serif;letter-spacing:.2em;margin-top:22px;opacity:0;transform:translateY(10px);animation:spUp .6s ease .65s forwards}.sp-tag{font:600 13px "Manrope",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:12px;opacity:0;animation:spUp .6s ease .85s forwards}.sp-bar{width:120px;height:3px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:26px;overflow:hidden;opacity:0;animation:spUp .4s ease .9s forwards}.sp-bar i{display:block;height:100%;width:40%;border-radius:3px;background:#c9a45c;animation:spLoad 1.1s ease-in-out .9s infinite}@keyframes spDraw{to{stroke-dashoffset:0}}@keyframes spUp{to{opacity:1;transform:none}}@keyframes spLoad{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}@keyframes spOut{to{opacity:0;transform:scale(1.04);visibility:hidden}}@keyframes spAuto{to{opacity:0;visibility:hidden}}@media(prefers-reduced-motion:reduce){.sp-mark path{stroke-dashoffset:0;animation:none}.sp-word,.sp-tag,.sp-bar{opacity:1;transform:none;animation:none}.sp-bar i{animation:none;width:100%}}</style>
+<style>/* splash styles live in the page so a stale cached stylesheet can never break it */#splash{display:none}.splash #splash{position:fixed;inset:0;z-index:1000;display:grid!important;place-items:center;background:#11261f;color:#fff;animation:spAuto .5s ease 3.2s forwards}#splash.out{animation:spOut .55s cubic-bezier(.22,1,.36,1) forwards}.sp-in{display:flex;flex-direction:column;align-items:center;text-align:center}.sp-medal{width:200px;height:200px;object-fit:contain;filter:drop-shadow(0 26px 36px rgba(0,0,0,.45));opacity:0;transform:scale(.7) rotate(-8deg);animation:spMedal .9s cubic-bezier(.22,1.2,.36,1) .05s forwards,spFloat 3s ease-in-out 1s infinite}@keyframes spMedal{to{opacity:1;transform:none}}@keyframes spFloat{50%{transform:translateY(-6px)}}.sp-tag{font:600 13px "Manrope",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:22px;opacity:0;animation:spUp .6s ease .6s forwards}.sp-bar{width:120px;height:3px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:26px;overflow:hidden;opacity:0;animation:spUp .4s ease .7s forwards}.sp-bar i{display:block;height:100%;width:40%;border-radius:3px;background:#c9a45c;animation:spLoad 1.1s ease-in-out .9s infinite}@keyframes spUp{to{opacity:1;transform:none}}@keyframes spLoad{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}@keyframes spOut{to{opacity:0;transform:scale(1.04);visibility:hidden}}@keyframes spAuto{to{opacity:0;visibility:hidden}}@media(prefers-reduced-motion:reduce){.sp-medal,.sp-tag,.sp-bar{opacity:1;transform:none;animation:none}.sp-bar i{animation:none;width:100%}}</style>
 <script>/* OPIIUS splash: first page of each visit only */try{if(!sessionStorage.getItem("op-splash")){document.documentElement.classList.add("splash");sessionStorage.setItem("op-splash","1")}}catch(e){}</script>
 ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join("\n")}${extraHead}
 </head>
 <body>
 <div id="splash" aria-hidden="true" style="display:none"><div class="sp-in">
-  <svg class="sp-mark" width="120" height="76" viewBox="0 0 38 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"><path class="p1" pathLength="1" d="M2 21L11 5l6 10"/><path class="p2" pathLength="1" d="M13 21l9-16 14 16"/></svg>
-  <div class="sp-word">OPIIUS</div><div class="sp-tag">Rentals &amp; tours · Guwahati</div><div class="sp-bar"><i></i></div>
+  <img class="sp-medal" src="/assets/site/logo/opiius-3d.webp" width="200" height="200" alt="">
+  <div class="sp-tag">Rentals &amp; tours · Guwahati</div><div class="sp-bar"><i></i></div>
 </div></div>
 ${header(active)}
 <main id="main">
