@@ -184,9 +184,14 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/site/site.css">
+<script>/* OPIIUS splash: first page of each visit only */try{if(!sessionStorage.getItem("op-splash")){document.documentElement.classList.add("splash");sessionStorage.setItem("op-splash","1")}}catch(e){}</script>
 ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join("\n")}${extraHead}
 </head>
 <body>
+<div id="splash" aria-hidden="true"><div class="sp-in">
+  <svg class="sp-mark" viewBox="0 0 38 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"><path class="p1" pathLength="1" d="M2 21L11 5l6 10"/><path class="p2" pathLength="1" d="M13 21l9-16 14 16"/></svg>
+  <div class="sp-word">OPIIUS</div><div class="sp-tag">Rentals &amp; tours · Guwahati</div><div class="sp-bar"><i></i></div>
+</div></div>
 ${header(active)}
 <main id="main">
 ${body}

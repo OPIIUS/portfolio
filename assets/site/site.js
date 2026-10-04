@@ -18,6 +18,14 @@
   }
   document.documentElement.classList.add("js");
 
+  /* splash: keep the logo up for at least ~1.3 s, then fade out once the page has loaded (CSS hides it after 3.2 s regardless) */
+  var sp=document.getElementById("splash");
+  if(sp&&document.documentElement.classList.contains("splash")){
+    var t0=Date.now(),shown=matchMedia("(prefers-reduced-motion: reduce)").matches?500:1300;
+    var hide=function(){setTimeout(function(){sp.classList.add("out");setTimeout(function(){document.documentElement.classList.remove("splash")},600)},Math.max(0,shown-(Date.now()-t0)))};
+    if(document.readyState==="complete")hide();else window.addEventListener("load",hide);
+  }
+
   /* links from the old single-page site (opiius.online/#/...) */
   var h=location.hash;
   if(/^#\//.test(h)){
