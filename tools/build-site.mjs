@@ -202,6 +202,7 @@ ${body}
 ${footer()}
 <script src="/assets/opiius/config.js?v=${ASSET_V}"></script>
 <script src="/assets/site/site.js?v=${ASSET_V}"></script>
+<script data-goatcounter="https://opiiusonline.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
 `;
