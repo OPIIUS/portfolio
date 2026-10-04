@@ -8,6 +8,6 @@ window.OPIIUS_CONFIG = {
   live: true,
   whatsapp: "918638830682",
   phoneDisplay: "86388 30682",
-  bookingLog: "",
+  bookingLog: "https://script.google.com/macros/s/AKfycbwf39vAUguEfWdsziGK_A_90BA-CuVjQZEXtNwu-5iTXTQrgCde2qGw9qqfMKLMRefe/exec",
   goatcounter: ""
 };
