@@ -3,6 +3,7 @@
    Writes: index.html, rentals/, tours/, agency/, for-agencies/,
    verification/, about/, get-matched/, 404.html and sitemap.xml. Only real partners (real:true) are shown. */
 import fs from "node:fs";
+import crypto from "node:crypto";
 import path from "node:path";
 import vm from "node:vm";
 import {fileURLToPath} from "node:url";
@@ -30,6 +31,7 @@ function write(rel, html) {
   fs.writeFileSync(f, html);
   written.push(rel);
 }
+const ASSET_V = crypto.createHash("sha1").update(["assets/site/site.css", "assets/site/site.js", "assets/opiius/config.js"].map(f => fs.readFileSync(path.join(ROOT, f))).join("")).digest("hex").slice(0, 8);
 const urlOf = rel => "/" + rel.replace(/index\.html$/, "");
 
 /* ---------- icons (24px, stroke) ---------- */
@@ -183,18 +185,24 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="/assets/site/site.css">
+<link rel="stylesheet" href="/assets/site/site.css?v=${ASSET_V}">
+<style>/* splash styles live in the page so a stale cached stylesheet can never break it */#splash{display:none}.splash #splash{position:fixed;inset:0;z-index:1000;display:grid!important;place-items:center;background:#11261f;color:#fff;animation:spAuto .5s ease 3.2s forwards}#splash.out{animation:spOut .55s cubic-bezier(.22,1,.36,1) forwards}.sp-in{display:flex;flex-direction:column;align-items:center;text-align:center}.sp-mark{width:120px;height:76px;color:#c9a45c}.sp-mark path{stroke-dasharray:1;stroke-dashoffset:1;animation:spDraw .9s cubic-bezier(.22,1,.36,1) forwards}.sp-mark .p2{animation-delay:.25s}.sp-word{font:800 40px/1 "Plus Jakarta Sans",system-ui,sans-serif;letter-spacing:.2em;margin-top:22px;opacity:0;transform:translateY(10px);animation:spUp .6s ease .65s forwards}.sp-tag{font:600 13px "Manrope",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:12px;opacity:0;animation:spUp .6s ease .85s forwards}.sp-bar{width:120px;height:3px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:26px;overflow:hidden;opacity:0;animation:spUp .4s ease .9s forwards}.sp-bar i{display:block;height:100%;width:40%;border-radius:3px;background:#c9a45c;animation:spLoad 1.1s ease-in-out .9s infinite}@keyframes spDraw{to{stroke-dashoffset:0}}@keyframes spUp{to{opacity:1;transform:none}}@keyframes spLoad{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}@keyframes spOut{to{opacity:0;transform:scale(1.04);visibility:hidden}}@keyframes spAuto{to{opacity:0;visibility:hidden}}@media(prefers-reduced-motion:reduce){.sp-mark path{stroke-dashoffset:0;animation:none}.sp-word,.sp-tag,.sp-bar{opacity:1;transform:none;animation:none}.sp-bar i{animation:none;width:100%}}</style>
+<script>/* OPIIUS splash: first page of each visit only */try{if(!sessionStorage.getItem("op-splash")){document.documentElement.classList.add("splash");sessionStorage.setItem("op-splash","1")}}catch(e){}</script>
 ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join("\n")}${extraHead}
 </head>
 <body>
+<div id="splash" aria-hidden="true" style="display:none"><div class="sp-in">
+  <svg class="sp-mark" width="120" height="76" viewBox="0 0 38 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"><path class="p1" pathLength="1" d="M2 21L11 5l6 10"/><path class="p2" pathLength="1" d="M13 21l9-16 14 16"/></svg>
+  <div class="sp-word">OPIIUS</div><div class="sp-tag">Rentals &amp; tours · Guwahati</div><div class="sp-bar"><i></i></div>
+</div></div>
 ${header(active)}
 <main id="main">
 ${body}
 </main>
 ${footer()}
-<script src="/assets/opiius/config.js"></script>
-<script src="/assets/site/site.js"></script>
-<script data-goatcounter="https://opiius.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script src="/assets/opiius/config.js?v=${ASSET_V}"></script>
+<script src="/assets/site/site.js?v=${ASSET_V}"></script>
+<script data-goatcounter="https://opiiusonline.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
 `;

@@ -120,10 +120,10 @@ const AGENCIES = {
 /* ---------- listings: [agency, model, price/day, units, rating, trips, year] ---------- */
 const L = [
   /* Real Drive Ghy: prices, years and terms from the owner's onboarding block (Oct 2026). One car of each model.
-     Photos: the agency's own cars, cropped 4:3. Fronx has no photo of their own car yet. */
+     Photos: the agency's own cars, cropped 4:3. All 13 models have the agency's own photo. */
   ["rd","i20",1500,1,null,0,2017,"assets/partners/real-drive-ghy/i20.jpg"], ["rd","nios",1600,1,null,0,2023,"assets/partners/real-drive-ghy/nios.jpg"], ["rd","ignis",1600,1,null,0,2024,"assets/partners/real-drive-ghy/ignis.jpg"],
   ["rd","swift",1700,1,null,0,2022,"assets/partners/real-drive-ghy/swift.jpg"], ["rd","baleno",1800,1,null,0,2025,"assets/partners/real-drive-ghy/baleno.jpg"], ["rd","glanza",1800,1,null,0,2026,"assets/partners/real-drive-ghy/glanza.jpg"],
-  ["rd","punch",1800,1,null,0,2022,"assets/partners/real-drive-ghy/punch.jpg"], ["rd","fronx",2200,1,null,0,2024], ["rd","urbancruiser",2400,1,null,0,null,"assets/partners/real-drive-ghy/urbancruiser.jpg"],
+  ["rd","punch",1800,1,null,0,2022,"assets/partners/real-drive-ghy/punch.jpg"], ["rd","fronx",2200,1,null,0,2024,"assets/partners/real-drive-ghy/fronx.jpg"], ["rd","urbancruiser",2400,1,null,0,null,"assets/partners/real-drive-ghy/urbancruiser.jpg"],
   ["rd","scorpio",3000,1,null,0,2018,"assets/partners/real-drive-ghy/scorpio.jpg"], ["rd","xl6",3000,1,null,0,2023,"assets/partners/real-drive-ghy/xl6.jpg"], ["rd","carens",3300,1,null,0,2023,"assets/partners/real-drive-ghy/carens.jpg"],
   ["rd","innova",3600,1,null,0,2024,"assets/partners/real-drive-ghy/innova.jpg"],
 ];
