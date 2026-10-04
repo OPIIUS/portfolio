@@ -188,9 +188,9 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <link rel="preload" as="image" href="/assets/site/logo/opiius-3d.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap">
 <link rel="stylesheet" href="/assets/site/site.css?v=${ASSET_V}">
-<style>/* splash styles live in the page so a stale cached stylesheet can never break it */#splash{display:none}.splash #splash{position:fixed;inset:0;z-index:1000;display:grid!important;place-items:center;background:#11261f;color:#fff;animation:spAuto .5s ease 3.2s forwards}#splash.out{animation:spOut .55s cubic-bezier(.22,1,.36,1) forwards}.sp-in{display:flex;flex-direction:column;align-items:center;text-align:center}.sp-medal{width:200px;height:200px;object-fit:contain;filter:drop-shadow(0 26px 36px rgba(0,0,0,.45));opacity:0;transform:scale(.7) rotate(-8deg);animation:spMedal .9s cubic-bezier(.22,1.2,.36,1) .05s forwards,spFloat 3s ease-in-out 1s infinite}@keyframes spMedal{to{opacity:1;transform:none}}@keyframes spFloat{50%{transform:translateY(-6px)}}.sp-tag{font:600 13px "Manrope",system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:22px;opacity:0;animation:spUp .6s ease .6s forwards}.sp-bar{width:120px;height:3px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:26px;overflow:hidden;opacity:0;animation:spUp .4s ease .7s forwards}.sp-bar i{display:block;height:100%;width:40%;border-radius:3px;background:#c9a45c;animation:spLoad 1.1s ease-in-out .9s infinite}@keyframes spUp{to{opacity:1;transform:none}}@keyframes spLoad{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}@keyframes spOut{to{opacity:0;transform:scale(1.04);visibility:hidden}}@keyframes spAuto{to{opacity:0;visibility:hidden}}@media(prefers-reduced-motion:reduce){.sp-medal,.sp-tag,.sp-bar{opacity:1;transform:none;animation:none}.sp-bar i{animation:none;width:100%}}</style>
+<style>/* splash styles live in the page so a stale cached stylesheet can never break it */#splash{display:none}.splash #splash{position:fixed;inset:0;z-index:1000;display:grid!important;place-items:center;background:#11261f;color:#fff;animation:spAuto .5s ease 3.2s forwards}#splash.out{animation:spOut .55s cubic-bezier(.22,1,.36,1) forwards}.sp-in{display:flex;flex-direction:column;align-items:center;text-align:center}.sp-medal{width:200px;height:200px;object-fit:contain;filter:drop-shadow(0 26px 36px rgba(0,0,0,.45));opacity:0;transform:scale(.7) rotate(-8deg);animation:spMedal .9s cubic-bezier(.22,1.2,.36,1) .05s forwards,spFloat 3s ease-in-out 1s infinite}@keyframes spMedal{to{opacity:1;transform:none}}@keyframes spFloat{50%{transform:translateY(-6px)}}.sp-tag{font:400 15px -apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;letter-spacing:-.01em;color:rgba(255,255,255,.7);margin-top:22px;opacity:0;animation:spUp .6s ease .6s forwards}.sp-bar{width:120px;height:3px;border-radius:3px;background:rgba(255,255,255,.12);margin-top:26px;overflow:hidden;opacity:0;animation:spUp .4s ease .7s forwards}.sp-bar i{display:block;height:100%;width:40%;border-radius:3px;background:#c9a45c;animation:spLoad 1.1s ease-in-out .9s infinite}@keyframes spUp{to{opacity:1;transform:none}}@keyframes spLoad{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}@keyframes spOut{to{opacity:0;transform:scale(1.04);visibility:hidden}}@keyframes spAuto{to{opacity:0;visibility:hidden}}@media(prefers-reduced-motion:reduce){.sp-medal,.sp-tag,.sp-bar{opacity:1;transform:none;animation:none}.sp-bar i{animation:none;width:100%}}</style>
 <script>/* OPIIUS splash: first page of each visit only */try{if(!sessionStorage.getItem("op-splash")){document.documentElement.classList.add("splash");sessionStorage.setItem("op-splash","1")}}catch(e){}</script>
 ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join("\n")}${extraHead}
 </head>
@@ -206,6 +206,7 @@ ${body}
 ${footer()}
 <script src="/assets/opiius/config.js?v=${ASSET_V}"></script>
 <script src="/assets/site/site.js?v=${ASSET_V}"></script>
+<script data-goatcounter="https://opiiusonline.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
 `;
@@ -299,7 +300,7 @@ const verifyBand = (kind, noun) => `<section class="sec pine"><div class="wrap">
   <div class="sec-h"><div><span class="eyebrow">What “Verified” means</span><h2>Checked by us, so you don't have to guess.</h2><p>Before a ${noun} earns the OPIIUS Verified badge, we check these. Badges are re-checked every six months and show the date.</p></div><a class="btn light" href="/verification/">Our verification standards</a></div>
   <ul class="ticks" style="columns:2 280px;column-gap:40px;display:block">${CHECKS[kind].map(t => `<li style="break-inside:avoid;margin-bottom:12px">${I.check.replace("<svg", '<svg style="color:var(--gold)"')}<span>${esc(t)}</span></li>`).join("")}</ul>
   <p style="margin-top:22px;color:rgba(255,255,255,.75)">Featured placements are paid and always labelled. <b style="color:#fff">Verification is never sold.</b></p></div></section>`;
-const matchSection = (need, h, p) => `<section class="sec" id="match"><div class="wrap matchbox"><div><span class="eyebrow">Get matched</span><h2 style="font-size:clamp(26px,3.4vw,38px);font-weight:800;margin-top:8px">${h}</h2><p class="muted" style="margin-top:12px;max-width:44ch;font-size:16px">${p}</p>
+const matchSection = (need, h, p) => `<section class="sec" id="match"><div class="wrap matchbox"><div><span class="eyebrow">Get matched</span><h2 style="font-size:clamp(26px,3.4vw,38px);font-weight:600;margin-top:8px">${h}</h2><p class="muted" style="margin-top:12px;max-width:44ch;font-size:16px">${p}</p>
   <ul class="ticks"><li>${I.check}<span>One request instead of five chats</span></li><li>${I.check}<span>A reply on WhatsApp, with an OPIIUS reference</span></li><li>${I.check}<span>No booking fee</span></li></ul></div>${matchForm(need)}</div></section>`;
 const askTile = (s, tone = "") => `<a class="tile rv ${tone}" id="${s.id}" href="#match" data-need="${s.id}"><div><span class="ic">${I[s.icon]}</span><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p></div><div class="meta"><span>${s.meta || "Ask for this"}</span><span>${arrow()}</span></div></a>`;
 const GENERAL_FAQ = [
@@ -483,11 +484,11 @@ ${chipsNav(list, [["guide", "Before you rent"]])}
     <div><span>Km limit</span><span>Check the daily km and the charge per extra km</span></div><div><span>Fuel</span><span>Usually returned at the same level as pickup</span></div>
     <div><span>At pickup</span><span>Take photos of every side of the car, and the fuel and km readings</span></div><div><span>Out of state</span><span>Planning Meghalaya or Arunachal? Tell the agency when you ask</span></div></div></div>
   <div class="panel"><h2>Agencies here</h2><p>Each agency sets its own prices and terms.</p>
-    <div class="kv">${ags.map(a => `<div><span><a href="${urlOf(agencyPath(a))}" style="font-weight:700;color:var(--ink)">${esc(a.name)}</a></span><span>${badge(a)}</span></div>`).join("")}</div>
+    <div class="kv">${ags.map(a => `<div><span><a href="${urlOf(agencyPath(a))}" style="font-weight:600;color:var(--ink)">${esc(a.name)}</a></span><span>${badge(a)}</span></div>`).join("")}</div>
     <div class="ctas"><a class="btn outline" href="/for-agencies/">List your agency here</a></div></div>
 </div></section>
 ${faq.html}
-<section class="sec" id="match"><div class="wrap matchbox"><div><span class="eyebrow">Get matched</span><h2 style="font-size:clamp(26px,3.4vw,38px);font-weight:800;margin-top:8px">Didn't find the right car?</h2><p class="muted" style="margin-top:12px">Tell us the dates and the kind of car. We'll check with local agencies and reply on WhatsApp.</p></div>${matchForm(sub.id)}</div></section>
+<section class="sec" id="match"><div class="wrap matchbox"><div><span class="eyebrow">Get matched</span><h2 style="font-size:clamp(26px,3.4vw,38px);font-weight:600;margin-top:8px">Didn't find the right car?</h2><p class="muted" style="margin-top:12px">Tell us the dates and the kind of car. We'll check with local agencies and reply on WhatsApp.</p></div>${matchForm(sub.id)}</div></section>
 ${askDialog(list)}`;
   write(rel, layout({rel, title: `${sub.name} in ${cn} from ${inr(minP(list))}/day · OPIIUS`, active: "rentals",
     desc: `Compare ${plural(list.length, kind === "car" ? "self-drive car" : "bike")} in ${cn} from local agencies: real photos, day prices from ${inr(minP(list))}, inquiries on WhatsApp.`,
@@ -533,7 +534,7 @@ ${chipsNav(list, [["info", "Price list & terms"]])}
   </div>
 </div></section>
 <section class="sec"><div class="wrap" style="text-align:center;max-width:720px">
-  <h2 style="font-size:clamp(28px,4.4vw,44px);font-weight:800">Know your dates? Check a car now.</h2>
+  <h2 style="font-size:clamp(28px,4.4vw,44px);font-weight:600">Know your dates? Check a car now.</h2>
   <p class="muted" style="margin-top:12px;font-size:16px">Tell us the car, the dates and where you'd like to pick it up. ${esc(a.name)} replies on WhatsApp.</p>
   <div class="ctas" style="justify-content:center"><button type="button" class="btn dark" data-ask="">Check availability</button></div>
 </div></section>
@@ -665,7 +666,7 @@ write("get-matched/index.html", layout({rel: "get-matched/index.html", title: "G
   desc: "Tell OPIIUS what you need: a car, a car with driver or a tour. We'll pass it to a suitable local agency and you'll get a reply on WhatsApp.",
   body: `<section class="sec mist" style="padding-top:64px"><div class="wrap matchbox">
   <div><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Get matched</span></nav><span class="eyebrow">Get matched</span>
-    <h1 style="font-size:clamp(34px,5vw,54px);font-weight:800;margin-top:10px">Tell us what you need. We'll find the agency.</h1>
+    <h1 style="font-size:clamp(34px,5vw,54px);font-weight:600;margin-top:10px">Tell us what you need. We'll find the agency.</h1>
     <p class="muted" style="margin-top:16px;font-size:17px;max-width:46ch">A self-drive car, a car with driver or a tour. Share the details once and get a reply on WhatsApp.</p>
     <ol class="steps3" style="grid-template-columns:1fr;gap:12px;margin-top:26px"><li style="padding:18px"><b style="margin-top:10px">Send your request</b><span>It opens WhatsApp with your details and a reference number.</span></li><li style="padding:18px"><b style="margin-top:10px">We find a suitable agency</b><span>Your request goes to a local agency that fits.</span></li><li style="padding:18px"><b style="margin-top:10px">Get details before you commit</b><span>Prices, inclusions and availability on WhatsApp.</span></li></ol></div>
   ${matchForm("self-drive-cars", {title: "Your request"})}
@@ -673,7 +674,7 @@ write("get-matched/index.html", layout({rel: "get-matched/index.html", title: "G
 
 /* ---------- 404 and old pages ---------- */
 write("404.html", layout({rel: "404.html", title: "Page not found · OPIIUS", desc: "This page isn't on OPIIUS.", noindex: true,
-  body: `<section class="sec"><div class="wrap" style="max-width:720px;text-align:center"><span class="eyebrow">404</span><h1 style="font-size:clamp(34px,5vw,52px);font-weight:800;margin-top:10px">This page isn't here.</h1>
+  body: `<section class="sec"><div class="wrap" style="max-width:720px;text-align:center"><span class="eyebrow">404</span><h1 style="font-size:clamp(34px,5vw,52px);font-weight:600;margin-top:10px">This page isn't here.</h1>
   <p class="muted" style="margin-top:14px;font-size:17px">It may have moved when we rebuilt OPIIUS. Try one of these instead.</p>
   <div class="ctas" style="justify-content:center"><a class="btn primary" href="/">Home</a><a class="btn outline" href="${sdcUrl}">Self-drive cars</a><a class="btn outline" href="/get-matched/">Get matched</a></div></div></section>`}));
 write("tours/meghalaya.html", `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Meghalaya tours · OPIIUS</title><link rel="canonical" href="${SITE}/tours/"><meta http-equiv="refresh" content="0; url=/tours/"><meta name="robots" content="noindex"></head><body><p><a href="/tours/">Meghalaya tours on OPIIUS</a></p></body></html>\n`);
