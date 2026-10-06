@@ -315,7 +315,8 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
   <div class="marquee" aria-label="Car brands"><div class="track">${row}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}</div></div></section>`;
 }
 
-/* ---------- home: video background, two ways to rent, agencies, moving brand line ---------- */
+/* ---------- home: video background, two ways to rent, agencies, moving brand line ----------
+   The two cards use OPIIUS's own images, never an agency's photos. */
 (function home() {
   const opt = (href, img, pos, ic, h, p, subs, meta, cta) => `<a class="opt2" href="${href}"><div class="ph"><img src="${img}" alt="" loading="eager" style="object-position:${pos}"></div>
     <div class="bd"><div class="top"><span class="ic">${I[ic]}</span>${meta ? `<span class="meta">${meta}</span>` : ""}</div><h2>${h}</h2><p>${p}</p>
@@ -330,8 +331,8 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
       <h1>Rent a car from a trusted local agency.</h1>
       <p class="lede">Real photos, the owner's price and terms upfront. Ask on WhatsApp.</p></div>
     <div class="choose2">
-      ${opt(sdcUrl, "/assets/partners/saraighat-travels/thar.jpg", "50% 62%", "car", "Self-drive cars", "Drive yourself. See every car, its day price, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "See self-drive cars")}
-      ${opt("/get-matched/?need=cars-with-driver", "/assets/partners/real-drive-ghy/innova.jpg", "50% 55%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], "", "Ask for a car with driver")}
+      ${opt(sdcUrl, "/assets/opiius/img/card-rent.jpg", "50% 50%", "car", "Self-drive cars", "Drive yourself. See every car, its day price, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "See self-drive cars")}
+      ${opt("/get-matched/?need=cars-with-driver", "/assets/opiius/img/door-rent.jpg", "50% 65%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], "", "Ask for a car with driver")}
     </div>
     <ul class="trust"><li>${I.shield}Verified agencies</li><li>${I.camera}Real photos of every car</li><li>${I.tag}Prices shown upfront</li><li>${I.check}No booking fee</li></ul>
   </div>
