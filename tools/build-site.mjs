@@ -331,8 +331,8 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
       <h1>Rent a car from a trusted local agency.</h1>
       <p class="lede">Real photos, the owner's price and terms upfront. Ask on WhatsApp.</p></div>
     <div class="choose2">
-      ${opt(sdcUrl, "/assets/opiius/img/card-rent.jpg", "50% 50%", "car", "Self-drive cars", "Drive yourself. See every car, its day price, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "See self-drive cars")}
-      ${opt("/get-matched/?need=cars-with-driver", "/assets/opiius/img/door-rent.jpg", "50% 65%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], "", "Ask for a car with driver")}
+      ${opt(sdcUrl, "/assets/opiius/img/home-selfdrive.jpg", "45% 60%", "car", "Self-drive cars", "Drive yourself. See every car, its day price, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "See self-drive cars")}
+      ${opt("/get-matched/?need=cars-with-driver", "/assets/opiius/img/home-driver.jpg", "52% 55%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], "", "Ask for a car with driver")}
     </div>
     <ul class="trust"><li>${I.shield}Verified agencies</li><li>${I.camera}Real photos of every car</li><li>${I.tag}Prices shown upfront</li><li>${I.check}No booking fee</li></ul>
   </div>
