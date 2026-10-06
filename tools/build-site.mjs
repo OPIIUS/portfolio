@@ -37,6 +37,8 @@ const urlOf = rel => "/" + rel.replace(/index\.html$/, "");
 /* ---------- icons (24px, stroke) ---------- */
 const P = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
 const I = {
+  heart: P('<path d="M12 20.5s-7.5-4.6-9.4-9.6A5.1 5.1 0 0 1 12 6.6a5.1 5.1 0 0 1 9.4 4.3c-1.9 5-9.4 9.6-9.4 9.6z"/>'),
+  search: P('<circle cx="11" cy="11" r="7"/><path d="m20.5 20.5-4.3-4.3"/>'),
   car: P('<path d="M5 17h14M3 17v-4l2.2-5.2A2 2 0 0 1 7 6.5h10a2 2 0 0 1 1.8 1.3L21 13v4"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M3.5 12.5h17"/>'),
   bike: P('<circle cx="5.5" cy="16.5" r="3.5"/><circle cx="18.5" cy="16.5" r="3.5"/><path d="M5.5 16.5 9 9h5l4.5 7.5M12 9l-2-3H7.5M14 9l1.5-3H18"/>'),
   map: P('<path d="m9 4-6 2.5v13.5L9 17.5l6 2.5 6-2.5V4l-6 2.5z"/><path d="M9 4v13.5M15 6.5V20"/>'),
@@ -137,7 +139,7 @@ function header(active) {
     <button type="button" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mnav">${I.menu}</button></div>
 </div></header>
 <nav class="mnav" id="mnav" aria-label="Mobile">
-  <a href="/rentals/">Rentals<small>Choose a local agency</small></a><a href="${sdcUrl}">Self-drive cars<small>Guwahati</small></a><a href="${driverUrl}">Cars with driver<small>${DRV.length ? "Choose an agency" : "Tell us your dates"}</small></a>
+  <a href="/rentals/">Rentals<small>Choose a local agency</small></a><a href="${selfDriveUrl}">Self-drive cars<small>Choose an agency</small></a><a href="${driverUrl}">Cars with driver<small>${DRV.length ? "Choose an agency" : "Tell us your dates"}</small></a>
   <a href="/verification/">How we verify</a><a href="/about/">About</a>
   <a class="btn primary" href="/for-agencies/">For agencies: list your cars</a>
 </nav>`;
@@ -147,7 +149,7 @@ function footer() {
   <div class="cols">
     <div><a class="logo" href="/">${LOGO}</a><p class="about">Self-drive cars and cars with driver from trusted local rental agencies in Guwahati. Real photos, clear prices, inquiries on WhatsApp.</p></div>
     <div><h4>Rentals</h4><ul>
-      <li><a href="/rentals/">All rental agencies</a></li><li><a href="${sdcUrl}">Self-drive cars in Guwahati</a></li><li><a href="${driverUrl}">Cars with driver</a></li>
+      <li><a href="/rentals/">All rental agencies</a></li><li><a href="${selfDriveUrl}">Self-drive cars in Guwahati</a></li><li><a href="${driverUrl}">Cars with driver</a></li>
       ${BRAND_LIST.slice(0, 3).map(b => `<li><a href="${urlOf(brandPath(b.k))}">${esc(b.name)} cars</a></li>`).join("")}</ul></div>
     <div><h4>Agencies</h4><ul>${AGENCIES.map(a => `<li><a href="${urlOf(agencyPath(a))}">${esc(a.name)}</a></li>`).join("")}<li><a href="/agency/">All agencies</a></li><li><a href="/get-matched/">Get matched</a></li></ul></div>
     <div><h4>For agencies</h4><ul>
@@ -286,6 +288,8 @@ const joinCard = `<a class="acard join rv" href="/for-agencies/"><span class="ey
 const sdcCities = liveCities("car");
 const allCars = carsOf(c => c.m.kind === "car");
 const sdcUrl = sdcCities.length ? urlOf(listingPath("self-drive-cars", sdcCities[0])) : "/rentals/";
+/* "Self-drive cars" links open the agency list first; the all-cars page stays one click further */
+const selfDriveUrl = "/rentals/#self-drive-cars";
 
 /* ---------- shared page sections ---------- */
 /* items: [anchor, label] or [anchor, label, need] — a "need" chip jumps to the request form with that option selected */
@@ -337,7 +341,7 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
       <h1>Rent a car from a trusted local agency.</h1>
       <p class="lede">Real photos, the owner's price and terms upfront. Ask on WhatsApp.</p></div>
     <div class="choose2">
-      ${opt(sdcUrl, "/assets/opiius/img/home-selfdrive.jpg", "45% 60%", "car", "Self-drive cars", "Drive yourself. See every car, its day price, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "See self-drive cars")}
+      ${opt(selfDriveUrl, "/assets/opiius/img/home-selfdrive.jpg", "45% 60%", "car", "Self-drive cars", "Choose a local agency, then see its cars, day prices, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "Choose an agency")}
       ${opt(driverUrl, "/assets/opiius/img/home-driver.jpg", "52% 55%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], DRV.length ? `From ${inr(Math.min(...DRV.map(drvMin)))}/day` : "", DRV.length ? "See cars with driver" : "Ask for a car with driver")}
     </div>
     <ul class="trust"><li>${I.shield}Verified agencies</li><li>${I.camera}Real photos of every car</li><li>${I.tag}Prices shown upfront</li><li>${I.check}No booking fee</li></ul>
@@ -361,20 +365,39 @@ function agencyRow(a) {
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
   const autos = list.filter(c => /auto/i.test(c.trans)).length;
   const chips = [/agency/i.test(pol.deposit || "") ? "" : /^no /i.test(pol.deposit || "") ? pol.deposit : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : "", drv(a) ? "Cars with driver too" : ""].filter(Boolean);
-  return `<a class="arow rv" href="${urlOf(agencyPath(a))}"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
+  return `<a class="arow" href="${urlOf(agencyPath(a))}"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
   <div class="bd"><div class="badges">${badge(a)}</div><h3>${esc(a.name)}</h3><p class="loc">${I.pin.replace("<svg", '<svg width="16" height="16"')}${esc(a.area ? a.area + ", " : "")}${esc(cityName(a.city))}</p>
-    <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div>
+    <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div><p class="fit" hidden></p>
     <div class="ft">${list.length ? `<div class="price"><b class="num">${inr(minP(list))}</b><span>– ${inr(maxP(list))} / day</span></div><span class="btn dark">View all ${list.length} cars ${arrow()}</span>` : `<span></span><span class="btn dark">View agency ${arrow()}</span>`}</div></div></a>`;
 }
+/* each row on /rentals/ sits in a wrapper the filter bar reads: search text, and [price, seats] for every car it offers */
+const likeBtn = a => `<button type="button" class="like" data-like="${esc(a.id)}" aria-pressed="false" aria-label="Like ${esc(a.name)}" title="Like">${I.heart}</button>`;
+const filterRow = (a, html, cars) => `<div class="arow-w rv" data-q="${esc([a.name, a.area, cityName(a.city), ...(a.driver && a.driver.areas ? [a.driver.areas] : [])].filter(Boolean).join(" ").toLowerCase())}" data-cars="${esc(JSON.stringify(cars))}">${html}${likeBtn(a)}</div>`;
 /* the same agency in the "Cars with driver" list: its driver rates, linking to the driver section of its page */
 function driverRow(a) {
   const d = a.driver, cars = drvCars(a), list = CARS.filter(c => c.a.id === a.id);
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
   const chips = [...cars.slice(0, 4).map(c => c.name + (c.seats ? ` · ${c.seats} seats` : "")), cars.some(c => +c.airport) ? "Airport transfers" : "", cars.some(c => +c.perKm) ? "Outstation trips" : ""].filter(Boolean);
-  return `<a class="arow rv" href="${urlOf(agencyPath(a))}#driver"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
+  return `<a class="arow" href="${urlOf(agencyPath(a))}#driver"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
   <div class="bd"><div class="badges">${badge(a)}</div><h3>${esc(a.name)}</h3><p class="loc">${I.pin.replace("<svg", '<svg width="16" height="16"')}${esc(d.areas || ((a.area ? a.area + ", " : "") + cityName(a.city)))}</p>
-    <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div>
+    <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div><p class="fit" hidden></p>
     <div class="ft"><div class="price"><span>From</span> <b class="num">${inr(drvMin(a))}</b><span>/ day with driver</span></div><span class="btn dark">See driver rates ${arrow()}</span></div></div></a>`;
+}
+/* search, like and filter the agency rows (assets/site/site.js does the filtering) */
+function filterBar() {
+  const prices = [...allCars.map(c => c.price), ...DRV.flatMap(a => drvCars(a).map(c => +c.local))];
+  const seats = [...allCars.map(c => c.m.seats), ...DRV.flatMap(a => drvCars(a).map(c => +c.seats || 0))];
+  if (!prices.length) return "";
+  const lo = Math.floor(Math.min(...prices) / 500) * 500, hi = Math.ceil(Math.max(...prices) / 500) * 500;
+  const steps = []; for (let p = lo; p <= hi; p += 500) steps.push(p);
+  const ppl = []; for (let n = 2; n <= Math.max(...seats); n++) ppl.push(n);
+  return `<div class="afilter" role="search" aria-label="Find an agency">
+  <div class="fsearch">${I.search}<input type="search" id="fq" placeholder="Search agencies by name or area" aria-label="Search agencies by name or area" autocomplete="off"></div>
+  <div class="fgroup"><label for="fmin">Price per day</label><div class="frange"><select id="fmin" aria-label="Lowest price per day"><option value="0">Any</option>${steps.slice(0, -1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select><span>to</span><select id="fmax" aria-label="Highest price per day"><option value="0">Any</option>${steps.slice(1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select></div></div>
+  <div class="fgroup"><label for="fppl">People going</label><select id="fppl"><option value="0">Any</option>${ppl.map(n => `<option value="${n}">${n} people</option>`).join("")}</select></div>
+  <button type="button" class="chip fliked" id="fliked" aria-pressed="false">${I.heart}Liked<span id="flikedN">0</span></button>
+</div>
+<p class="fcount" id="fcount" aria-live="polite"></p>`;
 }
 (function rentals() {
   const cat = CATS[0];
@@ -389,7 +412,11 @@ function driverRow(a) {
   const sections = cat.subs.map(s => {
     const ags = typeAgencies(s);
     return `<section class="atype" id="${s.id}"><div class="atype-h"><span class="ic">${I[s.icon]}</span><div><h2>${esc(s.name)}</h2><p>${esc(s.desc)}</p></div></div>
-      ${ags.length ? `<div class="arows">${ags.map(a => s.id === "cars-with-driver" && drv(a) ? driverRow(a) : agencyRow(a)).join("")}</div>`
+      ${ags.length ? `<div class="arows">${ags.map(a => s.id === "cars-with-driver" && drv(a)
+          ? filterRow(a, driverRow(a), drvCars(a).map(c => [+c.local, +c.seats || 0]))
+          : filterRow(a, agencyRow(a), CARS.filter(c => c.a.id === a.id && (!s.kind || c.m.kind === s.kind)).map(c => [c.price, c.m.seats]))).join("")}</div>
+        <div class="aempty anone" hidden><p>No agency here matches your filters.</p><button type="button" class="btn outline" data-fclear>Clear filters</button></div>
+        ${s.kind && subLive(s).length > 1 ? `<p class="aall"><a class="link" href="${urlOf(listingPath(s.id, liveCities(s.kind)[0]))}">Or compare all ${subLive(s).length} ${s.kind === "car" ? "cars" : "vehicles"} side by side ${arrow(16)}</a></p>` : ""}`
         : `<div class="aempty"><p>Tell us your dates and where you're going, and we'll find a local agency for you.</p><a class="btn outline" href="#match" data-need="${s.id}">Ask for ${esc(s.name.toLowerCase())}</a></div>`}</section>`;
   }).join("");
   const body = `
@@ -400,7 +427,7 @@ function driverRow(a) {
   <p class="lede">Pick the type of rental, then open an agency to see its whole fleet, prices and terms.</p>
 </div></section>
 ${stickyNav([...cat.subs.map(s => typeAgencies(s).length ? [s.id, s.name] : ["match", s.name, s.id]), ["how", "How it works"], ["faq", "FAQ"]])}
-<div class="wrap">${sections}</div>
+<div class="wrap">${filterBar()}${sections}</div>
 ${brandStrip("Or select from brand", "See every car of a brand across agencies.")}
 ${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Real photos, gearbox, model year and day price. Tap “Check availability”."], ["Confirm on WhatsApp", "The agency confirms the car and pickup. You pay them directly. No booking fee."]])}
 <div id="faq">${faq.html}</div>
@@ -502,7 +529,7 @@ for (const a of AGENCIES) {
     <h1 style="max-width:14ch">${esc(a.name)}</h1>
     <p class="lede">${esc(a.about)}</p>
     <div class="ctas">${list.length ? `<a class="btn light" href="#${gs[0].g.id}">See the fleet</a><button type="button" class="btn ghost" data-ask="">Check availability</button>${dcars.length ? `<a class="btn ghost" href="#driver">Cars with driver</a>` : ""}`
-      : `<a class="btn light" href="#driver">See driver rates</a>`}</div>
+      : `<a class="btn light" href="#driver">See driver rates</a>`}<button type="button" class="btn ghost like-btn" data-like="${esc(a.id)}" aria-pressed="false">${I.heart}<span class="l0">Like</span><span class="l1">Liked</span></button></div>
     <div class="facts"><div><b class="num">${list.length || dcars.length}</b><span>${list.length ? (list.length === 1 ? "model" : "models") : (dcars.length === 1 ? "car with driver" : "cars with driver")}</span></div><div><b class="num">${inr(lowest)}</b><span>${list.length ? "lowest day price" : "lowest day rate"}</span></div>${maxSeats ? `<div><b class="num">${maxSeats}</b><span>seats, largest</span></div>` : ""}<div><b>${esc(cityName(a.city))}</b><span>pickup city</span></div></div>
   </div></section>
 ${chipsNav(list, [...(dcars.length ? [["driver", "Cars with driver"]] : []), ["info", list.length ? "Price list & terms" : "Verification"]])}
@@ -671,7 +698,7 @@ write("get-matched/index.html", layout({rel: "get-matched/index.html", title: "G
 write("404.html", layout({rel: "404.html", title: "Page not found · OPIIUS", desc: "This page isn't on OPIIUS.", noindex: true,
   body: `<section class="sec"><div class="wrap" style="max-width:720px;text-align:center"><span class="eyebrow">404</span><h1 style="font-size:clamp(34px,5vw,52px);font-weight:600;margin-top:10px">This page isn't here.</h1>
   <p class="muted" style="margin-top:14px;font-size:17px">It may have moved when we rebuilt OPIIUS. Try one of these instead.</p>
-  <div class="ctas" style="justify-content:center"><a class="btn primary" href="/">Home</a><a class="btn outline" href="${sdcUrl}">Self-drive cars</a><a class="btn outline" href="/get-matched/">Get matched</a></div></div></section>`}));
+  <div class="ctas" style="justify-content:center"><a class="btn primary" href="/">Home</a><a class="btn outline" href="${selfDriveUrl}">Self-drive cars</a><a class="btn outline" href="/get-matched/">Get matched</a></div></div></section>`}));
 redirectTo("tours/meghalaya.html", "/rentals/", "Car rentals");
 
 /* ---------- sitemap ---------- */

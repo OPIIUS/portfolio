@@ -154,6 +154,48 @@
       openWA(lines.join("\n"));
     });
   });
+  /* likes: kept in this browser only (localStorage), shared by the rentals list and agency pages */
+  var LK="op-liked",liked=[];
+  try{liked=JSON.parse(localStorage.getItem(LK))||[]}catch(e){}
+  var paintLikes=function(){
+    $$("[data-like]").forEach(function(b){b.setAttribute("aria-pressed",liked.indexOf(b.dataset.like)>-1?"true":"false")});
+    var n=$("#flikedN");if(n)n.textContent=$$(".arow-w .like").filter(function(b){return liked.indexOf(b.dataset.like)>-1}).map(function(b){return b.dataset.like}).filter(function(v,i,a){return a.indexOf(v)===i}).length;
+  };
+  paintLikes();
+  document.addEventListener("click",function(e){
+    var b=e.target.closest("[data-like]");if(!b)return;e.preventDefault();
+    var id=b.dataset.like,i=liked.indexOf(id);if(i>-1)liked.splice(i,1);else liked.push(id);
+    try{localStorage.setItem(LK,JSON.stringify(liked))}catch(err){}
+    paintLikes();if(window.__opFilter)window.__opFilter();
+  });
+
+  /* rentals: search agencies, price per day, people going, liked only */
+  var fq=$("#fq");
+  if(fq){
+    var fmin=$("#fmin"),fmax=$("#fmax"),fppl=$("#fppl"),fl=$("#fliked"),fc=$("#fcount");
+    var rows=$$(".arow-w").map(function(w){var c=[];try{c=JSON.parse(w.dataset.cars)}catch(e){}return {w:w,q:w.dataset.q||"",c:c,id:(w.querySelector("[data-like]")||{dataset:{}}).dataset.like,fit:w.querySelector(".fit")}});
+    var run=function(){
+      var q=fq.value.trim().toLowerCase(),lo=+fmin.value||0,hi=+fmax.value||Infinity,p=+fppl.value||0,onlyLiked=fl.getAttribute("aria-pressed")==="true";
+      if(hi<lo){hi=Infinity;fmax.value="0"}
+      var narrowed=lo||hi<Infinity||p,shown=0,ids={};
+      rows.forEach(function(r){
+        var fits=r.c.filter(function(x){return x[0]>=lo&&x[0]<=hi&&(!p||!x[1]||x[1]>=p)});
+        var ok=(!q||q.split(/\s+/).every(function(t){return r.q.indexOf(t)>-1}))&&(!onlyLiked||liked.indexOf(r.id)>-1)&&(!r.c.length||fits.length);
+        r.w.hidden=!ok;if(ok&&!ids[r.id]){ids[r.id]=1;shown++}
+        if(r.fit){r.fit.hidden=!(ok&&narrowed&&r.c.length);var why=[p?p+"+ seats":"",lo&&hi<Infinity?inr(lo)+"–"+inr(hi)+"/day":lo?"from "+inr(lo)+"/day":hi<Infinity?"up to "+inr(hi)+"/day":""].filter(Boolean).join(", ");
+          r.fit.textContent=fits.length+" of "+r.c.length+(r.c.length===1?" car matches":" cars match")+": "+why}
+      });
+      $$(".atype").forEach(function(sec){var ws=$$(".arow-w",sec),none=$(".anone",sec);if(none)none.hidden=!ws.length||ws.some(function(w){return !w.hidden})});
+      var total=rows.map(function(r){return r.id}).filter(function(v,i,a){return a.indexOf(v)===i}).length;
+      fc.textContent=(q||narrowed||onlyLiked)?(shown?"Showing "+shown+" of "+total+(total===1?" agency":" agencies"):"No agency matches. Try a wider price range or fewer filters."):"";
+    };
+    window.__opFilter=run;
+    [fq,fmin,fmax,fppl].forEach(function(el){el.addEventListener("input",run);el.addEventListener("change",run)});
+    fl.addEventListener("click",function(){fl.setAttribute("aria-pressed",fl.getAttribute("aria-pressed")==="true"?"false":"true");run()});
+    document.addEventListener("click",function(e){if(!e.target.closest("[data-fclear]"))return;fq.value="";fmin.value=fmax.value=fppl.value="0";fl.setAttribute("aria-pressed","false");run()});
+    run();
+  }
+
   /* buttons that prefill the request form on the same page */
   document.addEventListener("click",function(e){
     var b=e.target.closest("[data-need]");if(!b)return;
