@@ -30,7 +30,7 @@
   var h=location.hash;
   if(/^#\//.test(h)){
     var to=/^#\/(agency\/rd|vehicle\/rd-)/.test(h)?"/agency/real-drive-ghy/":/^#\/(rentals|vehicle|agencies|brand|compare)/.test(h)?"/rentals/self-drive-cars/guwahati/":
-      /^#\/(tours|destination|package|operator)/.test(h)?"/tours/":/^#\/partners/.test(h)?"/for-agencies/":null;
+      /^#\/(tours|destination|package|operator)/.test(h)?"/rentals/":/^#\/partners/.test(h)?"/for-agencies/":null;
     if(to){location.replace(to);return}
   }
 
