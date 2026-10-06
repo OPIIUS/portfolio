@@ -1,13 +1,12 @@
-# Adding a partner agency or tour operator to OPIIUS
+# Adding a rental agency to OPIIUS
 
-- Rental agencies: **opiius.online/onboard.html**
-- Tour operators: **opiius.online/onboard-tours.html** (packages, route in visiting order, day-by-day plan, inclusions; 1–2 photos per package)
+- Rental agencies: **opiius.online/onboard.html** (OPIIUS lists rental vehicles only; the old tours form redirects here)
 
-Both work the same way:
+How it works:
 
 1. Send the owner the right link (or fill it in with them). The draft is kept on their phone if they close the page.
 2. They tap **Create the block**, then **Send to OPIIUS on WhatsApp**: it opens a chat to 86388 30682
-   with all their details filled in. They send it and attach 2–3 daylight photos per vehicle / 1–2 per package.
+   with all their details filled in. They send it and attach 2–3 daylight photos per vehicle.
 3. Forward that WhatsApp message and the photos to Claude.
 4. Claude adds the entry to `assets/opiius/partners.js`, puts the photos in `assets/partners/<id>/`,
    checks the pages and publishes. They are live on opiius.online a minute later.

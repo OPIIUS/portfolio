@@ -1,6 +1,6 @@
 /* Builds the static OPIIUS marketplace pages from assets/opiius/data.js (+ partners.js, config.js).
    Run from the repo root:  node tools/build-site.mjs
-   Writes: index.html, rentals/, tours/, agency/, for-agencies/,
+   Writes: index.html, rentals/, agency/, for-agencies/,
    verification/, about/, get-matched/, 404.html and sitemap.xml. Only real partners (real:true) are shown. */
 import fs from "node:fs";
 import crypto from "node:crypto";
@@ -73,27 +73,19 @@ const CAR_LINE = '<svg viewBox="0 0 200 70" fill="none" stroke="currentColor" st
 
 /* ---------- marketplace structure ---------- */
 const CHECKS = {
-  rentals: ["Business proof (trade licence, Udyam or GST)", "Owner's photo ID", "Rent-a-cab or rent-a-motorcycle permit", "RC and commercial insurance for every listed vehicle", "Photos of the actual fleet"],
-  tours: ["Business proof (trade licence, Udyam or GST)", "Owner's photo ID", "State tourism registration where it applies", "At least two past-customer references", "RC and insurance for the vehicles used on trips"]
+  rentals: ["Business proof (trade licence, Udyam or GST)", "Owner's photo ID", "Rent-a-cab or rent-a-motorcycle permit", "RC and commercial insurance for every listed vehicle", "Photos of the actual fleet"]
 };
-/* OPIIUS covers two things only: rentals and tours. */
+/* OPIIUS is for rental vehicles only: self-drive cars, cars with driver and, once an agency offers them, bikes and tempo travellers. */
 const CATS = [
   {id: "rentals", name: "Rentals", icon: "car", menu: "Self-drive cars and cars with driver", agencyNoun: "rental agency", subs: [
       {id: "self-drive-cars", name: "Self-drive cars", icon: "car", desc: "Hatchbacks, compact SUVs and 7-seaters you drive yourself.", kind: "car"},
       {id: "cars-with-driver", name: "Cars with driver", icon: "users", desc: "Innova, Ertiga and SUVs with an experienced local driver."},
       {id: "bikes", name: "Bikes & scooters", icon: "bike", desc: "Scooters for the city, Royal Enfields for the hills.", kind: "bike", onlyWhenLive: true},
-      {id: "tempo-travellers", name: "Tempo travellers", icon: "van", desc: "12 to 26 seats for groups, colleges and weddings.", onlyWhenLive: true}]},
-  {id: "tours", name: "Tours", icon: "map", menu: "Meghalaya, Kaziranga, Tawang, Sikkim", agencyNoun: "tour operator", subs: [
-      {id: "meghalaya-tours", name: "Meghalaya", icon: "map", desc: "Shillong, Sohra, Dawki and the living root bridges.", dest: "meghalaya"},
-      {id: "kaziranga-tours", name: "Kaziranga", icon: "compass", desc: "Rhino safaris, tea gardens and Majuli add-ons.", dest: "kaziranga"},
-      {id: "arunachal-tours", name: "Arunachal & Tawang", icon: "map", desc: "Sela Pass, Tawang Monastery and Dirang. Permits arranged.", dest: "tawang"},
-      {id: "sikkim-tours", name: "Sikkim & Darjeeling", icon: "map", desc: "Gangtok, Tsomgo Lake and the tea hills."},
-      {id: "family-honeymoon-tours", name: "Family & honeymoon trips", icon: "users", desc: "Private trips at a slower pace, hotels chosen for you.", type: true},
-      {id: "group-tours", name: "Student & corporate trips", icon: "users", desc: "Group trips and offsites with one point of contact.", type: true}]}
+      {id: "tempo-travellers", name: "Tempo travellers", icon: "van", desc: "12 to 26 seats for groups, colleges and weddings.", onlyWhenLive: true}]}
 ];
 const SUB = {};
 CATS.forEach(c => c.subs.forEach(s => { SUB[s.id] = {...s, cat: c}; }));
-const CITIES_ASK = ["Guwahati", "Shillong", "Kaziranga", "Tawang", "Elsewhere in the Northeast"];
+const CITIES_ASK = ["Guwahati", "Shillong", "Elsewhere in the Northeast"];
 
 /* ---------- real partners and their vehicles ---------- */
 const GROUPS = [
@@ -129,7 +121,7 @@ function badge(a, cls = "") {
 const initials = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
 
 /* ---------- layout ---------- */
-const NAV = [["rentals/", "Rentals", "rentals"], ["tours/", "Tours", "tours"], ["verification/", "How we verify", "verification"], ["about/", "About", "about"]];
+const NAV = [["rentals/", "Rentals", "rentals"], ["get-matched/?need=cars-with-driver", "Cars with driver", "driver"], ["verification/", "How we verify", "verification"], ["about/", "About", "about"]];
 function header(active) {
   return `<a class="skip" href="#main">Skip to content</a>
 <header class="hdr"><div class="wrap">
@@ -139,23 +131,23 @@ function header(active) {
     <button type="button" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mnav">${I.menu}</button></div>
 </div></header>
 <nav class="mnav" id="mnav" aria-label="Mobile">
-  ${CATS.map(c => `<a href="/${c.id}/">${esc(c.name)}<small>${esc(c.menu)}</small></a>`).join("")}
-  <a href="/verification/">How we verify</a><a href="/about/">About</a><a href="/get-matched/">Get matched<small>Tell us what you need</small></a>
-  <a class="btn primary" href="/for-agencies/">For agencies: list your rentals or tours</a>
+  <a href="/rentals/">Rentals<small>Choose a local agency</small></a><a href="${sdcUrl}">Self-drive cars<small>Guwahati</small></a><a href="/get-matched/?need=cars-with-driver">Cars with driver<small>Tell us your dates</small></a>
+  <a href="/verification/">How we verify</a><a href="/about/">About</a>
+  <a class="btn primary" href="/for-agencies/">For agencies: list your cars</a>
 </nav>`;
 }
 function footer() {
   return `<footer class="ftr"><div class="wrap">
   <div class="cols">
-    <div><a class="logo" href="/">${LOGO}</a><p class="about">Rentals and tours from trusted local agencies in Guwahati and the Northeast. Real photos, clear prices, inquiries on WhatsApp.</p></div>
-    <div><h4>Rentals &amp; tours</h4><ul>
-      <li><a href="/rentals/">Rentals</a></li><li><a href="${sdcUrl}">Self-drive cars in Guwahati</a></li><li><a href="/get-matched/?need=cars-with-driver">Cars with driver</a></li>
-      <li><a href="/tours/">Tours</a></li><li><a href="/tours/#destinations">Meghalaya, Kaziranga &amp; Tawang</a></li></ul></div>
+    <div><a class="logo" href="/">${LOGO}</a><p class="about">Self-drive cars and cars with driver from trusted local rental agencies in Guwahati. Real photos, clear prices, inquiries on WhatsApp.</p></div>
+    <div><h4>Rentals</h4><ul>
+      <li><a href="/rentals/">All rental agencies</a></li><li><a href="${sdcUrl}">Self-drive cars in Guwahati</a></li><li><a href="/get-matched/?need=cars-with-driver">Cars with driver</a></li>
+      ${BRAND_LIST.slice(0, 3).map(b => `<li><a href="${urlOf(brandPath(b.k))}">${esc(b.name)} cars</a></li>`).join("")}</ul></div>
     <div><h4>Agencies</h4><ul>${AGENCIES.map(a => `<li><a href="${urlOf(agencyPath(a))}">${esc(a.name)}</a></li>`).join("")}<li><a href="/agency/">All agencies</a></li><li><a href="/get-matched/">Get matched</a></li></ul></div>
     <div><h4>For agencies</h4><ul>
       <li><a href="/for-agencies/">Showcase your agency</a></li><li><a href="/for-agencies/#plans">Plans &amp; pricing</a></li>
-      <li><a href="/verification/">Verification standards</a></li><li><a href="/onboard.html">Add a rental agency</a></li>
-      <li><a href="/onboard-tours.html">Add a tour operator</a></li><li><a href="/terms.html#partners">Partner terms</a></li></ul></div>
+      <li><a href="/verification/">Verification standards</a></li><li><a href="/onboard.html">Add your rental agency</a></li>
+      <li><a href="/terms.html#partners">Partner terms</a></li></ul></div>
     <div><h4>OPIIUS</h4><ul>
       <li><a href="/about/">About us</a></li><li><a href="/verification/">How we verify</a></li>
       <li><a href="${waLink("Hi OPIIUS, I'd like to report a problem with an agency.")}" rel="noopener">Report an agency</a></li>
@@ -197,7 +189,7 @@ ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</scri
 <body>
 <div id="splash" aria-hidden="true" style="display:none"><div class="sp-in">
   <img class="sp-medal" src="/assets/site/logo/opiius-3d.webp" width="200" height="200" alt="">
-  <div class="sp-tag">Rentals &amp; tours · Guwahati</div><div class="sp-bar"><i></i></div>
+  <div class="sp-tag">Car rentals · Guwahati</div><div class="sp-bar"><i></i></div>
 </div></div>
 ${header(active)}
 <main id="main">
@@ -255,11 +247,11 @@ function matchForm(selected, {title = "Tell us what you need", sub = "We'll find
   return `<div class="panel"><h3>${esc(title)}</h3><p>${esc(sub)}</p>
   <form class="form" data-match novalidate style="margin-top:18px">
     <div class="row2"><div><label for="mNeed">What do you need?</label><select id="mNeed" name="need">${needOptions(selected)}</select></div>
-      <div><label for="mCity">Where?</label><select id="mCity" name="city">${CITIES_ASK.map(c => `<option>${c}</option>`).join("")}</select></div></div>
+      <div><label for="mCity">Pickup city</label><select id="mCity" name="city">${CITIES_ASK.map(c => `<option>${c}</option>`).join("")}</select></div></div>
     <div class="row2"><div><label for="mFrom">From <small>(optional)</small></label><input type="date" id="mFrom" name="from"></div><div><label for="mTo">To <small>(optional)</small></label><input type="date" id="mTo" name="to"></div></div>
     <div class="row2"><div><label for="mPeople">People <small>(optional)</small></label><input id="mPeople" name="people" inputmode="numeric" placeholder="e.g. 4 adults, 2 kids"></div><div><label for="mBudget">Budget <small>(optional)</small></label><input id="mBudget" name="budget" placeholder="e.g. ₹15,000"></div></div>
     <div><label for="mName">Your name</label><input id="mName" name="name" autocomplete="name" placeholder="Full name" required></div>
-    <div><label for="mMsg">Anything else? <small>(optional)</small></label><textarea id="mMsg" name="msg" placeholder="Route, places you want to see, type of car, hotel preference…"></textarea></div>
+    <div><label for="mMsg">Anything else? <small>(optional)</small></label><textarea id="mMsg" name="msg" placeholder="Type of car, where you're driving to, pickup point…"></textarea></div>
     <p class="err" role="alert"></p>
     <button type="submit" class="btn wa block">${I.wa}Send on WhatsApp</button>
     <p class="fine">Your request opens WhatsApp with these details and a reference number. No booking fee.</p>
@@ -282,7 +274,7 @@ function agencyCard(a) {
   <div class="row"><span>${plural(list.length, "model")} · ${inr(minP(list))}–${inr(maxP(list))} / day</span></div>
   <div class="ft"><span>View agency</span>${I.arrow.replace("<svg", '<svg width="18" height="18"')}</div></div></a>`;
 }
-const joinCard = `<a class="acard join rv" href="/for-agencies/"><span class="eyebrow">Your agency here</span><h3>Run a rental agency or tour company?</h3><p>Showcase your cars or tours to customers who are already searching. Basic listing is free.</p><span class="link">Showcase your agency ${I.arrow.replace("<svg", '<svg width="16" height="16"')}</span></a>`;
+const joinCard = `<a class="acard join rv" href="/for-agencies/"><span class="eyebrow">Your agency here</span><h3>Run a car rental agency?</h3><p>Showcase your cars to customers who are already searching. Basic listing is free.</p><span class="link">Showcase your agency ${I.arrow.replace("<svg", '<svg width="16" height="16"')}</span></a>`;
 
 /* ======================= pages ======================= */
 const sdcCities = liveCities("car");
@@ -304,7 +296,7 @@ const matchSection = (need, h, p) => `<section class="sec" id="match"><div class
   <ul class="ticks"><li>${I.check}<span>One request instead of five chats</span></li><li>${I.check}<span>A reply on WhatsApp, with an OPIIUS reference</span></li><li>${I.check}<span>No booking fee</span></li></ul></div>${matchForm(need)}</div></section>`;
 const askTile = (s, tone = "") => `<a class="tile rv ${tone}" id="${s.id}" href="#match" data-need="${s.id}"><div><span class="ic">${I[s.icon]}</span><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p></div><div class="meta"><span>${s.meta || "Ask for this"}</span><span>${arrow()}</span></div></a>`;
 const GENERAL_FAQ = [
-  ["Is OPIIUS a travel agency?", "No. OPIIUS is a marketplace of local agencies. You deal with the agency directly and pay them, at their price."],
+  ["Is OPIIUS a rental company?", "No. OPIIUS is a marketplace of local rental agencies. You deal with the agency directly and pay them, at their price."],
   ["Do I pay anything to OPIIUS?", "No. Customers pay no booking fee to OPIIUS."],
   ["What does “Verified” mean?", `OPIIUS has checked the agency's business documents, the owner's identity, their vehicles and their location. <a href="/verification/">See our verification standards</a>.`],
   ["What if something goes wrong?", "Tell us on WhatsApp, quoting your OPIIUS reference. We follow up with the agency, and unresolved complaints cost them the Verified badge."]];
@@ -323,33 +315,37 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
   <div class="marquee" aria-label="Car brands"><div class="track">${row}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}</div></div></section>`;
 }
 
-/* ---------- home: video background, two options, moving brand line ---------- */
+/* ---------- home: video background, two ways to rent, agencies, moving brand line ---------- */
 (function home() {
-  const rentalSubs = CATS[0].subs.map(s => s.name), tourSubs = CATS[1].subs.filter(s => !s.type).map(s => s.name);
-  const opt = (href, img, ic, h, p, subs, meta, cta) => `<a class="opt2" href="${href}"><div class="ph"><img src="${img}" alt="" loading="eager"></div>
+  const opt = (href, img, pos, ic, h, p, subs, meta, cta) => `<a class="opt2" href="${href}"><div class="ph"><img src="${img}" alt="" loading="eager" style="object-position:${pos}"></div>
     <div class="bd"><div class="top"><span class="ic">${I[ic]}</span>${meta ? `<span class="meta">${meta}</span>` : ""}</div><h2>${h}</h2><p>${p}</p>
     <ul class="subs">${subs.map(t => `<li>${esc(t)}</li>`).join("")}</ul><span class="btn primary block"><span class="lg">${cta}</span><span class="sm">Explore</span> ${arrow()}</span></div></a>`;
+  const types = groupsOf(allCars).map(x => x.g.nav);
   const body = `
 <section class="vhero">
   <video class="vbg" autoplay muted loop playsinline preload="auto" poster="/assets/site/media/hills.jpg" aria-hidden="true">
     <source src="/assets/site/media/hills.webm" type="video/webm"><source src="/assets/site/media/hills.mp4" type="video/mp4"></video>
   <div class="wrap in">
-    <div class="vh"><span class="eyebrow">Guwahati &amp; the Northeast</span>
-      <h1>Rentals and tours from trusted local agencies.</h1>
-      <p class="lede">Choose a service to get started.</p></div>
+    <div class="vh"><span class="eyebrow">Car rentals · Guwahati</span>
+      <h1>Rent a car from a trusted local agency.</h1>
+      <p class="lede">Real photos, the owner's price and terms upfront. Ask on WhatsApp.</p></div>
     <div class="choose2">
-      ${opt("/rentals/", "/assets/opiius/img/card-rent.jpg", "car", "Rentals", "Rent a car from a verified local agency. See the whole fleet and the day price upfront.", rentalSubs, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "Choose a rental agency")}
-      ${opt("/tours/", "/assets/opiius/img/card-tour.jpg", "map", "Tours", "Plan a trip with a local tour operator and get a day-by-day plan on WhatsApp.", tourSubs, "", "Plan a tour")}
+      ${opt(sdcUrl, "/assets/partners/saraighat-travels/thar.jpg", "50% 62%", "car", "Self-drive cars", "Drive yourself. See every car, its day price, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "See self-drive cars")}
+      ${opt("/get-matched/?need=cars-with-driver", "/assets/partners/real-drive-ghy/innova.jpg", "50% 55%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], "", "Ask for a car with driver")}
     </div>
     <ul class="trust"><li>${I.shield}Verified agencies</li><li>${I.camera}Real photos of every car</li><li>${I.tag}Prices shown upfront</li><li>${I.check}No booking fee</li></ul>
   </div>
 </section>
 ${brandStrip()}
-<section class="sec tight"><div class="wrap"><p class="home-note" style="margin:0;text-align:center">Run a rental agency or tour company? <a href="/for-agencies/">List your cars or tours on OPIIUS →</a></p></div></section>`;
-  write("index.html", layout({rel: "index.html", title: "OPIIUS · Rentals and tours from trusted local agencies in the Northeast",
-    desc: "Rent a car or plan a tour in Guwahati and the Northeast with verified local agencies. Real photos, clear prices, inquiries on WhatsApp.",
+<section class="sec mist"><div class="wrap">
+  <div class="sec-h"><div><span class="eyebrow">Agencies</span><h2>Local rental agencies on OPIIUS</h2><p>Open an agency to see its whole fleet, prices and terms.</p></div><a class="btn outline" href="/rentals/">All agencies</a></div>
+  <div class="agrid">${AGENCIES.map(agencyCard).join("")}${joinCard}</div>
+</div></section>
+${howItWorks([["Pick a car", "Real photos, day price, deposit and km limit, from a local agency."], ["Check availability", "Send your dates and pickup point on WhatsApp, with an OPIIUS reference."], ["Pick up and drive", "The agency confirms. You pay them directly. No booking fee."]])}`;
+  write("index.html", layout({rel: "index.html", title: "OPIIUS · Rent a car in Guwahati from trusted local agencies",
+    desc: `Self-drive cars and cars with driver in Guwahati from verified local rental agencies${allCars.length ? `, from ${inr(minP(allCars))}/day` : ""}. Real photos, clear prices, inquiries on WhatsApp.`,
     body, extraHead: '\n<link rel="preload" as="image" href="/assets/site/media/hills.jpg">',
-    jsonld: [{"@context": "https://schema.org", "@type": "Organization", name: "OPIIUS", url: SITE + "/", areaServed: "Northeast India", address: {"@type": "PostalAddress", addressLocality: "Guwahati", addressRegion: "Assam", addressCountry: "IN"}, telephone: "+" + WA}]}));
+    jsonld: [{"@context": "https://schema.org", "@type": "Organization", name: "OPIIUS", url: SITE + "/", areaServed: "Guwahati, Assam", address: {"@type": "PostalAddress", addressLocality: "Guwahati", addressRegion: "Assam", addressCountry: "IN"}, telephone: "+" + WA}]}));
 })();
 
 /* ---------- rentals: types of agencies, then each agency opens its whole fleet ---------- */
@@ -414,46 +410,9 @@ ${askDialog(list)}`;
     desc: `Rent a ${b.name} in Guwahati: ${list.map(c => c.nm).join(", ")}. Real photos, day prices from ${inr(minP(list))}, availability on WhatsApp.`, body}));
 }
 
-/* ---------- tours ---------- */
-(function tours() {
-  const cat = CATS[1], ops = Object.entries(O.OPERATORS).filter(([, o]) => o.real && !o.demo);
-  const dest = cat.subs.filter(s => !s.type).map(s => {
-    const f = s.dest && O.DEST_FACTS[s.dest];
-    return {...s, meta: f ? `Best ${f.best.replace(" to ", "–")} · ${f.time}` : "Ask for a plan"};
-  });
-  const types = cat.subs.filter(s => s.type);
-  const faq = faqBlock([
-    ["How do I book a tour?", "Tell us where, when and how many people. We pass it to a suitable local tour operator, who replies on WhatsApp with a day-by-day plan and price before you commit."],
-    ["What is usually included?", "Hotels, a car with driver and sightseeing are common. Each operator lists what's included and what isn't, such as entry fees, activities and meals."],
-    ["Do I need a permit?", "Arunachal Pradesh needs an Inner Line Permit for Indian visitors, and some areas need extra permits. Your tour operator tells you what's needed and usually arranges it."],
-    ["When is the best time to visit?", "Meghalaya is best from October to May, Kaziranga from November to April when the park is open, and Tawang from March to May and September to November."],
-    ...GENERAL_FAQ]);
-  const body = `
-<section class="hero slim"><div class="bg" style="background-image:url(/assets/opiius/img/d-dawki.jpg);background-position:50% 50%" aria-hidden="true"></div><div class="wrap in">
-  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Tours</span></nav>
-  <span class="eyebrow">Tours · Northeast India</span>
-  <h1>Plan a tour with a trusted local operator</h1>
-  <p class="lede">Meghalaya, Kaziranga, Arunachal and Sikkim, for families, couples, students and groups. Tell us your dates and get a day-by-day plan on WhatsApp.</p>
-  <div class="ctas"><a class="btn light" href="#match">Plan my trip</a><a class="btn ghost" href="#destinations">See destinations</a></div>
-</div></section>
-${stickyNav([["destinations", "Destinations"], ["types", "Trip types"], ["how", "How it works"], ["faq", "FAQ"], ["match", "Plan my trip"]])}
-<section class="sec" id="destinations"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">Destinations</span><h2>Where do you want to go?</h2><p>Pick a destination and send one request. A local operator replies with a plan, the price and what's included.</p></div></div>
-  <div class="tiles">${dest.map(s => askTile(s, "t2")).join("")}</div></div></section>
-${ops.length ? `<section class="sec mist"><div class="wrap"><div class="sec-h"><div><span class="eyebrow">On OPIIUS</span><h2>Tour operators</h2></div></div><div class="agrid">${ops.map(([, o]) => `<div class="acard"><div class="bd"><h3>${esc(o.name)}</h3><p class="muted">${esc(o.about || "")}</p></div></div>`).join("")}</div></div></section>` : ""}
-<section class="sec mist" id="types"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">Trip types</span><h2>Trips planned around you</h2></div></div>
-  <div class="tiles">${types.map(s => askTile(s, "t2")).join("")}
-    <a class="tile rv" href="/rentals/"><div><span class="ic">${I.car}</span><h3>Self-drive road trip</h3><p>Prefer to drive yourself? Rent a car in Guwahati and set your own pace.</p></div><div class="meta"><span>${allCars.length ? `From ${inr(minP(allCars))}/day` : "See rentals"}</span><span>${arrow()}</span></div></a></div></div></section>
-${howItWorks([["Tell us your trip", "Destination, dates, number of people and budget."], ["Get a plan from a local operator", "Day by day, with hotels, transport, inclusions and the price."], ["Confirm on WhatsApp", "Book directly with the operator. No booking fee."]])}
-${verifyBand("tours", "tour operator")}
-<div id="faq">${faq.html}</div>
-${matchSection("meghalaya-tours", "Plan my trip", "Share the destination, dates and group size once. We'll pass them to a suitable local tour operator and you'll get a plan on WhatsApp.")}
-${agencyBand("Run a tour company?", "Showcase your packages to customers planning trips across the Northeast: day-by-day plans, inclusions, photos and inquiries with dates and group size. Basic listing is free.")}`;
-  write("tours/index.html", layout({rel: "tours/index.html", title: "Tours in Meghalaya, Kaziranga, Tawang & Sikkim with local operators | OPIIUS", active: "tours",
-    desc: "Plan a tour of Meghalaya, Kaziranga, Arunachal or Sikkim with a trusted local operator. Get a day-by-day plan and price on WhatsApp. No booking fee.",
-    body, og: "/assets/opiius/img/d-dawki.jpg", jsonld: [faq.ld]}));
-})();
+/* ---------- tours: retired (OPIIUS is rentals only); old links go to Rentals ---------- */
+const redirectTo = (rel, to, title) => write(rel, `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${title} · OPIIUS</title><link rel="canonical" href="${SITE}${to}"><meta http-equiv="refresh" content="0; url=${to}"><meta name="robots" content="noindex"></head><body><p><a href="${to}">Car rentals on OPIIUS</a></p></body></html>\n`);
+redirectTo("tours/index.html", "/rentals/", "Car rentals");
 
 /* ---------- self-drive listing per city ---------- */
 for (const kind of ["car", "bike"]) for (const city of liveCities(kind)) {
@@ -545,10 +504,10 @@ ${askDialog(list)}`;
 }
 
 /* ---------- agencies index ---------- */
-write("agency/index.html", layout({rel: "agency/index.html", title: "Agencies on OPIIUS · Local rental agencies and tour operators", active: "",
-  desc: "Local agencies on OPIIUS: profiles with real photos, day prices and terms.",
+write("agency/index.html", layout({rel: "agency/index.html", title: "Rental agencies on OPIIUS · Self-drive cars and cars with driver in Guwahati", active: "",
+  desc: "Local car rental agencies on OPIIUS: profiles with real photos, day prices and terms.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Agencies</span></nav>
-  <span class="eyebrow">${plural(AGENCIES.length, "agency", "agencies")} on OPIIUS</span><h1>Local agencies on OPIIUS</h1>
+  <span class="eyebrow">${plural(AGENCIES.length, "agency", "agencies")} on OPIIUS</span><h1>Local rental agencies on OPIIUS</h1>
   <p class="lede">Every profile shows real photos, prices and terms. The Verified badge appears once OPIIUS has checked an agency's documents, owner and fleet.</p></div></section>
   <section class="sec"><div class="wrap"><div class="agrid">${AGENCIES.map(agencyCard).join("")}${joinCard}</div></div></section>
   ${agencyBand("Want your agency listed here?", "Basic listing is free. Upgrade for the Verified badge, priority placement and a monthly inquiry report.")}`}));
@@ -556,34 +515,34 @@ write("agency/index.html", layout({rel: "agency/index.html", title: "Agencies on
 /* ---------- for agencies ---------- */
 (function forAgencies() {
   const plans = [
-    {n: "Basic", p: "Free", per: "", for: "Get listed and start receiving inquiries.", pts: ["Basic profile: name, category, area", "1 service or package", "3 photos", "Inquiries through the OPIIUS form"], cta: ["Start free", "outline"]},
-    {n: "Verified", p: "₹999", per: "/month", for: "Show customers you're a checked business.", pts: ["Verified badge, after checks pass", "Full agency profile", "2 package or service pages", "15 photos", "WhatsApp and call buttons", "Placed above unverified listings", "Monthly inquiry count"], cta: ["Get Verified", "outline"]},
-    {n: "Growth", p: "₹3,000", per: "/month", hot: true, for: "Everything you need to win more inquiries.", pts: ["Verified badge", "Full agency profile", "Priority placement in your category and city", "3–5 package or service pages, written by us", "WhatsApp and call buttons", "Customer inquiry form", "40 photos and service showcase", "Reviews and testimonials", "Offer and promotion section", "Monthly inquiry report"], cta: ["Choose Growth", "primary"]},
-    {n: "Featured Partner", p: "₹5,000", per: "/month", for: "The top slot, for agencies ready to lead their category.", pts: ["Everything in Growth", "Top slot in your category and city, labelled Featured", "Homepage feature rotation", "Up to 10 package pages", "3 offers and a seasonal campaign", "Monthly review call"], cta: ["Apply for Featured", "outline"]}];
+    {n: "Basic", p: "Free", per: "", for: "Get listed and start receiving inquiries.", pts: ["Basic profile: name, category, area", "Your fleet with day prices", "3 photos", "Inquiries through the OPIIUS form"], cta: ["Start free", "outline"]},
+    {n: "Verified", p: "₹999", per: "/month", for: "Show customers you're a checked business.", pts: ["Verified badge, after checks pass", "Full agency profile", "Full fleet page with terms", "15 photos", "WhatsApp and call buttons", "Placed above unverified listings", "Monthly inquiry count"], cta: ["Get Verified", "outline"]},
+    {n: "Growth", p: "₹3,000", per: "/month", hot: true, for: "Everything you need to win more inquiries.", pts: ["Verified badge", "Full agency profile", "Priority placement in your category and city", "Fleet and service pages, written by us", "WhatsApp and call buttons", "Customer inquiry form", "40 photos and service showcase", "Reviews and testimonials", "Offer and promotion section", "Monthly inquiry report"], cta: ["Choose Growth", "primary"]},
+    {n: "Featured Partner", p: "₹5,000", per: "/month", for: "The top slot, for agencies ready to lead their category.", pts: ["Everything in Growth", "Top slot in your category and city, labelled Featured", "Homepage feature rotation", "Extra pages for cars with driver and outstation trips", "3 offers and a seasonal campaign", "Monthly review call"], cta: ["Apply for Featured", "outline"]}];
   const faq = faqBlock([
-    ["Do you guarantee a number of customers?", "No. OPIIUS puts your agency on pages customers use to compare local providers, and sends you every inquiry with dates, group size and budget. Your monthly report shows exactly what came in."],
+    ["Do you guarantee a number of customers?", "No. OPIIUS puts your agency on pages customers use to compare local providers, and sends you every inquiry with the car, dates and pickup point. Your monthly report shows exactly what came in."],
     ["Do you take a commission on bookings?", "No. You pay a flat monthly fee (or nothing on Basic) and keep 100% of every booking."],
     ["Can I buy the Verified badge?", "No. The Verified fee covers our checks. If your business doesn't pass, you get a full refund. Featured placement is paid and always labelled; verification is earned."],
     ["Is there a contract?", "No. Plans are month to month. Cancel any month. We give 30 days' notice before any change to fees."],
-    ["What do I need to send?", `Your agency details, prices and terms, and 2–3 clear daylight photos of each vehicle or package. Rental agencies can use the <a href="/onboard.html">rental form</a>, tour operators the <a href="/onboard-tours.html">tours form</a>. Everyone else can message us on WhatsApp.`],
+    ["What do I need to send?", `Your agency details, prices and terms, and 2–3 clear daylight photos of each vehicle. Use the <a href="/onboard.html">agency form</a>, or send everything on WhatsApp.`],
     ["Who receives customer inquiries?", "Inquiries arrive on the OPIIUS WhatsApp with an OPIIUS reference and are passed to you straight away. Your phone number is not published unless your plan includes call and WhatsApp buttons."]]);
   const body = `
 <section class="hero"><div class="bg" style="background-image:url(/assets/opiius/img/hero.jpg);background-position:50% 60%" aria-hidden="true"></div><div class="wrap in">
-  <span class="eyebrow">For rental agencies and tour operators</span>
+  <span class="eyebrow">For car rental agencies</span>
   <h1>Get discovered by customers who are already searching.</h1>
-  <p class="lede">Showcase your agency on high-intent pages, earn the Verified badge customers trust, and receive inquiries with dates, group size and budget. Every month you get a report of every inquiry we sent you.</p>
+  <p class="lede">Showcase your agency on high-intent pages, earn the Verified badge customers trust, and receive inquiries with the car, dates and pickup point. Every month you get a report of every inquiry we sent you.</p>
   <div class="ctas"><a class="btn light" href="#join">List your agency free</a><a class="btn ghost" href="${waLink("Hi OPIIUS, I run an agency and I'd like a 15-minute call about listing on OPIIUS.")}" rel="noopener">${I.wa}Book a 15-min call</a></div>
   <ul class="trust"><li>${I.check}No commission</li><li>${I.check}No contract</li><li>${I.check}Cancel any month</li></ul>
 </div></section>
 
 <section class="sec"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">Who it's for</span><h2>Built for local agencies across the Northeast</h2></div></div>
-  <div class="tiles">${[["car", "Car rental agencies", "Self-drive fleets and cars with driver.", ""], ["bike", "Bike & scooter rentals", "Scooters to Royal Enfields.", "t5"], ["map", "Tour operators", "Meghalaya, Kaziranga, Tawang, Sikkim and beyond.", "t2"]].map(([ic, t, p, tone]) => `<div class="tile rv ${tone}" style="min-height:170px"><div><span class="ic">${I[ic]}</span><h3>${t}</h3><p>${p}</p></div></div>`).join("")}</div>
+  <div class="sec-h"><div><span class="eyebrow">Who it's for</span><h2>Built for local rental agencies in Guwahati</h2></div></div>
+  <div class="tiles">${[["car", "Self-drive car rentals", "Hatchbacks, SUVs and 7-seaters you rent by the day.", ""], ["users", "Cars with driver", "Taxis and chauffeur-driven cars for airport runs and trips.", "t2"], ["bike", "Bike & scooter rentals", "Scooters to Royal Enfields.", "t5"]].map(([ic, t, p, tone]) => `<div class="tile rv ${tone}" style="min-height:170px"><div><span class="ic">${I[ic]}</span><h3>${t}</h3><p>${p}</p></div></div>`).join("")}</div>
 </div></section>
 
 <section class="sec mist"><div class="wrap">
   <div class="sec-h"><div><span class="eyebrow">What you get</span><h2>More visibility, more trust, more inquiries</h2></div></div>
-  <div class="agrid">${[["eye", "Visibility", "Appear on the category and city pages customers use to compare providers, like self-drive cars in Guwahati."], ["shield", "A trust badge", "The OPIIUS Verified badge tells customers you're a real, checked business before they even call."], ["camera", "A professional showcase", "A full profile with your photos, packages and prices that you can share on Instagram, WhatsApp and Google."], ["chat", "Ready-to-book inquiries", "Inquiries arrive with dates, group size and budget, so you spend less time answering “price?”."], ["chart", "A monthly inquiry report", "See every inquiry, with its reference, so you always know what you're paying for."], ["award", "Priority placement", "Growth and Featured partners appear above free listings. Featured slots are limited per category."]].map(([ic, t, p]) => `<div class="panel rv"><span style="display:inline-grid;place-items:center;width:46px;height:46px;border-radius:14px;background:var(--brand-soft);color:var(--brand)">${I[ic].replace("<svg", '<svg width="24" height="24"')}</span><h3 style="margin-top:16px;font-size:20px">${t}</h3><p>${p}</p></div>`).join("")}</div>
+  <div class="agrid">${[["eye", "Visibility", "Appear on the category and city pages customers use to compare providers, like self-drive cars in Guwahati."], ["shield", "A trust badge", "The OPIIUS Verified badge tells customers you're a real, checked business before they even call."], ["camera", "A professional showcase", "A full profile with your photos, fleet and prices that you can share on Instagram, WhatsApp and Google."], ["chat", "Ready-to-book inquiries", "Inquiries arrive with the car, dates and pickup point, so you spend less time answering “price?”."], ["chart", "A monthly inquiry report", "See every inquiry, with its reference, so you always know what you're paying for."], ["award", "Priority placement", "Growth and Featured partners appear above free listings. Featured slots are limited per category."]].map(([ic, t, p]) => `<div class="panel rv"><span style="display:inline-grid;place-items:center;width:46px;height:46px;border-radius:14px;background:var(--brand-soft);color:var(--brand)">${I[ic].replace("<svg", '<svg width="24" height="24"')}</span><h3 style="margin-top:16px;font-size:20px">${t}</h3><p>${p}</p></div>`).join("")}</div>
 </div></section>
 
 <section class="sec" id="plans"><div class="wrap">
@@ -595,29 +554,29 @@ write("agency/index.html", layout({rel: "agency/index.html", title: "Agencies on
 </div></section>
 
 <section class="sec pine"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">Why a monthly plan pays for itself</span><h2>One extra booking covers the month.</h2><p>A 3-day Innova rental or one family Meghalaya package is worth far more than ₹3,000, which is about ₹100 a day.</p></div></div>
-  <div class="checks">${[["tag", "No commission", "Booking apps take a cut of every booking. OPIIUS is a flat fee and you keep 100%."], ["chart", "Proof every month", "Your inquiry report shows what came in. If the numbers don't work for you, don't renew."], ["award", "Assets you keep", "A professional profile, written package pages and a badge you can share."], ["eye", "Pages that rank", "One agency can't rank for every search. A marketplace category page can, and you're on it."]].map(([ic, b, s]) => `<div class="check rv">${I[ic]}<b>${b}</b><span>${s}</span></div>`).join("")}</div>
+  <div class="sec-h"><div><span class="eyebrow">Why a monthly plan pays for itself</span><h2>One extra booking covers the month.</h2><p>A 3-day Innova rental or a week-long SUV booking is worth far more than ₹3,000, which is about ₹100 a day.</p></div></div>
+  <div class="checks">${[["tag", "No commission", "Booking apps take a cut of every booking. OPIIUS is a flat fee and you keep 100%."], ["chart", "Proof every month", "Your inquiry report shows what came in. If the numbers don't work for you, don't renew."], ["award", "Assets you keep", "A professional profile, a fleet page and a badge you can share."], ["eye", "Pages that rank", "One agency can't rank for every search. A marketplace category page can, and you're on it."]].map(([ic, b, s]) => `<div class="check rv">${I[ic]}<b>${b}</b><span>${s}</span></div>`).join("")}</div>
 </div></section>
 
 <section class="sec" id="join"><div class="wrap">
   <div class="sec-h"><div><span class="eyebrow">How to join</span><h2>Live on OPIIUS in three steps</h2></div></div>
-  <ol class="steps3"><li class="rv"><b>Send your details</b><span>Fill the form for your agency type, or send everything on WhatsApp: details, prices, terms and 2–3 daylight photos per vehicle or package.</span></li>
-    <li class="rv"><b>We set up your profile</b><span>We check your details with you, build your profile and package pages, and schedule your verification.</span></li>
+  <ol class="steps3"><li class="rv"><b>Send your details</b><span>Fill the form for your agency type, or send everything on WhatsApp: details, prices, terms and 2–3 daylight photos per vehicle.</span></li>
+    <li class="rv"><b>We set up your profile</b><span>We check your details with you, build your profile and fleet page, and schedule your verification.</span></li>
     <li class="rv"><b>Customers find you</b><span>Your profile goes live. Inquiries reach you with an OPIIUS reference, and you get a monthly report.</span></li></ol>
-  <div class="ctas"><a class="btn primary" href="/onboard.html">${I.car}Add a rental agency</a><a class="btn outline" href="/onboard-tours.html">${I.map}Add a tour operator</a>
+  <div class="ctas"><a class="btn primary" href="/onboard.html">${I.car}Add your rental agency</a>
     <a class="btn outline" href="${waLink("Hi OPIIUS, I have a question about listing my agency.")}" rel="noopener">${I.wa}Questions? Message us</a></div>
 </div></section>
 ${faq.html}`;
-  write("for-agencies/index.html", layout({rel: "for-agencies/index.html", title: "For agencies · Showcase your services on OPIIUS", active: "agencies",
-    desc: "Showcase your rental agency or tour company on OPIIUS. Verified badge, priority placement, customer inquiries and a monthly inquiry report. Basic listing is free.", body, jsonld: [faq.ld]}));
+  write("for-agencies/index.html", layout({rel: "for-agencies/index.html", title: "For car rental agencies · List your fleet on OPIIUS", active: "agencies",
+    desc: "List your car rental agency on OPIIUS. Verified badge, priority placement, customer inquiries and a monthly inquiry report. Basic listing is free, no commission.", body, jsonld: [faq.ld]}));
 })();
 
 /* ---------- verification ---------- */
 write("verification/index.html", layout({rel: "verification/index.html", title: "How OPIIUS verifies agencies · Verification standards", active: "verification",
-  desc: "What the OPIIUS Verified badge means: the documents, owner identity, vehicles and location we check, how often we re-check, and how complaints work.",
+  desc: "What the OPIIUS Verified badge means for rental agencies: the documents, owner identity, vehicles and location we check, how often we re-check, and how complaints work.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>How we verify</span></nav>
   <span class="eyebrow">Verification standards</span><h1>Placement can be paid. Verification is earned.</h1>
-  <p class="lede">The OPIIUS Verified badge means we've checked an agency ourselves. Here is exactly what we check, how often, and what happens if something goes wrong.</p></div></section>
+  <p class="lede">The OPIIUS Verified badge means we've checked a rental agency ourselves. Here is exactly what we check, how often, and what happens if something goes wrong.</p></div></section>
 <section class="sec"><div class="wrap">
   <div class="sec-h"><div><span class="eyebrow">Badges</span><h2>What you'll see on a profile</h2></div></div>
   <div class="agrid">
@@ -628,9 +587,9 @@ write("verification/index.html", layout({rel: "verification/index.html", title: 
   </div>
 </div></section>
 <section class="sec mist"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">By category</span><h2>What we check</h2><p>Every Verified agency passes the checks for its category, through an OPIIUS visit or a video walkthrough.</p></div></div>
+  <div class="sec-h"><div><span class="eyebrow">Checks</span><h2>What we check</h2><p>Every Verified rental agency passes these checks, through an OPIIUS visit or a video walkthrough.</p></div></div>
   <div class="scroll-x"><table class="matrix"><thead><tr><th scope="col">Category</th><th scope="col">Checks</th></tr></thead><tbody>
-  ${[["Car & bike rentals", "rentals"], ["Tour operators", "tours"]].map(([t, k]) => `<tr><th scope="row">${t}</th><td>${CHECKS[k].map(esc).join(" · ")}</td></tr>`).join("")}
+  ${[["Car & bike rentals", "rentals"]].map(([t, k]) => `<tr><th scope="row">${t}</th><td>${CHECKS[k].map(esc).join(" · ")}</td></tr>`).join("")}
   </tbody></table></div>
 </div></section>
 <section class="sec"><div class="wrap two">
@@ -640,22 +599,22 @@ write("verification/index.html", layout({rel: "verification/index.html", title: 
     <li>${I.award}<span><b>Featured is labelled.</b> Paid placement always says Featured and is limited to 3 per category per city.</span></li>
     <li>${I.chat}<span><b>Real reviews only.</b> Reviews come only from customers who sent an inquiry through OPIIUS, tied to its reference.</span></li>
     <li>${I.flag}<span><b>Complaints count.</b> Two unresolved complaints suspend the badge until we review them.</span></li></ul></div>
-  <div class="panel rv"><h2>What a verified inquiry is</h2><p>Every request sent through OPIIUS carries a reference number (like OP-261002-K3F9Q) and the customer's dates, group size or car, sent from their own WhatsApp number. Agencies see real, specific requests, and customers can quote the reference if anything goes wrong.</p>
+  <div class="panel rv"><h2>What a verified inquiry is</h2><p>Every request sent through OPIIUS carries a reference number (like OP-261002-K3F9Q) and the customer's car, dates and pickup point, sent from their own WhatsApp number. Agencies see real, specific requests, and customers can quote the reference if anything goes wrong.</p>
     <div class="ctas"><a class="btn wa" href="${waLink("Hi OPIIUS, I'd like to report a problem with an agency.")}" rel="noopener">${I.wa}Report an agency</a></div></div>
 </div></section>`}));
 
 /* ---------- about ---------- */
 write("about/index.html", layout({rel: "about/index.html", title: "About OPIIUS · A trusted local marketplace for the Northeast",
-  desc: "OPIIUS is a Guwahati-based marketplace where customers compare local rental agencies and tour operators, and agencies showcase their cars and tours.",
+  desc: "OPIIUS is a Guwahati-based marketplace where customers compare local car rental agencies, and agencies showcase their fleets.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>About</span></nav>
   <span class="eyebrow">About OPIIUS</span><h1>Local agencies deserve to be found. Customers deserve to trust who they find.</h1>
-  <p class="lede">Most car rentals and tour companies in the Northeast are run by small local businesses that live on WhatsApp and Instagram. They're often excellent, and almost impossible to compare. OPIIUS puts them on one marketplace, with real photos, clear prices and a badge that means something.</p></div></section>
+  <p class="lede">Most car rental agencies in Guwahati are run by small local businesses that live on WhatsApp and Instagram. They're often excellent, and almost impossible to compare. OPIIUS puts them on one marketplace, with real photos, clear prices and a badge that means something.</p></div></section>
 <section class="sec"><div class="wrap two">
   <div class="panel rv"><h2>What OPIIUS does</h2><ul class="ticks">
     <li>${I.check}<span>Shows local agencies with real photos, prices and terms</span></li><li>${I.check}<span>Checks agencies before they get the Verified badge</span></li>
     <li>${I.check}<span>Passes customer inquiries to agencies with a reference number</span></li><li>${I.check}<span>Follows up when a customer reports a problem</span></li></ul>
     <h3 style="margin-top:26px;font-size:20px">What OPIIUS doesn't do</h3><ul class="ticks x">
-    <li>${I.x}<span>Own vehicles or run trips. The agency provides the service and you pay them directly</span></li><li>${I.x}<span>Charge customers a booking fee</span></li><li>${I.x}<span>Sell the Verified badge</span></li></ul></div>
+    <li>${I.x}<span>Own vehicles. The agency rents you the car and you pay them directly</span></li><li>${I.x}<span>Charge customers a booking fee</span></li><li>${I.x}<span>Sell the Verified badge</span></li></ul></div>
   <div class="panel rv"><h2>Contact</h2><div class="kv"><div><span>Based in</span><span>Guwahati, Assam</span></div><div><span>Founder</span><span>Priyangshu Nath</span></div>
     <div><span>WhatsApp</span><span><a href="${waLink("Hi OPIIUS")}" rel="noopener">${esc(PHONE)}</a></span></div><div><span>Email</span><span><a href="mailto:priyangshunath190@gmail.com">priyangshunath190@gmail.com</a></span></div></div>
     <div class="ctas"><a class="btn primary" href="/get-matched/">Get matched with an agency</a><a class="btn outline" href="/for-agencies/">List your agency</a></div></div>
@@ -663,12 +622,12 @@ write("about/index.html", layout({rel: "about/index.html", title: "About OPIIUS 
 
 /* ---------- get matched ---------- */
 write("get-matched/index.html", layout({rel: "get-matched/index.html", title: "Get matched with a trusted local agency · OPIIUS",
-  desc: "Tell OPIIUS what you need: a car, a car with driver or a tour. We'll pass it to a suitable local agency and you'll get a reply on WhatsApp.",
+  desc: "Tell OPIIUS what you need: a self-drive car or a car with driver. We'll pass it to a suitable local rental agency and you'll get a reply on WhatsApp.",
   body: `<section class="sec mist" style="padding-top:64px"><div class="wrap matchbox">
   <div><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Get matched</span></nav><span class="eyebrow">Get matched</span>
     <h1 style="font-size:clamp(34px,5vw,54px);font-weight:600;margin-top:10px">Tell us what you need. We'll find the agency.</h1>
-    <p class="muted" style="margin-top:16px;font-size:17px;max-width:46ch">A self-drive car, a car with driver or a tour. Share the details once and get a reply on WhatsApp.</p>
-    <ol class="steps3" style="grid-template-columns:1fr;gap:12px;margin-top:26px"><li style="padding:18px"><b style="margin-top:10px">Send your request</b><span>It opens WhatsApp with your details and a reference number.</span></li><li style="padding:18px"><b style="margin-top:10px">We find a suitable agency</b><span>Your request goes to a local agency that fits.</span></li><li style="padding:18px"><b style="margin-top:10px">Get details before you commit</b><span>Prices, inclusions and availability on WhatsApp.</span></li></ol></div>
+    <p class="muted" style="margin-top:16px;font-size:17px;max-width:46ch">A self-drive car or a car with driver. Share the details once and get a reply on WhatsApp.</p>
+    <ol class="steps3" style="grid-template-columns:1fr;gap:12px;margin-top:26px"><li style="padding:18px"><b style="margin-top:10px">Send your request</b><span>It opens WhatsApp with your details and a reference number.</span></li><li style="padding:18px"><b style="margin-top:10px">We find a suitable agency</b><span>Your request goes to a local agency that fits.</span></li><li style="padding:18px"><b style="margin-top:10px">Get details before you commit</b><span>Price, deposit, km limit and availability on WhatsApp.</span></li></ol></div>
   ${matchForm("self-drive-cars", {title: "Your request"})}
 </div></section>`}));
 
@@ -677,10 +636,10 @@ write("404.html", layout({rel: "404.html", title: "Page not found · OPIIUS", de
   body: `<section class="sec"><div class="wrap" style="max-width:720px;text-align:center"><span class="eyebrow">404</span><h1 style="font-size:clamp(34px,5vw,52px);font-weight:600;margin-top:10px">This page isn't here.</h1>
   <p class="muted" style="margin-top:14px;font-size:17px">It may have moved when we rebuilt OPIIUS. Try one of these instead.</p>
   <div class="ctas" style="justify-content:center"><a class="btn primary" href="/">Home</a><a class="btn outline" href="${sdcUrl}">Self-drive cars</a><a class="btn outline" href="/get-matched/">Get matched</a></div></div></section>`}));
-write("tours/meghalaya.html", `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Meghalaya tours · OPIIUS</title><link rel="canonical" href="${SITE}/tours/"><meta http-equiv="refresh" content="0; url=/tours/"><meta name="robots" content="noindex"></head><body><p><a href="/tours/">Meghalaya tours on OPIIUS</a></p></body></html>\n`);
+redirectTo("tours/meghalaya.html", "/rentals/", "Car rentals");
 
 /* ---------- sitemap ---------- */
-const urls = written.filter(r => r.endsWith(".html") && r !== "404.html" && !r.startsWith("tours/meghalaya")).map(urlOf);
+const urls = written.filter(r => r.endsWith(".html") && r !== "404.html" && !r.startsWith("tours/")).map(urlOf);
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod>${u === "/" ? "<priority>1.0</priority>" : ""}</url>`).join("\n")}
