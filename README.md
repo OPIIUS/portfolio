@@ -10,6 +10,7 @@ Live: https://opiius.online/
 Static pages, generated from the data files. No framework, no server.
 
 - `assets/opiius/data.js`: real partner agencies, vehicles and day prices (plus places, brands and models)
+- `assets/opiius/partners.js`: agencies added through onboard.html; an optional `driver` block lists cars with driver and their rates
 - `assets/opiius/partners.js`: rental agencies added through `onboard.html`
 - `assets/opiius/config.js`: WhatsApp number and booking-log URL
 - `assets/site/`: shared design system (`site.css`) and behaviour (`site.js`)

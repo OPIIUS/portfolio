@@ -107,6 +107,12 @@ const carsOf = (pred) => CARS.filter(pred);
 for (const c of CATS) c.subs = c.subs.filter(s => !s.onlyWhenLive || AGENCIES.some(a => a.category === s.id) || (s.kind && CARS.some(x => x.m.kind === s.kind)));
 const groupsOf = list => GROUPS.map(g => ({g, list: list.filter(c => g.test(c.m))})).filter(x => x.list.length);
 const minP = list => Math.min(...list.map(c => c.price)), maxP = list => Math.max(...list.map(c => c.price));
+/* cars with driver: an agency's optional driver block from partners.js, {cars: [{name, seats, local, perKm, airport}], allowance, areas, note} */
+const drv = a => a.driver && (a.driver.cars || []).some(c => c.name && +c.local) ? a.driver : null;
+const drvCars = a => drv(a) ? a.driver.cars.filter(c => c.name && +c.local) : [];
+const drvMin = a => Math.min(...drvCars(a).map(c => +c.local));
+const DRV = AGENCIES.filter(drv);
+const driverUrl = DRV.length ? "/rentals/#cars-with-driver" : "/get-matched/?need=cars-with-driver";
 const subLive = sub => sub.kind ? carsOf(c => c.m.kind === sub.kind) : [];
 const cityName = id => (O.PLACES[id] || {name: id}).name;
 const liveCities = kind => [...new Set(carsOf(c => c.m.kind === kind).map(c => c.a.city))];
@@ -121,7 +127,7 @@ function badge(a, cls = "") {
 const initials = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
 
 /* ---------- layout ---------- */
-const NAV = [["rentals/", "Rentals", "rentals"], ["get-matched/?need=cars-with-driver", "Cars with driver", "driver"], ["verification/", "How we verify", "verification"], ["about/", "About", "about"]];
+const NAV = [["rentals/", "Rentals", "rentals"], [driverUrl.slice(1), "Cars with driver", "driver"], ["verification/", "How we verify", "verification"], ["about/", "About", "about"]];
 function header(active) {
   return `<a class="skip" href="#main">Skip to content</a>
 <header class="hdr"><div class="wrap">
@@ -131,7 +137,7 @@ function header(active) {
     <button type="button" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mnav">${I.menu}</button></div>
 </div></header>
 <nav class="mnav" id="mnav" aria-label="Mobile">
-  <a href="/rentals/">Rentals<small>Choose a local agency</small></a><a href="${sdcUrl}">Self-drive cars<small>Guwahati</small></a><a href="/get-matched/?need=cars-with-driver">Cars with driver<small>Tell us your dates</small></a>
+  <a href="/rentals/">Rentals<small>Choose a local agency</small></a><a href="${sdcUrl}">Self-drive cars<small>Guwahati</small></a><a href="${driverUrl}">Cars with driver<small>${DRV.length ? "Choose an agency" : "Tell us your dates"}</small></a>
   <a href="/verification/">How we verify</a><a href="/about/">About</a>
   <a class="btn primary" href="/for-agencies/">For agencies: list your cars</a>
 </nav>`;
@@ -141,7 +147,7 @@ function footer() {
   <div class="cols">
     <div><a class="logo" href="/">${LOGO}</a><p class="about">Self-drive cars and cars with driver from trusted local rental agencies in Guwahati. Real photos, clear prices, inquiries on WhatsApp.</p></div>
     <div><h4>Rentals</h4><ul>
-      <li><a href="/rentals/">All rental agencies</a></li><li><a href="${sdcUrl}">Self-drive cars in Guwahati</a></li><li><a href="/get-matched/?need=cars-with-driver">Cars with driver</a></li>
+      <li><a href="/rentals/">All rental agencies</a></li><li><a href="${sdcUrl}">Self-drive cars in Guwahati</a></li><li><a href="${driverUrl}">Cars with driver</a></li>
       ${BRAND_LIST.slice(0, 3).map(b => `<li><a href="${urlOf(brandPath(b.k))}">${esc(b.name)} cars</a></li>`).join("")}</ul></div>
     <div><h4>Agencies</h4><ul>${AGENCIES.map(a => `<li><a href="${urlOf(agencyPath(a))}">${esc(a.name)}</a></li>`).join("")}<li><a href="/agency/">All agencies</a></li><li><a href="/get-matched/">Get matched</a></li></ul></div>
     <div><h4>For agencies</h4><ul>
@@ -243,9 +249,9 @@ function askDialog(list) {
 function needOptions(selected) {
   return CATS.map(c => `<optgroup label="${esc(c.name)}">${c.subs.map(s => `<option value="${s.id}"${s.id === selected ? " selected" : ""}>${esc(s.name)}</option>`).join("")}</optgroup>`).join("") + `<option value="other">Something else</option>`;
 }
-function matchForm(selected, {title = "Tell us what you need", sub = "We'll find a suitable local agency on OPIIUS and reply on WhatsApp, usually the same day."} = {}) {
+function matchForm(selected, {title = "Tell us what you need", sub = "We'll find a suitable local agency on OPIIUS and reply on WhatsApp, usually the same day.", agency = null} = {}) {
   return `<div class="panel"><h3>${esc(title)}</h3><p>${esc(sub)}</p>
-  <form class="form" data-match novalidate style="margin-top:18px">
+  <form class="form" data-match novalidate style="margin-top:18px">${agency ? `<input type="hidden" name="agency" value="${esc(agency.id)}"><input type="hidden" name="agencyName" value="${esc(agency.name)}">` : ""}
     <div class="row2"><div><label for="mNeed">What do you need?</label><select id="mNeed" name="need">${needOptions(selected)}</select></div>
       <div><label for="mCity">Pickup city</label><select id="mCity" name="city">${CITIES_ASK.map(c => `<option>${c}</option>`).join("")}</select></div></div>
     <div class="row2"><div><label for="mFrom">From <small>(optional)</small></label><input type="date" id="mFrom" name="from"></div><div><label for="mTo">To <small>(optional)</small></label><input type="date" id="mTo" name="to"></div></div>
@@ -270,8 +276,8 @@ function agencyCard(a) {
   const list = CARS.filter(c => c.a.id === a.id);
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
   return `<a class="acard rv" href="${urlOf(agencyPath(a))}"><div class="ph">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}${badge(a, "onph")}</div>
-  <div class="bd"><h3>${esc(a.name)}</h3><div class="row"><span>${I.car}${esc(SUB[a.category] ? SUB[a.category].name : "Rentals")}</span><span>${I.pin}${esc(cityName(a.city))}</span></div>
-  <div class="row"><span>${plural(list.length, "model")} · ${inr(minP(list))}–${inr(maxP(list))} / day</span></div>
+  <div class="bd"><h3>${esc(a.name)}</h3><div class="row"><span>${I.car}${esc(list.length && drv(a) ? "Self-drive & with driver" : list.length ? "Self-drive cars" : drv(a) ? "Cars with driver" : SUB[a.category] ? SUB[a.category].name : "Rentals")}</span><span>${I.pin}${esc(cityName(a.city))}</span></div>
+  <div class="row"><span>${list.length ? `${plural(list.length, "model")} · ${inr(minP(list))}–${inr(maxP(list))} / day` : drv(a) ? `With driver from ${inr(drvMin(a))}/day` : ""}</span></div>
   <div class="ft"><span>View agency</span>${I.arrow.replace("<svg", '<svg width="18" height="18"')}</div></div></a>`;
 }
 const joinCard = `<a class="acard join rv" href="/for-agencies/"><span class="eyebrow">Your agency here</span><h3>Run a car rental agency?</h3><p>Showcase your cars to customers who are already searching. Basic listing is free.</p><span class="link">Showcase your agency ${I.arrow.replace("<svg", '<svg width="16" height="16"')}</span></a>`;
@@ -332,7 +338,7 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
       <p class="lede">Real photos, the owner's price and terms upfront. Ask on WhatsApp.</p></div>
     <div class="choose2">
       ${opt(sdcUrl, "/assets/opiius/img/home-selfdrive.jpg", "45% 60%", "car", "Self-drive cars", "Drive yourself. See every car, its day price, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "See self-drive cars")}
-      ${opt("/get-matched/?need=cars-with-driver", "/assets/opiius/img/home-driver.jpg", "52% 55%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], "", "Ask for a car with driver")}
+      ${opt(driverUrl, "/assets/opiius/img/home-driver.jpg", "52% 55%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], DRV.length ? `From ${inr(Math.min(...DRV.map(drvMin)))}/day` : "", DRV.length ? "See cars with driver" : "Ask for a car with driver")}
     </div>
     <ul class="trust"><li>${I.shield}Verified agencies</li><li>${I.camera}Real photos of every car</li><li>${I.tag}Prices shown upfront</li><li>${I.check}No booking fee</li></ul>
   </div>
@@ -354,15 +360,26 @@ function agencyRow(a) {
   const list = CARS.filter(c => c.a.id === a.id), pol = a.policies || {};
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
   const autos = list.filter(c => /auto/i.test(c.trans)).length;
-  const chips = [/agency/i.test(pol.deposit || "") ? "" : /^no /i.test(pol.deposit || "") ? pol.deposit : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : ""].filter(Boolean);
+  const chips = [/agency/i.test(pol.deposit || "") ? "" : /^no /i.test(pol.deposit || "") ? pol.deposit : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : "", drv(a) ? "Cars with driver too" : ""].filter(Boolean);
   return `<a class="arow rv" href="${urlOf(agencyPath(a))}"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
   <div class="bd"><div class="badges">${badge(a)}</div><h3>${esc(a.name)}</h3><p class="loc">${I.pin.replace("<svg", '<svg width="16" height="16"')}${esc(a.area ? a.area + ", " : "")}${esc(cityName(a.city))}</p>
     <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div>
-    <div class="ft"><div class="price"><b class="num">${inr(minP(list))}</b><span>– ${inr(maxP(list))} / day</span></div><span class="btn dark">View all ${list.length} cars ${arrow()}</span></div></div></a>`;
+    <div class="ft">${list.length ? `<div class="price"><b class="num">${inr(minP(list))}</b><span>– ${inr(maxP(list))} / day</span></div><span class="btn dark">View all ${list.length} cars ${arrow()}</span>` : `<span></span><span class="btn dark">View agency ${arrow()}</span>`}</div></div></a>`;
+}
+/* the same agency in the "Cars with driver" list: its driver rates, linking to the driver section of its page */
+function driverRow(a) {
+  const d = a.driver, cars = drvCars(a), list = CARS.filter(c => c.a.id === a.id);
+  const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
+  const chips = [...cars.slice(0, 4).map(c => c.name + (c.seats ? ` · ${c.seats} seats` : "")), cars.some(c => +c.airport) ? "Airport transfers" : "", cars.some(c => +c.perKm) ? "Outstation trips" : ""].filter(Boolean);
+  return `<a class="arow rv" href="${urlOf(agencyPath(a))}#driver"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
+  <div class="bd"><div class="badges">${badge(a)}</div><h3>${esc(a.name)}</h3><p class="loc">${I.pin.replace("<svg", '<svg width="16" height="16"')}${esc(d.areas || ((a.area ? a.area + ", " : "") + cityName(a.city)))}</p>
+    <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div>
+    <div class="ft"><div class="price"><span>From</span> <b class="num">${inr(drvMin(a))}</b><span>/ day with driver</span></div><span class="btn dark">See driver rates ${arrow()}</span></div></div></a>`;
 }
 (function rentals() {
   const cat = CATS[0];
-  const typeAgencies = s => AGENCIES.filter(a => a.category === s.id || (s.kind && CARS.some(c => c.a.id === a.id && c.m.kind === s.kind)));
+  const typeAgencies = s => s.id === "cars-with-driver" ? AGENCIES.filter(a => drv(a) || a.category === s.id)
+    : AGENCIES.filter(a => s.kind ? CARS.some(c => c.a.id === a.id && c.m.kind === s.kind) : a.category === s.id);
   const faq = faqBlock([
     ["How do I book a car?", "Open an agency, pick a car and tap “Check availability”. Choose your dates and send it on WhatsApp; the agency confirms before you pay them directly."],
     ["What do I need to rent a self-drive car?", "Your original driving licence and a photo ID. Each agency's page lists exactly what it needs."],
@@ -372,7 +389,7 @@ function agencyRow(a) {
   const sections = cat.subs.map(s => {
     const ags = typeAgencies(s);
     return `<section class="atype" id="${s.id}"><div class="atype-h"><span class="ic">${I[s.icon]}</span><div><h2>${esc(s.name)}</h2><p>${esc(s.desc)}</p></div></div>
-      ${ags.length ? `<div class="arows">${ags.map(agencyRow).join("")}</div>`
+      ${ags.length ? `<div class="arows">${ags.map(a => s.id === "cars-with-driver" && drv(a) ? driverRow(a) : agencyRow(a)).join("")}</div>`
         : `<div class="aempty"><p>Tell us your dates and where you're going, and we'll find a local agency for you.</p><a class="btn outline" href="#match" data-need="${s.id}">Ask for ${esc(s.name.toLowerCase())}</a></div>`}</section>`;
   }).join("");
   const body = `
@@ -459,8 +476,24 @@ ${askDialog(list)}`;
 for (const a of AGENCIES) {
   const rel = agencyPath(a), list = CARS.filter(c => c.a.id === a.id), gs = groupsOf(list);
   const cover = a.cover ? "/" + a.cover : (list.find(c => c.photo) || {}).photo || "";
-  const maxSeats = Math.max(...list.map(c => c.m.seats));
-  const pol = a.policies || {};
+  const pol = a.policies || {}, dcars = drvCars(a), d = a.driver || {};
+  const maxSeats = Math.max(0, ...list.map(c => c.m.seats), ...dcars.map(c => +c.seats || 0));
+  const lowest = list.length ? minP(list) : dcars.length ? drvMin(a) : 0;
+  const verifyPanel = `<div class="panel"><h2>Verification</h2>${a.verified
+      ? `<p>OPIIUS checked this agency${a.verifiedOn ? " in " + esc(a.verifiedOn) : ""}.</p><ul class="ticks">${CHECKS.rentals.map(t => `<li>${I.check}<span>${esc(t)}</span></li>`).join("")}</ul>`
+      : `<p>${a.founding ? `${esc(a.name)} is a founding partner on OPIIUS. ` : ""}The Verified badge is added after OPIIUS checks the permit, insurance, fleet and owner ID. <a class="link" href="/verification/">What we check</a></p>`}
+      <p style="margin-top:14px"><a class="link" href="${waLink(`Hi OPIIUS, I'd like to report a problem with ${a.name}.`)}" rel="noopener">${I.flag.replace("<svg", '<svg width="16" height="16"')}Report a problem with this agency</a></p></div>`;
+  const driverSec = dcars.length ? `
+<section class="sec" id="driver"><div class="wrap two">
+  <div class="panel"><span class="eyebrow">Cars with driver</span><h2 style="margin-top:6px">Driver rates</h2><p>${esc(a.name)} ${list.length ? "also sends" : "sends"} cars with an experienced local driver. Rates set by the agency; you pay them directly. OPIIUS adds no booking fee.</p>
+    <table class="plist"><tbody><tr><th>Car</th><th>Per day</th></tr>${dcars.map(c => `<tr><td>${esc(c.name)}<small>${[c.seats ? c.seats + " seats" : "", +c.perKm ? `outstation ${inr(+c.perKm)}/km` : "", +c.airport ? `airport ${inr(+c.airport)}` : ""].filter(Boolean).join(" · ")}</small></td><td>${inr(+c.local)}/day</td></tr>`).join("")}</tbody></table>
+    <div class="kv" style="margin-top:18px">
+      <div><span>Local day</span><span>In the city, usually 8 hours / 80 km. The agency confirms the exact limit.</span></div>
+      ${d.allowance ? `<div><span>Driver allowance</span><span>${esc(d.allowance)}</span></div>` : ""}
+      ${d.areas ? `<div><span>Goes to</span><span>${esc(d.areas)}</span></div>` : ""}
+      ${d.note ? `<div><span>Note</span><span>${esc(d.note)}</span></div>` : ""}</div></div>
+  ${matchForm("cars-with-driver", {title: `Ask ${a.name} for a car with driver`, sub: `Share your dates and route. ${a.name} replies on WhatsApp, through OPIIUS.`, agency: a})}
+</div></section>` : "";
   const body = `
 <section class="hero"><div class="bg" style="background-image:url(/assets/opiius/img/hero.jpg);background-position:50% 60%" aria-hidden="true"></div>
   <div class="wrap in" style="padding-top:64px">
@@ -468,12 +501,13 @@ for (const a of AGENCIES) {
     <div class="ahead"><span class="mono" aria-hidden="true">${esc(initials(a.name))}</span>${badge(a)}</div>
     <h1 style="max-width:14ch">${esc(a.name)}</h1>
     <p class="lede">${esc(a.about)}</p>
-    <div class="ctas"><a class="btn light" href="#${gs[0] ? gs[0].g.id : "info"}">See the fleet</a><button type="button" class="btn ghost" data-ask="">Check availability</button></div>
-    <div class="facts"><div><b class="num">${list.length}</b><span>${list.length === 1 ? "model" : "models"}</span></div><div><b class="num">${inr(minP(list))}</b><span>lowest day price</span></div><div><b class="num">${maxSeats}</b><span>seats, largest</span></div><div><b>${esc(cityName(a.city))}</b><span>pickup city</span></div></div>
+    <div class="ctas">${list.length ? `<a class="btn light" href="#${gs[0].g.id}">See the fleet</a><button type="button" class="btn ghost" data-ask="">Check availability</button>${dcars.length ? `<a class="btn ghost" href="#driver">Cars with driver</a>` : ""}`
+      : `<a class="btn light" href="#driver">See driver rates</a>`}</div>
+    <div class="facts"><div><b class="num">${list.length || dcars.length}</b><span>${list.length ? (list.length === 1 ? "model" : "models") : (dcars.length === 1 ? "car with driver" : "cars with driver")}</span></div><div><b class="num">${inr(lowest)}</b><span>${list.length ? "lowest day price" : "lowest day rate"}</span></div>${maxSeats ? `<div><b class="num">${maxSeats}</b><span>seats, largest</span></div>` : ""}<div><b>${esc(cityName(a.city))}</b><span>pickup city</span></div></div>
   </div></section>
-${chipsNav(list, [["info", "Price list & terms"]])}
-<div class="wrap">${fleetBlocks(list)}</div>
-<section class="sec mist" id="info" style="margin-top:72px"><div class="wrap two">
+${chipsNav(list, [...(dcars.length ? [["driver", "Cars with driver"]] : []), ["info", list.length ? "Price list & terms" : "Verification"]])}
+<div class="wrap">${fleetBlocks(list)}</div>${driverSec}
+${list.length ? `<section class="sec mist" id="info" style="margin-top:72px"><div class="wrap two">
   <div class="panel"><h2>Price list</h2><p>Day prices set by ${esc(a.name)}. You pay the agency directly, at these prices. OPIIUS adds no booking fee.</p>
     <table class="plist"><tbody>${gs.map(x => `<tr><th colspan="2">${esc(x.g.t)}</th></tr>${x.list.map(c => `<tr><td>${esc(c.name)}<small>${c.m.seats} seats · ${esc(c.trans)}${c.units > 1 ? " · " + c.units + " cars" : ""}</small></td><td>${inr(c.price)}/day</td></tr>`).join("")}`).join("")}</tbody></table>
     <button type="button" class="btn outline sm no-print" style="margin-top:20px" onclick="window.print()">Print or save as PDF</button></div>
@@ -487,10 +521,7 @@ ${chipsNav(list, [["info", "Price list & terms"]])}
       <div><span>Pickup</span><span>${esc((a.pickups || []).join(", "))}</span></div>
       ${a.deliveryNote ? `<div><span>Delivery</span><span>${esc(a.deliveryNote)}</span></div>` : ""}
       ${a.travel ? `<div><span>Out of state</span><span>${esc(a.travel)}</span></div>` : ""}</div></div>
-    <div class="panel"><h2>Verification</h2>${a.verified
-      ? `<p>OPIIUS checked this agency${a.verifiedOn ? " in " + esc(a.verifiedOn) : ""}.</p><ul class="ticks">${CHECKS.rentals.map(t => `<li>${I.check}<span>${esc(t)}</span></li>`).join("")}</ul>`
-      : `<p>${a.founding ? `${esc(a.name)} is a founding partner on OPIIUS. ` : ""}The Verified badge is added after OPIIUS checks the permit, insurance, fleet and owner ID. <a class="link" href="/verification/">What we check</a></p>`}
-      <p style="margin-top:14px"><a class="link" href="${waLink(`Hi OPIIUS, I'd like to report a problem with ${a.name}.`)}" rel="noopener">${I.flag.replace("<svg", '<svg width="16" height="16"')}Report a problem with this agency</a></p></div>
+    ${verifyPanel}
   </div>
 </div></section>
 <section class="sec"><div class="wrap" style="text-align:center;max-width:720px">
@@ -498,10 +529,13 @@ ${chipsNav(list, [["info", "Price list & terms"]])}
   <p class="muted" style="margin-top:12px;font-size:16px">Tell us the car, the dates and where you'd like to pick it up. ${esc(a.name)} replies on WhatsApp.</p>
   <div class="ctas" style="justify-content:center"><button type="button" class="btn dark" data-ask="">Check availability</button></div>
 </div></section>
-${askDialog(list)}`;
-  write(rel, layout({rel, title: `${a.name} · Self-drive cars in ${cityName(a.city)} from ${inr(minP(list))}/day | OPIIUS`, active: "rentals",
-    desc: `${a.name}: ${plural(list.length, "car model")} in ${cityName(a.city)}, from ${inr(minP(list))}/day. See the full fleet, day prices and terms, then check availability on WhatsApp.`,
-    body, og: cover || undefined, jsonld: [{"@context": "https://schema.org", "@type": "AutoRental", name: a.name, url: SITE + urlOf(rel), image: cover ? SITE + cover : undefined, priceRange: `${inr(minP(list))}–${inr(maxP(list))} per day`, address: {"@type": "PostalAddress", addressLocality: cityName(a.city), addressRegion: (O.PLACES[a.city] || {}).state, addressCountry: "IN"}}]}));
+${askDialog(list)}` : `<section class="sec mist" id="info"><div class="wrap" style="max-width:720px">${verifyPanel}</div></section>`}`;
+  const what = list.length && dcars.length ? "Self-drive cars and cars with driver" : list.length ? "Self-drive cars" : "Cars with driver";
+  const allPrices = [...list.map(c => c.price), ...dcars.map(c => +c.local)];
+  write(rel, layout({rel, title: `${a.name} · ${what} in ${cityName(a.city)}${lowest ? ` from ${inr(lowest)}/day` : ""} | OPIIUS`, active: "rentals",
+    desc: list.length ? `${a.name}: ${plural(list.length, "car model")} in ${cityName(a.city)}, from ${inr(minP(list))}/day${dcars.length ? ", plus cars with driver" : ""}. See the full fleet, day prices and terms, then check availability on WhatsApp.`
+      : `${a.name}: cars with driver in ${cityName(a.city)}${lowest ? `, from ${inr(lowest)}/day` : ""}. See the driver rates and ask on WhatsApp.`,
+    body, og: cover || undefined, jsonld: [{"@context": "https://schema.org", "@type": "AutoRental", name: a.name, url: SITE + urlOf(rel), image: cover ? SITE + cover : undefined, priceRange: allPrices.length ? `${inr(Math.min(...allPrices))}–${inr(Math.max(...allPrices))} per day` : undefined, address: {"@type": "PostalAddress", addressLocality: cityName(a.city), addressRegion: (O.PLACES[a.city] || {}).state, addressCountry: "IN"}}]}));
 }
 
 /* ---------- agencies index ---------- */
@@ -526,6 +560,7 @@ write("agency/index.html", layout({rel: "agency/index.html", title: "Rental agen
     ["Can I buy the Verified badge?", "No. The Verified fee covers our checks. If your business doesn't pass, you get a full refund. Featured placement is paid and always labelled; verification is earned."],
     ["Is there a contract?", "No. Plans are month to month. Cancel any month. We give 30 days' notice before any change to fees."],
     ["What do I need to send?", `Your agency details, prices and terms, and 2–3 clear daylight photos of each vehicle. Use the <a href="/onboard.html">agency form</a>, or send everything on WhatsApp.`],
+    ["We also send cars with driver. Can we list that?", `Yes. Tick “We also provide cars with driver” in the <a href="/onboard.html">agency form</a> and add each car with its local day rate, outstation per-km rate and airport transfer price. Agencies that only run cars with driver can join too.`],
     ["Who receives customer inquiries?", "Inquiries arrive on the OPIIUS WhatsApp with an OPIIUS reference and are passed to you straight away. Your phone number is not published unless your plan includes call and WhatsApp buttons."]]);
   const body = `
 <section class="hero"><div class="bg" style="background-image:url(/assets/opiius/img/hero.jpg);background-position:50% 60%" aria-hidden="true"></div><div class="wrap in">

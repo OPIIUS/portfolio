@@ -143,8 +143,9 @@
       err.textContent="";
       var r=ref(),needTxt=need?need.options[need.selectedIndex].text:"";
       var dates=v("from")?(fmt(v("from"))+(v("to")&&v("to")!==v("from")?" to "+fmt(v("to")):"")):"Flexible";
-      log({type:"request",ref:r,agency:"",agencyName:"Get matched",vehicle:needTxt,city:v("city"),from:v("from"),to:v("to")});
-      var lines=["Hi OPIIUS, please match me with a trusted local agency.","","Need: "+needTxt,"Where: "+(v("city")||"Guwahati"),"Dates: "+dates];
+      var ag=v("agency"),agName=v("agencyName");
+      log({type:"request",ref:r,agency:ag,agencyName:agName||"Get matched",vehicle:needTxt,city:v("city"),from:v("from"),to:v("to")});
+      var lines=[ag?"Hi OPIIUS, I'd like to ask "+agName+" about this.":"Hi OPIIUS, please match me with a trusted local agency.","","Need: "+needTxt,"Where: "+(v("city")||"Guwahati"),"Dates: "+dates];
       if(v("people"))lines.push("People: "+v("people"));
       if(v("budget"))lines.push("Budget: "+v("budget"));
       lines.push("Name: "+v("name"));

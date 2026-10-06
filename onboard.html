@@ -28,6 +28,7 @@ textarea{min-height:76px}
 .veh .n{font-weight:800;font-size:14px;color:var(--brand)}
 .veh .rm{position:absolute;right:10px;top:8px;border:0;background:none;color:var(--bad);font-weight:700;padding:6px}
 .other{display:none}.veh.is-other .other{display:block}
+#drvbox{display:none}#drvbox.on{display:block}
 button.main,button.alt{font:inherit;font-weight:750;border-radius:14px;padding:14px 18px;border:0;cursor:pointer}
 button.main{background:var(--brand);color:#fff;width:100%}
 button.alt{background:var(--soft);color:var(--brand);width:100%;margin-top:12px}
@@ -71,16 +72,30 @@ button.wa{background:#25d366;color:#fff;border:0;font-weight:700;padding:12px 16
 </section>
 
 <section>
-  <h2>3. Vehicles</h2>
-  <p class="hint">One entry per model. Take 2–3 clear daylight photos of each vehicle (whole car in frame) and send them with the block.</p>
+  <h2>3. Self-drive vehicles</h2>
+  <p class="hint">One entry per model. Take 2–3 clear daylight photos of each vehicle (whole car in frame) and send them with the block. Only offer cars with driver? Leave this empty and fill section 4.</p>
   <div id="vehs"></div>
   <button type="button" class="alt" id="addv">+ Add a vehicle</button>
 </section>
 
 <section>
-  <h2>4. Checks</h2>
+  <h2>4. Cars with driver <small style="font-weight:400;color:var(--dim)">optional</small></h2>
+  <label class="check"><input type="checkbox" id="drv"> <span><b>We also provide cars with driver</b> (airport transfers, local use, outstation trips)</span></label>
+  <div id="drvbox">
+    <p class="hint" style="margin-top:12px">One entry per car you send with a driver. Write the rates exactly as the owner quotes them.</p>
+    <datalist id="carnames"></datalist>
+    <div id="dcars"></div>
+    <button type="button" class="alt" id="adddc">+ Add a car with driver</button>
+    <label for="dallow">Driver allowance <small>for outstation nights</small></label><input id="dallow" placeholder="₹300 per night">
+    <label for="dareas">Where they go</label><input id="dareas" placeholder="Guwahati, Shillong, Kaziranga, Tawang">
+    <label for="dnote">Anything else customers should know</label><input id="dnote" placeholder="Tolls, parking and permits extra">
+  </div>
+</section>
+
+<section>
+  <h2>5. Checks</h2>
   <label class="check"><input type="checkbox" id="consent"> <span><b>We agree to be listed on OPIIUS</b> with these prices and terms, and to receive reservations from OPIIUS on WhatsApp, under the <a href="terms.html#partners" target="_blank" rel="noopener">OPIIUS partner terms</a>. *</span></label>
-  <label class="check"><input type="checkbox" id="permit"> We have a valid self-drive rental permit (we will show it to OPIIUS)</label>
+  <label class="check"><input type="checkbox" id="permit"> We have the permits our vehicles need: a self-drive rental permit, and taxi permits for cars with driver (we will show them to OPIIUS)</label>
   <label class="check"><input type="checkbox" id="insurance"> Our vehicles have valid commercial insurance (we will show it to OPIIUS)</label>
   <p class="hint" style="margin-top:10px">The Verified badge is shown only after OPIIUS has seen these documents.</p>
 </section>
@@ -125,11 +140,25 @@ function addVeh(v={}){
   Object.entries(v).forEach(([c,val])=>{const el=d.querySelector("."+c);if(el)el.value=val});sel.dispatchEvent(new Event("change"));
   renumber();
 }
-function renumber(){[...document.querySelectorAll(".veh .n")].forEach((e,i)=>e.textContent="Vehicle "+(i+1))}
-const F=["name","city","since","area","pickups","about","deposit","km","fuel","cancel","docs"],C=["delivery","consent","permit","insurance"],V=["m","ob","on","ot","os","of","og","p","u","y"];
-function save(){try{localStorage.setItem(KEY,JSON.stringify({f:Object.fromEntries(F.map(k=>[k,$(k).value])),c:Object.fromEntries(C.map(k=>[k,$(k).checked])),v:[...document.querySelectorAll(".veh")].map(d=>Object.fromEntries(V.map(c=>[c,d.querySelector("."+c).value])))}))}catch(e){}}
+function renumber(){[...document.querySelectorAll(".veh .n")].forEach((e,i)=>e.textContent="Vehicle "+(i+1));[...document.querySelectorAll(".dcar .n")].forEach((e,i)=>e.textContent="Car with driver "+(i+1))}
+$("carnames").innerHTML=models.filter(([k,m])=>m.kind==="car").map(([k,m])=>`<option value="${O.BRANDS[m.brand].name} ${m.name}">`).join("");
+function addDcar(v={}){
+  const d=document.createElement("div");d.className="veh dcar";d.innerHTML=`<span class="n">Car with driver</span><button type="button" class="rm" aria-label="Remove">Remove</button>
+  <div class="row"><div><label>Car *</label><input class="dn" list="carnames" placeholder="Toyota Innova Crysta"></div><div><label>Seats</label><input class="ds" type="number" inputmode="numeric" placeholder="7"></div></div>
+  <div class="row3"><div><label>Local/day *</label><input class="dl" type="number" inputmode="numeric" placeholder="3500"></div>
+  <div><label>₹ per km</label><input class="dk" type="number" inputmode="numeric" placeholder="18"></div>
+  <div><label>Airport</label><input class="da" type="number" inputmode="numeric" placeholder="1200"></div></div>
+  <p class="hint" style="margin:8px 0 0">All in ₹. Local/day = one day in the city, usually 8 hours / 80 km. Per km = outstation trips. Airport = one-way transfer in Guwahati.</p>`;
+  $("dcars").appendChild(d);d.querySelector(".rm").addEventListener("click",()=>{d.remove();renumber();save()});
+  Object.entries(v).forEach(([c,val])=>{const el=d.querySelector("."+c);if(el)el.value=val});renumber();
+}
+const DV=["dn","ds","dl","dk","da"];
+$("drv").addEventListener("change",()=>{$("drvbox").classList.toggle("on",$("drv").checked);if($("drv").checked&&!document.querySelector(".dcar"))addDcar()});
+$("adddc").addEventListener("click",()=>{addDcar();save()});
+const F=["name","city","since","area","pickups","about","deposit","km","fuel","cancel","docs","dallow","dareas","dnote"],C=["delivery","drv","consent","permit","insurance"],V=["m","ob","on","ot","os","of","og","p","u","y"];
+function save(){try{localStorage.setItem(KEY,JSON.stringify({f:Object.fromEntries(F.map(k=>[k,$(k).value])),c:Object.fromEntries(C.map(k=>[k,$(k).checked])),v:[...document.querySelectorAll(".veh:not(.dcar)")].map(d=>Object.fromEntries(V.map(c=>[c,d.querySelector("."+c).value]))),d:[...document.querySelectorAll(".dcar")].map(d=>Object.fromEntries(DV.map(c=>[c,d.querySelector("."+c).value])))}))}catch(e){}}
 function load(){let s=null;try{s=JSON.parse(localStorage.getItem(KEY))}catch(e){}
-  if(!s){addVeh();return}F.forEach(k=>{if(s.f[k]!=null)$(k).value=s.f[k]});C.forEach(k=>$(k).checked=!!s.c[k]);(s.v&&s.v.length?s.v:[{}]).forEach(addVeh)}
+  if(!s){addVeh();return}F.forEach(k=>{if(s.f[k]!=null)$(k).value=s.f[k]});C.forEach(k=>$(k).checked=!!s.c[k]);(s.v&&s.v.length?s.v:[{}]).forEach(addVeh);(s.d||[]).forEach(addDcar);$("drvbox").classList.toggle("on",$("drv").checked)}
 document.addEventListener("input",save);document.addEventListener("change",save);
 $("addv").addEventListener("click",()=>{addVeh();save()});
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,24);
@@ -138,11 +167,14 @@ $("make").addEventListener("click",()=>{
   if(!$("name").value.trim())return err("Add the agency name.");
   if(!$("area").value.trim())return err("Add the area or landmark.");
   if(!$("consent").checked)return err("Please tick “We agree to be listed on OPIIUS” to continue.");
-  const vs=[...document.querySelectorAll(".veh")].map(d=>{const g=c=>d.querySelector("."+c).value.trim();const m=g("m");
+  const vs=[...document.querySelectorAll(".veh:not(.dcar)")].map(d=>{const g=c=>d.querySelector("."+c).value.trim();const m=g("m");
     const v={price:+g("p"),units:+g("u")||1,year:+g("y")||null};
     if(m&&m!=="other")v.model=m;else Object.assign(v,{brand:g("ob"),name:g("on"),type:g("ot"),seats:+g("os")||5,fuel:g("of"),trans:g("og")});
     return v}).filter(v=>(v.model||v.name)&&v.price>0);
-  if(!vs.length)return err("Add at least one vehicle with a model and a price.");
+  const dcars=$("drv").checked?[...document.querySelectorAll(".dcar")].map(d=>{const g=c=>d.querySelector("."+c).value.trim();
+    const c={name:g("dn"),seats:+g("ds")||undefined,local:+g("dl")||undefined,perKm:+g("dk")||undefined,airport:+g("da")||undefined};return c}).filter(c=>c.name&&c.local):[];
+  if($("drv").checked&&!dcars.length)return err("Add at least one car with driver, with its local day rate.");
+  if(!vs.length&&!dcars.length)return err("Add at least one self-drive vehicle, or a car with driver in section 4.");
   const id=slug($("name").value);
   vs.forEach((v,i)=>v.photos=[`assets/partners/${id}/${(v.model||slug(v.name))}-1.jpg`]);
   const entry={id,name:$("name").value.trim(),city:$("city").value,area:$("area").value.trim(),since:+$("since").value||undefined,
@@ -150,6 +182,8 @@ $("make").addEventListener("click",()=>{
     verified:$("permit").checked&&$("insurance").checked,
     policies:{deposit:$("deposit").value.trim(),km:$("km").value.trim(),fuel:$("fuel").value,cancel:$("cancel").value.trim(),docs:$("docs").value.trim()},
     vehicles:vs};
+  if(!vs.length&&dcars.length)entry.category="cars-with-driver";
+  if(dcars.length)entry.driver={cars:dcars,allowance:$("dallow").value.trim(),areas:$("dareas").value.trim(),note:$("dnote").value.trim()};
   const txt=`OPIIUS NEW PARTNER\nPlease add this agency to opiius.online. Photos attached, in the same order as the vehicles.\n\n${JSON.stringify(entry,null,2)}`;
   $("block").textContent=txt;$("out").style.display="block";$("out").scrollIntoView({behavior:"smooth"});
 });
