@@ -237,21 +237,27 @@
   /* rentals: search agencies, price per day, people going, liked only */
   var fq=$("#fq");
   if(fq){
-    var fmin=$("#fmin"),fmax=$("#fmax"),fppl=$("#fppl"),fl=$("#fliked"),fc=$("#fcount"),ftown=$("#ftown"),fnear=$("#fnear"),me=null;
+    var fmin=$("#fmin"),fmax=$("#fmax"),fppl=$("#fppl"),fl=$("#fliked"),fc=$("#fcount"),ftown=$("#ftown"),fnear=$("#fnear"),me=null,place=null,ref=null;
     var rows=$$(".arow-w").map(function(w,i){var c=[];try{c=JSON.parse(w.dataset.cars)}catch(e){}var ll=(w.dataset.ll||"").split(",").map(Number);
       return {w:w,i:i,q:w.dataset.q||"",c:c,town:w.dataset.town||"",ll:ll.length===2&&!isNaN(ll[0])?ll:null,id:(w.querySelector("[data-like]")||{dataset:{}}).dataset.like,fit:w.querySelector(".fit")}});
     /* Near me: distance on a sphere, km; the location never leaves the phone */
     var km=function(a,b){var R=6371,r=Math.PI/180,dl=(b[0]-a[0])*r,dn=(b[1]-a[1])*r,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))};
     var order=function(){
-      rows.forEach(function(r){r.d=me&&r.ll?km(me,r.ll):null;var loc=r.w.querySelector(".loc"),s=loc&&loc.querySelector(".dist");
+      var pt=place?place.ll:me;ref=pt;
+      rows.forEach(function(r){r.d=pt&&r.ll?km(pt,r.ll):null;var loc=r.w.querySelector(".loc"),s=loc&&loc.querySelector(".dist");
         if(loc&&!s){s=document.createElement("span");s.className="dist";loc.appendChild(s)}
         if(s){s.hidden=r.d==null;s.textContent=r.d==null?"":(r.d<1.5?"under 2 km away":"about "+(r.d<20?Math.round(r.d):Math.round(r.d/5)*5)+" km away")}});
-      $$(".arows").forEach(function(box){rows.filter(function(r){return r.w.parentNode===box}).sort(function(a,b){return me?((a.d==null?1e9:a.d)-(b.d==null?1e9:b.d))||a.i-b.i:a.i-b.i}).forEach(function(r){box.appendChild(r.w)})});
+      $$(".arows").forEach(function(box){rows.filter(function(r){return r.w.parentNode===box}).sort(function(a,b){return pt?((a.d==null?1e9:a.d)-(b.d==null?1e9:b.d))||a.i-b.i:a.i-b.i}).forEach(function(r){box.appendChild(r.w)})});
     };
     var run=function(){
       var q=fq.value.trim().toLowerCase(),town=ftown?ftown.value:"",lo=+fmin.value||0,hi=+fmax.value||Infinity,p=+fppl.value||0,onlyLiked=fl.getAttribute("aria-pressed")==="true";
       if(hi<lo){hi=Infinity;fmax.value="0"}
       var narrowed=lo||hi<Infinity||p,shown=0,ids={};
+      /* a place with no matching agency: drop the text filter and list the nearest rentals instead */
+      var textHit=!q||rows.some(function(r){return q.split(/\s+/).every(function(t){return r.q.indexOf(t)>-1})});
+      var pl=(!textHit&&q.length>1)?findPlace(q):null;
+      if((pl&&pl.n)!==(place&&place.n)){place=pl;order()}
+      if(place)q="";
       rows.forEach(function(r){
         var fits=r.c.filter(function(x){return x[0]>=lo&&x[0]<=hi&&(!p||!x[1]||x[1]>=p)});
         var ok=(!q||q.split(/\s+/).every(function(t){return r.q.indexOf(t)>-1}))&&(!town||r.town===town)&&(!onlyLiked||liked.indexOf(r.id)>-1)&&(!r.c.length||fits.length);
@@ -261,7 +267,9 @@
       });
       $$(".atype").forEach(function(sec){var ws=$$(".arow-w",sec),none=$(".anone",sec);if(none)none.hidden=!ws.length||ws.some(function(w){return !w.hidden})});
       var total=rows.map(function(r){return r.id}).filter(function(v,i,a){return a.indexOf(v)===i}).length;
-      fc.textContent=(q||town||narrowed||onlyLiked)?(shown?"Showing "+shown+" of "+total+(total===1?" agency":" agencies"):"No agency matches. Try a wider price range or fewer filters."):"";
+      if(place){var near=rows.filter(function(r){return !r.w.hidden&&r.d!=null}).sort(function(a,b){return a.d-b.d})[0];
+        fc.textContent=near&&near.d<8?"Rentals near "+place.n+", nearest first.":"No rental agency in "+place.n+" yet. Showing the nearest"+(near?", from about "+(near.d<20?Math.round(near.d):Math.round(near.d/5)*5)+" km away":"")+".";return}
+      fc.textContent=(q||town||narrowed||onlyLiked)?(shown?"Showing "+shown+" of "+total+(total===1?" agency":" agencies"):(q&&!textHit?"Nothing matches “"+fq.value.trim()+"”. Try a car, an agency or a town.":"No agency matches. Try a wider price range or fewer filters.")):"";
     };
     window.__opFilter=run;
     [fq,fmin,fmax,fppl,ftown].forEach(function(el){if(el){el.addEventListener("input",run);el.addEventListener("change",run)}});
@@ -285,7 +293,9 @@
     var sbox=$("#fsugg"),SD=[],SI={},sel=-1,cur=[];
     try{SD=JSON.parse($("#sugg-data").textContent)}catch(e){}
     var tpl=$("#sugg-icons");if(tpl)[].forEach.call(tpl.content.children,function(s){SI[s.dataset.k]=s.innerHTML});
-    var LBL={a:"Agencies",c:"Cars",b:"Bikes & scooters",t:"Towns"};
+    var LBL={a:"Agencies",c:"Cars",b:"Bikes & scooters",t:"Towns",p:"Places"};
+    var findPlace=function(q){var n=norm(q),hit=null,pre=[];SD.forEach(function(x){if(x.k!=="p")return;var m=norm(x.n);if(m===n)hit=x;else if(m.indexOf(n)===0)pre.push(x)});return hit||(pre.length===1?pre[0]:null)};
+    var nearestTo=function(ll){var b=null;rows.forEach(function(r){if(!r.ll)return;var d=km(ll,r.ll);if(!b||d<b.d)b={d:d,n:r.w.querySelector("h3").textContent}});return b};
     var norm=function(s){return String(s).toLowerCase().replace(/[^a-z0-9\u20b9 ]+/g," ").replace(/\s+/g," ").trim()};
     var hl=function(n,q){var i=n.toLowerCase().indexOf(q);return i<0?esc(n):esc(n.slice(0,i))+"<b>"+esc(n.slice(i,i+q.length))+"</b>"+esc(n.slice(i+q.length))};
     var closeS=function(){sbox.hidden=true;fq.setAttribute("aria-expanded","false");fq.removeAttribute("aria-activedescendant");sel=-1};
@@ -295,14 +305,15 @@
       cur=SD.map(function(x){var n=norm(x.n),words=n.split(" ");
         var ok=toks.every(function(t){return words.some(function(w){return w.indexOf(t)===0})||n.indexOf(t)>-1});
         return ok?{x:x,r:(n.indexOf(q)===0?0:words.some(function(w){return w.indexOf(toks[0])===0})?1:2)}:null})
-        .filter(Boolean).sort(function(a,b){return a.r-b.r||"atcb".indexOf(a.x.k)-"atcb".indexOf(b.x.k)}).slice(0,8)
-        .sort(function(a,b){return "atcb".indexOf(a.x.k)-"atcb".indexOf(b.x.k)||a.r-b.r}).map(function(o){return o.x});
+        .filter(Boolean).sort(function(a,b){return a.r-b.r||"atpcb".indexOf(a.x.k)-"atpcb".indexOf(b.x.k)}).slice(0,8)
+        .sort(function(a,b){return "atpcb".indexOf(a.x.k)-"atpcb".indexOf(b.x.k)||a.r-b.r}).map(function(o){return o.x});
       if(!cur.length){sbox.innerHTML='<li class="sk" role="presentation">No matches. Try a car name, an agency or a town.</li>';sbox.hidden=false;fq.setAttribute("aria-expanded","true");return}
       var html="",last="",raw=fq.value.trim().toLowerCase();
       cur.forEach(function(x,i){if(x.k!==last){html+='<li class="sk" role="presentation">'+LBL[x.k]+'</li>';last=x.k}
-        html+='<li role="option" id="sg'+i+'" data-i="'+i+'" aria-selected="false"><span class="si">'+(SI[x.k]||"")+'</span><span><span class="sn">'+hl(x.n,raw)+'</span><span class="ss">'+esc(x.s)+'</span></span></li>'});
+        html+='<li role="option" id="sg'+i+'" data-i="'+i+'" aria-selected="false"><span class="si">'+(SI[x.k]||"")+'</span><span><span class="sn">'+hl(x.n,raw)+'</span><span class="ss">'+esc(x.k==="p"?placeLine(x):x.s)+'</span></span></li>'});
       sbox.innerHTML=html;sbox.hidden=false;fq.setAttribute("aria-expanded","true");sel=-1;
     };
+    var placeLine=function(x){var b=nearestTo(x.ll);if(!b)return x.s;var d=b.d<1.5?"under 2 km":"about "+(b.d<20?Math.round(b.d):Math.round(b.d/5)*5)+" km";return x.s+" · nearest rental: "+b.n+", "+d};
     var mark=function(i){var opts=$$('[role="option"]',sbox);if(!opts.length)return;sel=(i+opts.length)%opts.length;
       opts.forEach(function(o,j){o.setAttribute("aria-selected",j===sel?"true":"false")});fq.setAttribute("aria-activedescendant",opts[sel].id);opts[sel].scrollIntoView({block:"nearest"})};
     var pick=function(i){var x=cur[i];if(!x)return;closeS();

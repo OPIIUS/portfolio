@@ -412,9 +412,84 @@ function filterBar() {
   <button type="button" class="chip fliked" id="fliked" aria-pressed="false">${I.heart}Liked<span id="flikedN">0</span></button>
 </div>
 <p class="fcount" id="fcount" aria-live="polite"></p>
-<template id="sugg-icons"><span data-k="a">${I.home}</span><span data-k="c">${I.car}</span><span data-k="b">${I.bike}</span><span data-k="t">${I.pin}</span></template>
+<template id="sugg-icons"><span data-k="a">${I.home}</span><span data-k="c">${I.car}</span><span data-k="b">${I.bike}</span><span data-k="t">${I.pin}</span><span data-k="p">${I.pin}</span></template>
 <script type="application/json" id="sugg-data">${JSON.stringify(suggestions()).replace(/</g, "\\u003c")}</script>`;
 }
+/* places people may search for, with approximate map positions, so a search for a town with no agency can show the nearest ones */
+const SEARCH_PLACES = [
+  ["Beltola", "Guwahati", 26.118, 91.796],
+  ["Dispur", "Guwahati", 26.143, 91.790],
+  ["Ganeshguri", "Guwahati", 26.149, 91.785],
+  ["Six Mile", "Guwahati", 26.137, 91.806],
+  ["Khanapara", "Guwahati", 26.125, 91.826],
+  ["Zoo Road", "Guwahati", 26.163, 91.776],
+  ["Chandmari", "Guwahati", 26.183, 91.770],
+  ["Paltan Bazaar", "Guwahati", 26.180, 91.752],
+  ["Pan Bazaar", "Guwahati", 26.187, 91.744],
+  ["Fancy Bazaar", "Guwahati", 26.184, 91.740],
+  ["Ulubari", "Guwahati", 26.170, 91.763],
+  ["Christian Basti", "Guwahati", 26.157, 91.773],
+  ["Bhangagarh", "Guwahati", 26.167, 91.768],
+  ["Maligaon", "Guwahati", 26.162, 91.698],
+  ["Jalukbari", "Guwahati", 26.155, 91.664],
+  ["Adabari", "Guwahati", 26.168, 91.700],
+  ["Hatigaon", "Guwahati", 26.128, 91.797],
+  ["Basistha", "Guwahati", 26.107, 91.796],
+  ["Lokhra", "Guwahati", 26.112, 91.756],
+  ["Kahilipara", "Guwahati", 26.137, 91.774],
+  ["Narengi", "Guwahati", 26.183, 91.828],
+  ["Noonmati", "Guwahati", 26.192, 91.800],
+  ["Geetanagar", "Guwahati", 26.172, 91.797],
+  ["Panjabari", "Guwahati", 26.143, 91.835],
+  ["Rukmini Gaon", "Guwahati", 26.136, 91.790],
+  ["Jorabat", "Guwahati", 26.110, 91.890],
+  ["Azara", "Guwahati", 26.115, 91.610],
+  ["Guwahati Airport (LGBI)", "Borjhar", 26.106, 91.586],
+  ["Guwahati Railway Station", "Paltan Bazaar", 26.182, 91.751],
+  ["Amingaon", "North Guwahati", 26.190, 91.675],
+  ["Sonapur", "Kamrup Metro", 26.100, 91.980],
+  ["Nalbari", "Assam", 26.444, 91.440],
+  ["Rangia", "Assam", 26.449, 91.616],
+  ["Tamulpur", "Assam", 26.646, 91.573],
+  ["Pathsala", "Assam", 26.505, 91.180],
+  ["Barpeta", "Assam", 26.323, 91.006],
+  ["Barpeta Road", "Assam", 26.503, 90.970],
+  ["Bongaigaon", "Assam", 26.477, 90.558],
+  ["Abhayapuri", "Assam", 26.320, 90.680],
+  ["Kokrajhar", "Assam", 26.401, 90.272],
+  ["Dhubri", "Assam", 26.022, 89.978],
+  ["Goalpara", "Assam", 26.176, 90.626],
+  ["Dudhnoi", "Assam", 25.980, 90.760],
+  ["Boko", "Assam", 25.980, 91.230],
+  ["Chaygaon", "Assam", 26.050, 91.380],
+  ["Palasbari", "Assam", 26.120, 91.540],
+  ["Hajo", "Assam", 26.245, 91.527],
+  ["Sualkuchi", "Assam", 26.170, 91.570],
+  ["Mangaldoi", "Assam", 26.443, 92.031],
+  ["Udalguri", "Assam", 26.750, 92.100],
+  ["Tezpur", "Assam", 26.633, 92.800],
+  ["Biswanath Chariali", "Assam", 26.727, 93.150],
+  ["Nagaon", "Assam", 26.350, 92.684],
+  ["Morigaon", "Assam", 26.252, 92.342],
+  ["Hojai", "Assam", 26.002, 92.857],
+  ["Kaziranga", "Assam", 26.582, 93.410],
+  ["Golaghat", "Assam", 26.519, 93.961],
+  ["Jorhat", "Assam", 26.757, 94.203],
+  ["Sivasagar", "Assam", 26.983, 94.637],
+  ["North Lakhimpur", "Assam", 27.236, 94.104],
+  ["Dhemaji", "Assam", 27.482, 94.580],
+  ["Dibrugarh", "Assam", 27.472, 94.912],
+  ["Tinsukia", "Assam", 27.489, 95.360],
+  ["Diphu", "Assam", 25.843, 93.431],
+  ["Haflong", "Assam", 25.164, 93.017],
+  ["Silchar", "Assam", 24.833, 92.778],
+  ["Karimganj", "Assam", 24.869, 92.355],
+  ["Hailakandi", "Assam", 24.684, 92.561],
+  ["Shillong", "Meghalaya", 25.578, 91.893],
+  ["Tura", "Meghalaya", 25.514, 90.220],
+  ["Itanagar", "Arunachal Pradesh", 27.084, 93.605],
+  ["Tawang", "Arunachal Pradesh", 27.586, 91.869]
+];
 /* search suggestions: agencies (open the page), cars (filter to agencies that have one), towns (pick the town) */
 function suggestions() {
   const out = AGENCIES.map(a => {const n = CARS.filter(c => c.a.id === a.id).length;
@@ -429,6 +504,8 @@ function suggestions() {
     const n = AGENCIES.filter(a => a.city === t).length;
     out.push({k: "t", n: cityName(t), v: t, s: plural(n, "agency", "agencies")});
   }
+  const towns = new Set(AGENCIES.map(a => cityName(a.city)));
+  for (const [n, r, la, lo] of SEARCH_PLACES) if (!towns.has(n)) out.push({k: "p", n, s: r, ll: [la, lo]});
   return out;
 }
 (function rentals() {
