@@ -144,6 +144,12 @@ function header(active) {
   <a class="btn primary" href="/for-agencies/">For agencies: list your cars</a>
 </nav>`;
 }
+/* phone tab bar: the active tab rises into a circle that springs between tabs (motion in site.js) */
+function tabbar() {
+  const t = [["/", "home", I.home, "Home"], ["/rentals/", "rentals", I.car, "Rentals"], [driverUrl, "driver", I.users, "With driver"], ["/rentals/#liked", "liked", I.heart, "Saved"]];
+  return `<nav class="tabbar" aria-label="Quick links"><svg class="tb-bg" aria-hidden="true" focusable="false"><path/></svg><span class="tb-ball" aria-hidden="true"></span>
+  ${t.map(([h, k, ic, l]) => `<a class="tb" href="${h}" data-tab="${k}">${ic}<span>${l}</span></a>`).join("")}<button type="button" class="tb" data-tab="menu" aria-controls="mnav" aria-expanded="false">${I.menu}<span>Menu</span></button></nav>`;
+}
 function footer() {
   return `<footer class="ftr"><div class="wrap">
   <div class="cols">
@@ -204,6 +210,7 @@ ${header(active)}
 ${body}
 </main>
 ${footer()}
+${tabbar()}
 <script src="/assets/opiius/config.js?v=${ASSET_V}"></script>
 <script src="/assets/site/site.js?v=${ASSET_V}"></script>
 <script data-goatcounter="https://opiiusonline.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
