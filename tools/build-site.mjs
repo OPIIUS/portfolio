@@ -383,7 +383,7 @@ function agencyRow(a, kind) {
 const likeBtn = a => `<button type="button" class="like" data-like="${esc(a.id)}" aria-pressed="false" aria-label="Like ${esc(a.name)}" title="Like">${I.heart}</button>`;
 /* where an agency is, for "Near me": its own approximate spot if known, else the centre of its town */
 const spot = a => a.lat != null ? [a.lat, a.lon] : [(O.PLACES[a.city] || {}).lat, (O.PLACES[a.city] || {}).lon];
-const filterRow = (a, html, cars) => `<div class="arow-w rv" data-town="${esc(a.city)}" data-ll="${spot(a).join(",")}" data-q="${esc([a.name, a.area, cityName(a.city), ...(a.driver && a.driver.areas ? [a.driver.areas] : [])].filter(Boolean).join(" ").toLowerCase())}" data-cars="${esc(JSON.stringify(cars))}">${html}${likeBtn(a)}</div>`;
+const filterRow = (a, html, cars) => `<div class="arow-w rv" data-town="${esc(a.city)}" data-ll="${spot(a).join(",")}" data-q="${esc([a.name, a.area, cityName(a.city), ...(a.driver && a.driver.areas ? [a.driver.areas] : []), ...CARS.filter(c => c.a.id === a.id).map(c => c.name), ...drvCars(a).map(c => c.name)].filter(Boolean).join(" ").toLowerCase())}" data-cars="${esc(JSON.stringify(cars))}">${html}${likeBtn(a)}</div>`;
 /* the same agency in the "Cars with driver" list: its driver rates, linking to the driver section of its page */
 function driverRow(a) {
   const d = a.driver, cars = drvCars(a), list = CARS.filter(c => c.a.id === a.id);
@@ -404,14 +404,32 @@ function filterBar() {
   const ppl = []; for (let n = 2; n <= Math.max(...seats); n++) ppl.push(n);
   const towns = [...new Set(AGENCIES.map(a => a.city))].filter(t => O.PLACES[t]);
   return `<div class="afilter" role="search" aria-label="Find an agency">
-  <div class="fsearch">${I.search}<input type="search" id="fq" placeholder="Search agencies by name or area" aria-label="Search agencies by name or area" autocomplete="off"></div>
+  <div class="fsearch">${I.search}<input type="search" id="fq" placeholder="Search agencies, cars or towns" aria-label="Search agencies, cars or towns" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="fsugg"><ul class="sugg" id="fsugg" role="listbox" aria-label="Suggestions" hidden></ul></div>
   <div class="fgroup"><label for="fmin">Price per day</label><div class="frange"><select id="fmin" aria-label="Lowest price per day"><option value="0">Any</option>${steps.slice(0, -1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select><span>to</span><select id="fmax" aria-label="Highest price per day"><option value="0">Any</option>${steps.slice(1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select></div></div>
   ${towns.length > 1 ? `<div class="fgroup"><label for="ftown">Town</label><select id="ftown"><option value="">All of Assam</option>${towns.map(t => `<option value="${t}">${esc(cityName(t))}</option>`).join("")}</select></div>` : ""}
   <div class="fgroup"><label for="fppl">People going</label><select id="fppl"><option value="0">Any</option>${ppl.map(n => `<option value="${n}">${n} people</option>`).join("")}</select></div>
   <button type="button" class="chip fnear" id="fnear" aria-pressed="false">${I.pin}Near me</button>
   <button type="button" class="chip fliked" id="fliked" aria-pressed="false">${I.heart}Liked<span id="flikedN">0</span></button>
 </div>
-<p class="fcount" id="fcount" aria-live="polite"></p>`;
+<p class="fcount" id="fcount" aria-live="polite"></p>
+<template id="sugg-icons"><span data-k="a">${I.home}</span><span data-k="c">${I.car}</span><span data-k="b">${I.bike}</span><span data-k="t">${I.pin}</span></template>
+<script type="application/json" id="sugg-data">${JSON.stringify(suggestions()).replace(/</g, "\\u003c")}</script>`;
+}
+/* search suggestions: agencies (open the page), cars (filter to agencies that have one), towns (pick the town) */
+function suggestions() {
+  const out = AGENCIES.map(a => {const n = CARS.filter(c => c.a.id === a.id).length;
+    return {k: "a", n: a.name, s: [a.area, cityName(a.city)].filter(Boolean).join(", ") + (n ? ` · ${plural(n, "vehicle")}` : ""), u: urlOf(agencyPath(a))};});
+  const byModel = {};
+  for (const c of CARS) (byModel[c.name] = byModel[c.name] || []).push(c);
+  for (const [name, list] of Object.entries(byModel)) {
+    const ags = new Set(list.map(c => c.a.id)).size;
+    out.push({k: list[0].m.kind === "bike" ? "b" : "c", n: name, s: `${plural(ags, "agency", "agencies")} · from ${inr(minP(list))}/day`});
+  }
+  for (const t of [...new Set(AGENCIES.map(a => a.city))].filter(t => O.PLACES[t])) {
+    const n = AGENCIES.filter(a => a.city === t).length;
+    out.push({k: "t", n: cityName(t), v: t, s: plural(n, "agency", "agencies")});
+  }
+  return out;
 }
 (function rentals() {
   const cat = CATS[0];

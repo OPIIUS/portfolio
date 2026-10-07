@@ -281,6 +281,43 @@
       else if(fromHash){fl.setAttribute("aria-pressed","false");fromHash=false;run()}};
     addEventListener("hashchange",byHash);addEventListener("op:hash",byHash);
     document.addEventListener("click",function(e){if(!e.target.closest("[data-fclear]"))return;fq.value="";fmin.value=fmax.value=fppl.value="0";if(ftown)ftown.value="";fl.setAttribute("aria-pressed","false");run()});
+    /* suggestions under the search box */
+    var sbox=$("#fsugg"),SD=[],SI={},sel=-1,cur=[];
+    try{SD=JSON.parse($("#sugg-data").textContent)}catch(e){}
+    var tpl=$("#sugg-icons");if(tpl)[].forEach.call(tpl.content.children,function(s){SI[s.dataset.k]=s.innerHTML});
+    var LBL={a:"Agencies",c:"Cars",b:"Bikes & scooters",t:"Towns"};
+    var norm=function(s){return String(s).toLowerCase().replace(/[^a-z0-9\u20b9 ]+/g," ").replace(/\s+/g," ").trim()};
+    var hl=function(n,q){var i=n.toLowerCase().indexOf(q);return i<0?esc(n):esc(n.slice(0,i))+"<b>"+esc(n.slice(i,i+q.length))+"</b>"+esc(n.slice(i+q.length))};
+    var closeS=function(){sbox.hidden=true;fq.setAttribute("aria-expanded","false");fq.removeAttribute("aria-activedescendant");sel=-1};
+    var showS=function(){
+      var q=norm(fq.value);if(!q||!sbox){closeS();return}
+      var toks=q.split(" ");
+      cur=SD.map(function(x){var n=norm(x.n),words=n.split(" ");
+        var ok=toks.every(function(t){return words.some(function(w){return w.indexOf(t)===0})||n.indexOf(t)>-1});
+        return ok?{x:x,r:(n.indexOf(q)===0?0:words.some(function(w){return w.indexOf(toks[0])===0})?1:2)}:null})
+        .filter(Boolean).sort(function(a,b){return a.r-b.r||"atcb".indexOf(a.x.k)-"atcb".indexOf(b.x.k)}).slice(0,8)
+        .sort(function(a,b){return "atcb".indexOf(a.x.k)-"atcb".indexOf(b.x.k)||a.r-b.r}).map(function(o){return o.x});
+      if(!cur.length){sbox.innerHTML='<li class="sk" role="presentation">No matches. Try a car name, an agency or a town.</li>';sbox.hidden=false;fq.setAttribute("aria-expanded","true");return}
+      var html="",last="",raw=fq.value.trim().toLowerCase();
+      cur.forEach(function(x,i){if(x.k!==last){html+='<li class="sk" role="presentation">'+LBL[x.k]+'</li>';last=x.k}
+        html+='<li role="option" id="sg'+i+'" data-i="'+i+'" aria-selected="false"><span class="si">'+(SI[x.k]||"")+'</span><span><span class="sn">'+hl(x.n,raw)+'</span><span class="ss">'+esc(x.s)+'</span></span></li>'});
+      sbox.innerHTML=html;sbox.hidden=false;fq.setAttribute("aria-expanded","true");sel=-1;
+    };
+    var mark=function(i){var opts=$$('[role="option"]',sbox);if(!opts.length)return;sel=(i+opts.length)%opts.length;
+      opts.forEach(function(o,j){o.setAttribute("aria-selected",j===sel?"true":"false")});fq.setAttribute("aria-activedescendant",opts[sel].id);opts[sel].scrollIntoView({block:"nearest"})};
+    var pick=function(i){var x=cur[i];if(!x)return;closeS();
+      if(x.k==="a"&&x.u){location.href=x.u;return}
+      if(x.k==="t"&&ftown){ftown.value=x.v;fq.value="";run();fc.scrollIntoView({block:"center",behavior:"smooth"});return}
+      fq.value=x.n;run();var first=rows.filter(function(r){return !r.w.hidden})[0];if(first)first.w.scrollIntoView({block:"center",behavior:"smooth"})};
+    if(sbox){
+      fq.addEventListener("input",showS);fq.addEventListener("focus",showS);
+      fq.addEventListener("keydown",function(e){if(sbox.hidden)return;
+        if(e.key==="ArrowDown"){e.preventDefault();mark(sel+1)}else if(e.key==="ArrowUp"){e.preventDefault();mark(sel-1)}
+        else if(e.key==="Enter"){if(sel>-1){e.preventDefault();pick(sel)}else closeS()}else if(e.key==="Escape"){closeS()}});
+      sbox.addEventListener("mousedown",function(e){e.preventDefault()});
+      sbox.addEventListener("click",function(e){var li=e.target.closest("[data-i]");if(li)pick(+li.dataset.i)});
+      document.addEventListener("click",function(e){if(!e.target.closest(".fsearch"))closeS()});
+    }
     run();if(location.hash==="#liked")byHash();
     if(location.hash==="#near"&&fnear){fnear.scrollIntoView({block:"center"});fnear.click()}
   }
