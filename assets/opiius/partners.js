@@ -2,6 +2,51 @@
    Photos live in assets/partners/<id>/. Entries here appear on the live site automatically.
    verified:true only after the self-drive permit and commercial insurance have been checked in person. */
 window.OPIIUS_PARTNERS = [
+  /* Guwahati Rides: from the agency's rate card (Oct 2026). Day rates as printed; the card says rates may vary with rental length and availability.
+     Not on the card, so shown as "confirmed by the agency" until they tell us: area, deposit, km limit, documents, model years.
+     The card's vehicle pictures are stock images, not their own cars, so no vehicle photos yet. */
+  {
+    id: "guwahati-rides", name: "Guwahati Rides", city: "guwahati", area: "", since: 2026,
+    pickups: ["Guwahati (pickup point shared on confirmation)"], delivery: false, verified: false,
+    about: "Self-drive cars, bikes and scooters in Guwahati, from the Alto K10 to the Innova, Thar and Royal Enfield Himalayan. Day rates can vary with the length of the rental and availability, so book ahead.",
+    policies: {},
+    cover: "assets/partners/guwahati-rides/logo-card.jpg", coverAlt: "Guwahati Rides logo", coverPos: "50% 50%",
+    trims: {innova: "Innova", scorpio: "Scorpio Classic", himalayan: "Himalayan 450"},
+    vehicles: [
+      {brand: "Maruti Suzuki", name: "Alto K10", type: "Hatchback", trans: "Manual", fuel: "Petrol", seats: 5, price: 1299},
+      {brand: "Maruti Suzuki", name: "S-Presso", type: "Hatchback", trans: "Manual", fuel: "Petrol", seats: 5, price: 1599},
+      {model: "swift", price: 1799},
+      {model: "baleno", price: 1999},
+      {model: "fronx", price: 2199},
+      {model: "brezza", price: 2499},
+      {brand: "Maruti Suzuki", name: "Ertiga", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 2899},
+      {model: "xl6", price: 2999},
+      {model: "nios", price: 1799},
+      {model: "i20", price: 1999},
+      {brand: "Hyundai", name: "Venue", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2399},
+      {brand: "Hyundai", name: "Creta", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2899},
+      {brand: "Tata", name: "Tiago", type: "Hatchback", trans: "Manual", fuel: "Petrol", seats: 5, price: 1599},
+      {model: "punch", price: 1899},
+      {brand: "Tata", name: "Nexon", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2399},
+      {brand: "Tata", name: "Safari", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 3899},
+      {brand: "Mahindra", name: "Bolero", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 2799},
+      {brand: "Mahindra", name: "Thar RWD", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 4, price: 3499},
+      {model: "thar", price: 3999},
+      {model: "scorpio", price: 2999},
+      {brand: "Mahindra", name: "Scorpio-N", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 3999},
+      {model: "xuv700", price: 3999},
+      {model: "innova", price: 4499},
+      {brand: "Kia", name: "Sonet", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2899},
+      {brand: "Kia", name: "Seltos", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2999},
+      {brand: "TVS", name: "Ntorq 125", type: "Scooter", trans: "Automatic", fuel: "Petrol", seats: 2, price: 799},
+      {brand: "Bajaj", name: "Pulsar 150", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 799},
+      {brand: "Royal Enfield", name: "Hunter 350", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 1299},
+      {model: "classic", price: 1299},
+      {brand: "Hero", name: "XPulse", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 1299},
+      {brand: "Royal Enfield", name: "Himalayan 411", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 1399},
+      {model: "himalayan", price: 1999}
+    ]
+  },
   /* Saraighat Travels: from the owner's onboarding block (Oct 2026). Owner phone numbers removed from "about" (never shown on the site).
      Own photos (Oct 2026): i20 (two), Fronx (sent as "breeza"), the white Thar, the Swift, Dzire and Creta.
      Dzire 1800 and Creta 2700 added Oct 2026 (prices from the owner, with their own photos).
