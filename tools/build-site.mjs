@@ -103,7 +103,7 @@ const AGENCIES = Object.entries(O.AGENCIES).filter(([, a]) => a.real && !a.demo)
 const CARS = Object.values(O.LISTINGS).filter(l => AGENCIES.some(a => a.id === l.agency)).map(l => {
   const m = O.MODELS[l.model], a = AGENCIES.find(x => x.id === l.agency), b = (O.BRANDS[m.brand] || {name: ""}).name;
   const nm = (a.trims && a.trims[l.model]) || m.name;
-  return {id: l.id, model: l.model, m, a, brand: b, nm, name: `${b} ${nm}`.trim(), price: l.price, units: l.units, year: l.year, trans: (a.trans && a.trans[l.model]) || m.trans, photo: l.photo ? "/" + l.photo.replace(/^\//, "") : ""};
+  return {id: l.id, model: l.model, m, a, brand: b, nm, name: `${b} ${nm}`.trim(), price: l.price, units: l.units, year: l.year, trans: (a.trans && a.trans[l.model]) || m.trans, photo: l.photo ? "/" + l.photo.replace(/^\//, "") : "", sample: !!l.sample};
 }).sort((x, y) => x.price - y.price || x.name.localeCompare(y.name));
 const carsOf = (pred) => CARS.filter(pred);
 /* rental types marked onlyWhenLive (bikes, tempo travellers) appear only once an agency offers them */
@@ -215,7 +215,7 @@ ${footer()}
 
 /* ---------- shared blocks ---------- */
 function carCard(c, {showAgency = false} = {}) {
-  const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">`
+  const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.sample ? "Sample photo of a " + c.name : c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">${c.sample ? `<span class="badge onph sample" title="Not the agency's own car: a photo of the same model">Sample photo</span>` : ""}`
     : `<div class="nametile"><small>${esc(c.brand)}</small><b>${esc(c.nm)}</b>${c.m.kind === "bike" ? BIKE_LINE : CAR_LINE}</div>`;
   return `<article class="car"><div class="ph">${ph}${c.units > 1 ? `<span class="badge onph">${c.units} in the fleet</span>` : ""}</div>
   <div class="bd"><div class="nm"><small>${esc(c.brand)}</small><h3>${esc(c.nm)}</h3></div>
@@ -277,7 +277,7 @@ function faqBlock(items, heading = "Questions, answered") {
 }
 function agencyCard(a) {
   const list = CARS.filter(c => c.a.id === a.id);
-  const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
+  const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo && !c.sample) || {}).photo;
   return `<a class="acard rv" href="${urlOf(agencyPath(a))}"><div class="ph">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}${badge(a, "onph")}</div>
   <div class="bd"><h3>${esc(a.name)}</h3><div class="row"><span>${I.car}${esc(list.length && drv(a) ? "Self-drive & with driver" : list.length ? "Self-drive cars" : drv(a) ? "Cars with driver" : SUB[a.category] ? SUB[a.category].name : "Rentals")}</span><span>${I.pin}${esc(cityName(a.city))}</span></div>
   <div class="row"><span>${list.length ? `${plural(list.length, "model")} · ${inr(minP(list))}–${inr(maxP(list))} / day` : drv(a) ? `With driver from ${inr(drvMin(a))}/day` : ""}</span></div>
@@ -363,7 +363,7 @@ ${howItWorks([["Pick a car", "Real photos, day price, deposit and km limit, from
 /* ---------- rentals: types of agencies, then each agency opens its whole fleet ---------- */
 function agencyRow(a, kind) {
   const list = CARS.filter(c => c.a.id === a.id && (!kind || c.m.kind === kind)), pol = a.policies || {};
-  const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
+  const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo && !c.sample) || {}).photo;
   const autos = list.filter(c => /auto/i.test(c.trans)).length;
   const chips = [/agency/i.test(pol.deposit || "") ? "" : /^no /i.test(pol.deposit || "") ? pol.deposit : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : "", drv(a) ? "Cars with driver too" : ""].filter(Boolean);
   return `<a class="arow" href="${urlOf(agencyPath(a))}"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
@@ -377,7 +377,7 @@ const filterRow = (a, html, cars) => `<div class="arow-w rv" data-q="${esc([a.na
 /* the same agency in the "Cars with driver" list: its driver rates, linking to the driver section of its page */
 function driverRow(a) {
   const d = a.driver, cars = drvCars(a), list = CARS.filter(c => c.a.id === a.id);
-  const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
+  const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo && !c.sample) || {}).photo;
   const chips = [...cars.slice(0, 4).map(c => c.name + (c.seats ? ` · ${c.seats} seats` : "")), cars.some(c => +c.airport) ? "Airport transfers" : "", cars.some(c => +c.perKm) ? "Outstation trips" : ""].filter(Boolean);
   return `<a class="arow" href="${urlOf(agencyPath(a))}#driver"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
   <div class="bd"><div class="badges">${badge(a)}</div><h3>${esc(a.name)}</h3><p class="loc">${I.pin.replace("<svg", '<svg width="16" height="16"')}${esc(d.areas || ((a.area ? a.area + ", " : "") + cityName(a.city)))}</p>
@@ -497,13 +497,13 @@ ${faq.html}
 ${askDialog(list)}`;
   write(rel, layout({rel, title: `${sub.name} in ${cn} from ${inr(minP(list))}/day · OPIIUS`, active: "rentals",
     desc: `Compare ${plural(list.length, kind === "car" ? "self-drive car" : "bike")} in ${cn} from local agencies: real photos, day prices from ${inr(minP(list))}, inquiries on WhatsApp.`,
-    body, og: (list.find(c => c.photo) || {}).photo || undefined, jsonld: [faq.ld]}));
+    body, og: (list.find(c => c.photo && !c.sample) || {}).photo || undefined, jsonld: [faq.ld]}));
 }
 
 /* ---------- agency profiles ---------- */
 for (const a of AGENCIES) {
   const rel = agencyPath(a), list = CARS.filter(c => c.a.id === a.id), gs = groupsOf(list);
-  const cover = a.cover ? "/" + a.cover : (list.find(c => c.photo) || {}).photo || "";
+  const cover = a.cover ? "/" + a.cover : (list.find(c => c.photo && !c.sample) || {}).photo || "";
   const pol = a.policies || {}, dcars = drvCars(a), d = a.driver || {};
   const maxSeats = Math.max(0, ...list.map(c => c.m.seats), ...dcars.map(c => +c.seats || 0));
   const lowest = list.length ? minP(list) : dcars.length ? drvMin(a) : 0;

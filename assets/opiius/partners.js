@@ -48,8 +48,9 @@ window.OPIIUS_PARTNERS = [
     ]
   },
   /* Saraighat Travels: from the owner's onboarding block (Oct 2026). Owner phone numbers removed from "about" (never shown on the site).
-     Photos (Oct 2026): i20 (two), Fronx (sent as "breeza"), the white Thar and the Swift. Baleno, Brezza and Scorpio photos still to come;
-     they also sent a Creta and a Dzire (dzire.jpg saved), which are not in their block and have no price, so are not listed. */
+     Own photos (Oct 2026): i20 (two), Fronx (sent as "breeza"), the white Thar, the Swift, Dzire and Creta.
+     Dzire 1800 and Creta 2700 added Oct 2026 (prices from the owner, with their own photos).
+     Baleno, Brezza and Scorpio show internet photos of the same model (sample: true labels them "Sample photo") until the agency sends its own. */
   {
     id: "saraighat-travels", name: "Saraighat Travels", city: "guwahati", area: "Basistha, Barpathar", since: 2026,
     pickups: ["Basistha Natun Bazar, Guwahati"], delivery: false, verified: false,
@@ -58,11 +59,13 @@ window.OPIIUS_PARTNERS = [
     trims: {thar: "Thar"}, cover: "assets/partners/saraighat-travels/banner.jpg", coverAlt: "Saraighat Rentals banner: safe, reliable, comfortable", coverPos: "50% 50%",
     vehicles: [
       {model: "swift", price: 1700, units: 1, year: 2025, photos: ["assets/partners/saraighat-travels/swift.jpg"]},
-      {model: "baleno", price: 1800, units: 1, year: 2022},
+      {model: "baleno", price: 1800, units: 1, year: 2022, sample: true, photos: ["assets/partners/saraighat-travels/baleno-sample.jpg"]},
+      {model: "dzire", price: 1800, units: 1, photos: ["assets/partners/saraighat-travels/dzire.jpg"]},
       {model: "fronx", price: 2000, units: 1, year: 2026, photos: ["assets/partners/saraighat-travels/fronx.jpg"]},
       {model: "i20", price: 2000, units: 1, year: 2026, photos: ["assets/partners/saraighat-travels/i20.jpg", "assets/partners/saraighat-travels/i20-2.jpg"]},
-      {model: "brezza", price: 2600, units: 1, year: 2025},
-      {model: "scorpio", price: 3700, units: 1, year: 2023},
+      {model: "brezza", price: 2600, units: 1, year: 2025, sample: true, photos: ["assets/partners/saraighat-travels/brezza-sample.jpg"]},
+      {model: "creta", price: 2700, units: 1, photos: ["assets/partners/saraighat-travels/creta.jpg"]},
+      {model: "scorpio", price: 3700, units: 1, year: 2023, sample: true, photos: ["assets/partners/saraighat-travels/scorpio-sample.jpg"]},
       {model: "thar", price: 4500, units: 1, year: 2026, photos: ["assets/partners/saraighat-travels/thar.jpg"]}
     ]
   }

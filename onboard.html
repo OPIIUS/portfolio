@@ -43,12 +43,13 @@ button.wa{background:#25d366;color:#fff;border:0;font-weight:700;padding:12px 16
 </style>
 </head>
 <body>
-<header><b>OPIIUS · Add an agency</b><p>Fill this in yourself, or with OPIIUS. At the end, tap <b>Send to OPIIUS on WhatsApp</b> and attach the vehicle photos in the same chat. Nothing goes live until OPIIUS checks it with you. <a href="terms.html#partners" style="color:#fff">Partner terms</a>.</p></header>
+<header><b>OPIIUS · Add an agency</b><p>Fill this in yourself, or with OPIIUS. At the end, tap <b>Submit to OPIIUS</b>: your details reach OPIIUS straight away, and OPIIUS will WhatsApp you. You can send the vehicle photos on WhatsApp. Nothing goes live until OPIIUS checks it with you. <a href="terms.html#partners" style="color:#fff">Partner terms</a>.</p></header>
 <main>
 <form id="f" autocomplete="off">
 <section>
   <h2>1. The agency</h2>
   <label for="name">Agency name *</label><input id="name" required placeholder="e.g. Brahmaputra Self Drive">
+  <label for="phone">Owner's WhatsApp number * <small>only OPIIUS sees this, never shown on the site</small></label><input id="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="98640 12345">
   <div class="row">
     <div><label for="city">City *</label><select id="city"></select></div>
     <div><label for="since">Renting since</label><input id="since" type="number" inputmode="numeric" placeholder="2019"></div>
@@ -101,8 +102,9 @@ button.wa{background:#25d366;color:#fff;border:0;font-weight:700;padding:12px 16
 </section>
 
 <section id="out">
-  <h2>Done. Send it to OPIIUS</h2>
-  <p class="hint">Tap the green button: WhatsApp opens with your details filled in. Send it, then attach the vehicle photos in the same chat. OPIIUS checks everything with you before it goes live.</p>
+  <h2>Received. Thank you!</h2>
+  <div class="ok" id="sent" style="margin:0 0 12px">Your details have been sent to OPIIUS<span id="refline"></span>. OPIIUS will WhatsApp you within a day. Nothing goes live until OPIIUS checks it with you.</div>
+  <p class="hint"><b>Next: send your vehicle photos.</b> Tap the green button, press Send in WhatsApp, then attach 2–3 daylight photos of each vehicle in the same chat. You can also send them to 86388 30682 later.</p>
   <pre id="block"></pre>
   <button type="button" class="wa" id="wa">Send to OPIIUS on WhatsApp</button>
   <button type="button" class="alt" id="copy">Copy block</button>
@@ -111,7 +113,7 @@ button.wa{background:#25d366;color:#fff;border:0;font-weight:700;padding:12px 16
 </section>
 </form>
 </main>
-<div class="bar"><div><button class="main" id="make" type="button">Create the block</button><p class="err" id="err"></p></div></div>
+<div class="bar"><div><button class="main" id="make" type="button">Submit to OPIIUS</button><p class="err" id="err"></p></div></div>
 
 <script src="assets/opiius/config.js"></script>
 <script src="assets/opiius/partners.js"></script>
@@ -155,16 +157,19 @@ function addDcar(v={}){
 const DV=["dn","ds","dl","dk","da"];
 $("drv").addEventListener("change",()=>{$("drvbox").classList.toggle("on",$("drv").checked);if($("drv").checked&&!document.querySelector(".dcar"))addDcar()});
 $("adddc").addEventListener("click",()=>{addDcar();save()});
-const F=["name","city","since","area","pickups","about","deposit","km","fuel","cancel","docs","dallow","dareas","dnote"],C=["delivery","drv","consent","permit","insurance"],V=["m","ob","on","ot","os","of","og","p","u","y"];
+const F=["name","phone","city","since","area","pickups","about","deposit","km","fuel","cancel","docs","dallow","dareas","dnote"],C=["delivery","drv","consent","permit","insurance"],V=["m","ob","on","ot","os","of","og","p","u","y"];
 function save(){try{localStorage.setItem(KEY,JSON.stringify({f:Object.fromEntries(F.map(k=>[k,$(k).value])),c:Object.fromEntries(C.map(k=>[k,$(k).checked])),v:[...document.querySelectorAll(".veh:not(.dcar)")].map(d=>Object.fromEntries(V.map(c=>[c,d.querySelector("."+c).value]))),d:[...document.querySelectorAll(".dcar")].map(d=>Object.fromEntries(DV.map(c=>[c,d.querySelector("."+c).value])))}))}catch(e){}}
 function load(){let s=null;try{s=JSON.parse(localStorage.getItem(KEY))}catch(e){}
   if(!s){addVeh();return}F.forEach(k=>{if(s.f[k]!=null)$(k).value=s.f[k]});C.forEach(k=>$(k).checked=!!s.c[k]);(s.v&&s.v.length?s.v:[{}]).forEach(addVeh);(s.d||[]).forEach(addDcar);$("drvbox").classList.toggle("on",$("drv").checked)}
 document.addEventListener("input",save);document.addEventListener("change",save);
 $("addv").addEventListener("click",()=>{addVeh();save()});
+const sent={};
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,24);
 $("make").addEventListener("click",()=>{
   const err=m=>{$("err").textContent=m;$("err").style.display="block"};$("err").style.display="none";
   if(!$("name").value.trim())return err("Add the agency name.");
+  const phone=$("phone").value.replace(/[^\d+]/g,"");
+  if(phone.replace(/\D/g,"").length<10)return err("Add the owner's WhatsApp number, so OPIIUS can reach you.");
   if(!$("area").value.trim())return err("Add the area or landmark.");
   if(!$("consent").checked)return err("Please tick “We agree to be listed on OPIIUS” to continue.");
   const vs=[...document.querySelectorAll(".veh:not(.dcar)")].map(d=>{const g=c=>d.querySelector("."+c).value.trim();const m=g("m");
@@ -184,12 +189,22 @@ $("make").addEventListener("click",()=>{
     vehicles:vs};
   if(!vs.length&&dcars.length)entry.category="cars-with-driver";
   if(dcars.length)entry.driver={cars:dcars,allowance:$("dallow").value.trim(),areas:$("dareas").value.trim(),note:$("dnote").value.trim()};
-  const txt=`OPIIUS NEW PARTNER\nPlease add this agency to opiius.online. Photos attached, in the same order as the vehicles.\n\n${JSON.stringify(entry,null,2)}`;
+  const d=new Date(),ref=sent[id]||"OP-"+String(d.getFullYear()).slice(2)+("0"+(d.getMonth()+1)).slice(-2)+("0"+d.getDate()).slice(-2)+"-"+Math.random().toString(36).slice(2,7).toUpperCase();
+  /* the contact number stays outside the JSON so it can never be pasted into partners.js (owner numbers are never published) */
+  const txt=`OPIIUS NEW PARTNER ${ref}\nOwner WhatsApp: ${phone}\nPlease add this agency to opiius.online. Photos attached, in the same order as the vehicles.\n\n${JSON.stringify(entry,null,2)}`;
   $("block").textContent=txt;$("out").style.display="block";$("out").scrollIntoView({behavior:"smooth"});
+  /* save a copy to the OPIIUS sheet at once, so the details arrive even if WhatsApp is never sent */
+  const ps=vs.map(v=>v.price).concat(dcars.map(c=>c.local)),cnt=vs.length+dcars.length;
+  const sum=`NEW AGENCY: ${entry.name} · ${cnt} vehicle${cnt>1?"s":""} ₹${Math.min(...ps)}${Math.max(...ps)>Math.min(...ps)?"–"+Math.max(...ps):""}`;
+  const log=window.OPIIUS_CONFIG&&window.OPIIUS_CONFIG.bookingLog,ok=()=>{$("refline").textContent=" (reference "+ref+")"};
+  if(log&&!sent[id]){const body=JSON.stringify({ref,type:"new-agency",agency:"",agencyName:"",vehicle:sum,city:entry.city,pickup:`WhatsApp ${phone} · ${entry.area}`,page:location.pathname,ua:/Mobi/i.test(navigator.userAgent)?"mobile":"desktop"});
+    let done=false;try{done=navigator.sendBeacon&&navigator.sendBeacon(log,new Blob([body],{type:"text/plain"}))}catch(e){}
+    if(!done)try{fetch(log,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain"},body})}catch(e){}
+    sent[id]=ref}ok();
 });
 $("copy").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("block").textContent)}catch(e){const r=document.createRange();r.selectNodeContents($("block"));getSelection().removeAllRanges();getSelection().addRange(r);document.execCommand("copy")}$("copied").style.display="block"});
 $("share").addEventListener("click",()=>{if(navigator.share)navigator.share({text:$("block").textContent}).catch(()=>{});else $("copy").click()});
-$("wa").addEventListener("click",()=>{const n=((window.OPIIUS_CONFIG||{}).whatsapp)||"918638830682";window.open("https://wa.me/"+n+"?text="+encodeURIComponent($("block").textContent),"_blank","noopener")});
+$("wa").addEventListener("click",()=>{const n=((window.OPIIUS_CONFIG||{}).whatsapp)||"918638830682";location.href="https://wa.me/"+n+"?text="+encodeURIComponent($("block").textContent)});
 load();
 })();
 </script>

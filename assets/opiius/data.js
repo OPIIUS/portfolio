@@ -92,6 +92,10 @@ const MODELS = {
     features:["AC","Bluetooth","Touchscreen","High ground clearance"], about:"A stylish compact SUV crossover with extra ground clearance for broken roads."},
   urbancruiser:{brand:"toyota", name:"Urban Cruiser", kind:"car", type:"SUV", trans:"Manual", fuel:"Petrol", seats:5, photo:"",
     features:["AC","Bluetooth","High ground clearance"], about:"A compact SUV with good clearance for hill roads and space for four adults."},
+  dzire:{brand:"maruti", name:"Dzire", kind:"car", type:"Sedan", trans:"Manual", fuel:"Petrol", seats:5, photo:"",
+    features:["AC","Bluetooth","Touchscreen","Spacious boot"], about:"A comfortable, economical sedan with a proper boot. Easy in the city and relaxed on highway runs."},
+  creta:{brand:"hyundai", name:"Creta", kind:"car", type:"SUV", trans:"Manual", fuel:"Petrol", seats:5, photo:"",
+    features:["AC","Bluetooth","Touchscreen","High ground clearance"], about:"A roomy, refined SUV with good clearance for hill roads and space for five adults."},
   activa:{brand:"honda", name:"Activa 6G", kind:"bike", type:"Scooter", trans:"Automatic", fuel:"Petrol", seats:2, photo:IMG+"activa.png", studio:true,
     features:["Helmet included","Under-seat storage"], about:"The easiest way around town. No gears, light and economical."},
   shine:{brand:"honda", name:"Shine 125", kind:"bike", type:"Motorcycle", trans:"Manual", fuel:"Petrol", seats:2, photo:IMG+"shine.png", studio:true,
@@ -158,7 +162,7 @@ const TYPE_KIND={Hatchback:"car",Sedan:"car",SUV:"car",MUV:"car",Motorcycle:"bik
       if(!BRANDS[MODELS[mk].brand])BRANDS[MODELS[mk].brand]={name:v.brand||"Other"};
     }
     const id=pa.id+"-"+mk;
-    LISTINGS[id]={id,agency:pa.id,model:mk,price:+v.price,units:+v.units||1,rating:null,trips:0,year:+v.year||null,photo:(v.photos&&v.photos[0])||undefined};
+    LISTINGS[id]={id,agency:pa.id,model:mk,price:+v.price,units:+v.units||1,rating:null,trips:0,year:+v.year||null,photo:(v.photos&&v.photos[0])||undefined,sample:!!v.sample};
   });
 });
 
