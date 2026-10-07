@@ -10,6 +10,9 @@ const PLACES = {
   guwahati:{name:"Guwahati", state:"Assam", lat:26.14, lon:91.74, tagline:"Gateway to the Northeast",
     about:"The Northeast's biggest city and where most trips begin. Pick up at the airport, the railway station or in town.",
     pickups:["LGBI Airport, Borjhar","Guwahati Railway Station, Paltan Bazar","GS Road, Six Mile","Zoo Road","Beltola / Dispur","Fancy Bazar"], art:"guwahati"},
+  barama:{name:"Barama", state:"Assam", lat:26.53, lon:91.40, tagline:"Baksa district",
+    about:"A town in Baksa district, Lower Assam, about 2 hours from Guwahati by road.",
+    pickups:["Barama town"], art:"guwahati"},
   shillong:{name:"Shillong", state:"Meghalaya", lat:25.57, lon:91.88, tagline:"The hill capital",
     about:"Pine hills, cafes and the base for Sohra, Dawki and the living root bridges. About 3 hours from Guwahati.",
     pickups:["Police Bazar","Laitumkhrah","Umiam Lake road"], art:"shillong"},
@@ -41,7 +44,7 @@ const PLACES = {
   dirang:{name:"Dirang", state:"Arunachal Pradesh", lat:27.36, lon:92.24, point:true},
   sela:{name:"Sela Pass", state:"Arunachal Pradesh", lat:27.50, lon:92.10, point:true}
 };
-const RENTAL_CITIES = ["guwahati","shillong","kaziranga","sohra","dawki","tawang"];
+const RENTAL_CITIES = ["guwahati","barama","shillong","kaziranga","sohra","dawki","tawang"];
 const DESTINATIONS = ["meghalaya","shillong","sohra","dawki","mawlynnong","kaziranga","tawang"];
 const DEST_FACTS = {
   meghalaya:{best:"October to May", time:"3 to 6 days", from:"Shillong is ~100 km from Guwahati", note:"June to September brings very heavy rain"},

@@ -2,6 +2,27 @@
    Photos live in assets/partners/<id>/. Entries here appear on the live site automatically.
    verified:true only after the self-drive permit and commercial insurance have been checked in person. */
 window.OPIIUS_PARTNERS = [
+  /* Car Rental Barama: from the agency's poster (Oct 2026), Barama, Baksa district, Assam 781346. Day rates as printed.
+     The poster also offers cars with driver, local and outstation trips and flexible rental periods, but gives no driver rates.
+     Owner phone numbers are on the poster but never shown on the site. Not on the poster: deposit, km limit, documents, model years.
+     The poster's car pictures are stock images, so no vehicle photos yet. */
+  {
+    id: "car-rental-barama", name: "Car Rental Barama", city: "barama", area: "", since: 2026,
+    pickups: ["Barama (pickup point shared on confirmation)"], delivery: false, verified: false,
+    about: "Self-drive cars in Barama, Lower Assam, from the Swift and i20 to the Scorpio-N and Thar Roxx. They also offer cars with driver for local and outstation trips, and flexible rental periods.",
+    policies: {},
+    cover: "assets/partners/car-rental-barama/logo-card.jpg", coverAlt: "Car Rental Barama logo", coverPos: "50% 50%",
+    vehicles: [
+      {model: "swift", price: 2100},
+      {model: "dzire", price: 2100},
+      {model: "i20", price: 2200},
+      {brand: "Hyundai", name: "Verna", type: "Sedan", trans: "Manual", fuel: "Petrol", seats: 5, price: 3100},
+      {brand: "Maruti Suzuki", name: "Ertiga", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 3500},
+      {model: "thar", price: 4000},
+      {brand: "Mahindra", name: "Thar Roxx", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 5, price: 4100},
+      {brand: "Mahindra", name: "Scorpio-N", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 4200}
+    ]
+  },
   /* Guwahati Rides: from the agency's rate card (Oct 2026). Day rates as printed; the card says rates may vary with rental length and availability.
      Not on the card, so shown as "confirmed by the agency" until they tell us: area, deposit, km limit, documents, model years.
      The card's vehicle pictures are stock images, not their own cars, so no vehicle photos yet. */
