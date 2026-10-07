@@ -64,7 +64,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
     <div class="filters">
       <div><label for="fm">Month</label><select id="fm"></select></div>
       <div><label for="fa">Agency</label><select id="fa"></select></div>
-      <div><label for="ft">Type</label><select id="ft"><option value="">All types</option><option value="rental">Reservations (vehicle)</option><option value="vehicle-request">Vehicle requests</option><option value="trip-request">Trip requests</option></select></div>
+      <div><label for="ft">Type</label><select id="ft"><option value="">All types</option><option value="rental">Reservations (vehicle)</option><option value="vehicle-request">Vehicle requests</option><option value="trip-request">Trip requests</option><option value="new-agency">New agency sign-ups</option></select></div>
       <div><label for="fs">Status</label><select id="fs"><option value="">All statuses</option></select></div>
     </div>
   </section>
@@ -82,7 +82,7 @@ td.num,th.num{text-align:right;white-space:nowrap}
 const $=id=>document.getElementById(id),esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const inr=n=>n?"₹"+Math.round(n).toLocaleString("en-IN"):"";
 const ST=["New","Sent to agency","Confirmed","Declined","Completed","Cancelled","No reply"];
-const TY={"rental":"Reservation","vehicle-request":"Vehicle request","trip-request":"Trip request"};
+const TY={"rental":"Reservation","vehicle-request":"Vehicle request","trip-request":"Trip request","new-agency":"New agency sign-up"};
 const get=k=>{try{return localStorage.getItem("opiius:dash:"+k)||""}catch(e){return ""}}, set=(k,v)=>{try{localStorage.setItem("opiius:dash:"+k,v)}catch(e){}};
 let rows=[];
 $("url").value=get("url");$("key").value=get("key");
@@ -111,14 +111,14 @@ function filtered(){const m=$("fm").value,a=$("fa").value,t=$("ft").value,s=$("f
   return rows.filter(r=>(!m||String(r.Received).startsWith(m))&&(!a||(r.Agency||"(no agency: request)")===a)&&(!t||r.Type===t)&&(!s||r.Status===s))}
 function render(){
   const f=filtered(),c=s=>f.filter(r=>r.Status===s).length,done=f.filter(r=>r.Status==="Completed");
-  const kp=[[f.length,"Leads sent"],[f.filter(r=>r.Type==="rental").length,"Reservations"],[c("Confirmed")+c("Completed"),"Confirmed"],[done.length,"Completed"],[c("Declined")+c("No reply"),"Declined / no reply"],[inr(done.reduce((s,r)=>s+(+r.Total||0),0))||"₹0","Completed value"]];
+  const kp=[[f.filter(r=>r.Type!=="new-agency").length,"Leads sent"],[f.filter(r=>r.Type==="rental").length,"Reservations"],[c("Confirmed")+c("Completed"),"Confirmed"],[done.length,"Completed"],[c("Declined")+c("No reply"),"Declined / no reply"],[inr(done.reduce((s,r)=>s+(+r.Total||0),0))||"₹0","Completed value"]];
   $("kpis").innerHTML=kp.map(([v,l])=>`<div class="kpi"><b>${v}</b><span>${l}</span></div>`).join("");
   const by={};f.forEach(r=>{const a=r.Agency||"(no agency: request)";const o=by[a]=by[a]||{n:0,conf:0,done:0,dec:0,val:0,sent:0};o.n++;if(r.Status==="Sent to agency")o.sent++;if(r.Status==="Confirmed"||r.Status==="Completed")o.conf++;if(r.Status==="Completed"){o.done++;o.val+=+r.Total||0}if(r.Status==="Declined"||r.Status==="No reply")o.dec++});
   $("agt").innerHTML=`<tr><th>Agency</th><th class="num">Leads</th><th class="num">Confirmed</th><th class="num">Completed</th><th class="num">Declined / no reply</th><th class="num">Completed value</th></tr>`+
     Object.entries(by).sort((a,b)=>b[1].n-a[1].n).map(([a,o])=>`<tr><td><button class="agl" data-ag="${esc(a)}">${esc(a)}</button></td><td class="num">${o.n}</td><td class="num">${o.conf}</td><td class="num">${o.done}</td><td class="num">${o.dec}</td><td class="num">${inr(o.val)}</td></tr>`).join("")||`<tr><td colspan="6" class="muted">No bookings yet.</td></tr>`;
   $("cnt").textContent=`(${f.length})`;
   $("bt").innerHTML=`<tr><th>Received</th><th>Ref</th><th>Type</th><th>Agency</th><th>Vehicle / trip</th><th>Dates</th><th class="num">Total</th><th>Status</th><th class="noprint">Update</th></tr>`+
-    f.map(r=>`<tr><td>${fmt(r.Received)}</td><td><b>${esc(r.Ref)}</b></td><td>${TY[r.Type]||esc(r.Type)}</td><td>${esc(r.Agency||"")}</td><td>${esc(r["Vehicle / trip"])}${r.City?`<br><span class="muted">${esc(r.City)}</span>`:""}</td>
+    f.map(r=>`<tr><td>${fmt(r.Received)}</td><td><b>${esc(r.Ref)}</b></td><td>${TY[r.Type]||esc(r.Type)}</td><td>${esc(r.Agency||"")}</td><td>${esc(r["Vehicle / trip"])}${r.City?`<br><span class="muted">${esc(r.City)}</span>`:""}${r.Type==="new-agency"&&r.Pickup?`<br><span class="muted">${esc(r.Pickup)}</span>`:""}</td>
       <td>${fd(r.From)}${r.To?" → "+fd(r.To):""}${r.Days?`<br><span class="muted">${r.Days} days</span>`:""}</td><td class="num">${inr(r.Total)}</td>
       <td><span class="st ${esc(String(r.Status).split(" ")[0])}">${esc(r.Status)}</span>${r.Note?`<br><span class="muted">${esc(r.Note)}</span>`:""}</td>
       <td class="noprint"><div class="row-actions"><select data-ref="${esc(r.Ref)}">${ST.map(s=>`<option ${s===r.Status?"selected":""}>${s}</option>`).join("")}</select><input data-note="${esc(r.Ref)}" placeholder="Note (e.g. owner said YES 10:05)" value="${esc(r.Note||"")}"><button data-save="${esc(r.Ref)}">Save</button></div></td></tr>`).join("")||`<tr><td colspan="9" class="muted">Nothing for this filter.</td></tr>`;
