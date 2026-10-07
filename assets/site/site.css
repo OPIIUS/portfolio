@@ -496,15 +496,26 @@ dialog::backdrop{background:rgba(0,0,0,.4);backdrop-filter:blur(16px) saturate(1
 @media(max-width:560px){.brand{width:136px;padding:18px 10px 14px}.brand svg{width:38px;height:38px}.brands{padding:44px 0 50px}}
 .badge.lst{background:var(--mist);color:var(--ink2)}.hero .badge.lst{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.3)}.badge.onph.lst{background:rgba(255,255,255,.95);color:var(--ink)}
 /* ---------- rentals: search, filters and likes ---------- */
-.afilter{display:grid;grid-template-columns:minmax(220px,1.4fr) auto auto auto;gap:12px 16px;align-items:end;margin-top:36px;padding:16px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--sh)}
+.afilter{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:flex-end;margin-top:36px;padding:16px;border-radius:var(--r-lg);background:var(--paper);box-shadow:var(--sh)}
 .afilter label{display:block;font-size:13px;font-weight:500;color:var(--dim);margin-bottom:6px}
 .afilter select,.afilter input{font:inherit;font-size:16px;color:var(--ink);background:#fff;border:1px solid var(--line2);border-radius:var(--r-sm);padding:11px 12px;min-width:0;transition:border-color .2s,box-shadow .2s}
 .afilter select:focus,.afilter input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 4px rgba(29,75,63,.14)}
-.fsearch{position:relative}
-.fsearch svg{position:absolute;left:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--dim)}
+.fsearch{position:relative;flex:1 1 100%}
+.sugg{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;list-style:none;margin:0;padding:6px;background:#fff;border-radius:18px;box-shadow:0 0 0 1px rgba(0,0,0,.06),0 18px 48px -12px rgba(0,0,0,.25);max-height:min(60vh,420px);overflow:auto}
+.sugg li{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:center;padding:8px 10px;border-radius:12px;cursor:pointer}
+.sugg li[aria-selected="true"],.sugg li:hover{background:var(--mist)}
+.sugg .si{width:36px;height:36px;border-radius:10px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center}
+.sugg .si svg{width:18px;height:18px}
+.sugg .sn{font-size:15px;color:var(--ink);line-height:1.3}.sugg .sn b{font-weight:600}
+.sugg .ss{display:block;font-size:12.5px;color:var(--dim);margin-top:1px}
+.sugg .sk{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);padding:8px 10px 4px}
+.fsearch>svg{position:absolute;left:14px;top:50%;width:18px;height:18px;transform:translateY(-50%);color:var(--dim)}
 .fsearch input{width:100%;padding-left:42px;border-radius:980px;background:var(--mist);border-color:transparent}
 .frange{display:flex;align-items:center;gap:8px}.frange span{color:var(--dim);font-size:14px}
-.fliked{display:inline-flex;align-items:center;gap:6px;cursor:pointer;height:46px;padding:0 16px}
+.fliked,.fnear{display:inline-flex;align-items:center;gap:6px;cursor:pointer;height:46px;padding:0 16px}
+.fnear svg{width:16px;height:16px}
+.nearwrap{text-align:center;margin-top:18px}.nearlink{display:inline-flex;align-items:center;gap:8px;color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);border-radius:980px;padding:10px 18px;font-size:15px;font-weight:500;text-decoration:none;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:background .2s}.nearlink:hover{background:rgba(255,255,255,.24)}.nearlink svg{width:16px;height:16px}.fnear[aria-busy="true"]{opacity:.6}
+.arow .dist{color:var(--brand);font-weight:500;margin-left:6px}.arow .dist:before{content:"·";color:var(--dim);margin-right:6px}
 .fliked svg{width:16px;height:16px}.fliked[aria-pressed="true"] svg{fill:currentColor}
 .fcount{color:var(--dim);font-size:14px;margin-top:12px;min-height:1px}
 .arow-w{position:relative;transition:transform .3s var(--ease)}
@@ -520,8 +531,8 @@ dialog::backdrop{background:rgba(0,0,0,.4);backdrop-filter:blur(16px) saturate(1
 .like[aria-pressed="true"] svg,.like-btn[aria-pressed="true"] svg{fill:currentColor}
 .like-btn .l1,.like-btn[aria-pressed="true"] .l0{display:none}.like-btn[aria-pressed="true"] .l1{display:inline}
 .like-btn[aria-pressed="true"]{background:#fff;color:#e0245e}
-@media(max-width:860px){.afilter{grid-template-columns:1fr 1fr}.fsearch{grid-column:1/-1}.fgroup select{width:100%}.frange select{flex:1}.fliked{grid-column:1/-1;justify-content:center}}
-@media(max-width:480px){.afilter{grid-template-columns:1fr}}
+@media(max-width:860px){.afilter .fgroup{flex:1 1 calc(50% - 8px);min-width:0}.fgroup select{width:100%}.frange select{flex:1}.fliked,.fnear{flex:1 1 calc(50% - 8px);justify-content:center}}
+@media(max-width:480px){.afilter .fgroup{flex:1 1 100%}}
 
 /* phone tab bar: notch + springing circle (motion in site.js) */
 .tabbar{display:none}

@@ -115,7 +115,7 @@ const MODELS = {
 const P = (deposit,km,fuel,cancel,docs)=>({deposit,km,fuel,cancel,docs});
 const STD_DOCS = "Original driving licence and a government photo ID";
 const AGENCIES = {
-  rd:{name:"Real Drive Guwahati", slug:"real-drive-ghy", category:"self-drive-cars", city:"guwahati", area:"Hatigaon, Puberun Path", real:true, founding:true, verified:true, verifiedOn:"Oct 2026",
+  rd:{name:"Real Drive Guwahati", slug:"real-drive-ghy", category:"self-drive-cars", city:"guwahati", area:"Hatigaon, Puberun Path", lat:26.128, lon:91.797, real:true, founding:true, verified:true, verifiedOn:"Oct 2026",
     cover:"assets/partners/real-drive-ghy/logo-card.jpg", coverAlt:"Real Drive Ghy logo", coverPos:"50% 50%", trims:{i20:"Elite i20", scorpio:"Scorpio S11"}, trans:{swift:"Automatic", fronx:"Automatic"},
     travel:"Meghalaya and Arunachal Pradesh allowed (Arunachal needs an Inner Line Permit)", deliveryNote:"Airport, railway station or your address in Guwahati, for a delivery charge",
     rating:null, reviews:0, bookings:0, since:2024, hue:48,
@@ -152,7 +152,7 @@ const TYPE_KIND={Hatchback:"car",Sedan:"car",SUV:"car",MUV:"car",Motorcycle:"bik
     about:pa.about||"",policies:P(pol.deposit||"Confirmed by the agency",pol.km||"Confirmed by the agency",pol.fuel||"Same level as pick-up",pol.cancel||"Confirmed by the agency",pol.docs||STD_DOCS),
     pickups:(pa.pickups&&pa.pickups.length)?pa.pickups:[(pa.area||"")+" (address shared on confirmation)"],delivery:!!pa.delivery};
   /* optional profile fields OPIIUS may add by hand */
-  ["slug","category","founding","verifiedOn","cover","coverAlt","coverPos","trims","trans","travel","deliveryNote","driver"].forEach(k=>{if(pa[k]!=null)AGENCIES[pa.id][k]=pa[k]});
+  ["slug","category","founding","verifiedOn","cover","coverAlt","coverPos","trims","trans","travel","deliveryNote","driver","lat","lon"].forEach(k=>{if(pa[k]!=null)AGENCIES[pa.id][k]=pa[k]});
   (pa.vehicles||[]).forEach(v=>{
     let mk=v.model&&MODELS[v.model]?v.model:null;
     if(!mk){
