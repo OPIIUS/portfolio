@@ -4,13 +4,13 @@
 window.OPIIUS_PARTNERS = [
   /* Car Rental Barama: from the agency's poster (Oct 2026). Address from the owner: Barama, Nalbari, Assam 781346. Day rates as printed.
      The poster also offers cars with driver, local and outstation trips and flexible rental periods, but gives no driver rates.
-     Owner phone numbers are on the poster but never shown on the site. Km limit (280/day, ₹8.5 per extra km) from the owner, Oct 2026. No security deposit (owner, Oct 2026). Still to come: documents, model years.
+     Owner phone numbers are on the poster but never shown on the site. Km limit (280/day, ₹8.5 per extra km) from the owner, Oct 2026. No security deposit (owner, Oct 2026). Documents: driving licence, Aadhaar, PAN (owner, Oct 2026). Still to come: model years, own photos.
      The poster's car pictures are stock images, so no vehicle photos yet. */
   {
     id: "car-rental-barama", name: "Car Rental Barama", city: "barama", area: "", since: 2026,
     pickups: ["Barama, Nalbari, Assam 781346"], delivery: false, verified: false,
     about: "Self-drive cars in Barama, Nalbari, from the Swift and i20 to the Scorpio-N and Thar Roxx. They also offer cars with driver for local and outstation trips, and flexible rental periods.",
-    policies: {deposit: "No security deposit", km: "280 km per day, ₹8.5 per extra km"},
+    policies: {deposit: "No security deposit", docs: "Original driving licence, Aadhaar card and PAN card", km: "280 km per day, ₹8.5 per extra km"},
     cover: "assets/partners/car-rental-barama/logo-card.jpg", coverAlt: "Car Rental Barama logo", coverPos: "50% 50%",
     vehicles: [
       {model: "swift", price: 2100},
@@ -76,7 +76,7 @@ window.OPIIUS_PARTNERS = [
     id: "saraighat-travels", name: "Saraighat Travels", city: "guwahati", area: "Basistha, Barpathar", since: 2026,
     pickups: ["Basistha Natun Bazar, Guwahati"], delivery: false, verified: false,
     about: "Self-drive cars in Basistha, Guwahati, for daily, weekly and monthly rentals. Drive and explore Guwahati, or ask about their tour packages and road trips.",
-    policies: {deposit: "No security deposit", km: "300 km per day", fuel: "Same level as pick-up", cancel: "", docs: "Original driving licence and Aadhaar card"},
+    policies: {deposit: "No security deposit", docs: "Original driving licence, Aadhaar card and PAN card", km: "300 km per day", fuel: "Same level as pick-up", cancel: "", docs: "Original driving licence and Aadhaar card"},
     trims: {thar: "Thar"}, cover: "assets/partners/saraighat-travels/banner.jpg", coverAlt: "Saraighat Rentals banner: safe, reliable, comfortable", coverPos: "50% 50%",
     vehicles: [
       {model: "swift", price: 1700, units: 1, year: 2025, photos: ["assets/partners/saraighat-travels/swift.jpg"]},
