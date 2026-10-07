@@ -72,6 +72,7 @@ const I = {
 const WORDMARK = fs.readFileSync(path.join(ROOT, "assets/site/logo/opiius-wordmark.svg"), "utf8").replace("<svg ", '<svg class="wm" aria-hidden="true" focusable="false" ');
 const LOGO = `<img class="bdg" src="/assets/site/logo/opiius-badge.svg" width="40" height="40" alt="">${WORDMARK}<span class="sr">OPIIUS</span>`;
 const CAR_LINE = '<svg viewBox="0 0 200 70" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M8 52h14m36 0h76m36 0h22v-12c0-5-3-8-8-9l-28-5-22-15c-4-3-8-4-13-4H74c-6 0-11 2-15 6L44 26l-24 4c-6 1-10 5-10 11v11"/><circle cx="40" cy="52" r="12"/><circle cx="152" cy="52" r="12"/></svg>';
+const BIKE_LINE = '<svg viewBox="0 0 200 70" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="42" cy="50" r="16"/><circle cx="158" cy="50" r="16"/><path d="M42 50l26-24h44l14 12h-34l-12 12M126 38l32 12M110 26l-8-10h-14M138 22l10 4"/></svg>';
 
 /* ---------- marketplace structure ---------- */
 const CHECKS = {
@@ -95,7 +96,7 @@ const GROUPS = [
   {id: "sedans", t: "Sedans", nav: "Sedans", e: "5 seats · a proper boot", d: "Comfortable for four adults and their luggage on longer drives.", test: m => m.kind === "car" && m.type === "Sedan"},
   {id: "compact-suvs", t: "Compact SUVs", nav: "Compact SUVs", e: "5 seats · higher ground clearance", d: "A taller stance and more clearance for hill roads, still easy in the city.", test: m => m.kind === "car" && m.type !== "Hatchback" && m.type !== "Sedan" && m.seats < 6},
   {id: "seven-seaters", t: "7-seaters for families and groups", nav: "7-seaters", e: "6–7 seats · room for luggage", d: "Space for the whole family and their bags, for Meghalaya, Kaziranga and long days.", test: m => m.kind === "car" && m.seats >= 6},
-  {id: "scooters", t: "Scooters", nav: "Scooters", e: "No gears · helmet included", d: "The easiest way around town.", test: m => m.kind === "bike" && m.type === "Scooter"},
+  {id: "scooters", t: "Scooters", nav: "Scooters", e: "No gears · automatic", d: "The easiest way around town.", test: m => m.kind === "bike" && m.type === "Scooter"},
   {id: "motorcycles", t: "Motorcycles", nav: "Motorcycles", e: "Geared · for the hills", d: "From commuters to Royal Enfields for the mountain roads.", test: m => m.kind === "bike" && m.type !== "Scooter"}
 ];
 const AGENCIES = Object.entries(O.AGENCIES).filter(([, a]) => a.real && !a.demo).map(([id, a]) => ({id, ...a, slug: a.slug || id, category: a.category || "self-drive-cars"}));
@@ -215,7 +216,7 @@ ${footer()}
 /* ---------- shared blocks ---------- */
 function carCard(c, {showAgency = false} = {}) {
   const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">`
-    : `<div class="nametile"><small>${esc(c.brand)}</small><b>${esc(c.nm)}</b>${CAR_LINE}</div>`;
+    : `<div class="nametile"><small>${esc(c.brand)}</small><b>${esc(c.nm)}</b>${c.m.kind === "bike" ? BIKE_LINE : CAR_LINE}</div>`;
   return `<article class="car"><div class="ph">${ph}${c.units > 1 ? `<span class="badge onph">${c.units} in the fleet</span>` : ""}</div>
   <div class="bd"><div class="nm"><small>${esc(c.brand)}</small><h3>${esc(c.nm)}</h3></div>
     ${showAgency ? `<p class="by">By <a href="${urlOf(agencyPath(c.a))}">${esc(c.a.name)}</a></p>` : ""}
@@ -360,15 +361,15 @@ ${howItWorks([["Pick a car", "Real photos, day price, deposit and km limit, from
 })();
 
 /* ---------- rentals: types of agencies, then each agency opens its whole fleet ---------- */
-function agencyRow(a) {
-  const list = CARS.filter(c => c.a.id === a.id), pol = a.policies || {};
+function agencyRow(a, kind) {
+  const list = CARS.filter(c => c.a.id === a.id && (!kind || c.m.kind === kind)), pol = a.policies || {};
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo) || {}).photo;
   const autos = list.filter(c => /auto/i.test(c.trans)).length;
   const chips = [/agency/i.test(pol.deposit || "") ? "" : /^no /i.test(pol.deposit || "") ? pol.deposit : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : "", drv(a) ? "Cars with driver too" : ""].filter(Boolean);
   return `<a class="arow" href="${urlOf(agencyPath(a))}"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
   <div class="bd"><div class="badges">${badge(a)}</div><h3>${esc(a.name)}</h3><p class="loc">${I.pin.replace("<svg", '<svg width="16" height="16"')}${esc(a.area ? a.area + ", " : "")}${esc(cityName(a.city))}</p>
     <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div><p class="fit" hidden></p>
-    <div class="ft">${list.length ? `<div class="price"><b class="num">${inr(minP(list))}</b><span>– ${inr(maxP(list))} / day</span></div><span class="btn dark">View all ${list.length} cars ${arrow()}</span>` : `<span></span><span class="btn dark">View agency ${arrow()}</span>`}</div></div></a>`;
+    <div class="ft">${list.length ? `<div class="price"><b class="num">${inr(minP(list))}</b><span>– ${inr(maxP(list))} / day</span></div><span class="btn dark">View all ${list.length} ${kind === "bike" ? "bikes" : "cars"} ${arrow()}</span>` : `<span></span><span class="btn dark">View agency ${arrow()}</span>`}</div></div></a>`;
 }
 /* each row on /rentals/ sits in a wrapper the filter bar reads: search text, and [price, seats] for every car it offers */
 const likeBtn = a => `<button type="button" class="like" data-like="${esc(a.id)}" aria-pressed="false" aria-label="Like ${esc(a.name)}" title="Like">${I.heart}</button>`;
@@ -414,7 +415,7 @@ function filterBar() {
     return `<section class="atype" id="${s.id}"><div class="atype-h"><span class="ic">${I[s.icon]}</span><div><h2>${esc(s.name)}</h2><p>${esc(s.desc)}</p></div></div>
       ${ags.length ? `<div class="arows">${ags.map(a => s.id === "cars-with-driver" && drv(a)
           ? filterRow(a, driverRow(a), drvCars(a).map(c => [+c.local, +c.seats || 0]))
-          : filterRow(a, agencyRow(a), CARS.filter(c => c.a.id === a.id && (!s.kind || c.m.kind === s.kind)).map(c => [c.price, c.m.seats]))).join("")}</div>
+          : filterRow(a, agencyRow(a, s.kind), CARS.filter(c => c.a.id === a.id && (!s.kind || c.m.kind === s.kind)).map(c => [c.price, c.m.seats]))).join("")}</div>
         <div class="aempty anone" hidden><p>No agency here matches your filters.</p><button type="button" class="btn outline" data-fclear>Clear filters</button></div>
         ${s.kind && subLive(s).length > 1 ? `<p class="aall"><a class="link" href="${urlOf(listingPath(s.id, liveCities(s.kind)[0]))}">Or compare all ${subLive(s).length} ${s.kind === "car" ? "cars" : "vehicles"} side by side ${arrow(16)}</a></p>` : ""}`
         : `<div class="aempty"><p>Tell us your dates and where you're going, and we'll find a local agency for you.</p><a class="btn outline" href="#match" data-need="${s.id}">Ask for ${esc(s.name.toLowerCase())}</a></div>`}</section>`;
