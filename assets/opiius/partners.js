@@ -4,13 +4,13 @@
 window.OPIIUS_PARTNERS = [
   /* Car Rental Barama: from the agency's poster (Oct 2026), Barama, Baksa district, Assam 781346. Day rates as printed.
      The poster also offers cars with driver, local and outstation trips and flexible rental periods, but gives no driver rates.
-     Owner phone numbers are on the poster but never shown on the site. Not on the poster: deposit, km limit, documents, model years.
+     Owner phone numbers are on the poster but never shown on the site. Km limit (280/day, ₹8.5 per extra km) from the owner, Oct 2026. Still to come: deposit, documents, model years.
      The poster's car pictures are stock images, so no vehicle photos yet. */
   {
     id: "car-rental-barama", name: "Car Rental Barama", city: "barama", area: "", since: 2026,
     pickups: ["Barama (pickup point shared on confirmation)"], delivery: false, verified: false,
     about: "Self-drive cars in Barama, Lower Assam, from the Swift and i20 to the Scorpio-N and Thar Roxx. They also offer cars with driver for local and outstation trips, and flexible rental periods.",
-    policies: {},
+    policies: {km: "280 km per day, ₹8.5 per extra km"},
     cover: "assets/partners/car-rental-barama/logo-card.jpg", coverAlt: "Car Rental Barama logo", coverPos: "50% 50%",
     vehicles: [
       {model: "swift", price: 2100},
