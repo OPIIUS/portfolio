@@ -162,7 +162,7 @@ const TYPE_KIND={Hatchback:"car",Sedan:"car",SUV:"car",MUV:"car",Motorcycle:"bik
       if(!BRANDS[MODELS[mk].brand])BRANDS[MODELS[mk].brand]={name:v.brand||"Other"};
     }
     const id=pa.id+"-"+mk;
-    LISTINGS[id]={id,agency:pa.id,model:mk,price:+v.price,units:+v.units||1,rating:null,trips:0,year:+v.year||null,photo:(v.photos&&v.photos[0])||undefined};
+    LISTINGS[id]={id,agency:pa.id,model:mk,price:+v.price,units:+v.units||1,rating:null,trips:0,year:+v.year||null,photo:(v.photos&&v.photos[0])||undefined,sample:!!v.sample};
   });
 });
 
