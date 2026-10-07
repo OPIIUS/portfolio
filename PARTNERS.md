@@ -28,3 +28,11 @@ Partner pages
   name tile; drop in a photo and add its path as the 8th value of that model's row in `data.js`.
 - Set `verified:true, verifiedOn:"Oct 2026"` on an agency only after you have checked its permit, insurance, fleet and
   owner ID yourself. The Verified badge then appears everywhere after a rebuild.
+
+Cars with driver
+- In section 4 of the form the owner ticks **We also provide cars with driver** and adds each car with its local day rate
+  (8 hours / 80 km), outstation ₹/km and airport transfer price, plus the driver allowance and where they go.
+  Agencies that only run cars with driver leave section 3 empty; their block comes with `category:"cars-with-driver"`.
+- The block carries `driver: {cars: [{name, seats, local, perKm, airport}], allowance, areas, note}`. Keep it as sent in
+  `partners.js`. The agency then appears under **Rentals → Cars with driver**, its page gets a "Driver rates" section with
+  its own request form, and the header and homepage "Cars with driver" links open that list instead of the general form.
