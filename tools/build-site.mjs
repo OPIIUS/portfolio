@@ -352,6 +352,7 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
       ${opt(selfDriveUrl, "/assets/opiius/img/home-selfdrive.jpg", "45% 60%", "car", "Self-drive cars", "Choose a local agency, then see its cars, day prices, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "Choose an agency")}
       ${opt(driverUrl, "/assets/opiius/img/home-driver.jpg", "52% 55%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], DRV.length ? `From ${inr(Math.min(...DRV.map(drvMin)))}/day` : "", DRV.length ? "See cars with driver" : "Ask for a car with driver")}
     </div>
+    <div class="nearwrap"><a class="nearlink" href="/rentals/#near">${I.pin}Find rental agencies near me</a></div>
     <ul class="trust"><li>${I.shield}Verified agencies</li><li>${I.camera}Real photos of every car</li><li>${I.tag}Prices shown upfront</li><li>${I.check}No booking fee</li></ul>
   </div>
 </section>
@@ -380,7 +381,9 @@ function agencyRow(a, kind) {
 }
 /* each row on /rentals/ sits in a wrapper the filter bar reads: search text, and [price, seats] for every car it offers */
 const likeBtn = a => `<button type="button" class="like" data-like="${esc(a.id)}" aria-pressed="false" aria-label="Like ${esc(a.name)}" title="Like">${I.heart}</button>`;
-const filterRow = (a, html, cars) => `<div class="arow-w rv" data-q="${esc([a.name, a.area, cityName(a.city), ...(a.driver && a.driver.areas ? [a.driver.areas] : [])].filter(Boolean).join(" ").toLowerCase())}" data-cars="${esc(JSON.stringify(cars))}">${html}${likeBtn(a)}</div>`;
+/* where an agency is, for "Near me": its own approximate spot if known, else the centre of its town */
+const spot = a => a.lat != null ? [a.lat, a.lon] : [(O.PLACES[a.city] || {}).lat, (O.PLACES[a.city] || {}).lon];
+const filterRow = (a, html, cars) => `<div class="arow-w rv" data-town="${esc(a.city)}" data-ll="${spot(a).join(",")}" data-q="${esc([a.name, a.area, cityName(a.city), ...(a.driver && a.driver.areas ? [a.driver.areas] : [])].filter(Boolean).join(" ").toLowerCase())}" data-cars="${esc(JSON.stringify(cars))}">${html}${likeBtn(a)}</div>`;
 /* the same agency in the "Cars with driver" list: its driver rates, linking to the driver section of its page */
 function driverRow(a) {
   const d = a.driver, cars = drvCars(a), list = CARS.filter(c => c.a.id === a.id);
@@ -399,10 +402,13 @@ function filterBar() {
   const lo = Math.floor(Math.min(...prices) / 500) * 500, hi = Math.ceil(Math.max(...prices) / 500) * 500;
   const steps = []; for (let p = lo; p <= hi; p += 500) steps.push(p);
   const ppl = []; for (let n = 2; n <= Math.max(...seats); n++) ppl.push(n);
+  const towns = [...new Set(AGENCIES.map(a => a.city))].filter(t => O.PLACES[t]);
   return `<div class="afilter" role="search" aria-label="Find an agency">
   <div class="fsearch">${I.search}<input type="search" id="fq" placeholder="Search agencies by name or area" aria-label="Search agencies by name or area" autocomplete="off"></div>
   <div class="fgroup"><label for="fmin">Price per day</label><div class="frange"><select id="fmin" aria-label="Lowest price per day"><option value="0">Any</option>${steps.slice(0, -1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select><span>to</span><select id="fmax" aria-label="Highest price per day"><option value="0">Any</option>${steps.slice(1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select></div></div>
+  ${towns.length > 1 ? `<div class="fgroup"><label for="ftown">Town</label><select id="ftown"><option value="">All of Assam</option>${towns.map(t => `<option value="${t}">${esc(cityName(t))}</option>`).join("")}</select></div>` : ""}
   <div class="fgroup"><label for="fppl">People going</label><select id="fppl"><option value="0">Any</option>${ppl.map(n => `<option value="${n}">${n} people</option>`).join("")}</select></div>
+  <button type="button" class="chip fnear" id="fnear" aria-pressed="false">${I.pin}Near me</button>
   <button type="button" class="chip fliked" id="fliked" aria-pressed="false">${I.heart}Liked<span id="flikedN">0</span></button>
 </div>
 <p class="fcount" id="fcount" aria-live="polite"></p>`;

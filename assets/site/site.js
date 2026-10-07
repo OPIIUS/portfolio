@@ -237,32 +237,52 @@
   /* rentals: search agencies, price per day, people going, liked only */
   var fq=$("#fq");
   if(fq){
-    var fmin=$("#fmin"),fmax=$("#fmax"),fppl=$("#fppl"),fl=$("#fliked"),fc=$("#fcount");
-    var rows=$$(".arow-w").map(function(w){var c=[];try{c=JSON.parse(w.dataset.cars)}catch(e){}return {w:w,q:w.dataset.q||"",c:c,id:(w.querySelector("[data-like]")||{dataset:{}}).dataset.like,fit:w.querySelector(".fit")}});
+    var fmin=$("#fmin"),fmax=$("#fmax"),fppl=$("#fppl"),fl=$("#fliked"),fc=$("#fcount"),ftown=$("#ftown"),fnear=$("#fnear"),me=null;
+    var rows=$$(".arow-w").map(function(w,i){var c=[];try{c=JSON.parse(w.dataset.cars)}catch(e){}var ll=(w.dataset.ll||"").split(",").map(Number);
+      return {w:w,i:i,q:w.dataset.q||"",c:c,town:w.dataset.town||"",ll:ll.length===2&&!isNaN(ll[0])?ll:null,id:(w.querySelector("[data-like]")||{dataset:{}}).dataset.like,fit:w.querySelector(".fit")}});
+    /* Near me: distance on a sphere, km; the location never leaves the phone */
+    var km=function(a,b){var R=6371,r=Math.PI/180,dl=(b[0]-a[0])*r,dn=(b[1]-a[1])*r,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))};
+    var order=function(){
+      rows.forEach(function(r){r.d=me&&r.ll?km(me,r.ll):null;var loc=r.w.querySelector(".loc"),s=loc&&loc.querySelector(".dist");
+        if(loc&&!s){s=document.createElement("span");s.className="dist";loc.appendChild(s)}
+        if(s){s.hidden=r.d==null;s.textContent=r.d==null?"":(r.d<1.5?"under 2 km away":"about "+(r.d<20?Math.round(r.d):Math.round(r.d/5)*5)+" km away")}});
+      $$(".arows").forEach(function(box){rows.filter(function(r){return r.w.parentNode===box}).sort(function(a,b){return me?((a.d==null?1e9:a.d)-(b.d==null?1e9:b.d))||a.i-b.i:a.i-b.i}).forEach(function(r){box.appendChild(r.w)})});
+    };
     var run=function(){
-      var q=fq.value.trim().toLowerCase(),lo=+fmin.value||0,hi=+fmax.value||Infinity,p=+fppl.value||0,onlyLiked=fl.getAttribute("aria-pressed")==="true";
+      var q=fq.value.trim().toLowerCase(),town=ftown?ftown.value:"",lo=+fmin.value||0,hi=+fmax.value||Infinity,p=+fppl.value||0,onlyLiked=fl.getAttribute("aria-pressed")==="true";
       if(hi<lo){hi=Infinity;fmax.value="0"}
       var narrowed=lo||hi<Infinity||p,shown=0,ids={};
       rows.forEach(function(r){
         var fits=r.c.filter(function(x){return x[0]>=lo&&x[0]<=hi&&(!p||!x[1]||x[1]>=p)});
-        var ok=(!q||q.split(/\s+/).every(function(t){return r.q.indexOf(t)>-1}))&&(!onlyLiked||liked.indexOf(r.id)>-1)&&(!r.c.length||fits.length);
+        var ok=(!q||q.split(/\s+/).every(function(t){return r.q.indexOf(t)>-1}))&&(!town||r.town===town)&&(!onlyLiked||liked.indexOf(r.id)>-1)&&(!r.c.length||fits.length);
         r.w.hidden=!ok;if(ok&&!ids[r.id]){ids[r.id]=1;shown++}
         if(r.fit){r.fit.hidden=!(ok&&narrowed&&r.c.length);var why=[p?p+"+ seats":"",lo&&hi<Infinity?inr(lo)+"–"+inr(hi)+"/day":lo?"from "+inr(lo)+"/day":hi<Infinity?"up to "+inr(hi)+"/day":""].filter(Boolean).join(", ");
           r.fit.textContent=fits.length+" of "+r.c.length+(r.c.length===1?" car matches":" cars match")+": "+why}
       });
       $$(".atype").forEach(function(sec){var ws=$$(".arow-w",sec),none=$(".anone",sec);if(none)none.hidden=!ws.length||ws.some(function(w){return !w.hidden})});
       var total=rows.map(function(r){return r.id}).filter(function(v,i,a){return a.indexOf(v)===i}).length;
-      fc.textContent=(q||narrowed||onlyLiked)?(shown?"Showing "+shown+" of "+total+(total===1?" agency":" agencies"):"No agency matches. Try a wider price range or fewer filters."):"";
+      fc.textContent=(q||town||narrowed||onlyLiked)?(shown?"Showing "+shown+" of "+total+(total===1?" agency":" agencies"):"No agency matches. Try a wider price range or fewer filters."):"";
     };
     window.__opFilter=run;
-    [fq,fmin,fmax,fppl].forEach(function(el){el.addEventListener("input",run);el.addEventListener("change",run)});
+    [fq,fmin,fmax,fppl,ftown].forEach(function(el){if(el){el.addEventListener("input",run);el.addEventListener("change",run)}});
+    if(fnear)fnear.addEventListener("click",function(){
+      if(me){me=null;fnear.setAttribute("aria-pressed","false");order();fc.textContent="";run();return}
+      if(!navigator.geolocation){fc.textContent="Your browser can't share location. Pick your town instead.";return}
+      fnear.setAttribute("aria-busy","true");fc.textContent="Finding agencies near you…";
+      navigator.geolocation.getCurrentPosition(function(pos){
+        fnear.removeAttribute("aria-busy");me=[pos.coords.latitude,pos.coords.longitude];fnear.setAttribute("aria-pressed","true");
+        if(ftown)ftown.value="";order();run();var n=rows.filter(function(r){return r.d!=null&&!r.w.hidden}).sort(function(a,b){return a.d-b.d})[0];
+        fc.textContent=n?"Nearest first. Distances are approximate; agencies share the exact pickup point when they confirm.":"";
+      },function(err){fnear.removeAttribute("aria-busy");fc.textContent=err&&err.code===1?"Location is turned off for this site. Pick your town instead.":"Couldn't get your location. Pick your town instead."},{enableHighAccuracy:false,timeout:10000,maximumAge:600000});
+    });
     fl.addEventListener("click",function(){fl.setAttribute("aria-pressed",fl.getAttribute("aria-pressed")==="true"?"false":"true");run()});
     var fromHash=false,byHash=function(){var on=location.hash==="#liked";
       if(on){fl.setAttribute("aria-pressed","true");fromHash=true;run();fl.scrollIntoView({block:"center",behavior:"smooth"})}
       else if(fromHash){fl.setAttribute("aria-pressed","false");fromHash=false;run()}};
     addEventListener("hashchange",byHash);addEventListener("op:hash",byHash);
-    document.addEventListener("click",function(e){if(!e.target.closest("[data-fclear]"))return;fq.value="";fmin.value=fmax.value=fppl.value="0";fl.setAttribute("aria-pressed","false");run()});
+    document.addEventListener("click",function(e){if(!e.target.closest("[data-fclear]"))return;fq.value="";fmin.value=fmax.value=fppl.value="0";if(ftown)ftown.value="";fl.setAttribute("aria-pressed","false");run()});
     run();if(location.hash==="#liked")byHash();
+    if(location.hash==="#near"&&fnear){fnear.scrollIntoView({block:"center"});fnear.click()}
   }
 
   /* buttons that prefill the request form on the same page */
