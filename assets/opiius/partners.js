@@ -2,6 +2,27 @@
    Photos live in assets/partners/<id>/. Entries here appear on the live site automatically.
    verified:true only after the self-drive permit and commercial insurance have been checked in person. */
 window.OPIIUS_PARTNERS = [
+  /* NextGear Rental: from the agency's own sign-up on /onboard.html (OP-261008-CVVHJ, Oct 2026). The owner's WhatsApp number came with it
+     and is kept out of this file (owner numbers are never shown on the site).
+     They ticked the permit and insurance boxes, but the Verified badge waits until OPIIUS has seen the documents, so verified: false for now.
+     Ertiga sent as type SUV: listed as MUV (7 seats) like the other agencies' Ertigas. Innova Crysta sent as petrol, so kept as its own entry.
+     Photos were not attached yet: cards show the model name until they arrive (assets/partners/nextgear-rental/). */
+  {
+    id: "nextgear-rental", name: "NextGear Rental", city: "guwahati", area: "Zoo Road", lat: 26.165, lon: 91.778, since: 2024,
+    pickups: ["Zoo Road, Guwahati"], delivery: false, verified: false,
+    about: "Hassle-free booking with clean, well-serviced and new cars, from Zoo Road, Guwahati.",
+    policies: {deposit: "No security deposit", km: "250–300 km per day, then ₹10 per km", fuel: "Same level as pick-up",
+      cancel: "50% refund if cancelled at least 24 hours before pickup. No cancellation after the car is handed over",
+      docs: "Original driving licence, a government photo ID and the renter's profile"},
+    vehicles: [
+      {model: "nios", price: 1900, units: 1, year: 2022},
+      {model: "baleno", price: 2000, units: 3, year: 2025},
+      {model: "fronx", price: 2300, units: 1, year: 2026},
+      {brand: "Maruti Suzuki", name: "Ertiga", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 3000, units: 1, year: 2025},
+      {model: "carens", price: 4000, units: 1, year: 2025},
+      {brand: "Toyota", name: "Innova Crysta", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 4000, units: 1, year: 2023}
+    ]
+  },
   /* Car Rental Barama: from the agency's poster (Oct 2026). Address from the owner: Barama, Nalbari, Assam 781346. Day rates as printed.
      The poster also offers cars with driver, local and outstation trips and flexible rental periods, but gives no driver rates.
      Owner phone numbers are on the poster but never shown on the site. Km limit (280/day, ₹8.5 per extra km) from the owner, Oct 2026. No security deposit (owner, Oct 2026). Documents: driving licence, Aadhaar, PAN (owner, Oct 2026). Still to come: model years, own photos.
