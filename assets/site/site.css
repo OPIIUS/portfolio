@@ -63,8 +63,8 @@ button{cursor:pointer}
 .hdr{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.72);backdrop-filter:saturate(1.8) blur(20px);-webkit-backdrop-filter:saturate(1.8) blur(20px);border-bottom:1px solid var(--line)}
 .hdr .wrap{height:var(--hdr);display:flex;align-items:center;gap:28px}
 .logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);flex:none}
-.logo .bdg{width:40px;height:40px;border-radius:50%;box-shadow:0 2px 6px rgba(17,38,31,.18)}
-.logo .wm{height:19px;width:auto;display:block}
+.logo .bdg{width:40px;height:40px;border-radius:10px;box-shadow:0 2px 6px rgba(28,52,72,.22)}
+.logo .wm{height:23px;width:auto;display:block;color:#1c3448;margin-top:-2px}
 .nav{display:flex;gap:4px;flex:1;min-width:0}
 .nav a{text-decoration:none;font-weight:400;font-size:14px;color:var(--ink2);padding:8px 12px;border-radius:999px;white-space:nowrap;transition:color .2s}
 .nav a:hover{color:var(--ink)}
