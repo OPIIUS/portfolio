@@ -342,8 +342,8 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
   const types = groupsOf(allCars).map(x => x.g.nav);
   const body = `
 <section class="vhero">
-  <video class="vbg" autoplay muted loop playsinline preload="auto" poster="/assets/site/media/hills.jpg" aria-hidden="true">
-    <source src="/assets/site/media/hills.webm" type="video/webm"><source src="/assets/site/media/hills.mp4" type="video/mp4"></video>
+  <video class="vbg" autoplay muted loop playsinline preload="auto" poster="/assets/site/media/lights.jpg" aria-hidden="true">
+    <source src="/assets/site/media/lights.webm" type="video/webm"><source src="/assets/site/media/lights.mp4" type="video/mp4"></video>
   <div class="wrap in">
     <div class="vh"><span class="eyebrow">Car rentals · Assam</span>
       <h1>Rent a car from a trusted local agency.</h1>
