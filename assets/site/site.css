@@ -401,14 +401,14 @@ dialog::backdrop{background:rgba(0,0,0,.4);backdrop-filter:blur(16px) saturate(1
 @media(max-width:760px){.choose{grid-template-columns:1fr;gap:16px}.opt{min-height:440px}.opt .in{padding:24px}.home{padding:32px 0 44px}}
 
 /* ---------- home: video background ---------- */
-.vhero{position:relative;overflow:hidden;isolation:isolate;color:#fff;background:#0f231c url(/assets/site/media/hills.jpg) center/cover no-repeat}
+.vhero{position:relative;overflow:hidden;isolation:isolate;color:#fff;background:#14223b url(/assets/site/media/lights.jpg) center/cover no-repeat}
 .vhero .vbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
-.vhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(9,22,17,.55) 0%,rgba(9,22,17,.35) 40%,rgba(9,22,17,.75) 100%)}
+.vhero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(8,17,36,.64) 0%,rgba(8,17,36,.55) 40%,rgba(8,17,36,.74) 100%)}
 .vhero .in{padding-top:48px;padding-bottom:40px}
 .vh{text-align:center;max-width:820px;margin:0 auto}
 .vh .eyebrow{color:#f0dcae;font-weight:500}
-.vh h1{font-size:clamp(36px,5vw,64px);font-weight:600;margin-top:12px;text-shadow:0 2px 30px rgba(0,0,0,.3)}
-.vh .lede{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.9);margin-top:12px}
+.vh h1{font-size:clamp(36px,5vw,64px);font-weight:600;margin-top:12px;text-shadow:0 2px 30px rgba(8,17,36,.5)}
+.vh .lede{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,.92);margin-top:12px;text-shadow:0 1px 14px rgba(8,17,36,.7)}
 .choose2{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:860px;margin:28px auto 0}
 .opt2{display:flex;flex-direction:column;background:rgba(255,255,255,.94);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);color:var(--ink);border-radius:var(--r-xl);overflow:hidden;text-decoration:none;box-shadow:0 30px 60px -30px rgba(0,0,0,.55);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
 .opt2:hover{transform:translateY(-4px);box-shadow:0 40px 70px -30px rgba(0,0,0,.75)}
