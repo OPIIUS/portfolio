@@ -1,0 +1,49 @@
+{
+  "name": "OPIIUS · Car rentals in Assam",
+  "short_name": "OPIIUS",
+  "description": "Self-drive cars and cars with driver from trusted local agencies in Assam.",
+  "id": "/",
+  "start_url": "/?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eef1f5",
+  "theme_color": "#eef1f5",
+  "lang": "en-IN",
+  "categories": [
+    "travel",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "/assets/site/logo/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/site/logo/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/site/logo/app-icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Rentals",
+      "url": "/rentals/"
+    },
+    {
+      "name": "Ask OPIIUS",
+      "url": "/get-matched/"
+    },
+    {
+      "name": "Saved",
+      "url": "/rentals/#liked"
+    }
+  ]
+}
