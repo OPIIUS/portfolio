@@ -1,6 +1,8 @@
-/* OPIIUS site behaviour: menu, scroll reveal, hero search, car availability sheet and the "get matched" request form.
-   Requests open WhatsApp to the OPIIUS number in assets/opiius/config.js. If config.bookingLog is set, each request is
-   also logged (reference, agency, car, dates; never the customer's name or number). */
+/* OPIIUS site behaviour: menu, scroll reveal, the booking sheet, the request forms and the Ask OPIIUS screen.
+   Booking requests are sent from the page to the OPIIUS booking log (config.bookingLog, a Google Apps Script):
+   it records the request with the customer's name and WhatsApp number, and notifies OPIIUS at once.
+   The customer sees "Request received" on the page. If the log is missing or still the old version (which can't
+   notify), the request also opens WhatsApp to the OPIIUS number so no customer is lost. */
 (function(){
   var CFG=window.OPIIUS_CONFIG||{}, WA=CFG.whatsapp||"918638830682";
   var $=function(s,el){return (el||document).querySelector(s)}, $$=function(s,el){return [].slice.call((el||document).querySelectorAll(s))};
@@ -10,12 +12,29 @@
   var fmt=function(v){return v?new Date(v+"T00:00").toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}):""};
   function ref(){var d=new Date();return "OP-"+String(d.getFullYear()).slice(2)+("0"+(d.getMonth()+1)).slice(-2)+("0"+d.getDate()).slice(-2)+"-"+Math.random().toString(36).slice(2,7).toUpperCase()}
   function openWA(text){window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(text),"_blank","noopener")}
-  function log(rec){
-    if(!CFG.bookingLog)return;
+  /* send a request to the booking log; resolves {ok, v} (v = log version) or {ok:false} */
+  function send(rec){
+    if(!CFG.bookingLog)return Promise.resolve({ok:false,none:true});
     var body=JSON.stringify(Object.assign({},rec,{page:location.pathname.slice(0,120),ua:/Mobi/i.test(navigator.userAgent)?"mobile":"desktop"}));
-    try{if(navigator.sendBeacon&&navigator.sendBeacon(CFG.bookingLog,new Blob([body],{type:"text/plain"})))return}catch(e){}
-    try{fetch(CFG.bookingLog,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain"},body:body})}catch(e){}
+    return fetch(CFG.bookingLog,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body})
+      .then(function(r){return r.json()}).then(function(j){return {ok:!!j.ok,v:j.v||1,error:j.error}})
+      /* the reply couldn't be read (network or browser rules): send once more without reading it; the log ignores repeats */
+      .catch(function(){return fetch(CFG.bookingLog,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:body}).then(function(){return {ok:true,v:0}},function(){return {ok:false}})});
   }
+  /* the customer's name and number are remembered on this phone for the next request */
+  var ME="op-me",me={};try{me=JSON.parse(localStorage.getItem(ME))||{}}catch(e){}
+  var fillMe=function(root){$$("[name=name]",root).forEach(function(i){if(!i.value&&me.name)i.value=me.name});$$("[name=phone]",root).forEach(function(i){if(!i.value&&me.phone)i.value=me.phone})};
+  var phoneOk=function(v){var d=String(v||"").replace(/\D/g,"").replace(/^(91|0)(?=\d{10}$)/,"");return /^[6-9]\d{9}$/.test(d)?d:""};
+  var saveMe=function(name,phone){me={name:name,phone:phone};try{localStorage.setItem(ME,JSON.stringify(me))}catch(e){}};
+  /* swap a form for its "Request received" panel */
+  function showDone(box,r,sum,wa){var inn=$(".ask-in",box),dn=$(".done",box);if(!dn)return;
+    $("[data-ref-out]",dn).textContent=r;$("[data-sum-out]",dn).innerHTML=(sum||"")+(wa?'<a class="btn wa block" style="margin-top:12px" target="_blank" rel="noopener" href="https://wa.me/'+WA+"?text="+encodeURIComponent(wa)+'">Also send it on WhatsApp</a>':"");
+    if(inn)inn.hidden=true;dn.hidden=false;dn.classList.remove("pop");void dn.offsetWidth;dn.classList.add("pop");
+    var sc=box.closest("dialog")||box;if(sc.scrollTo)sc.scrollTo({top:0});else box.scrollIntoView({block:"start"})}
+  function resetDone(box){var inn=$(".ask-in",box),dn=$(".done",box);if(dn&&!dn.hidden){dn.hidden=true;if(inn)inn.hidden=false}}
+  function busy(btn,on){if(!btn)return;btn.disabled=on;btn.classList.toggle("busy",on);var t=btn.querySelector("span");if(t){if(on){btn.dataset.l=t.textContent;t.textContent="Sending…"}else if(btn.dataset.l)t.textContent=btn.dataset.l}}
+  var line=function(k,v){return v?'<div><span>'+esc(k)+'</span><b>'+esc(v)+"</b></div>":""};
+  document.addEventListener("click",function(e){var b=e.target.closest("[data-done-close]");if(!b)return;var d=b.closest("dialog");if(d)d.close();else resetDone(b.closest(".mpanel"))});
   document.documentElement.classList.add("js");
 
   /* splash: keep the logo up for at least ~1.3 s, then fade out once the page has loaded (CSS hides it after 3.2 s regardless) */
@@ -161,8 +180,12 @@
     var more=ab.querySelector("[data-more]");
     if(more&&det)more.addEventListener("click",function(){det.open=true;var m=mform&&mform.querySelector("[name=msg]");if(m&&aq.value&&!m.value)m.value=aq.value;det.scrollIntoView({behavior:"smooth",block:"start"})});
     ab.addEventListener("submit",function(e){e.preventDefault();var t=aq.value.trim();if(!t){aq.focus();aq.placeholder="Type what you need, e.g. Swift for 3 days";return}
-      var r=ref();log({type:"request",ref:r,agency:"",agencyName:"Ask OPIIUS",vehicle:t.slice(0,120),city:"",from:"",to:""});
-      openWA(["Hi OPIIUS! "+t,"","Ref: "+r].join("\n"))});
+      /* the request form carries the name and number: fill its message and send it, or ask for the contact first */
+      if(!mform)return;var m=mform.querySelector("[name=msg]");if(m)m.value=t;resetDone(mform.closest(".mpanel"));fillMe(mform);
+      if(det)det.open=true;
+      if(phoneOk((mform.querySelector("[name=phone]")||{}).value)&&(mform.querySelector("[name=name]")||{}).value){mform.requestSubmit?mform.requestSubmit():mform.dispatchEvent(new Event("submit",{cancelable:true}));aq.value=""}
+      else{var nm=mform.querySelector("[name=name]");(nm&&!nm.value?nm:mform.querySelector("[name=phone]")).focus({preventScroll:true});var err=mform.querySelector(".err");if(err)err.textContent="Add your name and WhatsApp number, then tap Send request."}
+      if(det)det.scrollIntoView({behavior:"smooth",block:"start"})});
   }
 
   /* installable app: offline support and an "Install" item in the menu */
@@ -211,7 +234,7 @@
     var open=function(id){
       if(id&&byId[id])sel.value=id;
       if(!from.value){var d=new Date();d.setDate(d.getDate()+1);from.value=iso(d);d.setDate(d.getDate()+2);to.value=iso(d)}
-      $("#aErr").textContent="";update();
+      $("#aErr").textContent="";resetDone(dlg);fillMe(dlg);update();
       if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","");
     };
     document.addEventListener("click",function(e){var b=e.target.closest("[data-ask]");if(b){e.preventDefault();open(b.dataset.ask)}});
@@ -221,15 +244,23 @@
     from.addEventListener("change",function(){to.min=from.value;if(to.value&&to.value<=from.value){var d=new Date(from.value);d.setDate(d.getDate()+1);to.value=iso(d)}update()});
     $("#askF").addEventListener("submit",function(e){
       e.preventDefault();
-      var c=byId[sel.value],n=days(),name=$("#aName").value.trim(),err=$("#aErr");
+      var c=byId[sel.value],n=days(),name=$("#aName").value.trim(),ph=phoneOk($("#aPhone").value),err=$("#aErr"),btn=$("[data-send]",dlg);
       if(!from.value||!to.value){err.textContent="Please choose your pickup and return dates.";return}
       if(n<0){err.textContent="The return date is before the pickup date.";return}
       if(!name){err.textContent="Please add your name.";$("#aName").focus();return}
+      if(!ph){err.textContent="Please add a 10-digit mobile number, so the agency can confirm with you.";$("#aPhone").focus();return}
+      if(btn&&btn.disabled)return;
+      err.textContent="";saveMe(name,ph);
       var r=ref(),where=$("#aWhere").value;
-      log({type:"rental",ref:r,agency:c.agency,agencyName:c.agencyName,vehicle:c.name,city:c.city,from:from.value,to:to.value,days:n,pricePerDay:c.price,total:n*c.price,pickup:where});
-      openWA(["Hi OPIIUS, I'd like to book a car from "+c.agencyName+".","","Car: "+c.name+" ("+inr(c.price)+"/day)","Pickup: "+fmt(from.value)+", "+where,"Return: "+fmt(to.value),
-        "Estimate: "+inr(n*c.price)+" for "+n+(n===1?" day":" days"),"Name: "+name,"","Ref: "+r].join("\n"));
-      dlg.close();
+      var rec={type:"rental",ref:r,agency:c.agency,agencyName:c.agencyName,vehicle:c.name,city:c.city,from:from.value,to:to.value,days:n,pricePerDay:c.price,total:n*c.price,pickup:where,name:name,phone:ph};
+      var wa=["Hi OPIIUS, I'd like to book a car from "+c.agencyName+".","","Car: "+c.name+" ("+inr(c.price)+"/day)","Pickup: "+fmt(from.value)+", "+where,"Return: "+fmt(to.value),
+        "Estimate: "+inr(n*c.price)+" for "+n+(n===1?" day":" days"),"Name: "+name,"","Ref: "+r].join("\n");
+      busy(btn,true);
+      send(rec).then(function(res){busy(btn,false);
+        if(!res.ok&&!res.none){err.textContent=res.error==="too many requests"?"Too many requests from this number. Please try again in a while.":"Couldn't send. Check your connection and try again.";return}
+        var old=!res.ok||res.v<2;if(old)openWA(wa); /* old booking log: also send it on WhatsApp so it isn't missed */
+        showDone(dlg,r,line("Car",c.name)+line("Agency",c.agencyName)+line("Dates",fmt(from.value)+" → "+fmt(to.value))+line("Pickup",where)+line("Estimate",inr(n*c.price)+" for "+n+(n===1?" day":" days")),old?wa:"");
+      });
     });
   }
 
@@ -243,20 +274,29 @@
       e.preventDefault();
       var v=function(n){var el=f.querySelector("[name="+n+"]");return el?el.value.trim():""},err=f.querySelector(".err");
       if(!v("name")){err.textContent="Please add your name.";f.querySelector("[name=name]").focus();return}
-      err.textContent="";
+      var ph=phoneOk(v("phone"));
+      if(!ph){err.textContent="Please add a 10-digit mobile number, so we can get back to you.";f.querySelector("[name=phone]").focus();return}
+      var btn=f.querySelector("[data-send]");if(btn&&btn.disabled)return;
+      err.textContent="";saveMe(v("name"),ph);
       var r=ref(),needTxt=need?need.options[need.selectedIndex].text:"";
       var dates=v("from")?(fmt(v("from"))+(v("to")&&v("to")!==v("from")?" to "+fmt(v("to")):"")):"Flexible";
       var ag=v("agency"),agName=v("agencyName");
-      log({type:"request",ref:r,agency:ag,agencyName:agName||"Get matched",vehicle:needTxt,city:v("city"),from:v("from"),to:v("to")});
+      var rec={type:"request",ref:r,agency:ag,agencyName:agName||"Get matched",vehicle:needTxt,city:v("city"),from:v("from"),to:v("to"),budget:v("budget"),pickup:v("people")?"People: "+v("people"):"",msg:v("msg"),name:v("name"),phone:ph};
       var lines=[ag?"Hi OPIIUS, I'd like to ask "+agName+" about this.":"Hi OPIIUS, please match me with a trusted local agency.","","Need: "+needTxt,"Where: "+(v("city")||"Guwahati"),"Dates: "+dates];
       if(v("people"))lines.push("People: "+v("people"));
       if(v("budget"))lines.push("Budget: "+v("budget"));
       lines.push("Name: "+v("name"));
       if(v("msg"))lines.push("Details: "+v("msg"));
       lines.push("","Ref: "+r);
-      openWA(lines.join("\n"));
+      busy(btn,true);
+      send(rec).then(function(res){busy(btn,false);
+        if(!res.ok&&!res.none){err.textContent=res.error==="too many requests"?"Too many requests from this number. Please try again in a while.":"Couldn't send. Check your connection and try again.";return}
+        var old=!res.ok||res.v<2;if(old)openWA(lines.join("\n"));
+        showDone(f.closest(".mpanel")||f,r,line("Need",needTxt)+line("Where",v("city"))+line("Dates",dates)+line("Message",v("msg")),old?lines.join("\n"):"");
+      });
     });
   });
+  fillMe(document);
   /* likes: kept in this browser only (localStorage), shared by the rentals list and agency pages */
   var LK="op-liked",liked=[];
   try{liked=JSON.parse(localStorage.getItem(LK))||[]}catch(e){}
@@ -310,6 +350,11 @@
       fc.textContent=(q||town||narrowed||onlyLiked)?(shown?"Showing "+shown+" of "+total+(total===1?" agency":" agencies"):(q&&!textHit?"Nothing matches “"+fq.value.trim()+"”. Try a car, an agency or a town.":"No agency matches. Try a wider price range or fewer filters.")):"";
     };
     window.__opFilter=run;
+    /* phones: the filters fold behind a "Filters" button that shows how many are on */
+    var ftog=$("#ftog"),afl=$(".afilter"),ftogN=$("#ftogN");
+    if(ftog)ftog.addEventListener("click",function(){var o=afl.classList.toggle("open");ftog.setAttribute("aria-expanded",o)});
+    var countF=function(){if(!ftogN)return;var n=(+fmin.value?1:0)+(+fmax.value?1:0)+(+fppl.value?1:0)+(ftown&&ftown.value?1:0);ftogN.textContent=n||""};
+    [fmin,fmax,fppl,ftown].forEach(function(el){if(el)el.addEventListener("change",countF)});
     [fq,fmin,fmax,fppl,ftown].forEach(function(el){if(el){el.addEventListener("input",run);el.addEventListener("change",run)}});
     if(fnear)fnear.addEventListener("click",function(){
       if(me){me=null;fnear.setAttribute("aria-pressed","false");order();fc.textContent="";run();return}
@@ -326,7 +371,7 @@
       if(on){fl.setAttribute("aria-pressed","true");fromHash=true;run();fl.scrollIntoView({block:"center",behavior:"smooth"})}
       else if(fromHash){fl.setAttribute("aria-pressed","false");fromHash=false;run()}};
     addEventListener("hashchange",byHash);addEventListener("op:hash",byHash);
-    document.addEventListener("click",function(e){if(!e.target.closest("[data-fclear]"))return;fq.value="";fmin.value=fmax.value=fppl.value="0";if(ftown)ftown.value="";fl.setAttribute("aria-pressed","false");run()});
+    document.addEventListener("click",function(e){if(!e.target.closest("[data-fclear]"))return;fq.value="";fmin.value=fmax.value=fppl.value="0";if(ftown)ftown.value="";fl.setAttribute("aria-pressed","false");run();countF()});
     /* suggestions under the search box */
     var sbox=$("#fsugg"),SD=[],SI={},sel=-1,cur=[];
     try{SD=JSON.parse($("#sugg-data").textContent)}catch(e){}
@@ -371,7 +416,7 @@
     var qs=new URLSearchParams(location.search),opt=function(el,v){if(el&&v&&[].some.call(el.options,function(o){return o.value===v}))el.value=v};
     if(qs.get("q"))fq.value=qs.get("q");opt(fppl,qs.get("ppl"));opt(ftown,qs.get("town"));
     if(qs.get("max")){var mx=+qs.get("max"),best="0";[].forEach.call(fmax.options,function(o){if(+o.value&&+o.value<=mx)best=o.value});fmax.value=best}
-    run();if(location.hash==="#liked")byHash();
+    run();countF();if(location.hash==="#liked")byHash();
     if(qs.toString())setTimeout(function(){fc.scrollIntoView({block:"center",behavior:"smooth"})},300);
     if(location.hash==="#near"&&fnear){fnear.scrollIntoView({block:"center"});fnear.click()}
   }

@@ -74,6 +74,7 @@ const I = {
   clock: P('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
   chev: P('<path d="m9 6 6 6-6 6"/>'),
   download: P('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>'),
+  sliders: P('<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>'),
   wa: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.3.3c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 2 1.1.9 2 1.2 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.2 1.4z"/></svg>'
 };
 const WORDMARK = fs.readFileSync(path.join(ROOT, "assets/site/logo/opiius-wordmark.svg"), "utf8").replace("<svg ", '<svg class="wm" aria-hidden="true" focusable="false" ');
@@ -256,39 +257,47 @@ function chipsNav(list, extra = []) {
   const gs = groupsOf(list);
   return `<div class="stick"><div class="wrap"><nav class="chips" aria-label="Categories">${gs.map((x, i) => `<a class="chip" href="#${x.g.id}" data-nav="${x.g.id}" aria-current="${i === 0}">${esc(x.g.nav)}<span>${x.list.length}</span></a>`).join("")}${extra.map(([h, t]) => `<a class="chip" href="#${h}" data-nav="${h}" aria-current="false">${t}</a>`).join("")}</nav></div></div>`;
 }
+/* shown in place of a form once a request is sent: the customer stays on the page */
+const donePanel = `<div class="done" hidden role="status" aria-live="polite"><span class="done-ic">${I.check}</span><h3 class="done-t">Request received</h3>
+  <p class="done-s">We've told the agency. They'll confirm availability with you on WhatsApp or a call shortly.</p>
+  <div class="done-ref"><span>Your reference</span><b class="num" data-ref-out></b></div><div class="done-sum" data-sum-out></div>
+  <p class="fine">Nothing to pay now. You pay the agency directly at pickup.</p><button type="button" class="btn outline block" data-done-close>Done</button></div>`;
+const contactFields = (p) => `<div class="row2"><div><label for="${p}Name">Your name</label><input id="${p}Name" name="name" autocomplete="name" placeholder="Full name" required></div>
+    <div><label for="${p}Phone">WhatsApp number</label><input id="${p}Phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile" required></div></div>`;
 function askDialog(list) {
   const data = list.map(c => ({id: c.id, name: c.name, price: c.price, seats: c.m.seats, trans: c.trans, photo: c.photo, agency: c.a.id, agencyName: c.a.name, city: c.a.city}));
   return `<dialog id="ask" aria-labelledby="askT"><form class="sheet form" id="askF" method="dialog" novalidate>
   <button type="button" class="x" aria-label="Close" data-close>×</button>
-  <div><h2 id="askT">Check availability</h2><p class="sub">Sent to the agency through OPIIUS · reply on WhatsApp</p></div>
+  <div class="ask-in"><div><h2 id="askT">Check availability</h2><p class="sub">Sent to the agency through OPIIUS · they confirm with you</p></div>
   <div><label for="aCar">Car</label><select id="aCar">${groupsOf(list).map(x => `<optgroup label="${esc(x.g.t)}">${x.list.map(c => `<option value="${c.id}">${esc(c.name)} · ${inr(c.price)}/day${list.some(o => o.a.id !== c.a.id) ? " · " + esc(c.a.name) : ""}</option>`).join("")}</optgroup>`).join("")}</select></div>
   <div class="sel" id="aSel"></div>
   <div class="row2"><div><label for="aFrom">Pickup date</label><input type="date" id="aFrom" required></div><div><label for="aTo">Return date</label><input type="date" id="aTo" required></div></div>
   <div><label for="aWhere">Pickup</label><select id="aWhere"><option>At the agency</option><option>Guwahati Airport (LGBI)</option><option>Guwahati Railway Station</option><option>My hotel or home</option></select></div>
-  <div><label for="aName">Your name</label><input id="aName" autocomplete="name" placeholder="Full name" required></div>
+  ${contactFields("a")}
   <div class="est"><span id="aDays">Estimate</span><b class="num" id="aEst">—</b></div>
-  <p class="fine">Day price × days. The agency confirms the deposit, km limit and pickup point before you book. No booking fee.</p>
+  <p class="fine">Day price × days. The agency confirms the deposit, km limit and pickup point. No booking fee. Your number goes only to OPIIUS and this agency.</p>
   <p class="err" id="aErr" role="alert"></p>
-  <button type="submit" class="btn wa block">${I.wa}Send on WhatsApp</button>
+  <button type="submit" class="btn primary block" data-send>${I.check}<span>Send booking request</span></button></div>
+  ${donePanel}
 </form></dialog>
 <script type="application/json" id="fleet-data">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
 }
 function needOptions(selected) {
   return CATS.map(c => `<optgroup label="${esc(c.name)}">${c.subs.map(s => `<option value="${s.id}"${s.id === selected ? " selected" : ""}>${esc(s.name)}</option>`).join("")}</optgroup>`).join("") + `<option value="other">Something else</option>`;
 }
-function matchForm(selected, {title = "Tell us what you need", sub = "We'll find a suitable local agency on OPIIUS and reply on WhatsApp, usually the same day.", agency = null} = {}) {
-  return `<div class="panel"><h3>${esc(title)}</h3><p>${esc(sub)}</p>
+function matchForm(selected, {title = "Tell us what you need", sub = "We'll find a suitable local agency on OPIIUS and get back to you, usually the same day.", agency = null} = {}) {
+  return `<div class="panel mpanel"><div class="ask-in"><h3>${esc(title)}</h3><p>${esc(sub)}</p>
   <form class="form" data-match novalidate style="margin-top:18px">${agency ? `<input type="hidden" name="agency" value="${esc(agency.id)}"><input type="hidden" name="agencyName" value="${esc(agency.name)}">` : ""}
     <div class="row2"><div><label for="mNeed">What do you need?</label><select id="mNeed" name="need">${needOptions(selected)}</select></div>
       <div><label for="mCity">Pickup city</label><select id="mCity" name="city">${CITIES_ASK.map(c => `<option>${c}</option>`).join("")}</select></div></div>
     <div class="row2"><div><label for="mFrom">From <small>(optional)</small></label><input type="date" id="mFrom" name="from"></div><div><label for="mTo">To <small>(optional)</small></label><input type="date" id="mTo" name="to"></div></div>
     <div class="row2"><div><label for="mPeople">People <small>(optional)</small></label><input id="mPeople" name="people" inputmode="numeric" placeholder="e.g. 4 adults, 2 kids"></div><div><label for="mBudget">Budget <small>(optional)</small></label><input id="mBudget" name="budget" placeholder="e.g. ₹15,000"></div></div>
-    <div><label for="mName">Your name</label><input id="mName" name="name" autocomplete="name" placeholder="Full name" required></div>
+    ${contactFields("m")}
     <div><label for="mMsg">Anything else? <small>(optional)</small></label><textarea id="mMsg" name="msg" placeholder="Type of car, where you're driving to, pickup point…"></textarea></div>
     <p class="err" role="alert"></p>
-    <button type="submit" class="btn wa block">${I.wa}Send on WhatsApp</button>
-    <p class="fine">Your request opens WhatsApp with these details and a reference number. No booking fee.</p>
-  </form></div>`;
+    <button type="submit" class="btn primary block" data-send>${I.send}<span>Send request</span></button>
+    <p class="fine">We reply on WhatsApp or a call, with an OPIIUS reference. No booking fee.</p>
+  </form></div>${donePanel}</div>`;
 }
 function agencyBand(title, text) {
   return `<section class="sec tight"><div class="wrap"><div class="band rv"><div><span class="eyebrow">For agencies</span><h2>${title}</h2><p>${text}</p></div>
@@ -328,7 +337,7 @@ const verifyBand = (kind, noun) => `<section class="sec pine"><div class="wrap">
   <ul class="ticks" style="columns:2 280px;column-gap:40px;display:block">${CHECKS[kind].map(t => `<li style="break-inside:avoid;margin-bottom:12px">${I.check.replace("<svg", '<svg style="color:var(--gold)"')}<span>${esc(t)}</span></li>`).join("")}</ul>
   <p style="margin-top:22px;color:rgba(255,255,255,.75)">Featured placements are paid and always labelled. <b style="color:#fff">Verification is never sold.</b></p></div></section>`;
 const matchSection = (need, h, p) => `<section class="sec" id="match"><div class="wrap matchbox"><div><span class="eyebrow">Get matched</span><h2 style="font-size:clamp(26px,3.4vw,38px);font-weight:600;margin-top:8px">${h}</h2><p class="muted" style="margin-top:12px;max-width:44ch;font-size:16px">${p}</p>
-  <ul class="ticks"><li>${I.check}<span>One request instead of five chats</span></li><li>${I.check}<span>A reply on WhatsApp, with an OPIIUS reference</span></li><li>${I.check}<span>No booking fee</span></li></ul></div>${matchForm(need)}</div></section>`;
+  <ul class="ticks"><li>${I.check}<span>One request instead of five chats</span></li><li>${I.check}<span>A reply on WhatsApp or a call, with an OPIIUS reference</span></li><li>${I.check}<span>No booking fee</span></li></ul></div>${matchForm(need)}</div></section>`;
 const askTile = (s, tone = "") => `<a class="tile rv ${tone}" id="${s.id}" href="#match" data-need="${s.id}"><div><span class="ic">${I[s.icon]}</span><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p></div><div class="meta"><span>${s.meta || "Ask for this"}</span><span>${arrow()}</span></div></a>`;
 const GENERAL_FAQ = [
   ["Is OPIIUS a rental company?", "No. OPIIUS is a marketplace of local rental agencies. You deal with the agency directly and pay them, at their price."],
@@ -399,7 +408,7 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
     <div class="hscroll">${AGENCIES.map(agencyCard).join("")}${joinCard}</div></section>
 </div></section>
 ${brandStrip()}
-${howItWorks([["Pick a car", "Real photos, day price, deposit and km limit, from a local agency."], ["Check availability", "Send your dates and pickup point on WhatsApp, with an OPIIUS reference."], ["Pick up and drive", "The agency confirms. You pay them directly. No booking fee."]])}
+${howItWorks([["Pick a car", "Real photos, day price, deposit and km limit, from a local agency."], ["Send a request", "Pick your dates and pickup point here. The agency is told at once."], ["Get confirmed", "The agency confirms on WhatsApp or a call. You pay them at pickup. No booking fee."]])}
 ${askDialog(allCars)}`;
   write("index.html", layout({rel: "index.html", title: "OPIIUS · Rent a car in Assam from trusted local agencies",
     desc: `Self-drive cars and cars with driver in Assam from verified local rental agencies${allCars.length ? `, from ${inr(minP(allCars))}/day` : ""}. Real photos, clear prices, inquiries on WhatsApp.`,
@@ -444,9 +453,10 @@ function filterBar() {
   const towns = [...new Set(AGENCIES.map(a => a.city))].filter(t => O.PLACES[t]);
   return `<div class="afilter" role="search" aria-label="Find an agency">
   <div class="fsearch">${I.search}<input type="search" id="fq" placeholder="Search agencies, cars or towns" aria-label="Search agencies, cars or towns" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="fsugg"><ul class="sugg" id="fsugg" role="listbox" aria-label="Suggestions" hidden></ul></div>
-  <div class="fgroup"><label for="fmin">Price per day</label><div class="frange"><select id="fmin" aria-label="Lowest price per day"><option value="0">Any</option>${steps.slice(0, -1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select><span>to</span><select id="fmax" aria-label="Highest price per day"><option value="0">Any</option>${steps.slice(1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select></div></div>
+  <button type="button" class="chip ftog" id="ftog" aria-expanded="false" aria-controls="fmore">${I.sliders}Filters<span id="ftogN"></span></button>
+  <div class="fmore" id="fmore"><div class="fgroup"><label for="fmin">Price per day</label><div class="frange"><select id="fmin" aria-label="Lowest price per day"><option value="0">Any</option>${steps.slice(0, -1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select><span>to</span><select id="fmax" aria-label="Highest price per day"><option value="0">Any</option>${steps.slice(1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select></div></div>
   ${towns.length > 1 ? `<div class="fgroup"><label for="ftown">Town</label><select id="ftown"><option value="">All of Assam</option>${towns.map(t => `<option value="${t}">${esc(cityName(t))}</option>`).join("")}</select></div>` : ""}
-  <div class="fgroup"><label for="fppl">People going</label><select id="fppl"><option value="0">Any</option>${ppl.map(n => `<option value="${n}">${n} people</option>`).join("")}</select></div>
+  <div class="fgroup"><label for="fppl">People going</label><select id="fppl"><option value="0">Any</option>${ppl.map(n => `<option value="${n}">${n} people</option>`).join("")}</select></div></div>
   <button type="button" class="chip fnear" id="fnear" aria-pressed="false">${I.pin}Near me</button>
   <button type="button" class="chip fliked" id="fliked" aria-pressed="false">${I.heart}Liked<span id="flikedN">0</span></button>
 </div>
@@ -552,7 +562,7 @@ function suggestions() {
   const typeAgencies = s => s.id === "cars-with-driver" ? AGENCIES.filter(a => drv(a) || a.category === s.id)
     : AGENCIES.filter(a => s.kind ? CARS.some(c => c.a.id === a.id && c.m.kind === s.kind) : a.category === s.id);
   const faq = faqBlock([
-    ["How do I book a car?", "Open an agency, pick a car and tap “Check availability”. Choose your dates and send it on WhatsApp; the agency confirms before you pay them directly."],
+    ["How do I book a car?", "Open an agency, pick a car and tap “Check availability”. Choose your dates and send the request from the page; the agency confirms with you on WhatsApp or a call before you pay them directly."],
     ["What do I need to rent a self-drive car?", "Your original driving licence and a photo ID. Each agency's page lists exactly what it needs."],
     ["Is there a deposit and a km limit?", "Usually, yes. Each agency's page shows its deposit and km limit before you ask."],
     ["Can I take the car to Meghalaya or Arunachal?", "Check the “Out of state” line on the agency's page. Arunachal needs an Inner Line Permit."],
@@ -577,7 +587,7 @@ function suggestions() {
 ${stickyNav([...cat.subs.map(s => typeAgencies(s).length ? [s.id, s.name] : ["match", s.name, s.id]), ["how", "How it works"], ["faq", "FAQ"]])}
 <div class="wrap">${filterBar()}${sections}</div>
 ${brandStrip("Or select from brand", "See every car of a brand across agencies.")}
-${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Real photos, gearbox, model year and day price. Tap “Check availability”."], ["Confirm on WhatsApp", "The agency confirms the car and pickup. You pay them directly. No booking fee."]])}
+${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Real photos, gearbox, model year and day price. Tap “Check availability”."], ["Get confirmed", "The agency confirms the car and pickup with you. You pay them directly. No booking fee."]])}
 <div id="faq">${faq.html}</div>
 ${matchSection("cars-with-driver", "Need something else?", "Need a car with driver, or a car that isn't listed? Tell us the dates and where you're going, and we'll find a local agency.")}
 ${agencyBand("Run a rental agency?", "Showcase your cars to customers searching for rentals in Assam: a full profile, real photos, day prices and inquiries with dates. Basic listing is free.")}`;
@@ -594,7 +604,7 @@ for (const b of BRAND_LIST) {
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/rentals/">Rentals</a><span>/</span><span>${esc(b.name)}</span></nav>
   <div class="bhead"><span class="blogo">${brandLogo(b)}</span><div><span class="eyebrow">${plural(list.length, "car")} · from ${inr(minP(list))}/day</span>
   <h1>${esc(b.name)} cars for rent in Assam</h1></div></div>
-  <p class="lede">Every ${esc(b.name)} on OPIIUS, from verified local agencies. Tap a car to check availability on WhatsApp.</p>
+  <p class="lede">Every ${esc(b.name)} on OPIIUS, from verified local agencies. Tap a car to check availability.</p>
 </div></section>
 <div class="wrap">${fleetBlocks(list, {showAgency: true})}</div>
 ${brandStrip("Other brands", "See every car of a brand across agencies.")}
@@ -625,7 +635,7 @@ for (const kind of ["car", "bike"]) for (const city of liveCities(kind)) {
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/rentals/">Rentals</a><span>/</span><span>${esc(sub.name)} in ${esc(cn)}</span></nav>
   <span class="eyebrow">${plural(list.length, kind === "car" ? "car" : "bike")} · ${plural(ags.length, "agency", "agencies")} · from ${inr(minP(list))}/day</span>
   <h1>${esc(sub.name)} in ${esc(cn)}</h1>
-  <p class="lede">${kind === "car" ? "City hatchbacks, compact SUVs and 7-seaters from local agencies. Every car shows a real photo or its model, the day price and the agency behind it. Pick one and check availability on WhatsApp." : "Scooters and motorcycles from local agencies, with day prices upfront."}</p>
+  <p class="lede">${kind === "car" ? "City hatchbacks, compact SUVs and 7-seaters from local agencies. Every car shows a real photo or its model, the day price and the agency behind it. Pick one and send a booking request." : "Scooters and motorcycles from local agencies, with day prices upfront."}</p>
   <div class="ctas"><button type="button" class="btn primary" data-ask="">Check availability</button><a class="btn outline" href="#guide">Before you rent</a></div>
 </div></section>
 ${chipsNav(list, [["guide", "Before you rent"]])}
@@ -667,7 +677,7 @@ for (const a of AGENCIES) {
       ${d.allowance ? `<div><span>Driver allowance</span><span>${esc(d.allowance)}</span></div>` : ""}
       ${d.areas ? `<div><span>Goes to</span><span>${esc(d.areas)}</span></div>` : ""}
       ${d.note ? `<div><span>Note</span><span>${esc(d.note)}</span></div>` : ""}</div></div>
-  ${matchForm("cars-with-driver", {title: `Ask ${a.name} for a car with driver`, sub: `Share your dates and route. ${a.name} replies on WhatsApp, through OPIIUS.`, agency: a})}
+  ${matchForm("cars-with-driver", {title: `Ask ${a.name} for a car with driver`, sub: `Share your dates and route. ${a.name} gets back to you, through OPIIUS.`, agency: a})}
 </div></section>` : "";
   const body = `
 <section class="hero"><div class="bg" style="background-image:url(/assets/opiius/img/hero.jpg);background-position:50% 60%" aria-hidden="true"></div>
@@ -701,7 +711,7 @@ ${list.length ? `<section class="sec mist" id="info" style="margin-top:72px"><di
 </div></section>
 <section class="sec"><div class="wrap" style="text-align:center;max-width:720px">
   <h2 style="font-size:clamp(28px,4.4vw,44px);font-weight:600">Know your dates? Check a car now.</h2>
-  <p class="muted" style="margin-top:12px;font-size:16px">Tell us the car, the dates and where you'd like to pick it up. ${esc(a.name)} replies on WhatsApp.</p>
+  <p class="muted" style="margin-top:12px;font-size:16px">Tell us the car, the dates and where you'd like to pick it up. ${esc(a.name)} confirms with you.</p>
   <div class="ctas" style="justify-content:center"><button type="button" class="btn dark" data-ask="">Check availability</button></div>
 </div></section>
 ${askDialog(list)}` : `<section class="sec mist" id="info"><div class="wrap" style="max-width:720px">${verifyPanel}</div></section>`}`;
@@ -832,7 +842,7 @@ write("about/index.html", layout({rel: "about/index.html", app: {back: "/", titl
 </div></section>`}));
 
 /* ---------- get matched: a chat-style screen ----------
-   Pastel cards and prompt chips fill the message box; send opens WhatsApp with the message and an OPIIUS reference.
+   Pastel cards and prompt chips fill the message box; send records the request (with the customer's contact) and notifies OPIIUS.
    The full request form (dates, people, budget) stays one tap away. */
 (function getMatched() {
   const card = (cls, ic, need, b, sm, text) => `<button type="button" class="pt ${cls}" data-prompt="${esc(text)}" data-pneed="${need}"><span class="pt-ic">${I[ic]}</span><span class="pt-go">${I.ne}</span><b>${b}</b><small>${sm}</small></button>`;
@@ -852,7 +862,7 @@ write("about/index.html", layout({rel: "about/index.html", app: {back: "/", titl
   <div class="pchips st">${prompts.map(([e, t, x]) => `<button type="button" class="pchip" data-prompt="${esc(x)}"><span aria-hidden="true">${e}</span>${esc(t)}</button>`).join("")}</div>
   <form class="askbar st" data-askbar autocomplete="off"><button type="button" class="plus" data-more aria-label="Add dates and details">${I.plus}</button>
     <input name="q" placeholder="Ask for any car, date or trip…" aria-label="Your request" enterkeyhint="send"><button type="submit" class="send" aria-label="Send on WhatsApp">${I.send}</button></form>
-  <p class="askbar-note">Sends on WhatsApp with an OPIIUS reference. No booking fee.</p>
+  <p class="askbar-note">We reply on WhatsApp or a call, with an OPIIUS reference. No booking fee.</p>
   <details class="more" id="details"><summary>${I.plus}Add dates, people and budget</summary>${matchForm("self-drive-cars", {title: "Your request"})}</details>
 </div></section>`;
   write("get-matched/index.html", layout({rel: "get-matched/index.html", app: {back: "/", title: "Ask OPIIUS"}, title: "Get matched with a trusted local agency · OPIIUS",
