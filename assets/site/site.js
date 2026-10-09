@@ -73,54 +73,37 @@
   var mb=$(".menu-btn"),mn=$(".mnav");
   if(mb&&mn){mb.addEventListener("click",function(){var o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o);document.body.style.overflow=o?"hidden":""})}
 
-  /* phone tab bar: the bar has a notch, and a circle carrying the active icon springs from tab to tab.
-     Tapping a tab plays the motion, then opens the page; the next page starts where the last one ended. */
+  /* phone tab bar: a soft pill springs to the active tab. Tapping a tab moves the pill, then opens the page;
+     the next page starts the pill where the last one ended (view transitions keep the bar in place). */
   var tbar=$(".tabbar");
   if(tbar){
-    var tabs=$$(".tb",tbar),ball=$(".tb-ball",tbar),svg=$(".tb-bg",tbar),path=$("path",svg),TK="op-tab";
+    var tabs=$$(".tb",tbar),pill=$(".tb-pill",tbar),TK="op-tab";
     var still=matchMedia("(prefers-reduced-motion: reduce)").matches;
     var tabKey=function(){var p=location.pathname.replace(/index\.html$/,""),h=location.hash;
       if(mn&&mn.classList.contains("open"))return "menu";
       if(p==="/")return "home";
-      if(p==="/get-matched/"&&/cars-with-driver/.test(location.search))return "driver";
-      if(p==="/rentals/")return h==="#cars-with-driver"?"driver":h==="#liked"?"liked":"rentals";
+      if(p==="/get-matched/")return "ask";
+      if(p==="/rentals/")return h==="#liked"?"liked":"rentals";
       if(/^\/(rentals|agency)\//.test(p))return "rentals";
       return ""};
     var idx=function(k){for(var i=0;i<tabs.length;i++)if(tabs[i].dataset.tab===k)return i;return -1};
-    var W=0,H=0,cx=0,v=0,tx=0,dep=0,dT=0,raf=0,last=0,D=30;
-    var centre=function(i){var r=tabs[i].getBoundingClientRect(),b=tbar.getBoundingClientRect();return r.left-b.left+r.width/2};
-    var draw=function(){
-      var r=30,s0=cx-r*1.7,e0=cx+r*1.7,f=function(n){return Math.round(n*10)/10};
-      /* the bar runs past both screen edges so the notch can sit over the first or last tab */
-      path.setAttribute("d","M-90 0H"+f(s0)+"C"+f(s0+r*.75)+" 0 "+f(cx-r*1.05)+" "+f(dep)+" "+f(cx)+" "+f(dep)+"C"+f(cx+r*1.05)+" "+f(dep)+" "+f(e0-r*.75)+" 0 "+f(e0)+" 0H"+(W+90)+"V"+H+"H-90Z");
-      var sq=Math.min(.2,Math.abs(v)/4000),k=dep/D;
-      ball.style.transform="translate("+f(cx-26)+"px,"+f(-26+(1-k)*44)+"px) scale("+(1+sq).toFixed(3)+","+(1-sq).toFixed(3)+")";
-      ball.style.opacity=k;
-    };
-    var step=function(t){
-      var dt=Math.min(.032,(t-last)/1000||.016);last=t;
-      var a=-260*(cx-tx)-21*v;v+=a*dt;cx+=v*dt;dep+=(dT-dep)*Math.min(1,dt*14);
-      draw();
-      if(Math.abs(cx-tx)>.3||Math.abs(v)>3||Math.abs(dep-dT)>.3)raf=requestAnimationFrame(step);
-      else{cx=tx;v=0;dep=dT;draw();raf=0}
-    };
-    var setTab=function(i,anim){
+    var movePill=function(i,anim){
       tabs.forEach(function(t,j){t.classList.toggle("on",j===i);if(t.tagName==="A"){if(j===i)t.setAttribute("aria-current","page");else t.removeAttribute("aria-current")}});
-      if(i>-1)tx=centre(i);dT=i>-1?D:0;
-      if(!anim||still){tbar.classList.add("still");cx=tx;v=0;dep=dT;draw();void tbar.offsetWidth;requestAnimationFrame(function(){requestAnimationFrame(function(){tbar.classList.remove("still")})});return}
-      if(!raf){last=performance.now();raf=requestAnimationFrame(step)}
+      var mid=i>-1&&tabs[i].classList.contains("mid");
+      if(!anim||still){tbar.classList.add("still");requestAnimationFrame(function(){requestAnimationFrame(function(){tbar.classList.remove("still")})})}
+      if(i<0||mid){pill.style.opacity=0;return}
+      var r=tabs[i].getBoundingClientRect(),b=tbar.getBoundingClientRect();
+      pill.style.opacity=1;pill.style.transform="translateX("+(r.left-b.left+r.width/2-24).toFixed(1)+"px)";
     };
-    var size=function(){W=tbar.clientWidth;H=tbar.clientHeight;svg.setAttribute("viewBox","0 0 "+W+" "+H)};
     var save=function(k){try{sessionStorage.setItem(TK,k)}catch(e){}};
-    size();
     var prev="";try{prev=sessionStorage.getItem(TK)||""}catch(e){}
     var now=tabKey();
-    if(prev&&prev!==now&&idx(prev)>-1&&idx(prev)<4){setTab(idx(prev),false);requestAnimationFrame(function(){setTab(idx(now),true)})}
-    else setTab(idx(now),false);
+    if(prev&&prev!==now&&idx(prev)>-1){movePill(idx(prev),false);requestAnimationFrame(function(){requestAnimationFrame(function(){movePill(idx(now),true)})})}
+    else movePill(idx(now),false);
     save(now);
-    addEventListener("resize",function(){size();var i=idx(tabKey());if(i>-1)tx=centre(i);cx=tx;draw()});
-    addEventListener("hashchange",function(){setTab(idx(tabKey()),true)});
-    if(mn&&window.MutationObserver)new MutationObserver(function(){var o=mn.classList.contains("open");tabs[4].setAttribute("aria-expanded",o);setTab(idx(tabKey()),true)}).observe(mn,{attributes:true,attributeFilter:["class"]});
+    addEventListener("resize",function(){movePill(idx(tabKey()),false)});
+    addEventListener("hashchange",function(){movePill(idx(tabKey()),true)});
+    if(mn&&window.MutationObserver)new MutationObserver(function(){var o=mn.classList.contains("open"),m=tabs[idx("menu")];if(m)m.setAttribute("aria-expanded",o);movePill(idx(tabKey()),true)}).observe(mn,{attributes:true,attributeFilter:["class"]});
     tbar.addEventListener("click",function(e){
       var t=e.target.closest(".tb");if(!t)return;
       var k=t.dataset.tab;
@@ -128,19 +111,74 @@
       if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
       if(mn&&mn.classList.contains("open")&&mb)mb.click();
       var u=new URL(t.href,location.href);e.preventDefault();
-      setTab(tabs.indexOf(t),true);save(k);
+      movePill(tabs.indexOf(t),true);save(k);
       if(u.pathname.replace(/index\.html$/,"")===location.pathname.replace(/index\.html$/,"")){
         if(u.hash){if(location.hash!==u.hash)history.pushState(null,"",u.hash);dispatchEvent(new Event("op:hash"));var el=document.getElementById(u.hash.slice(1));if(el&&u.hash!=="#liked")el.scrollIntoView({behavior:still?"auto":"smooth"})}
         else{if(location.hash)history.pushState(null,"",u.pathname);dispatchEvent(new Event("op:hash"));scrollTo({top:0,behavior:still?"auto":"smooth"})}
-        return}
-      setTimeout(function(){location.href=t.href},still?0:340);
+        movePill(idx(tabKey()),true);return}
+      setTimeout(function(){location.href=t.href},still?0:170);
     });
-    addEventListener("pageshow",function(e){if(e.persisted){var i=idx(tabKey());setTab(i,false);save(tabKey())}});
+    addEventListener("pageshow",function(e){if(e.persisted){movePill(idx(tabKey()),false);save(tabKey())}});
+  }
+
+  /* app bar: a soft shadow once the page scrolls; Back returns to the previous OPIIUS page when there is one */
+  var hdr=$(".hdr");
+  if(hdr){var onS=function(){hdr.classList.toggle("up",scrollY>4)};onS();addEventListener("scroll",onS,{passive:true})}
+  document.addEventListener("click",function(e){var b=e.target.closest("[data-back]");if(!b)return;
+    try{if(document.referrer&&new URL(document.referrer).origin===location.origin&&history.length>1){e.preventDefault();history.back()}}catch(err){}});
+
+  /* headlines reveal word by word; app blocks rise in a stagger; images fade in once loaded */
+  $$(".say").forEach(function(h){if(h.dataset.split)return;h.dataset.split=1;var n=0;
+    h.innerHTML=h.textContent.trim().split(/\s+/).map(function(w){return '<span class="w" style="--w:'+(n++)+'">'+esc(w)+"</span>"}).join(" ");h.setAttribute("aria-label",h.textContent)});
+  $$(".st").forEach(function(el,i){el.style.setProperty("--i",i)});
+  var ld=function(im){if(im.complete&&im.naturalWidth)im.classList.add("ld");else{im.addEventListener("load",function(){im.classList.add("ld")});im.addEventListener("error",function(){im.classList.add("ld")})}};
+  $$(".ph img,.li-th img,.hc-th img").forEach(ld);
+
+  /* swipe button on the home card: drag the knob to the end (or tap the card) to open the agencies */
+  $$("[data-swipe]").forEach(function(sw){
+    var card=sw.closest("a"),knob=$(".knob",sw),x0=0,dx=0,max=0,on=false,moved=false;
+    var down=function(e){if(e.button>0)return;on=true;moved=false;x0=e.clientX;dx=0;max=sw.clientWidth-knob.offsetWidth-12;sw.classList.add("drag");try{sw.setPointerCapture(e.pointerId)}catch(err){}};
+    sw.addEventListener("pointerdown",down);
+    sw.addEventListener("pointermove",function(e){if(!on)return;dx=Math.max(0,Math.min(max,e.clientX-x0));if(dx>6)moved=true;knob.style.transform="translateX("+dx+"px)"});
+    var up=function(){if(!on)return;on=false;sw.classList.remove("drag");
+      if(dx>max*.6){knob.style.transform="translateX("+max+"px)";setTimeout(function(){location.href=card.href},160)}else knob.style.transform=""};
+    sw.addEventListener("pointerup",up);sw.addEventListener("pointercancel",up);
+    card.addEventListener("click",function(e){if(moved||e.target.closest("[data-swipe]")&&dx>0){e.preventDefault();moved=false}});
+    card.addEventListener("dragstart",function(e){e.preventDefault()});
+  });
+
+  /* Ask OPIIUS (chat screen): cards and prompt chips fill the box; send opens WhatsApp with a reference */
+  var ab=$("form[data-askbar]");
+  if(ab){
+    var aq=ab.querySelector("[name=q]"),det=$("#details"),mform=$("form[data-match]");
+    var qp=new URLSearchParams(location.search).get("q");
+    var starters={airport:"I need a pickup from Guwahati Airport.",shillong:"I need a car with driver for a Shillong day trip."};
+    if(qp)aq.value=starters[qp]||qp;
+    document.addEventListener("click",function(e){var b=e.target.closest("[data-prompt]");if(!b)return;
+      aq.value=b.dataset.prompt;aq.focus();try{aq.setSelectionRange(aq.value.length,aq.value.length)}catch(err){}
+      if(b.dataset.pneed&&mform){var nd=mform.querySelector("[name=need]");if(nd)nd.value=b.dataset.pneed}
+      ab.animate&&ab.animate([{transform:"scale(1)"},{transform:"scale(1.03)"},{transform:"scale(1)"}],{duration:380,easing:"cubic-bezier(.22,1.2,.36,1)"})});
+    var more=ab.querySelector("[data-more]");
+    if(more&&det)more.addEventListener("click",function(){det.open=true;var m=mform&&mform.querySelector("[name=msg]");if(m&&aq.value&&!m.value)m.value=aq.value;det.scrollIntoView({behavior:"smooth",block:"start"})});
+    ab.addEventListener("submit",function(e){e.preventDefault();var t=aq.value.trim();if(!t){aq.focus();aq.placeholder="Type what you need, e.g. Swift for 3 days";return}
+      var r=ref();log({type:"request",ref:r,agency:"",agencyName:"Ask OPIIUS",vehicle:t.slice(0,120),city:"",from:"",to:""});
+      openWA(["Hi OPIIUS! "+t,"","Ref: "+r].join("\n"))});
+  }
+
+  /* installable app: offline support and an "Install" item in the menu */
+  if("serviceWorker" in navigator&&location.protocol==="https:")addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){})});
+  var inst=$("#install"),deferred=null,standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+  if(inst&&!standalone){
+    addEventListener("beforeinstallprompt",function(e){e.preventDefault();deferred=e;inst.hidden=false});
+    if(/iphone|ipad|ipod/i.test(navigator.userAgent)){inst.hidden=false}
+    inst.addEventListener("click",function(e){if(!e.target.closest("[data-install]"))return;
+      if(deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;inst.hidden=true})}else{var tp=$("#installTip");if(tp)tp.hidden=false}});
+    addEventListener("appinstalled",function(){inst.hidden=true});
   }
 
   /* reveal on scroll */
   if("IntersectionObserver" in window){
-    var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");ro.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});
+    var ro=new IntersectionObserver(function(es){var k=0;es.forEach(function(e){if(e.isIntersecting){e.target.style.setProperty("--d",Math.min(k++,6)*0.07+"s");e.target.classList.add("in");ro.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});
     $$(".rv").forEach(function(el){ro.observe(el)});
   }else $$(".rv").forEach(function(el){el.classList.add("in")});
 
@@ -237,13 +275,13 @@
   /* rentals: search agencies, price per day, people going, liked only */
   var fq=$("#fq");
   if(fq){
-    var fmin=$("#fmin"),fmax=$("#fmax"),fppl=$("#fppl"),fl=$("#fliked"),fc=$("#fcount"),ftown=$("#ftown"),fnear=$("#fnear"),me=null,place=null,ref=null;
+    var fmin=$("#fmin"),fmax=$("#fmax"),fppl=$("#fppl"),fl=$("#fliked"),fc=$("#fcount"),ftown=$("#ftown"),fnear=$("#fnear"),me=null,place=null;
     var rows=$$(".arow-w").map(function(w,i){var c=[];try{c=JSON.parse(w.dataset.cars)}catch(e){}var ll=(w.dataset.ll||"").split(",").map(Number);
       return {w:w,i:i,q:w.dataset.q||"",c:c,town:w.dataset.town||"",ll:ll.length===2&&!isNaN(ll[0])?ll:null,id:(w.querySelector("[data-like]")||{dataset:{}}).dataset.like,fit:w.querySelector(".fit")}});
     /* Near me: distance on a sphere, km; the location never leaves the phone */
     var km=function(a,b){var R=6371,r=Math.PI/180,dl=(b[0]-a[0])*r,dn=(b[1]-a[1])*r,x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dn/2)*Math.sin(dn/2);return 2*R*Math.asin(Math.sqrt(x))};
     var order=function(){
-      var pt=place?place.ll:me;ref=pt;
+      var pt=place?place.ll:me;
       rows.forEach(function(r){r.d=pt&&r.ll?km(pt,r.ll):null;var loc=r.w.querySelector(".loc"),s=loc&&loc.querySelector(".dist");
         if(loc&&!s){s=document.createElement("span");s.className="dist";loc.appendChild(s)}
         if(s){s.hidden=r.d==null;s.textContent=r.d==null?"":(r.d<1.5?"under 2 km away":"about "+(r.d<20?Math.round(r.d):Math.round(r.d/5)*5)+" km away")}});
@@ -329,7 +367,12 @@
       sbox.addEventListener("click",function(e){var li=e.target.closest("[data-i]");if(li)pick(+li.dataset.i)});
       document.addEventListener("click",function(e){if(!e.target.closest(".fsearch"))closeS()});
     }
+    /* links like /rentals/?q=swift, ?max=2000, ?ppl=7 or ?town=barama open with the filter set */
+    var qs=new URLSearchParams(location.search),opt=function(el,v){if(el&&v&&[].some.call(el.options,function(o){return o.value===v}))el.value=v};
+    if(qs.get("q"))fq.value=qs.get("q");opt(fppl,qs.get("ppl"));opt(ftown,qs.get("town"));
+    if(qs.get("max")){var mx=+qs.get("max"),best="0";[].forEach.call(fmax.options,function(o){if(+o.value&&+o.value<=mx)best=o.value});fmax.value=best}
     run();if(location.hash==="#liked")byHash();
+    if(qs.toString())setTimeout(function(){fc.scrollIntoView({block:"center",behavior:"smooth"})},300);
     if(location.hash==="#near"&&fnear){fnear.scrollIntoView({block:"center"});fnear.click()}
   }
 
