@@ -15,15 +15,15 @@ window.OPIIUS_PARTNERS = [
       cancel: "50% refund if cancelled at least 24 hours before pickup. No cancellation after the car is handed over",
       docs: "Original driving licence, a government photo ID and the renter's profile"},
     vehicles: [
-      {model: "nios", price: 1900, units: 1, year: 2022},
-      {model: "baleno", price: 2000, units: 3, year: 2025},
-      {model: "fronx", price: 2300, units: 1, year: 2026},
-      {brand: "Maruti Suzuki", name: "Ertiga", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 3000, units: 1, year: 2025},
-      {model: "carens", price: 4000, units: 1, year: 2025},
-      {brand: "Toyota", name: "Innova Crysta", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 4000, units: 1, year: 2023}
+      {model: "nios", price: 1900, units: 1, year: 2022, sample: true, photos: ["assets/samples/grand-i10-nios.jpg"]},
+      {model: "baleno", price: 2000, units: 3, year: 2025, sample: true, photos: ["assets/partners/saraighat-travels/baleno-sample.jpg"]},
+      {model: "fronx", price: 2300, units: 1, year: 2026, sample: true, photos: ["assets/samples/fronx.jpg"]},
+      {brand: "Maruti Suzuki", name: "Ertiga", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 3000, units: 1, year: 2025, sample: true, photos: ["assets/partners/car-rental-barama/ertiga-sample.jpg"]},
+      {model: "carens", price: 4000, units: 1, year: 2025, sample: true, photos: ["assets/samples/carens.jpg"]},
+      {brand: "Toyota", name: "Innova Crysta", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 4000, units: 1, year: 2023, sample: true, photos: ["assets/samples/innova-crysta.jpg"]}
     ]
   },
-  /* Car Rental Barama: from the agency's poster (Oct 2026). Address from the owner: Barama, Nalbari, Assam 781346. Day rates as printed.
+  /* Car Rental Barama: from the agency's poster (Oct 2026). Address from the owner: Barama, Nalbari, Assam 781346. Day rates as printed; Thar 4x4 changed to 3,800 and an Alto at 1,500 added by the owner (Oct 2026).
      The poster also offers cars with driver, local and outstation trips and flexible rental periods, but gives no driver rates.
      Owner phone numbers are on the poster but never shown on the site. Km limit (280/day, ₹8.5 per extra km) from the owner, Oct 2026. No security deposit (owner, Oct 2026). Documents: driving licence, Aadhaar, PAN (owner, Oct 2026). Still to come: model years, own photos.
      The poster's car pictures are stock images. The agency then sent AI-made pictures of each model (Oct 2026), not photos of
@@ -35,19 +35,21 @@ window.OPIIUS_PARTNERS = [
     policies: {deposit: "No security deposit", docs: "Original driving licence, Aadhaar card and PAN card", km: "280 km per day, ₹8.5 per extra km"},
     cover: "assets/partners/car-rental-barama/logo-card.jpg", coverAlt: "Car Rental Barama logo", coverPos: "50% 50%",
     vehicles: [
+      {brand: "Maruti Suzuki", name: "Alto", type: "Hatchback", trans: "Manual", fuel: "Petrol", seats: 5, price: 1500, sample: true, photos: ["assets/samples/alto-800.jpg"]},
       {model: "swift", price: 2100, sample: true, photos: ["assets/partners/car-rental-barama/swift-sample.jpg"]},
       {model: "dzire", price: 2100, sample: true, photos: ["assets/partners/car-rental-barama/dzire-sample.jpg"]},
       {model: "i20", price: 2200, sample: true, photos: ["assets/partners/car-rental-barama/i20-sample.jpg"]},
       {brand: "Hyundai", name: "Verna", type: "Sedan", trans: "Manual", fuel: "Petrol", seats: 5, price: 3100, sample: true, photos: ["assets/partners/car-rental-barama/verna-sample.jpg"]},
       {brand: "Maruti Suzuki", name: "Ertiga", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 3500, sample: true, photos: ["assets/partners/car-rental-barama/ertiga-sample.jpg"]},
-      {model: "thar", price: 4000, sample: true, photos: ["assets/partners/car-rental-barama/thar-sample.jpg"]},
+      {model: "thar", price: 3800, sample: true, photos: ["assets/partners/car-rental-barama/thar-sample.jpg"]},
       {brand: "Mahindra", name: "Thar Roxx", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 5, price: 4100, sample: true, photos: ["assets/partners/car-rental-barama/thar-roxx-sample.jpg"]},
       {brand: "Mahindra", name: "Scorpio-N", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 4200, sample: true, photos: ["assets/partners/car-rental-barama/scorpio-n-sample.jpg"]}
     ]
   },
   /* Guwahati Rides: from the agency's rate card (Oct 2026). Day rates as printed; the card says rates may vary with rental length and availability.
      Not on the card, so shown as "confirmed by the agency" until they tell us: area, deposit, km limit, documents, model years.
-     The card's vehicle pictures are stock images, not their own cars, so no vehicle photos yet. */
+     The card's vehicle pictures are stock images, not their own cars. Oct 2026: models that already had a labelled sample picture
+     on the site (from Barama's AI pictures, Saraighat's samples or a studio shot) reuse it with sample: true; the rest stay as name tiles. */
   {
     id: "guwahati-rides", name: "Guwahati Rides", city: "guwahati", area: "", since: 2026,
     pickups: ["Guwahati (pickup point shared on confirmation)"], delivery: false, verified: false,
@@ -57,37 +59,37 @@ window.OPIIUS_PARTNERS = [
     trims: {innova: "Innova", scorpio: "Scorpio Classic", himalayan: "Himalayan 450"},
     vehicles: [
       {brand: "Maruti Suzuki", name: "Alto K10", type: "Hatchback", trans: "Manual", fuel: "Petrol", seats: 5, price: 1299},
-      {brand: "Maruti Suzuki", name: "S-Presso", type: "Hatchback", trans: "Manual", fuel: "Petrol", seats: 5, price: 1599},
-      {model: "swift", price: 1799},
-      {model: "baleno", price: 1999},
-      {model: "fronx", price: 2199},
-      {model: "brezza", price: 2499},
-      {brand: "Maruti Suzuki", name: "Ertiga", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 2899},
-      {model: "xl6", price: 2999},
-      {model: "nios", price: 1799},
-      {model: "i20", price: 1999},
-      {brand: "Hyundai", name: "Venue", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2399},
-      {brand: "Hyundai", name: "Creta", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2899},
-      {brand: "Tata", name: "Tiago", type: "Hatchback", trans: "Manual", fuel: "Petrol", seats: 5, price: 1599},
-      {model: "punch", price: 1899},
-      {brand: "Tata", name: "Nexon", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2399},
-      {brand: "Tata", name: "Safari", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 3899},
-      {brand: "Mahindra", name: "Bolero", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 2799},
-      {brand: "Mahindra", name: "Thar RWD", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 4, price: 3499},
-      {model: "thar", price: 3999},
-      {model: "scorpio", price: 2999},
-      {brand: "Mahindra", name: "Scorpio-N", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 3999},
-      {model: "xuv700", price: 3999},
-      {model: "innova", price: 4499},
-      {brand: "Kia", name: "Sonet", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2899},
-      {brand: "Kia", name: "Seltos", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2999},
-      {brand: "TVS", name: "Ntorq 125", type: "Scooter", trans: "Automatic", fuel: "Petrol", seats: 2, price: 799},
-      {brand: "Bajaj", name: "Pulsar 150", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 799},
-      {brand: "Royal Enfield", name: "Hunter 350", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 1299},
-      {model: "classic", price: 1299},
-      {brand: "Hero", name: "XPulse", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 1299},
-      {brand: "Royal Enfield", name: "Himalayan 411", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 1399},
-      {model: "himalayan", price: 1999}
+      {brand: "Maruti Suzuki", name: "S-Presso", type: "Hatchback", trans: "Manual", fuel: "Petrol", seats: 5, price: 1599, sample: true, photos: ["assets/samples/s-presso.jpg"]},
+      {model: "swift", price: 1799, sample: true, photos: ["assets/partners/car-rental-barama/swift-sample.jpg"]},
+      {model: "baleno", price: 1999, sample: true, photos: ["assets/partners/saraighat-travels/baleno-sample.jpg"]},
+      {model: "fronx", price: 2199, sample: true, photos: ["assets/samples/fronx.jpg"]},
+      {model: "brezza", price: 2499, sample: true, photos: ["assets/partners/saraighat-travels/brezza-sample.jpg"]},
+      {brand: "Maruti Suzuki", name: "Ertiga", type: "MUV", trans: "Manual", fuel: "Petrol", seats: 7, price: 2899, sample: true, photos: ["assets/partners/car-rental-barama/ertiga-sample.jpg"]},
+      {model: "xl6", price: 2999, sample: true, photos: ["assets/samples/xl6.jpg"]},
+      {model: "nios", price: 1799, sample: true, photos: ["assets/samples/grand-i10-nios.jpg"]},
+      {model: "i20", price: 1999, sample: true, photos: ["assets/partners/car-rental-barama/i20-sample.jpg"]},
+      {brand: "Hyundai", name: "Venue", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2399, sample: true, photos: ["assets/samples/venue.jpg"]},
+      {brand: "Hyundai", name: "Creta", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2899, sample: true, photos: ["assets/samples/creta.jpg"]},
+      {brand: "Tata", name: "Tiago", type: "Hatchback", trans: "Manual", fuel: "Petrol", seats: 5, price: 1599, sample: true, photos: ["assets/samples/tiago.jpg"]},
+      {model: "punch", price: 1899, sample: true, photos: ["assets/samples/punch.jpg"]},
+      {brand: "Tata", name: "Nexon", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2399, sample: true, photos: ["assets/samples/nexon.jpg"]},
+      {brand: "Tata", name: "Safari", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 3899, sample: true, photos: ["assets/samples/safari.jpg"]},
+      {brand: "Mahindra", name: "Bolero", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 2799, sample: true, photos: ["assets/samples/bolero.jpg"]},
+      {brand: "Mahindra", name: "Thar RWD", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 4, price: 3499, sample: true, photos: ["assets/partners/car-rental-barama/thar-sample.jpg"]},
+      {model: "thar", price: 3999, sample: true, photos: ["assets/partners/car-rental-barama/thar-sample.jpg"]},
+      {model: "scorpio", price: 2999, sample: true, photos: ["assets/samples/scorpio-classic.jpg"]},
+      {brand: "Mahindra", name: "Scorpio-N", type: "SUV", trans: "Manual", fuel: "Diesel", seats: 7, price: 3999, sample: true, photos: ["assets/partners/car-rental-barama/scorpio-n-sample.jpg"]},
+      {model: "xuv700", price: 3999, sample: true, photos: ["assets/samples/xuv700.jpg"]},
+      {model: "innova", price: 4499, sample: true, photos: ["assets/samples/innova.jpg"]},
+      {brand: "Kia", name: "Sonet", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2899, sample: true, photos: ["assets/samples/sonet.jpg"]},
+      {brand: "Kia", name: "Seltos", type: "SUV", trans: "Manual", fuel: "Petrol", seats: 5, price: 2999, sample: true, photos: ["assets/samples/seltos.jpg"]},
+      {brand: "TVS", name: "Ntorq 125", type: "Scooter", trans: "Automatic", fuel: "Petrol", seats: 2, price: 799, sample: true, photos: ["assets/samples/ntorq-125.jpg"]},
+      {brand: "Bajaj", name: "Pulsar 150", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 799, sample: true, photos: ["assets/samples/pulsar-150.jpg"]},
+      {brand: "Royal Enfield", name: "Hunter 350", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 1299, sample: true, photos: ["assets/samples/hunter-350.jpg"]},
+      {model: "classic", price: 1299, sample: true, photos: ["assets/samples/classic.jpg"]},
+      {brand: "Hero", name: "XPulse", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 1299, sample: true, photos: ["assets/samples/xpulse-200.jpg"]},
+      {brand: "Royal Enfield", name: "Himalayan 411", type: "Motorcycle", trans: "Manual", fuel: "Petrol", seats: 2, price: 1399, sample: true, photos: ["assets/samples/himalayan-411.jpg"]},
+      {model: "himalayan", price: 1999, sample: true, photos: ["assets/samples/himalayan-450.jpg"]}
     ]
   },
   /* Saraighat Travels: from the owner's onboarding block (Oct 2026). Owner phone numbers removed from "about" (never shown on the site).
