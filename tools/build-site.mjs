@@ -67,6 +67,14 @@ const I = {
   flag: P('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'),
   bolt: P('<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>'),
   compass: P('<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>'),
+  back: P('<path d="M19 12H5M11 6l-6 6 6 6"/>'),
+  send: P('<path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z"/>'),
+  plus: P('<path d="M12 5v14M5 12h14"/>'),
+  ne: P('<path d="M7 17 17 7M8 7h9v9"/>'),
+  clock: P('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
+  chev: P('<path d="m9 6 6 6-6 6"/>'),
+  download: P('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>'),
+  sliders: P('<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>'),
   wa: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.3.3c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 2 1.1.9 2 1.2 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.2 1.4z"/></svg>'
 };
 const WORDMARK = fs.readFileSync(path.join(ROOT, "assets/site/logo/opiius-wordmark.svg"), "utf8").replace("<svg ", '<svg class="wm" aria-hidden="true" focusable="false" ');
@@ -131,25 +139,30 @@ const initials = n => n.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).
 
 /* ---------- layout ---------- */
 const NAV = [["rentals/", "Rentals", "rentals"], [driverUrl.slice(1), "Cars with driver", "driver"], ["verification/", "How we verify", "verification"], ["about/", "About", "about"]];
-function header(active) {
+function header(active, app = {}) {
+  const mi = (h, ic, t, sm) => `<a href="${h}"><span class="ic">${I[ic]}</span><span>${t}${sm ? `<small>${sm}</small>` : ""}</span></a>`;
   return `<a class="skip" href="#main">Skip to content</a>
-<header class="hdr"><div class="wrap">
+<header class="hdr${app.back ? " sub" : ""}"><div class="wrap">
+  ${app.back ? `<a class="ab-back" href="${app.back}" data-back aria-label="Back">${I.back}</a><span class="ab-title">${esc(app.title || "")}</span>` : ""}
   <a class="logo" href="/" aria-label="OPIIUS home">${LOGO}</a>
   <nav class="nav" aria-label="Main">${NAV.map(([h, t, k]) => `<a href="/${h}"${active === k ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
   <div class="cta"><a class="btn outline sm hide-m" href="/for-agencies/"${active === "agencies" ? ' aria-current="page"' : ""}>For agencies</a>
+    <a class="ab-ic ab-saved" href="/rentals/#liked" aria-label="Saved agencies">${I.heart}</a>
     <button type="button" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="mnav">${I.menu}</button></div>
 </div></header>
 <nav class="mnav" id="mnav" aria-label="Mobile">
-  <a href="/rentals/">Rentals<small>Choose a local agency</small></a><a href="${selfDriveUrl}">Self-drive cars<small>Choose an agency</small></a><a href="${driverUrl}">Cars with driver<small>${DRV.length ? "Choose an agency" : "Tell us your dates"}</small></a>
-  <a href="/verification/">How we verify</a><a href="/about/">About</a>
+  <div class="mgrp">${mi("/rentals/", "car", "Rentals", "Choose a local agency")}${mi(selfDriveUrl, "compass", "Self-drive cars", "Drive it yourself")}${mi(driverUrl, "users", "Cars with driver", DRV.length ? "With a local driver" : "Tell us your dates")}${mi("/get-matched/", "chat", "Ask OPIIUS", "We find the agency for you")}</div>
+  <div class="mgrp">${mi("/agency/", "home", "All agencies")}${mi("/verification/", "shield", "How we verify")}${mi("/about/", "users", "About OPIIUS")}${mi(waLink("Hi OPIIUS"), "wa", "WhatsApp us", esc(PHONE))}</div>
+  <div class="mgrp" id="install" hidden><button type="button" class="mi" data-install><span class="ic">${I.download}</span><span>Install the OPIIUS app<small>Opens full screen from your home screen</small></span></button><p class="tip" id="installTip" hidden>On iPhone: tap the Share button, then “Add to Home Screen”.</p></div>
   <a class="btn primary" href="/for-agencies/">For agencies: list your cars</a>
 </nav>`;
 }
 /* phone tab bar: the active tab rises into a circle that springs between tabs (motion in site.js) */
+/* phone tab bar: Home, Rentals, a raised "Ask" button in the middle, Saved and Menu; a soft pill springs to the active tab */
 function tabbar() {
-  const t = [["/", "home", I.home, "Home"], ["/rentals/", "rentals", I.car, "Rentals"], [driverUrl, "driver", I.users, "With driver"], ["/rentals/#liked", "liked", I.heart, "Saved"]];
-  return `<nav class="tabbar" aria-label="Quick links"><svg class="tb-bg" aria-hidden="true" focusable="false"><path/></svg><span class="tb-ball" aria-hidden="true"></span>
-  ${t.map(([h, k, ic, l]) => `<a class="tb" href="${h}" data-tab="${k}">${ic}<span>${l}</span></a>`).join("")}<button type="button" class="tb" data-tab="menu" aria-controls="mnav" aria-expanded="false">${I.menu}<span>Menu</span></button></nav>`;
+  const tab = (h, k, ic, l) => `<a class="tb" href="${h}" data-tab="${k}">${ic}<span>${l}</span></a>`;
+  return `<nav class="tabbar" aria-label="Quick links"><span class="tb-pill" aria-hidden="true"></span>
+  ${tab("/", "home", I.home, "Home")}${tab("/rentals/", "rentals", I.search, "Rentals")}<a class="tb mid" href="/get-matched/" data-tab="ask"><span class="mid-c">${I.chat}</span><span>Ask</span></a>${tab("/rentals/#liked", "liked", I.heart, "Saved")}<button type="button" class="tb" data-tab="menu" aria-controls="mnav" aria-expanded="false">${I.menu}<span>Menu</span></button></nav>`;
 }
 function footer() {
   return `<footer class="ftr"><div class="wrap">
@@ -171,7 +184,7 @@ function footer() {
   <div class="base"><span>© ${YEAR} OPIIUS · Guwahati, Assam</span><span><b>Featured placements are paid and always labelled. Verification is never sold.</b></span></div>
 </div></footer>`;
 }
-function layout({rel, title, desc, active = "", body, og = "/assets/site/media/hills.jpg", jsonld = [], noindex = false, extraHead = ""}) {
+function layout({rel, title, desc, active = "", body, og = "/assets/site/media/hills.jpg", jsonld = [], noindex = false, extraHead = "", app = {}}) {
   const url = SITE + urlOf(rel);
   return `<!doctype html>
 <html lang="en">
@@ -181,7 +194,12 @@ function layout({rel, title, desc, active = "", body, og = "/assets/site/media/h
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${url}">`}
-<meta name="theme-color" content="#11261f">
+<meta name="theme-color" content="#eef1f5">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OPIIUS">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="OPIIUS">
 <meta property="og:title" content="${esc(title)}">
@@ -206,7 +224,7 @@ ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</scri
   <img class="sp-medal" src="/assets/site/logo/opiius-icon.webp" width="160" height="160" alt="">${WORDMARK.replace('class="wm"', 'class="sp-wm"')}
   <div class="sp-tag">Car rentals · Assam</div><div class="sp-bar"><i></i></div>
 </div></div>
-${header(active)}
+${header(active, app)}
 <main id="main">
 ${body}
 </main>
@@ -239,39 +257,47 @@ function chipsNav(list, extra = []) {
   const gs = groupsOf(list);
   return `<div class="stick"><div class="wrap"><nav class="chips" aria-label="Categories">${gs.map((x, i) => `<a class="chip" href="#${x.g.id}" data-nav="${x.g.id}" aria-current="${i === 0}">${esc(x.g.nav)}<span>${x.list.length}</span></a>`).join("")}${extra.map(([h, t]) => `<a class="chip" href="#${h}" data-nav="${h}" aria-current="false">${t}</a>`).join("")}</nav></div></div>`;
 }
+/* shown in place of a form once a request is sent: the customer stays on the page */
+const donePanel = `<div class="done" hidden role="status" aria-live="polite"><span class="done-ic">${I.check}</span><h3 class="done-t">Request received</h3>
+  <p class="done-s">We've got it. OPIIUS checks with the agency and confirms with you on WhatsApp or a call shortly.</p>
+  <div class="done-ref"><span>Your reference</span><b class="num" data-ref-out></b></div><div class="done-sum" data-sum-out></div>
+  <p class="fine">Nothing to pay now. You pay the agency directly at pickup.</p><button type="button" class="btn outline block" data-done-close>Done</button></div>`;
+const contactFields = (p) => `<div class="row2"><div><label for="${p}Name">Your name</label><input id="${p}Name" name="name" autocomplete="name" placeholder="Full name" required></div>
+    <div><label for="${p}Phone">WhatsApp number</label><input id="${p}Phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile" required></div></div>`;
 function askDialog(list) {
   const data = list.map(c => ({id: c.id, name: c.name, price: c.price, seats: c.m.seats, trans: c.trans, photo: c.photo, agency: c.a.id, agencyName: c.a.name, city: c.a.city}));
   return `<dialog id="ask" aria-labelledby="askT"><form class="sheet form" id="askF" method="dialog" novalidate>
   <button type="button" class="x" aria-label="Close" data-close>×</button>
-  <div><h2 id="askT">Check availability</h2><p class="sub">Sent to the agency through OPIIUS · reply on WhatsApp</p></div>
+  <div class="ask-in"><div><h2 id="askT">Check availability</h2><p class="sub">Sent to the agency through OPIIUS · they confirm with you</p></div>
   <div><label for="aCar">Car</label><select id="aCar">${groupsOf(list).map(x => `<optgroup label="${esc(x.g.t)}">${x.list.map(c => `<option value="${c.id}">${esc(c.name)} · ${inr(c.price)}/day${list.some(o => o.a.id !== c.a.id) ? " · " + esc(c.a.name) : ""}</option>`).join("")}</optgroup>`).join("")}</select></div>
   <div class="sel" id="aSel"></div>
   <div class="row2"><div><label for="aFrom">Pickup date</label><input type="date" id="aFrom" required></div><div><label for="aTo">Return date</label><input type="date" id="aTo" required></div></div>
   <div><label for="aWhere">Pickup</label><select id="aWhere"><option>At the agency</option><option>Guwahati Airport (LGBI)</option><option>Guwahati Railway Station</option><option>My hotel or home</option></select></div>
-  <div><label for="aName">Your name</label><input id="aName" autocomplete="name" placeholder="Full name" required></div>
+  ${contactFields("a")}
   <div class="est"><span id="aDays">Estimate</span><b class="num" id="aEst">—</b></div>
-  <p class="fine">Day price × days. The agency confirms the deposit, km limit and pickup point before you book. No booking fee.</p>
+  <p class="fine">Day price × days. The agency confirms the deposit, km limit and pickup point. No booking fee. Your number goes only to OPIIUS and this agency.</p>
   <p class="err" id="aErr" role="alert"></p>
-  <button type="submit" class="btn wa block">${I.wa}Send on WhatsApp</button>
+  <button type="submit" class="btn primary block" data-send>${I.check}<span>Send booking request</span></button></div>
+  ${donePanel}
 </form></dialog>
 <script type="application/json" id="fleet-data">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>`;
 }
 function needOptions(selected) {
   return CATS.map(c => `<optgroup label="${esc(c.name)}">${c.subs.map(s => `<option value="${s.id}"${s.id === selected ? " selected" : ""}>${esc(s.name)}</option>`).join("")}</optgroup>`).join("") + `<option value="other">Something else</option>`;
 }
-function matchForm(selected, {title = "Tell us what you need", sub = "We'll find a suitable local agency on OPIIUS and reply on WhatsApp, usually the same day.", agency = null} = {}) {
-  return `<div class="panel"><h3>${esc(title)}</h3><p>${esc(sub)}</p>
+function matchForm(selected, {title = "Tell us what you need", sub = "We'll find a suitable local agency on OPIIUS and get back to you, usually the same day.", agency = null} = {}) {
+  return `<div class="panel mpanel"><div class="ask-in"><h3>${esc(title)}</h3><p>${esc(sub)}</p>
   <form class="form" data-match novalidate style="margin-top:18px">${agency ? `<input type="hidden" name="agency" value="${esc(agency.id)}"><input type="hidden" name="agencyName" value="${esc(agency.name)}">` : ""}
     <div class="row2"><div><label for="mNeed">What do you need?</label><select id="mNeed" name="need">${needOptions(selected)}</select></div>
       <div><label for="mCity">Pickup city</label><select id="mCity" name="city">${CITIES_ASK.map(c => `<option>${c}</option>`).join("")}</select></div></div>
     <div class="row2"><div><label for="mFrom">From <small>(optional)</small></label><input type="date" id="mFrom" name="from"></div><div><label for="mTo">To <small>(optional)</small></label><input type="date" id="mTo" name="to"></div></div>
     <div class="row2"><div><label for="mPeople">People <small>(optional)</small></label><input id="mPeople" name="people" inputmode="numeric" placeholder="e.g. 4 adults, 2 kids"></div><div><label for="mBudget">Budget <small>(optional)</small></label><input id="mBudget" name="budget" placeholder="e.g. ₹15,000"></div></div>
-    <div><label for="mName">Your name</label><input id="mName" name="name" autocomplete="name" placeholder="Full name" required></div>
+    ${contactFields("m")}
     <div><label for="mMsg">Anything else? <small>(optional)</small></label><textarea id="mMsg" name="msg" placeholder="Type of car, where you're driving to, pickup point…"></textarea></div>
     <p class="err" role="alert"></p>
-    <button type="submit" class="btn wa block">${I.wa}Send on WhatsApp</button>
-    <p class="fine">Your request opens WhatsApp with these details and a reference number. No booking fee.</p>
-  </form></div>`;
+    <button type="submit" class="btn primary block" data-send>${I.send}<span>Send request</span></button>
+    <p class="fine">We reply on WhatsApp or a call, with an OPIIUS reference. No booking fee.</p>
+  </form></div>${donePanel}</div>`;
 }
 function agencyBand(title, text) {
   return `<section class="sec tight"><div class="wrap"><div class="band rv"><div><span class="eyebrow">For agencies</span><h2>${title}</h2><p>${text}</p></div>
@@ -311,7 +337,7 @@ const verifyBand = (kind, noun) => `<section class="sec pine"><div class="wrap">
   <ul class="ticks" style="columns:2 280px;column-gap:40px;display:block">${CHECKS[kind].map(t => `<li style="break-inside:avoid;margin-bottom:12px">${I.check.replace("<svg", '<svg style="color:var(--gold)"')}<span>${esc(t)}</span></li>`).join("")}</ul>
   <p style="margin-top:22px;color:rgba(255,255,255,.75)">Featured placements are paid and always labelled. <b style="color:#fff">Verification is never sold.</b></p></div></section>`;
 const matchSection = (need, h, p) => `<section class="sec" id="match"><div class="wrap matchbox"><div><span class="eyebrow">Get matched</span><h2 style="font-size:clamp(26px,3.4vw,38px);font-weight:600;margin-top:8px">${h}</h2><p class="muted" style="margin-top:12px;max-width:44ch;font-size:16px">${p}</p>
-  <ul class="ticks"><li>${I.check}<span>One request instead of five chats</span></li><li>${I.check}<span>A reply on WhatsApp, with an OPIIUS reference</span></li><li>${I.check}<span>No booking fee</span></li></ul></div>${matchForm(need)}</div></section>`;
+  <ul class="ticks"><li>${I.check}<span>One request instead of five chats</span></li><li>${I.check}<span>A reply on WhatsApp or a call, with an OPIIUS reference</span></li><li>${I.check}<span>No booking fee</span></li></ul></div>${matchForm(need)}</div></section>`;
 const askTile = (s, tone = "") => `<a class="tile rv ${tone}" id="${s.id}" href="#match" data-need="${s.id}"><div><span class="ic">${I[s.icon]}</span><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p></div><div class="meta"><span>${s.meta || "Ask for this"}</span><span>${arrow()}</span></div></a>`;
 const GENERAL_FAQ = [
   ["Is OPIIUS a rental company?", "No. OPIIUS is a marketplace of local rental agencies. You deal with the agency directly and pay them, at their price."],
@@ -333,38 +359,60 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
   <div class="marquee" aria-label="Car brands"><div class="track">${row}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}</div></div></section>`;
 }
 
-/* ---------- home: video background, two ways to rent, agencies, moving brand line ----------
-   The two cards use OPIIUS's own images, never an agency's photos. */
+/* ---------- home: an app screen ----------
+   A greeting, the navy self-drive card (with the light-loop video and a swipe button) and a side card for cars
+   with driver, popular cars as a list, pastel shortcut tiles, quick searches, agencies and brands.
+   Background art is OPIIUS's own; agency photos appear only as the cars' own thumbnails. */
 (function home() {
-  const opt = (href, img, pos, ic, h, p, subs, meta, cta) => `<a class="opt2" href="${href}"><div class="ph"><img src="${img}" alt="" loading="eager" style="object-position:${pos}"></div>
-    <div class="bd"><div class="top"><span class="ic">${I[ic]}</span>${meta ? `<span class="meta">${meta}</span>` : ""}</div><h2>${h}</h2><p>${p}</p>
-    <ul class="subs">${subs.map(t => `<li>${esc(t)}</li>`).join("")}</ul><span class="btn primary block"><span class="lg">${cta}</span><span class="sm">Explore</span> ${arrow()}</span></div></a>`;
-  const types = groupsOf(allCars).map(x => x.g.nav);
+  const real = allCars.filter(c => c.photo && !c.sample);
+  const thumbs = [...new Map(real.map(c => [c.a.id + c.m.type, c])).values()].slice(0, 3);
+  const pop = [];
+  for (const x of groupsOf(allCars)) { const c = x.list.find(c => c.photo && !c.sample) || x.list[0]; if (c && !pop.includes(c)) pop.push(c); }
+  for (const c of real) { if (pop.length >= 5) break; if (!pop.includes(c) && !pop.some(p => p.model === c.model)) pop.push(c); }
+  const row = c => `<div class="li"><a class="li-main" href="${urlOf(agencyPath(c.a))}#${(GROUPS.find(g => g.test(c.m)) || {id: ""}).id}"><span class="li-th">${c.photo ? `<img src="${esc(c.photo)}" alt="" loading="lazy" decoding="async">` : `<b>${esc(initials(c.nm))}</b>`}</span>
+    <span class="li-t"><b>${esc(c.nm)}</b><small>/ ${c.m.seats} seats</small><em>${esc(c.a.name)} · ${esc(c.trans)}${c.sample ? " · sample photo" : ""}</em></span></a>
+    <span class="li-act"><span class="li-p num">${inr(c.price)}</span><button type="button" class="rb on" data-ask="${c.id}" aria-label="Check availability for the ${esc(c.name)}">${I.chat}</button></span></div>`;
+  const pt = (cls, href, ic, b, sm) => `<a class="pt ${cls} st" href="${href}"><span class="pt-ic">${I[ic]}</span><span class="pt-go">${I.ne}</span><b>${b}</b><small>${sm}</small></a>`;
+  const towns = [...new Set(AGENCIES.map(a => a.city))].filter(t => O.PLACES[t]);
+  const quick = [["🚗", "Swift", "/rentals/?q=swift"], ["👨‍👩‍👧", "7-seaters", "/rentals/?ppl=7"], ["💸", `Under ${inr(2000)}/day`, "/rentals/?max=2000"], ["⚙️", "Automatic", "/rentals/?q=automatic"], ["✈️", "Airport pickup", "/get-matched/?q=airport"], ["🏔️", "Shillong trip", "/get-matched/?q=shillong"], ...towns.slice(1).map(t => ["📍", cityName(t), `/rentals/?town=${t}`])];
   const body = `
-<section class="vhero">
-  <video class="vbg" autoplay muted loop playsinline preload="auto" poster="/assets/site/media/lights.jpg" aria-hidden="true">
-    <source src="/assets/site/media/lights.webm" type="video/webm"><source src="/assets/site/media/lights.mp4" type="video/mp4"></video>
-  <div class="wrap in">
-    <div class="vh"><span class="eyebrow">Car rentals · Assam</span>
-      <h1>Rent a car from a trusted local agency.</h1>
-      <p class="lede">Real photos, the owner's price and terms upfront. Ask on WhatsApp.</p></div>
-    <div class="choose2">
-      ${opt(selfDriveUrl, "/assets/opiius/img/home-selfdrive.jpg", "45% 60%", "car", "Self-drive cars", "Choose a local agency, then see its cars, day prices, deposit and km limit before you ask.", types, allCars.length ? `From ${inr(minP(allCars))}/day` : "", "Choose an agency")}
-      ${opt(driverUrl, "/assets/opiius/img/home-driver.jpg", "52% 55%", "users", "Cars with driver", "An experienced local driver for the airport, Shillong, Kaziranga or a few days on the road.", ["Airport pickup", "Day trips", "Multi-day trips"], DRV.length ? `From ${inr(Math.min(...DRV.map(drvMin)))}/day` : "", DRV.length ? "See cars with driver" : "Ask for a car with driver")}
+<section class="ahome"><div class="wrap">
+  <div class="hi st"><div><p class="hello">Hi there 👋</p><h1 class="say">Where are you driving today?</h1></div>
+    <div class="cta-d"><a class="btn outline" href="/get-matched/">${I.chat}Ask OPIIUS</a><a class="btn primary" href="/rentals/">${I.search}Browse rentals</a></div></div>
+  <div class="hgrid">
+    <div>
+      <div class="hrow st">
+        <a class="hcard" href="${selfDriveUrl}" draggable="false">
+          <video class="vbg" autoplay muted loop playsinline preload="auto" poster="/assets/site/media/lights.jpg" aria-hidden="true"><source src="/assets/site/media/lights.webm" type="video/webm"><source src="/assets/site/media/lights.mp4" type="video/mp4"></video>
+          <div class="hc-top"><span class="hc-ic">${I.car}</span><span class="hc-pill">${I.pin}${esc(towns.length ? cityName(towns[0]) + (towns.length > 1 ? ` +${towns.length - 1}` : "") : "Assam")}</span><span class="hc-ic">${I.shield}</span></div>
+          <div class="hc-body"><h2>Self-drive cars</h2><p>${I.tag}${allCars.length ? `From ${inr(minP(allCars))}/day · real photos, prices upfront` : "Real photos, prices upfront"}</p></div>
+          <div class="hc-mid"><span class="hc-th">${thumbs.map(c => `<span><img src="${esc(c.photo)}" alt="" decoding="async"></span>`).join("")}</span><span class="hc-more">${plural(allCars.length, "car")} · ${plural(AGENCIES.filter(a => CARS.some(c => c.a.id === a.id)).length, "agency", "agencies")}</span></div>
+          <span class="swipe" data-swipe><span class="knob">${I.chev}</span><b>Choose an agency</b><span class="chev" aria-hidden="true"><i></i><i></i><i></i></span></span>
+        </a>
+        <a class="hside" href="${driverUrl}" aria-label="Cars with driver">${I.users}<span class="v">Cars with driver</span><span class="plus">${I.plus}</span></a>
+      </div>
+      <div class="ptiles">
+        ${pt("mint", "/get-matched/", "chat", "Get matched", "Tell us your dates. We find the agency.")}
+        ${pt("peach", driverUrl, "users", "Cars with driver", "Airport, Shillong, Kaziranga with a local driver.")}
+        ${pt("sky", "/rentals/#near", "pin", "Near me", "Agencies closest to you, nearest first.")}
+        ${pt("lilac", "/for-agencies/", "award", "Run an agency?", "List your cars on OPIIUS. Basic is free.")}
+      </div>
     </div>
-    <div class="nearwrap"><a class="nearlink" href="/rentals/#near">${I.pin}Find rental agencies near me</a></div>
-    <ul class="trust"><li>${I.shield}Verified agencies</li><li>${I.camera}Real photos of every car</li><li>${I.tag}Prices shown upfront</li><li>${I.check}No booking fee</li></ul>
+    <div>
+      <section class="blk st"><div class="blk-h"><h2>Popular right now</h2><a href="${sdcUrl}">See all</a></div><div class="list">${pop.map(row).join("")}</div></section>
+      <section class="blk st"><div class="blk-h"><h2>Quick searches</h2></div><div class="pchips">${quick.map(([e, t, h]) => `<a class="pchip" href="${h}"><span aria-hidden="true">${e}</span>${esc(t)}</a>`).join("")}</div></section>
+      <section class="blk st"><div class="blk-h"><h2>Why OPIIUS</h2></div><ul class="ticks" style="margin:0 2px 8px">${[[I.shield, "Agencies checked before they get the Verified badge"], [I.camera, "Real photos, or a sample photo clearly marked"], [I.tag, "The agency's own price, deposit and km limit upfront"], [I.check, "No booking fee. You pay the agency directly"]].map(([ic, t]) => `<li>${ic}<span>${t}</span></li>`).join("")}</ul></section>
+    </div>
   </div>
-</section>
-${brandStrip()}
-<section class="sec mist"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">Agencies</span><h2>Local rental agencies on OPIIUS</h2><p>Open an agency to see its whole fleet, prices and terms.</p></div><a class="btn outline" href="/rentals/">All agencies</a></div>
-  <div class="agrid">${AGENCIES.map(agencyCard).join("")}${joinCard}</div>
+  <section class="hsec"><div class="blk-h"><h2>Local rental agencies</h2><a href="/rentals/">All agencies</a></div>
+    <div class="hscroll">${AGENCIES.map(agencyCard).join("")}${joinCard}</div></section>
 </div></section>
-${howItWorks([["Pick a car", "Real photos, day price, deposit and km limit, from a local agency."], ["Check availability", "Send your dates and pickup point on WhatsApp, with an OPIIUS reference."], ["Pick up and drive", "The agency confirms. You pay them directly. No booking fee."]])}`;
+${brandStrip()}
+${howItWorks([["Pick a car", "Real photos, day price, deposit and km limit, from a local agency."], ["Send a request", "Pick your dates and pickup point here. The agency is told at once."], ["Get confirmed", "The agency confirms on WhatsApp or a call. You pay them at pickup. No booking fee."]])}
+${askDialog(allCars)}`;
   write("index.html", layout({rel: "index.html", title: "OPIIUS · Rent a car in Assam from trusted local agencies",
     desc: `Self-drive cars and cars with driver in Assam from verified local rental agencies${allCars.length ? `, from ${inr(minP(allCars))}/day` : ""}. Real photos, clear prices, inquiries on WhatsApp.`,
-    body, extraHead: '\n<link rel="preload" as="image" href="/assets/site/media/hills.jpg">',
+    body, active: "home", extraHead: '\n<link rel="preload" as="image" href="/assets/site/media/lights.jpg">',
     jsonld: [{"@context": "https://schema.org", "@type": "Organization", name: "OPIIUS", url: SITE + "/", areaServed: "Assam", address: {"@type": "PostalAddress", addressLocality: "Guwahati", addressRegion: "Assam", addressCountry: "IN"}, telephone: "+" + WA}]}));
 })();
 
@@ -405,9 +453,10 @@ function filterBar() {
   const towns = [...new Set(AGENCIES.map(a => a.city))].filter(t => O.PLACES[t]);
   return `<div class="afilter" role="search" aria-label="Find an agency">
   <div class="fsearch">${I.search}<input type="search" id="fq" placeholder="Search agencies, cars or towns" aria-label="Search agencies, cars or towns" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="fsugg"><ul class="sugg" id="fsugg" role="listbox" aria-label="Suggestions" hidden></ul></div>
-  <div class="fgroup"><label for="fmin">Price per day</label><div class="frange"><select id="fmin" aria-label="Lowest price per day"><option value="0">Any</option>${steps.slice(0, -1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select><span>to</span><select id="fmax" aria-label="Highest price per day"><option value="0">Any</option>${steps.slice(1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select></div></div>
+  <button type="button" class="chip ftog" id="ftog" aria-expanded="false" aria-controls="fmore">${I.sliders}Filters<span id="ftogN"></span></button>
+  <div class="fmore" id="fmore"><div class="fgroup"><label for="fmin">Price per day</label><div class="frange"><select id="fmin" aria-label="Lowest price per day"><option value="0">Any</option>${steps.slice(0, -1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select><span>to</span><select id="fmax" aria-label="Highest price per day"><option value="0">Any</option>${steps.slice(1).map(p => `<option value="${p}">${inr(p)}</option>`).join("")}</select></div></div>
   ${towns.length > 1 ? `<div class="fgroup"><label for="ftown">Town</label><select id="ftown"><option value="">All of Assam</option>${towns.map(t => `<option value="${t}">${esc(cityName(t))}</option>`).join("")}</select></div>` : ""}
-  <div class="fgroup"><label for="fppl">People going</label><select id="fppl"><option value="0">Any</option>${ppl.map(n => `<option value="${n}">${n} people</option>`).join("")}</select></div>
+  <div class="fgroup"><label for="fppl">People going</label><select id="fppl"><option value="0">Any</option>${ppl.map(n => `<option value="${n}">${n} people</option>`).join("")}</select></div></div>
   <button type="button" class="chip fnear" id="fnear" aria-pressed="false">${I.pin}Near me</button>
   <button type="button" class="chip fliked" id="fliked" aria-pressed="false">${I.heart}Liked<span id="flikedN">0</span></button>
 </div>
@@ -513,7 +562,7 @@ function suggestions() {
   const typeAgencies = s => s.id === "cars-with-driver" ? AGENCIES.filter(a => drv(a) || a.category === s.id)
     : AGENCIES.filter(a => s.kind ? CARS.some(c => c.a.id === a.id && c.m.kind === s.kind) : a.category === s.id);
   const faq = faqBlock([
-    ["How do I book a car?", "Open an agency, pick a car and tap “Check availability”. Choose your dates and send it on WhatsApp; the agency confirms before you pay them directly."],
+    ["How do I book a car?", "Open an agency, pick a car and tap “Check availability”. Choose your dates and send the request from the page; the agency confirms with you on WhatsApp or a call before you pay them directly."],
     ["What do I need to rent a self-drive car?", "Your original driving licence and a photo ID. Each agency's page lists exactly what it needs."],
     ["Is there a deposit and a km limit?", "Usually, yes. Each agency's page shows its deposit and km limit before you ask."],
     ["Can I take the car to Meghalaya or Arunachal?", "Check the “Out of state” line on the agency's page. Arunachal needs an Inner Line Permit."],
@@ -538,11 +587,11 @@ function suggestions() {
 ${stickyNav([...cat.subs.map(s => typeAgencies(s).length ? [s.id, s.name] : ["match", s.name, s.id]), ["how", "How it works"], ["faq", "FAQ"]])}
 <div class="wrap">${filterBar()}${sections}</div>
 ${brandStrip("Or select from brand", "See every car of a brand across agencies.")}
-${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Real photos, gearbox, model year and day price. Tap “Check availability”."], ["Confirm on WhatsApp", "The agency confirms the car and pickup. You pay them directly. No booking fee."]])}
+${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Real photos, gearbox, model year and day price. Tap “Check availability”."], ["Get confirmed", "The agency confirms the car and pickup with you. You pay them directly. No booking fee."]])}
 <div id="faq">${faq.html}</div>
 ${matchSection("cars-with-driver", "Need something else?", "Need a car with driver, or a car that isn't listed? Tell us the dates and where you're going, and we'll find a local agency.")}
 ${agencyBand("Run a rental agency?", "Showcase your cars to customers searching for rentals in Assam: a full profile, real photos, day prices and inquiries with dates. Basic listing is free.")}`;
-  write("rentals/index.html", layout({rel: "rentals/index.html", title: "Car rentals in Assam · Choose a verified local agency | OPIIUS", active: "rentals",
+  write("rentals/index.html", layout({rel: "rentals/index.html", app: {back: "/", title: "Rentals"}, title: "Car rentals in Assam · Choose a verified local agency | OPIIUS", active: "rentals",
     desc: `Rent a car in Assam from verified local agencies${allCars.length ? `: ${plural(allCars.length, "car")} from ${inr(minP(allCars))}/day` : ""}. Open an agency to see its whole fleet, prices and terms.`,
     body, og: "/assets/opiius/img/cat-suv.jpg", jsonld: [faq.ld]}));
 })();
@@ -555,12 +604,12 @@ for (const b of BRAND_LIST) {
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/rentals/">Rentals</a><span>/</span><span>${esc(b.name)}</span></nav>
   <div class="bhead"><span class="blogo">${brandLogo(b)}</span><div><span class="eyebrow">${plural(list.length, "car")} · from ${inr(minP(list))}/day</span>
   <h1>${esc(b.name)} cars for rent in Assam</h1></div></div>
-  <p class="lede">Every ${esc(b.name)} on OPIIUS, from verified local agencies. Tap a car to check availability on WhatsApp.</p>
+  <p class="lede">Every ${esc(b.name)} on OPIIUS, from verified local agencies. Tap a car to check availability.</p>
 </div></section>
 <div class="wrap">${fleetBlocks(list, {showAgency: true})}</div>
 ${brandStrip("Other brands", "See every car of a brand across agencies.")}
 ${askDialog(list)}`;
-  write(rel, layout({rel, title: `${b.name} cars for rent in Assam from ${inr(minP(list))}/day · OPIIUS`, active: "rentals",
+  write(rel, layout({rel, app: {back: "/rentals/", title: `${b.name} cars`}, title: `${b.name} cars for rent in Assam from ${inr(minP(list))}/day · OPIIUS`, active: "rentals",
     desc: `Rent a ${b.name} in Assam: ${list.map(c => c.nm).join(", ")}. Real photos, day prices from ${inr(minP(list))}, availability on WhatsApp.`, body}));
 }
 
@@ -586,7 +635,7 @@ for (const kind of ["car", "bike"]) for (const city of liveCities(kind)) {
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/rentals/">Rentals</a><span>/</span><span>${esc(sub.name)} in ${esc(cn)}</span></nav>
   <span class="eyebrow">${plural(list.length, kind === "car" ? "car" : "bike")} · ${plural(ags.length, "agency", "agencies")} · from ${inr(minP(list))}/day</span>
   <h1>${esc(sub.name)} in ${esc(cn)}</h1>
-  <p class="lede">${kind === "car" ? "City hatchbacks, compact SUVs and 7-seaters from local agencies. Every car shows a real photo or its model, the day price and the agency behind it. Pick one and check availability on WhatsApp." : "Scooters and motorcycles from local agencies, with day prices upfront."}</p>
+  <p class="lede">${kind === "car" ? "City hatchbacks, compact SUVs and 7-seaters from local agencies. Every car shows a real photo or its model, the day price and the agency behind it. Pick one and send a booking request." : "Scooters and motorcycles from local agencies, with day prices upfront."}</p>
   <div class="ctas"><button type="button" class="btn primary" data-ask="">Check availability</button><a class="btn outline" href="#guide">Before you rent</a></div>
 </div></section>
 ${chipsNav(list, [["guide", "Before you rent"]])}
@@ -603,7 +652,7 @@ ${chipsNav(list, [["guide", "Before you rent"]])}
 ${faq.html}
 <section class="sec" id="match"><div class="wrap matchbox"><div><span class="eyebrow">Get matched</span><h2 style="font-size:clamp(26px,3.4vw,38px);font-weight:600;margin-top:8px">Didn't find the right car?</h2><p class="muted" style="margin-top:12px">Tell us the dates and the kind of car. We'll check with local agencies and reply on WhatsApp.</p></div>${matchForm(sub.id)}</div></section>
 ${askDialog(list)}`;
-  write(rel, layout({rel, title: `${sub.name} in ${cn} from ${inr(minP(list))}/day · OPIIUS`, active: "rentals",
+  write(rel, layout({rel, app: {back: "/rentals/", title: `${sub.name} · ${cn}`}, title: `${sub.name} in ${cn} from ${inr(minP(list))}/day · OPIIUS`, active: "rentals",
     desc: `Compare ${plural(list.length, kind === "car" ? "self-drive car" : "bike")} in ${cn} from local agencies: real photos, day prices from ${inr(minP(list))}, inquiries on WhatsApp.`,
     body, og: (list.find(c => c.photo && !c.sample) || {}).photo || undefined, jsonld: [faq.ld]}));
 }
@@ -628,7 +677,7 @@ for (const a of AGENCIES) {
       ${d.allowance ? `<div><span>Driver allowance</span><span>${esc(d.allowance)}</span></div>` : ""}
       ${d.areas ? `<div><span>Goes to</span><span>${esc(d.areas)}</span></div>` : ""}
       ${d.note ? `<div><span>Note</span><span>${esc(d.note)}</span></div>` : ""}</div></div>
-  ${matchForm("cars-with-driver", {title: `Ask ${a.name} for a car with driver`, sub: `Share your dates and route. ${a.name} replies on WhatsApp, through OPIIUS.`, agency: a})}
+  ${matchForm("cars-with-driver", {title: `Ask ${a.name} for a car with driver`, sub: `Share your dates and route. ${a.name} gets back to you, through OPIIUS.`, agency: a})}
 </div></section>` : "";
   const body = `
 <section class="hero"><div class="bg" style="background-image:url(/assets/opiius/img/hero.jpg);background-position:50% 60%" aria-hidden="true"></div>
@@ -662,20 +711,20 @@ ${list.length ? `<section class="sec mist" id="info" style="margin-top:72px"><di
 </div></section>
 <section class="sec"><div class="wrap" style="text-align:center;max-width:720px">
   <h2 style="font-size:clamp(28px,4.4vw,44px);font-weight:600">Know your dates? Check a car now.</h2>
-  <p class="muted" style="margin-top:12px;font-size:16px">Tell us the car, the dates and where you'd like to pick it up. ${esc(a.name)} replies on WhatsApp.</p>
+  <p class="muted" style="margin-top:12px;font-size:16px">Tell us the car, the dates and where you'd like to pick it up. ${esc(a.name)} confirms with you.</p>
   <div class="ctas" style="justify-content:center"><button type="button" class="btn dark" data-ask="">Check availability</button></div>
 </div></section>
 ${askDialog(list)}` : `<section class="sec mist" id="info"><div class="wrap" style="max-width:720px">${verifyPanel}</div></section>`}`;
   const what = list.length && dcars.length ? "Self-drive cars and cars with driver" : list.length ? "Self-drive cars" : "Cars with driver";
   const allPrices = [...list.map(c => c.price), ...dcars.map(c => +c.local)];
-  write(rel, layout({rel, title: `${a.name} · ${what} in ${cityName(a.city)}${lowest ? ` from ${inr(lowest)}/day` : ""} | OPIIUS`, active: "rentals",
+  write(rel, layout({rel, app: {back: "/rentals/", title: a.name}, title: `${a.name} · ${what} in ${cityName(a.city)}${lowest ? ` from ${inr(lowest)}/day` : ""} | OPIIUS`, active: "rentals",
     desc: list.length ? `${a.name}: ${plural(list.length, "car model")} in ${cityName(a.city)}, from ${inr(minP(list))}/day${dcars.length ? ", plus cars with driver" : ""}. See the full fleet, day prices and terms, then check availability on WhatsApp.`
       : `${a.name}: cars with driver in ${cityName(a.city)}${lowest ? `, from ${inr(lowest)}/day` : ""}. See the driver rates and ask on WhatsApp.`,
     body, og: cover || undefined, jsonld: [{"@context": "https://schema.org", "@type": "AutoRental", name: a.name, url: SITE + urlOf(rel), image: cover ? SITE + cover : undefined, priceRange: allPrices.length ? `${inr(Math.min(...allPrices))}–${inr(Math.max(...allPrices))} per day` : undefined, address: {"@type": "PostalAddress", addressLocality: cityName(a.city), addressRegion: (O.PLACES[a.city] || {}).state, addressCountry: "IN"}}]}));
 }
 
 /* ---------- agencies index ---------- */
-write("agency/index.html", layout({rel: "agency/index.html", title: "Rental agencies on OPIIUS · Self-drive cars and cars with driver in Assam", active: "",
+write("agency/index.html", layout({rel: "agency/index.html", app: {back: "/", title: "Agencies"}, title: "Rental agencies on OPIIUS · Self-drive cars and cars with driver in Assam", active: "",
   desc: "Local car rental agencies on OPIIUS: profiles with real photos, day prices and terms.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Agencies</span></nav>
   <span class="eyebrow">${plural(AGENCIES.length, "agency", "agencies")} on OPIIUS</span><h1>Local rental agencies on OPIIUS</h1>
@@ -687,7 +736,7 @@ write("agency/index.html", layout({rel: "agency/index.html", title: "Rental agen
 (function forAgencies() {
   const plans = [
     {n: "Basic", p: "Free", per: "", for: "Get listed and start receiving inquiries.", pts: ["Basic profile: name, category, area", "Your fleet with day prices", "3 photos", "Inquiries through the OPIIUS form"], cta: ["Start free", "outline"]},
-    {n: "Verified", p: "₹999", per: "/month", for: "Show customers you're a checked business.", pts: ["Verified badge, after checks pass", "Full agency profile", "Full fleet page with terms", "15 photos", "WhatsApp and call buttons", "Placed above unverified listings", "Monthly inquiry count"], cta: ["Get Verified", "outline"]},
+    {n: "Verified", p: "₹2,000", per: "/month", for: "Show customers you're a checked business.", pts: ["Verified badge, after checks pass", "Full agency profile", "Full fleet page with terms", "15 photos", "WhatsApp and call buttons", "Placed above unverified listings", "Monthly inquiry count"], cta: ["Get Verified", "outline"]},
     {n: "Growth", p: "₹3,000", per: "/month", hot: true, for: "Everything you need to win more inquiries.", pts: ["Verified badge", "Full agency profile", "Priority placement in your category and city", "Fleet and service pages, written by us", "WhatsApp and call buttons", "Customer inquiry form", "40 photos and service showcase", "Reviews and testimonials", "Offer and promotion section", "Monthly inquiry report"], cta: ["Choose Growth", "primary"]},
     {n: "Featured Partner", p: "₹5,000", per: "/month", for: "The top slot, for agencies ready to lead their category.", pts: ["Everything in Growth", "Top slot in your category and city, labelled Featured", "Homepage feature rotation", "Extra pages for cars with driver and outstation trips", "3 offers and a seasonal campaign", "Monthly review call"], cta: ["Apply for Featured", "outline"]}];
   const faq = faqBlock([
@@ -739,12 +788,12 @@ write("agency/index.html", layout({rel: "agency/index.html", title: "Rental agen
     <a class="btn outline" href="${waLink("Hi OPIIUS, I have a question about listing my agency.")}" rel="noopener">${I.wa}Questions? Message us</a></div>
 </div></section>
 ${faq.html}`;
-  write("for-agencies/index.html", layout({rel: "for-agencies/index.html", title: "For car rental agencies · List your fleet on OPIIUS", active: "agencies",
+  write("for-agencies/index.html", layout({rel: "for-agencies/index.html", app: {back: "/", title: "For agencies"}, title: "For car rental agencies · List your fleet on OPIIUS", active: "agencies",
     desc: "List your car rental agency on OPIIUS. Verified badge, priority placement, customer inquiries and a monthly inquiry report. Basic listing is free, no commission.", body, jsonld: [faq.ld]}));
 })();
 
 /* ---------- verification ---------- */
-write("verification/index.html", layout({rel: "verification/index.html", title: "How OPIIUS verifies agencies · Verification standards", active: "verification",
+write("verification/index.html", layout({rel: "verification/index.html", app: {back: "/", title: "How we verify"}, title: "How OPIIUS verifies agencies · Verification standards", active: "verification",
   desc: "What the OPIIUS Verified badge means for rental agencies: the documents, owner identity, vehicles and location we check, how often we re-check, and how complaints work.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>How we verify</span></nav>
   <span class="eyebrow">Verification standards</span><h1>Placement can be paid. Verification is earned.</h1>
@@ -776,7 +825,7 @@ write("verification/index.html", layout({rel: "verification/index.html", title: 
 </div></section>`}));
 
 /* ---------- about ---------- */
-write("about/index.html", layout({rel: "about/index.html", title: "About OPIIUS · A trusted local marketplace for the Northeast",
+write("about/index.html", layout({rel: "about/index.html", app: {back: "/", title: "About OPIIUS"}, title: "About OPIIUS · A trusted local marketplace for the Northeast",
   desc: "OPIIUS is a Guwahati-based marketplace where customers compare local car rental agencies, and agencies showcase their fleets.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>About</span></nav>
   <span class="eyebrow">About OPIIUS</span><h1>Local agencies deserve to be found. Customers deserve to trust who they find.</h1>
@@ -792,26 +841,75 @@ write("about/index.html", layout({rel: "about/index.html", title: "About OPIIUS 
     <div class="ctas"><a class="btn primary" href="/get-matched/">Get matched with an agency</a><a class="btn outline" href="/for-agencies/">List your agency</a></div></div>
 </div></section>`}));
 
-/* ---------- get matched ---------- */
-write("get-matched/index.html", layout({rel: "get-matched/index.html", title: "Get matched with a trusted local agency · OPIIUS",
-  desc: "Tell OPIIUS what you need: a self-drive car or a car with driver. We'll pass it to a suitable local rental agency and you'll get a reply on WhatsApp.",
-  body: `<section class="sec mist" style="padding-top:64px"><div class="wrap matchbox">
-  <div><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Get matched</span></nav><span class="eyebrow">Get matched</span>
-    <h1 style="font-size:clamp(34px,5vw,54px);font-weight:600;margin-top:10px">Tell us what you need. We'll find the agency.</h1>
-    <p class="muted" style="margin-top:16px;font-size:17px;max-width:46ch">A self-drive car or a car with driver. Share the details once and get a reply on WhatsApp.</p>
-    <ol class="steps3" style="grid-template-columns:1fr;gap:12px;margin-top:26px"><li style="padding:18px"><b style="margin-top:10px">Send your request</b><span>It opens WhatsApp with your details and a reference number.</span></li><li style="padding:18px"><b style="margin-top:10px">We find a suitable agency</b><span>Your request goes to a local agency that fits.</span></li><li style="padding:18px"><b style="margin-top:10px">Get details before you commit</b><span>Price, deposit, km limit and availability on WhatsApp.</span></li></ol></div>
-  ${matchForm("self-drive-cars", {title: "Your request"})}
-</div></section>`}));
+/* ---------- get matched: a chat-style screen ----------
+   Pastel cards and prompt chips fill the message box; send records the request (with the customer's contact) and notifies OPIIUS.
+   The full request form (dates, people, budget) stays one tap away. */
+(function getMatched() {
+  const card = (cls, ic, need, b, sm, text) => `<button type="button" class="pt ${cls}" data-prompt="${esc(text)}" data-pneed="${need}"><span class="pt-ic">${I[ic]}</span><span class="pt-go">${I.ne}</span><b>${b}</b><small>${sm}</small></button>`;
+  const prompts = [["🚗", "Swift for 3 days", "I need a Swift or similar hatchback for 3 days from tomorrow."], ["✈️", "Airport pickup", "I need a car with driver from Guwahati Airport."], ["🏔️", "Shillong day trip", "I need a car with driver for a Shillong day trip."], ["👨‍👩‍👧", "7-seater for family", "I need a 7-seater for my family."], ["⚙️", "Automatic car", "I need an automatic self-drive car."], ["🦏", "Kaziranga trip", "I'm planning a Kaziranga trip and need a car."], ["💸", `Under ${inr(2000)}/day`, `I need a self-drive car under ${inr(2000)} a day.`], ["🗓️", "Monthly rental", "I need a car on monthly rental."]];
+  const body = `
+<section class="chat"><div class="wrap chat-in">
+  <span class="bot st"><img src="/assets/site/logo/opiius-icon-96.png" width="40" height="40" alt=""></span>
+  <p class="hello st">Hi there 👋</p>
+  <h1 class="say">How can we help you today?</h1>
+  <div class="ptiles st">
+    ${card("mint", "car", "self-drive-cars", "Self-drive car", "We find an agency with the car and dates you want.", "I need a self-drive car.")}
+    ${card("peach", "users", "cars-with-driver", "Car with driver", "Airport, day trips or a few days on the road.", "I need a car with driver.")}
+    ${card("sky", "plane", "cars-with-driver", "Airport pickup", "Guwahati Airport or railway station, any time.", "I need a pickup from Guwahati Airport.")}
+    ${card("lilac", "map", "self-drive-cars", "Plan a trip", "Meghalaya, Kaziranga, Arunachal: tell us the route.", "I'm planning a trip and need a car.")}
+  </div>
+  <h2 class="sm st">Popular requests</h2>
+  <div class="pchips st">${prompts.map(([e, t, x]) => `<button type="button" class="pchip" data-prompt="${esc(x)}"><span aria-hidden="true">${e}</span>${esc(t)}</button>`).join("")}</div>
+  <form class="askbar st" data-askbar autocomplete="off"><button type="button" class="plus" data-more aria-label="Add dates and details">${I.plus}</button>
+    <input name="q" placeholder="Ask for any car, date or trip…" aria-label="Your request" enterkeyhint="send"><button type="submit" class="send" aria-label="Send on WhatsApp">${I.send}</button></form>
+  <p class="askbar-note">We reply on WhatsApp or a call, with an OPIIUS reference. No booking fee.</p>
+  <details class="more" id="details"><summary>${I.plus}Add dates, people and budget</summary>${matchForm("self-drive-cars", {title: "Your request"})}</details>
+</div></section>`;
+  write("get-matched/index.html", layout({rel: "get-matched/index.html", app: {back: "/", title: "Ask OPIIUS"}, title: "Get matched with a trusted local agency · OPIIUS",
+    desc: "Tell OPIIUS what you need: a self-drive car or a car with driver. We'll pass it to a suitable local rental agency and you'll get a reply on WhatsApp.", body}));
+})();
 
 /* ---------- 404 and old pages ---------- */
-write("404.html", layout({rel: "404.html", title: "Page not found · OPIIUS", desc: "This page isn't on OPIIUS.", noindex: true,
+write("404.html", layout({rel: "404.html", app: {back: "/", title: "Not found"}, title: "Page not found · OPIIUS", desc: "This page isn't on OPIIUS.", noindex: true,
   body: `<section class="sec"><div class="wrap" style="max-width:720px;text-align:center"><span class="eyebrow">404</span><h1 style="font-size:clamp(34px,5vw,52px);font-weight:600;margin-top:10px">This page isn't here.</h1>
   <p class="muted" style="margin-top:14px;font-size:17px">It may have moved when we rebuilt OPIIUS. Try one of these instead.</p>
   <div class="ctas" style="justify-content:center"><a class="btn primary" href="/">Home</a><a class="btn outline" href="${selfDriveUrl}">Self-drive cars</a><a class="btn outline" href="/get-matched/">Get matched</a></div></div></section>`}));
 redirectTo("tours/meghalaya.html", "/rentals/", "Car rentals");
 
+/* ---------- the installable app (PWA): manifest, offline page and service worker ----------
+   Pages are always fetched fresh from the network (so updates show at once) and fall back to the last copy, then
+   to the offline page. Versioned assets are served from the cache and refreshed in the background. */
+write("offline.html", layout({rel: "offline.html", app: {back: "/", title: "Offline"}, title: "You're offline · OPIIUS", desc: "No connection.", noindex: true,
+  body: `<section class="chat"><div class="wrap chat-in"><span class="bot"><img src="/assets/site/logo/opiius-icon-96.png" width="40" height="40" alt=""></span><p class="hello">No connection</p>
+  <h1 class="say">You're offline right now.</h1><p class="muted" style="margin-top:14px;font-size:17px;max-width:44ch">Pages you opened before still work. Reconnect to see the latest cars and prices.</p>
+  <div class="ctas"><a class="btn primary" href="/">Try again</a><a class="btn outline" href="/rentals/">Rentals</a></div></div></section>`}));
+fs.writeFileSync(path.join(ROOT, "manifest.webmanifest"), JSON.stringify({
+  name: "OPIIUS · Car rentals in Assam", short_name: "OPIIUS", description: "Self-drive cars and cars with driver from trusted local agencies in Assam.",
+  id: "/", start_url: "/?source=app", scope: "/", display: "standalone", orientation: "portrait", background_color: "#eef1f5", theme_color: "#eef1f5", lang: "en-IN", categories: ["travel", "lifestyle"],
+  icons: [{src: "/assets/site/logo/app-icon-192.png", sizes: "192x192", type: "image/png"}, {src: "/assets/site/logo/app-icon-512.png", sizes: "512x512", type: "image/png"}, {src: "/assets/site/logo/app-icon-maskable.png", sizes: "512x512", type: "image/png", purpose: "maskable"}],
+  shortcuts: [{name: "Rentals", url: "/rentals/"}, {name: "Ask OPIIUS", url: "/get-matched/"}, {name: "Saved", url: "/rentals/#liked"}]}, null, 2) + "\n");
+fs.writeFileSync(path.join(ROOT, "sw.js"), `/* OPIIUS app service worker (written by tools/build-site.mjs) */
+const V = "op-${ASSET_V}";
+const SHELL = ["/", "/rentals/", "/get-matched/", "/offline.html", "/assets/site/site.css?v=${ASSET_V}", "/assets/site/site.js?v=${ASSET_V}", "/assets/opiius/config.js?v=${ASSET_V}", "/assets/site/logo/opiius-icon-96.png", "/assets/site/logo/opiius-icon.webp", "/assets/site/media/contour.svg", "/assets/site/media/lights.jpg"];
+self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).catch(() => {})); self.skipWaiting(); });
+self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
+self.addEventListener("fetch", e => {
+  const r = e.request, u = new URL(r.url);
+  if (r.method !== "GET" || u.origin !== location.origin || u.pathname.startsWith("/dashboard")) return;
+  if (r.mode === "navigate") {
+    e.respondWith(fetch(r).then(res => { const c = res.clone(); caches.open(V).then(x => x.put(r, c)); return res; })
+      .catch(() => caches.match(r).then(m => m || caches.match("/offline.html"))));
+    return;
+  }
+  if (/\\.(css|js|png|jpe?g|webp|svg|woff2?|mp4|webm)$/.test(u.pathname)) {
+    if (/\\.(mp4|webm)$/.test(u.pathname)) return;
+    e.respondWith(caches.match(r).then(m => { const net = fetch(r).then(res => { if (res.ok) { const c = res.clone(); caches.open(V).then(x => x.put(r, c)); } return res; }).catch(() => m); return m || net; }));
+  }
+});
+`);
+
 /* ---------- sitemap ---------- */
-const urls = written.filter(r => r.endsWith(".html") && r !== "404.html" && !r.startsWith("tours/")).map(urlOf);
+const urls = written.filter(r => r.endsWith(".html") && r !== "404.html" && r !== "offline.html" && !r.startsWith("tours/")).map(urlOf);
 fs.writeFileSync(path.join(ROOT, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(u => `  <url><loc>${SITE}${u}</loc><lastmod>${TODAY}</lastmod>${u === "/" ? "<priority>1.0</priority>" : ""}</url>`).join("\n")}
