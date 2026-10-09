@@ -259,7 +259,7 @@ function chipsNav(list, extra = []) {
 }
 /* shown in place of a form once a request is sent: the customer stays on the page */
 const donePanel = `<div class="done" hidden role="status" aria-live="polite"><span class="done-ic">${I.check}</span><h3 class="done-t">Request received</h3>
-  <p class="done-s">We've told the agency. They'll confirm availability with you on WhatsApp or a call shortly.</p>
+  <p class="done-s">We've got it. OPIIUS checks with the agency and confirms with you on WhatsApp or a call shortly.</p>
   <div class="done-ref"><span>Your reference</span><b class="num" data-ref-out></b></div><div class="done-sum" data-sum-out></div>
   <p class="fine">Nothing to pay now. You pay the agency directly at pickup.</p><button type="button" class="btn outline block" data-done-close>Done</button></div>`;
 const contactFields = (p) => `<div class="row2"><div><label for="${p}Name">Your name</label><input id="${p}Name" name="name" autocomplete="name" placeholder="Full name" required></div>

@@ -1,5 +1,6 @@
 /* OPIIUS site behaviour: menu, scroll reveal, the booking sheet, the request forms and the Ask OPIIUS screen.
-   Booking requests are sent from the page to the OPIIUS booking log (config.bookingLog, a Google Apps Script):
+   Booking requests are sent from the page, straight to the OPIIUS WhatsApp number via CallMeBot (config.callmebotKey),
+   or, without a key, to the OPIIUS booking log (config.bookingLog, a Google Apps Script):
    it records the request with the customer's name and WhatsApp number, and notifies OPIIUS at once.
    The customer sees "Request received" on the page. If the log is missing or still the old version (which can't
    notify), the request also opens WhatsApp to the OPIIUS number so no customer is lost. */
@@ -14,6 +15,21 @@
   function openWA(text){window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(text),"_blank","noopener")}
   /* send a request to the booking log; resolves {ok, v} (v = log version) or {ok:false} */
   function send(rec){
+    /* with a CallMeBot key the request goes only to the OPIIUS WhatsApp number, as a message */
+    if(CFG.callmebotKey){
+      var inr2=function(n){return "Rs "+Number(n).toLocaleString("en-IN")},L=[rec.type==="rental"?"New booking request":"New request","Ref: "+rec.ref];
+      if(rec.agencyName&&rec.type==="rental")L.push("Agency: "+rec.agencyName);
+      if(rec.vehicle)L.push((rec.type==="rental"?"Car: ":"Need: ")+rec.vehicle+(rec.pricePerDay?" ("+inr2(rec.pricePerDay)+"/day)":""));
+      if(rec.from)L.push("Dates: "+fmt(rec.from)+(rec.to&&rec.to!==rec.from?" to "+fmt(rec.to):"")+(rec.days?" ("+rec.days+(rec.days==1?" day)":" days)"):""));
+      if(rec.total)L.push("Estimate: "+inr2(rec.total));
+      if(rec.pickup)L.push("Pickup: "+rec.pickup);
+      if(rec.city)L.push("City: "+rec.city.charAt(0).toUpperCase()+rec.city.slice(1));
+      if(rec.budget)L.push("Budget: "+rec.budget);
+      if(rec.msg)L.push("Message: "+rec.msg);
+      L.push("Customer: "+rec.name+", +91"+rec.phone,"WhatsApp them: https://wa.me/91"+rec.phone);
+      var u="https://api.callmebot.com/whatsapp.php?phone="+(CFG.callmebotPhone||WA)+"&text="+encodeURIComponent(L.join("\n"))+"&apikey="+encodeURIComponent(CFG.callmebotKey);
+      return fetch(u,{mode:"no-cors"}).then(function(){return {ok:true,v:9}},function(){return {ok:false}});
+    }
     if(!CFG.bookingLog)return Promise.resolve({ok:false,none:true});
     var body=JSON.stringify(Object.assign({},rec,{page:location.pathname.slice(0,120),ua:/Mobi/i.test(navigator.userAgent)?"mobile":"desktop"}));
     return fetch(CFG.bookingLog,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body})
