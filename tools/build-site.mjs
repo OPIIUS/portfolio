@@ -239,7 +239,7 @@ ${tabbar()}
 
 /* ---------- shared blocks ---------- */
 function carCard(c, {showAgency = false} = {}) {
-  const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.sample ? "Sample photo of a " + c.name : c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">${c.sample ? `<span class="badge onph sample" title="Not the agency's own car: a photo of the same model">Sample photo</span>` : `<span class="badge onph real" title="Verified: a photo of the agency's own car">${I.shield}Verified photo</span>`}`
+  const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.sample ? "Sample photo of a " + c.name : c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">${c.sample ? `<span class="badge onph sample" title="Not the agency's own car: a photo of the same model">Sample photo</span>` : `<span class="badge onph real" title="Verified: a photo of the agency's own car">${I.shield}Verified</span>`}`
     : `<div class="nametile"><small>${esc(c.brand)}</small><b>${esc(c.nm)}</b>${c.m.kind === "bike" ? BIKE_LINE : CAR_LINE}</div>`;
   return `<article class="car"><div class="ph">${ph}${c.units > 1 ? `<span class="badge onph">${c.units} in the fleet</span>` : ""}</div>
   <div class="bd"><div class="nm"><small>${esc(c.brand)}</small><h3>${esc(c.nm)}</h3></div>
@@ -827,7 +827,7 @@ write("about/index.html", layout({rel: "about/index.html", app: {back: "/", titl
   desc: "OPIIUS is a Guwahati-based marketplace where customers compare local car rental agencies, and agencies showcase their fleets.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>About</span></nav>
   <span class="eyebrow">About OPIIUS</span><h1>Local agencies deserve to be found. Customers deserve to trust who they find.</h1>
-  <p class="lede">Most car rental agencies in Assam are run by small local businesses that live on WhatsApp and Instagram. They're often excellent, and almost impossible to compare. OPIIUS puts them on one marketplace, with clear prices, a “Verified photo” tag on actual car photos and a badge that means something.</p></div></section>
+  <p class="lede">Most car rental agencies in Assam are run by small local businesses that live on WhatsApp and Instagram. They're often excellent, and almost impossible to compare. OPIIUS puts them on one marketplace, with clear prices, a “Verified” tag on the agency's own car photos and a badge that means something.</p></div></section>
 <section class="sec"><div class="wrap two">
   <div class="panel rv"><h2>What OPIIUS does</h2><ul class="ticks">
     <li>${I.check}<span>Shows local agencies with prices, terms and car photos</span></li><li>${I.check}<span>Checks agencies before they get the Verified badge</span></li>
