@@ -870,3 +870,5 @@ dialog[open]::backdrop{animation:fadeIn .3s ease}
 /* long agency descriptions: three lines, tap to read the rest */
 .lede.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
 .lede.clamp.open{display:block}
+/* same-day pickup note in the availability form */
+.form .fine.soon{color:#7a4f00;background:#fff4dc;padding:8px 12px;border-radius:10px}

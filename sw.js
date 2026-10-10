@@ -1,6 +1,6 @@
 /* OPIIUS app service worker (written by tools/build-site.mjs) */
-const V = "op-f138a0b8";
-const SHELL = ["/", "/rentals/", "/get-matched/", "/offline.html", "/assets/site/site.css?v=f138a0b8", "/assets/site/site.js?v=f138a0b8", "/assets/opiius/config.js?v=f138a0b8", "/assets/site/logo/opiius-icon-96.png", "/assets/site/logo/opiius-icon.webp", "/assets/site/media/contour.svg", "/assets/site/media/lights.jpg"];
+const V = "op-ea3d4ae6";
+const SHELL = ["/", "/rentals/", "/get-matched/", "/offline.html", "/assets/site/site.css?v=ea3d4ae6", "/assets/site/site.js?v=ea3d4ae6", "/assets/opiius/config.js?v=ea3d4ae6", "/assets/site/logo/opiius-icon-96.png", "/assets/site/logo/opiius-icon.webp", "/assets/site/media/contour.svg", "/assets/site/media/lights.jpg"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).catch(() => {})); self.skipWaiting(); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {

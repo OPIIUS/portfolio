@@ -248,10 +248,12 @@
       var c=byId[sel.value];if(!c)return;
       $("#aSel").innerHTML='<div class="t">'+(c.photo?'<img src="'+esc(c.photo)+'" alt="">':"")+'</div><div><b>'+esc(c.name)+'</b><span>'+esc(c.agencyName)+" · "+c.seats+" seats"+(c.trans?" · "+esc(c.trans):"")+" · "+inr(c.price)+" / day</span></div>";
       var n=days();$("#aDays").textContent=n>0?"Estimate for "+n+(n===1?" day":" days"):"Estimate";$("#aEst").textContent=n>0?inr(n*c.price):"—";
+      /* same-day or next-day pickup: say plainly that confirming can take a few hours */
+      var soon=$("#aSoon"),tm=new Date();tm.setDate(tm.getDate()+1);if(soon)soon.hidden=!(from.value&&from.value<=iso(tm));
     };
     var open=function(id){
       if(id&&byId[id])sel.value=id;
-      if(!from.value){var d=new Date();d.setDate(d.getDate()+1);from.value=iso(d);d.setDate(d.getDate()+2);to.value=iso(d)}
+      if(!from.value){var d=new Date();d.setDate(d.getDate()+2);from.value=iso(d);d.setDate(d.getDate()+2);to.value=iso(d)}
       $("#aErr").textContent="";resetDone(dlg);fillMe(dlg);update();
       if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","");
     };

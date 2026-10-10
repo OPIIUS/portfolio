@@ -106,7 +106,11 @@ const GROUPS = [
   {id: "scooters", t: "Scooters", nav: "Scooters", e: "No gears · automatic", d: "The easiest way around town.", test: m => m.kind === "bike" && m.type === "Scooter"},
   {id: "motorcycles", t: "Motorcycles", nav: "Motorcycles", e: "Geared · for the hills", d: "From commuters to Royal Enfields for the mountain roads.", test: m => m.kind === "bike" && m.type !== "Scooter"}
 ];
-const AGENCIES = Object.entries(O.AGENCIES).filter(([, a]) => a.real && !a.demo).map(([id, a]) => ({id, ...a, slug: a.slug || id, category: a.category || "self-drive-cars"}));
+/* fastest repliers first (partners.js OPIIUS_REPLY_ORDER); the rest keep their usual order */
+const REPLY_ORDER = ctx.window.OPIIUS_REPLY_ORDER || [];
+const replyRank = a => { const i = REPLY_ORDER.findIndex(k => k === a.id || k === a.slug); return i < 0 ? REPLY_ORDER.length : i; };
+const AGENCIES = Object.entries(O.AGENCIES).filter(([, a]) => a.real && !a.demo).map(([id, a]) => ({id, ...a, slug: a.slug || id, category: a.category || "self-drive-cars"}))
+  .map((a, i) => ({a, i})).sort((x, y) => replyRank(x.a) - replyRank(y.a) || x.i - y.i).map(x => x.a);
 const CARS = Object.values(O.LISTINGS).filter(l => AGENCIES.some(a => a.id === l.agency)).map(l => {
   const m = O.MODELS[l.model], a = AGENCIES.find(x => x.id === l.agency), b = (O.BRANDS[m.brand] || {name: ""}).name;
   const nm = (a.trims && a.trims[l.model]) || m.name;
@@ -258,7 +262,7 @@ function chipsNav(list, extra = []) {
 }
 /* shown in place of a form once a request is sent: the customer stays on the page */
 const donePanel = `<div class="done" hidden role="status" aria-live="polite"><span class="done-ic">${I.check}</span><h3 class="done-t">Request received</h3>
-  <p class="done-s">We've got it. OPIIUS checks with the agency and confirms with you on WhatsApp or a call shortly.</p>
+  <p class="done-s">We've got it. OPIIUS checks with the agency and confirms with you on WhatsApp or a call within 2–3 hours (9 am to 9 pm).</p>
   <div class="done-ref"><span>Your reference</span><b class="num" data-ref-out></b></div><div class="done-sum" data-sum-out></div>
   <p class="fine">Nothing to pay now. You pay the agency directly at pickup.</p><button type="button" class="btn outline block" data-done-close>Done</button></div>`;
 const contactFields = (p) => `<div class="row2"><div><label for="${p}Name">Your name</label><input id="${p}Name" name="name" autocomplete="name" placeholder="Full name" required></div>
@@ -274,7 +278,8 @@ function askDialog(list) {
   <div><label for="aWhere">Pickup</label><select id="aWhere"><option>At the agency</option><option>Guwahati Airport (LGBI)</option><option>Guwahati Railway Station</option><option>My hotel or home</option></select></div>
   ${contactFields("a")}
   <div class="est"><span id="aDays">Estimate</span><b class="num" id="aEst">—</b></div>
-  <p class="fine">Day price × days. The agency confirms the deposit, km limit and pickup point. No booking fee. Your number goes only to OPIIUS and this agency.</p>
+  <p class="fine soon" id="aSoon" hidden>Pickup today or tomorrow? We'll try, but confirming can take 2–3 hours. Booking 1–2 days ahead works best.</p>
+  <p class="fine">Day price × days. We confirm within 2–3 hours (9 am to 9 pm), with the deposit, km limit and pickup point. No booking fee. Your number goes only to OPIIUS and this agency.</p>
   <p class="err" id="aErr" role="alert"></p>
   <button type="submit" class="btn primary block" data-send>${I.check}<span>Send booking request</span></button></div>
   ${donePanel}
@@ -284,7 +289,7 @@ function askDialog(list) {
 function needOptions(selected) {
   return CATS.map(c => `<optgroup label="${esc(c.name)}">${c.subs.map(s => `<option value="${s.id}"${s.id === selected ? " selected" : ""}>${esc(s.name)}</option>`).join("")}</optgroup>`).join("") + `<option value="other">Something else</option>`;
 }
-function matchForm(selected, {title = "Tell us what you need", sub = "We'll find a suitable local agency on OPIIUS and get back to you, usually the same day.", agency = null} = {}) {
+function matchForm(selected, {title = "Tell us what you need", sub = "We'll find a suitable local agency on OPIIUS and get back to you within 2–3 hours (9 am to 9 pm).", agency = null} = {}) {
   return `<div class="panel mpanel"><div class="ask-in"><h3>${esc(title)}</h3><p>${esc(sub)}</p>
   <form class="form" data-match novalidate style="margin-top:18px">${agency ? `<input type="hidden" name="agency" value="${esc(agency.id)}"><input type="hidden" name="agencyName" value="${esc(agency.name)}">` : ""}
     <div class="row2"><div><label for="mNeed">What do you need?</label><select id="mNeed" name="need">${needOptions(selected)}</select></div>
@@ -295,7 +300,7 @@ function matchForm(selected, {title = "Tell us what you need", sub = "We'll find
     <div><label for="mMsg">Anything else? <small>(optional)</small></label><textarea id="mMsg" name="msg" placeholder="Type of car, where you're driving to, pickup point…"></textarea></div>
     <p class="err" role="alert"></p>
     <button type="submit" class="btn primary block" data-send>${I.send}<span>Send request</span></button>
-    <p class="fine">We reply on WhatsApp or a call, with an OPIIUS reference. No booking fee.</p>
+    <p class="fine">We reply on WhatsApp or a call within 2–3 hours (9 am to 9 pm), with an OPIIUS reference. Book 1–2 days ahead for the best choice. No booking fee.</p>
   </form></div>${donePanel}</div>`;
 }
 function agencyBand(title, text) {
@@ -336,7 +341,7 @@ const verifyBand = (kind, noun) => `<section class="sec pine"><div class="wrap">
   <ul class="ticks" style="columns:2 280px;column-gap:40px;display:block">${CHECKS[kind].map(t => `<li style="break-inside:avoid;margin-bottom:12px">${I.check.replace("<svg", '<svg style="color:var(--gold)"')}<span>${esc(t)}</span></li>`).join("")}</ul>
   <p style="margin-top:22px;color:rgba(255,255,255,.75)">Featured placements are paid and always labelled. <b style="color:#fff">Verification is never sold.</b></p></div></section>`;
 const matchSection = (need, h, p) => `<section class="sec" id="match"><div class="wrap matchbox"><div><span class="eyebrow">Get matched</span><h2 style="font-size:clamp(26px,3.4vw,38px);font-weight:600;margin-top:8px">${h}</h2><p class="muted" style="margin-top:12px;max-width:44ch;font-size:16px">${p}</p>
-  <ul class="ticks"><li>${I.check}<span>One request instead of five chats</span></li><li>${I.check}<span>A reply on WhatsApp or a call, with an OPIIUS reference</span></li><li>${I.check}<span>No booking fee</span></li></ul></div>${matchForm(need)}</div></section>`;
+  <ul class="ticks"><li>${I.check}<span>One request instead of five chats</span></li><li>${I.check}<span>A reply on WhatsApp or a call within 2–3 hours, with an OPIIUS reference</span></li><li>${I.check}<span>No booking fee</span></li></ul></div>${matchForm(need)}</div></section>`;
 const askTile = (s, tone = "") => `<a class="tile rv ${tone}" id="${s.id}" href="#match" data-need="${s.id}"><div><span class="ic">${I[s.icon]}</span><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p></div><div class="meta"><span>${s.meta || "Ask for this"}</span><span>${arrow()}</span></div></a>`;
 const GENERAL_FAQ = [
   ["Is OPIIUS a rental company?", "No. OPIIUS is a marketplace of local rental agencies. You deal with the agency directly and pay them, at their price."],
@@ -561,7 +566,7 @@ function suggestions() {
   const typeAgencies = s => s.id === "cars-with-driver" ? AGENCIES.filter(a => drv(a) || a.category === s.id)
     : AGENCIES.filter(a => s.kind ? CARS.some(c => c.a.id === a.id && c.m.kind === s.kind) : a.category === s.id);
   const faq = faqBlock([
-    ["How do I book a car?", "Open an agency, pick a car and tap “Check availability”. Choose your dates and send the request from the page; the agency confirms with you on WhatsApp or a call before you pay them directly."],
+    ["How do I book a car?", "Open an agency, pick a car and tap “Check availability”. Choose your dates and send the request from the page; OPIIUS confirms with you on WhatsApp or a call within 2–3 hours (9 am to 9 pm), and you pay the agency directly at pickup. Booking 1–2 days ahead gives you the most choice."],
     ["What do I need to rent a self-drive car?", "Your original driving licence and a photo ID. Each agency's page lists exactly what it needs."],
     ["Is there a deposit and a km limit?", "Usually, yes. Each agency's page shows its deposit and km limit before you ask."],
     ["Can I take the car to Meghalaya or Arunachal?", "Check the “Out of state” line on the agency's page. Arunachal needs an Inner Line Permit."],
@@ -860,7 +865,7 @@ write("about/index.html", layout({rel: "about/index.html", app: {back: "/", titl
   <div class="pchips st">${prompts.map(([e, t, x]) => `<button type="button" class="pchip" data-prompt="${esc(x)}"><span aria-hidden="true">${e}</span>${esc(t)}</button>`).join("")}</div>
   <form class="askbar st" data-askbar autocomplete="off"><button type="button" class="plus" data-more aria-label="Add dates and details">${I.plus}</button>
     <input name="q" placeholder="Ask for any car, date or trip…" aria-label="Your request" enterkeyhint="send"><button type="submit" class="send" aria-label="Send on WhatsApp">${I.send}</button></form>
-  <p class="askbar-note">We reply on WhatsApp or a call, with an OPIIUS reference. No booking fee.</p>
+  <p class="askbar-note">We reply on WhatsApp or a call within 2–3 hours (9 am to 9 pm). No booking fee.</p>
   <details class="more" id="details"><summary>${I.plus}Add dates, people and budget</summary>${matchForm("self-drive-cars", {title: "Your request"})}</details>
 </div></section>`;
   write("get-matched/index.html", layout({rel: "get-matched/index.html", app: {back: "/", title: "Ask OPIIUS"}, title: "Get matched with a trusted local agency · OPIIUS",

@@ -44,6 +44,17 @@ WhatsApp alerts to your own number (free, via CallMeBot):
 Until the script is updated, the website still works: it also opens WhatsApp for the customer, as before,
 so no request is missed. Once version 2 is live it stops doing that automatically.
 
+## 5. Ask two owners at once (version 3 of the script)
+Owners don't always reply quickly, so each alert can carry two ready-made WhatsApp messages: one to the agency the
+customer picked (or the fastest agency in that city) and one to the next agency in the same city as a backup.
+1. Replace the script with the new `tools/opiius-booking-log.gs` (keep your DASHBOARD_KEY and alert settings).
+2. In the `OWNERS` list, type each owner's WhatsApp number between the quotes, and put the agencies in the order
+   they reply, fastest first. These numbers stay in your private script; they never go on the website.
+3. Deploy > Manage deployments > Edit > New version > Deploy.
+
+In each alert, tap the first link and press send, then the "Backup" link. The message asks the owner to reply YES or NO
+within 30 minutes, and does not include the customer's number: you pass that on to the owner who says yes first.
+
 ## Every day
 - When an alert arrives, open the dashboard, tap WhatsApp next to the customer, and pass the request to the agency.
 - Find its reference in the dashboard and set the status as it happens:
