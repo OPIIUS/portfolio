@@ -1,5 +1,5 @@
 /**
- * OPIIUS booking log: Google Apps Script web app (version 2).
+ * OPIIUS booking log: Google Apps Script web app (version 3).
  *
  * Paste this whole file into Extensions > Apps Script of your OPIIUS Google Sheet (see DASHBOARD-SETUP.md).
  * - opiius.online POSTs one row per booking request, with the customer's name and WhatsApp number,
@@ -7,7 +7,7 @@
  * - dashboard.html reads the rows and updates statuses with your secret key.
  *
  * 1) Change DASHBOARD_KEY below to a long secret only you know (letters and numbers).
- * 2) Fill in the NOTIFY settings below.
+ * 2) Fill in the NOTIFY settings and the OWNERS list below.
  * 3) Deploy > Manage deployments > Edit (pencil) > Version: New version > Deploy. The URL stays the same.
  *    Google asks for permission again (email and outside requests): allow it.
  */
@@ -20,7 +20,21 @@ const CALLMEBOT_APIKEY = "";             // the key CallMeBot sends you (DASHBOA
 const TELEGRAM_TOKEN = "";               // optional: a Telegram bot token from @BotFather
 const TELEGRAM_CHAT = "";                // optional: your chat id with that bot
 
-const VERSION = 2;
+/* ---- agency owners, fastest repliers first ----
+   Each alert carries ready-to-send WhatsApp links for TWO owners: the agency the customer picked (or, for a
+   "get matched" request, the fastest agency in that city) and the next agency in the same city as a backup.
+   Tap a link, press send; the first owner to say yes gets the customer. Keep this list in the order owners reply,
+   fastest first, and keep it here only: owner numbers never go on the website.
+   id = the agency id on the site (shown in the alert as "Agency ID"); phone = WhatsApp number, country code first. */
+const OWNERS = [
+  { id: "rd",                 name: "Real Drive Guwahati", city: "Guwahati", phone: "" },
+  { id: "nextgear-rental",    name: "NextGear Rental",     city: "Guwahati", phone: "" },
+  { id: "car-rental-barama",  name: "Car Rental Barama",   city: "Barama",   phone: "" },
+  { id: "guwahati-rides",     name: "Guwahati Rides",      city: "Guwahati", phone: "" },
+  { id: "saraighat-travels",  name: "Saraighat Travels",   city: "Guwahati", phone: "" }
+];
+
+const VERSION = 3;
 const SHEET = "Bookings";
 const HEAD = ["Received", "Ref", "Type", "Agency ID", "Agency", "Vehicle / trip", "City", "From", "To", "Days",
   "Price/day", "Total", "Pickup", "Budget", "Style", "Device", "Page", "Status", "Note", "Updated", "Customer", "Phone", "Message"];
@@ -82,6 +96,8 @@ function notify_(d, phone) {
     "Customer: " + (d.name || "-") + (phone ? ", +" + (phone.length === 10 ? "91" + phone : phone) : ""),
     phone ? "WhatsApp them: https://wa.me/" + (phone.length === 10 ? "91" + phone : phone) : ""
   ].filter(Boolean);
+  const asks = ownerLinks_(d);
+  if (asks.length) lines.push("", "Ask the owners (tap, then send; first yes gets it):", ...asks);
   const text = lines.join("\n"), sent = [];
   try {
     MailApp.sendEmail(NOTIFY_EMAIL || Session.getEffectiveUser().getEmail(), "OPIIUS " + d.ref + ": " + (d.vehicle || "new request"), text);
@@ -96,6 +112,27 @@ function notify_(d, phone) {
     sent.push("telegram");
   } catch (err) {}
   return sent;
+}
+
+/* WhatsApp links to two owners: the chosen agency (or the fastest in the city) and the next one in the same city.
+   The message has the car, dates and pickup, but not the customer's number: OPIIUS passes that on once an owner says yes. */
+function ownerLinks_(d) {
+  const has = o => digits_(o.phone).length >= 10;
+  const city = String(d.city || "").toLowerCase();
+  const first = OWNERS.find(o => o.id === d.agency && has(o))
+    || OWNERS.find(o => has(o) && (!city || city.indexOf(o.city.toLowerCase()) >= 0));
+  if (!first) return [];
+  const backup = OWNERS.find(o => o !== first && has(o) && o.city === first.city);
+  const ask = (o, isBackup) => {
+    const msg = ["OPIIUS request " + d.ref,
+      d.vehicle ? (d.type === "rental" ? "Car: " : "Need: ") + d.vehicle + (isBackup && d.type === "rental" ? " or similar" : "") : "",
+      d.from ? "Dates: " + d.from + (d.to && d.to !== d.from ? " to " + d.to : "") : "",
+      d.pickup ? "Pickup: " + d.pickup : "",
+      "Is it free? Please reply YES or NO within 30 minutes."].filter(Boolean).join("\n");
+    const ph = digits_(o.phone);
+    return (isBackup ? "Backup, " : "") + o.name + ": https://wa.me/" + (ph.length === 10 ? "91" + ph : ph) + "?text=" + encodeURIComponent(msg);
+  };
+  return [ask(first, first.id !== d.agency && !!d.agency)].concat(backup ? [ask(backup, true)] : []);
 }
 
 /* the dashboard reads and updates here (needs the key); ?ping=1 tells the website this version */
