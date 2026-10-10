@@ -167,7 +167,7 @@ function tabbar() {
 function footer() {
   return `<footer class="ftr"><div class="wrap">
   <div class="cols">
-    <div><a class="logo" href="/">${LOGO}</a><p class="about">Self-drive cars and cars with driver from trusted local rental agencies in Assam. Real photos, clear prices, inquiries on WhatsApp.</p></div>
+    <div><a class="logo" href="/">${LOGO}</a><p class="about">Self-drive cars and cars with driver from trusted local rental agencies in Assam. Clear day prices and terms, booking requests in one tap.</p></div>
     <div><h4>Rentals</h4><ul>
       <li><a href="/rentals/">All rental agencies</a></li><li><a href="${selfDriveUrl}">Self-drive cars in Assam</a></li><li><a href="${driverUrl}">Cars with driver</a></li>
       ${BRAND_LIST.slice(0, 3).map(b => `<li><a href="${urlOf(brandPath(b.k))}">${esc(b.name)} cars</a></li>`).join("")}</ul></div>
@@ -240,7 +240,7 @@ ${tabbar()}
 
 /* ---------- shared blocks ---------- */
 function carCard(c, {showAgency = false} = {}) {
-  const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.sample ? "Sample photo of a " + c.name : c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">${c.sample ? `<span class="badge onph sample" title="Not the agency's own car: a photo of the same model">Sample photo</span>` : ""}`
+  const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.sample ? "Sample photo of a " + c.name : c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">${c.sample ? `<span class="badge onph sample" title="Not the agency's own car: a photo of the same model">Sample photo</span>` : `<span class="badge onph real" title="A photo of the agency's own car">${I.check}Real photo</span>`}`
     : `<div class="nametile"><small>${esc(c.brand)}</small><b>${esc(c.nm)}</b>${c.m.kind === "bike" ? BIKE_LINE : CAR_LINE}</div>`;
   return `<article class="car"><div class="ph">${ph}${c.units > 1 ? `<span class="badge onph">${c.units} in the fleet</span>` : ""}</div>
   <div class="bd"><div class="nm"><small>${esc(c.brand)}</small><h3>${esc(c.nm)}</h3></div>
@@ -385,7 +385,7 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
         <a class="hcard" href="${selfDriveUrl}" draggable="false">
           <video class="vbg" autoplay muted loop playsinline preload="auto" poster="/assets/site/media/lights.jpg" aria-hidden="true"><source src="/assets/site/media/lights.webm" type="video/webm"><source src="/assets/site/media/lights.mp4" type="video/mp4"></video>
           <div class="hc-top"><span class="hc-ic">${I.car}</span><span class="hc-pill">${I.pin}${esc(towns.length ? cityName(towns[0]) + (towns.length > 1 ? ` +${towns.length - 1}` : "") : "Assam")}</span><span class="hc-ic">${I.shield}</span></div>
-          <div class="hc-body"><h2>Self-drive cars</h2><p>${I.tag}${allCars.length ? `From ${inr(minP(allCars))}/day · real photos, prices upfront` : "Real photos, prices upfront"}</p></div>
+          <div class="hc-body"><h2>Self-drive cars</h2><p>${I.tag}${allCars.length ? `From ${inr(minP(allCars))}/day · prices upfront` : "Prices upfront"}</p></div>
           <div class="hc-mid"><span class="hc-th">${thumbs.map(c => `<span><img src="${esc(c.photo)}" alt="" decoding="async"></span>`).join("")}</span><span class="hc-more">${plural(allCars.length, "car")} · ${plural(AGENCIES.filter(a => CARS.some(c => c.a.id === a.id)).length, "agency", "agencies")}</span></div>
           <span class="swipe" data-swipe><span class="knob">${I.chev}</span><b>Choose an agency</b><span class="chev" aria-hidden="true"><i></i><i></i><i></i></span></span>
         </a>
@@ -401,17 +401,17 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
     <div>
       <section class="blk st"><div class="blk-h"><h2>Popular right now</h2><a href="${sdcUrl}">See all</a></div><div class="list">${pop.map(row).join("")}</div></section>
       <section class="blk st"><div class="blk-h"><h2>Quick searches</h2></div><div class="pchips">${quick.map(([e, t, h]) => `<a class="pchip" href="${h}"><span aria-hidden="true">${e}</span>${esc(t)}</a>`).join("")}</div></section>
-      <section class="blk st"><div class="blk-h"><h2>Why OPIIUS</h2></div><ul class="ticks" style="margin:0 2px 8px">${[[I.shield, "Agencies checked before they get the Verified badge"], [I.camera, "Real photos, or a sample photo clearly marked"], [I.tag, "The agency's own price, deposit and km limit upfront"], [I.check, "No booking fee. You pay the agency directly"]].map(([ic, t]) => `<li>${ic}<span>${t}</span></li>`).join("")}</ul></section>
+      <section class="blk st"><div class="blk-h"><h2>Why OPIIUS</h2></div><ul class="ticks" style="margin:0 2px 8px">${[[I.shield, "Agencies checked before they get the Verified badge"], [I.camera, "A “Real photo” tag on cars shown with the agency's own photos"], [I.tag, "The agency's own price, deposit and km limit upfront"], [I.check, "No booking fee. You pay the agency directly"]].map(([ic, t]) => `<li>${ic}<span>${t}</span></li>`).join("")}</ul></section>
     </div>
   </div>
   <section class="hsec"><div class="blk-h"><h2>Local rental agencies</h2><a href="/rentals/">All agencies</a></div>
     <div class="hscroll">${AGENCIES.map(agencyCard).join("")}${joinCard}</div></section>
 </div></section>
 ${brandStrip()}
-${howItWorks([["Pick a car", "Real photos, day price, deposit and km limit, from a local agency."], ["Send a request", "Pick your dates and pickup point here. The agency is told at once."], ["Get confirmed", "The agency confirms on WhatsApp or a call. You pay them at pickup. No booking fee."]])}
+${howItWorks([["Pick a car", "Day price, deposit and km limit, from a local agency."], ["Send a request", "Pick your dates and pickup point here. The agency is told at once."], ["Get confirmed", "The agency confirms on WhatsApp or a call. You pay them at pickup. No booking fee."]])}
 ${askDialog(allCars)}`;
   write("index.html", layout({rel: "index.html", title: "OPIIUS · Rent a car in Assam from trusted local agencies",
-    desc: `Self-drive cars and cars with driver in Assam from verified local rental agencies${allCars.length ? `, from ${inr(minP(allCars))}/day` : ""}. Real photos, clear prices, inquiries on WhatsApp.`,
+    desc: `Self-drive cars and cars with driver in Assam from verified local rental agencies${allCars.length ? `, from ${inr(minP(allCars))}/day` : ""}. Clear day prices, booking requests in one tap.`,
     body, active: "home", extraHead: '\n<link rel="preload" as="image" href="/assets/site/media/lights.jpg">',
     jsonld: [{"@context": "https://schema.org", "@type": "Organization", name: "OPIIUS", url: SITE + "/", areaServed: "Assam", address: {"@type": "PostalAddress", addressLocality: "Guwahati", addressRegion: "Assam", addressCountry: "IN"}, telephone: "+" + WA}]}));
 })();
@@ -587,10 +587,10 @@ function suggestions() {
 ${stickyNav([...cat.subs.map(s => typeAgencies(s).length ? [s.id, s.name] : ["match", s.name, s.id]), ["how", "How it works"], ["faq", "FAQ"]])}
 <div class="wrap">${filterBar()}${sections}</div>
 ${brandStrip("Or select from brand", "See every car of a brand across agencies.")}
-${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Real photos, gearbox, model year and day price. Tap “Check availability”."], ["Get confirmed", "The agency confirms the car and pickup with you. You pay them directly. No booking fee."]])}
+${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Gearbox, model year and day price. Tap “Check availability”."], ["Get confirmed", "The agency confirms the car and pickup with you. You pay them directly. No booking fee."]])}
 <div id="faq">${faq.html}</div>
 ${matchSection("cars-with-driver", "Need something else?", "Need a car with driver, or a car that isn't listed? Tell us the dates and where you're going, and we'll find a local agency.")}
-${agencyBand("Run a rental agency?", "Showcase your cars to customers searching for rentals in Assam: a full profile, real photos, day prices and inquiries with dates. Basic listing is free.")}`;
+${agencyBand("Run a rental agency?", "Showcase your cars to customers searching for rentals in Assam: a full profile, your car photos, day prices and booking requests with dates. Basic listing is free.")}`;
   write("rentals/index.html", layout({rel: "rentals/index.html", app: {back: "/", title: "Rentals"}, title: "Car rentals in Assam · Choose a verified local agency | OPIIUS", active: "rentals",
     desc: `Rent a car in Assam from verified local agencies${allCars.length ? `: ${plural(allCars.length, "car")} from ${inr(minP(allCars))}/day` : ""}. Open an agency to see its whole fleet, prices and terms.`,
     body, og: "/assets/opiius/img/cat-suv.jpg", jsonld: [faq.ld]}));
@@ -610,7 +610,7 @@ for (const b of BRAND_LIST) {
 ${brandStrip("Other brands", "See every car of a brand across agencies.")}
 ${askDialog(list)}`;
   write(rel, layout({rel, app: {back: "/rentals/", title: `${b.name} cars`}, title: `${b.name} cars for rent in Assam from ${inr(minP(list))}/day · OPIIUS`, active: "rentals",
-    desc: `Rent a ${b.name} in Assam: ${list.map(c => c.nm).join(", ")}. Real photos, day prices from ${inr(minP(list))}, availability on WhatsApp.`, body}));
+    desc: `Rent a ${b.name} in Assam: ${list.map(c => c.nm).join(", ")}. Day prices from ${inr(minP(list))}, booking requests in one tap.`, body}));
 }
 
 /* ---------- tours: retired (OPIIUS is rentals only); old links go to Rentals ---------- */
@@ -635,7 +635,7 @@ for (const kind of ["car", "bike"]) for (const city of liveCities(kind)) {
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/rentals/">Rentals</a><span>/</span><span>${esc(sub.name)} in ${esc(cn)}</span></nav>
   <span class="eyebrow">${plural(list.length, kind === "car" ? "car" : "bike")} · ${plural(ags.length, "agency", "agencies")} · from ${inr(minP(list))}/day</span>
   <h1>${esc(sub.name)} in ${esc(cn)}</h1>
-  <p class="lede">${kind === "car" ? "City hatchbacks, compact SUVs and 7-seaters from local agencies. Every car shows a real photo or its model, the day price and the agency behind it. Pick one and send a booking request." : "Scooters and motorcycles from local agencies, with day prices upfront."}</p>
+  <p class="lede">${kind === "car" ? "City hatchbacks, compact SUVs and 7-seaters from local agencies. Every car shows its day price and the agency behind it; cars tagged “Real photo” are shown with the agency's own photo. Pick one and send a booking request." : "Scooters and motorcycles from local agencies, with day prices upfront."}</p>
   <div class="ctas"><button type="button" class="btn primary" data-ask="">Check availability</button><a class="btn outline" href="#guide">Before you rent</a></div>
 </div></section>
 ${chipsNav(list, [["guide", "Before you rent"]])}
@@ -653,7 +653,7 @@ ${faq.html}
 <section class="sec" id="match"><div class="wrap matchbox"><div><span class="eyebrow">Get matched</span><h2 style="font-size:clamp(26px,3.4vw,38px);font-weight:600;margin-top:8px">Didn't find the right car?</h2><p class="muted" style="margin-top:12px">Tell us the dates and the kind of car. We'll check with local agencies and reply on WhatsApp.</p></div>${matchForm(sub.id)}</div></section>
 ${askDialog(list)}`;
   write(rel, layout({rel, app: {back: "/rentals/", title: `${sub.name} · ${cn}`}, title: `${sub.name} in ${cn} from ${inr(minP(list))}/day · OPIIUS`, active: "rentals",
-    desc: `Compare ${plural(list.length, kind === "car" ? "self-drive car" : "bike")} in ${cn} from local agencies: real photos, day prices from ${inr(minP(list))}, inquiries on WhatsApp.`,
+    desc: `Compare ${plural(list.length, kind === "car" ? "self-drive car" : "bike")} in ${cn} from local agencies: day prices from ${inr(minP(list))}, booking requests in one tap.`,
     body, og: (list.find(c => c.photo && !c.sample) || {}).photo || undefined, jsonld: [faq.ld]}));
 }
 
@@ -725,10 +725,10 @@ ${askDialog(list)}` : `<section class="sec mist" id="info"><div class="wrap" sty
 
 /* ---------- agencies index ---------- */
 write("agency/index.html", layout({rel: "agency/index.html", app: {back: "/", title: "Agencies"}, title: "Rental agencies on OPIIUS · Self-drive cars and cars with driver in Assam", active: "",
-  desc: "Local car rental agencies on OPIIUS: profiles with real photos, day prices and terms.",
+  desc: "Local car rental agencies on OPIIUS: profiles with day prices, terms and car photos.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Agencies</span></nav>
   <span class="eyebrow">${plural(AGENCIES.length, "agency", "agencies")} on OPIIUS</span><h1>Local rental agencies on OPIIUS</h1>
-  <p class="lede">Every profile shows real photos, prices and terms. The Verified badge appears once OPIIUS has checked an agency's documents, owner and fleet.</p></div></section>
+  <p class="lede">Every profile shows day prices and terms; cars tagged “Real photo” show the agency's own car. The Verified badge appears once OPIIUS has checked an agency's documents, owner and fleet.</p></div></section>
   <section class="sec"><div class="wrap"><div class="agrid">${AGENCIES.map(agencyCard).join("")}${joinCard}</div></div></section>
   ${agencyBand("Want your agency listed here?", "Basic listing is free. Upgrade for the Verified badge, priority placement and a monthly inquiry report.")}`}));
 
@@ -829,10 +829,10 @@ write("about/index.html", layout({rel: "about/index.html", app: {back: "/", titl
   desc: "OPIIUS is a Guwahati-based marketplace where customers compare local car rental agencies, and agencies showcase their fleets.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>About</span></nav>
   <span class="eyebrow">About OPIIUS</span><h1>Local agencies deserve to be found. Customers deserve to trust who they find.</h1>
-  <p class="lede">Most car rental agencies in Assam are run by small local businesses that live on WhatsApp and Instagram. They're often excellent, and almost impossible to compare. OPIIUS puts them on one marketplace, with real photos, clear prices and a badge that means something.</p></div></section>
+  <p class="lede">Most car rental agencies in Assam are run by small local businesses that live on WhatsApp and Instagram. They're often excellent, and almost impossible to compare. OPIIUS puts them on one marketplace, with clear prices, a “Real photo” tag on actual car photos and a badge that means something.</p></div></section>
 <section class="sec"><div class="wrap two">
   <div class="panel rv"><h2>What OPIIUS does</h2><ul class="ticks">
-    <li>${I.check}<span>Shows local agencies with real photos, prices and terms</span></li><li>${I.check}<span>Checks agencies before they get the Verified badge</span></li>
+    <li>${I.check}<span>Shows local agencies with prices, terms and car photos</span></li><li>${I.check}<span>Checks agencies before they get the Verified badge</span></li>
     <li>${I.check}<span>Passes customer inquiries to agencies with a reference number</span></li><li>${I.check}<span>Follows up when a customer reports a problem</span></li></ul>
     <h3 style="margin-top:26px;font-size:20px">What OPIIUS doesn't do</h3><ul class="ticks x">
     <li>${I.x}<span>Own vehicles. The agency rents you the car and you pay them directly</span></li><li>${I.x}<span>Charge customers a booking fee</span></li><li>${I.x}<span>Sell the Verified badge</span></li></ul></div>

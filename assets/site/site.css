@@ -179,7 +179,9 @@ button{cursor:pointer}
 .badge.feat{background:var(--ink);color:#fff}
 .badge.lst{background:var(--mist);color:var(--ink2)}
 .badge.onph{position:absolute;left:10px;top:10px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--ink)}
-.badge.onph.sample{top:auto;bottom:10px;font-size:11px;padding:4px 9px}
+.badge.onph.sample,.badge.onph.real{top:auto;bottom:10px;font-size:11px;padding:4px 9px}
+.badge.onph.real{background:rgba(225,242,232,.95);color:var(--mint-ink)}
+.badge.onph.real svg{width:12px;height:12px;stroke-width:2.6}
 .badge.onph.lst{background:rgba(255,255,255,.95);color:var(--ink)}
 .badge.onph.ver{color:var(--mint-ink)}
 .hero .badge.fp{background:rgba(216,180,106,.18);color:#f3dfae;border:1px solid rgba(216,180,106,.45)}
