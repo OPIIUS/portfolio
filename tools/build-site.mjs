@@ -77,8 +77,7 @@ const I = {
   sliders: P('<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>'),
   wa: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .1-3.3-.8-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.3.3c-.1.1-.3.3-.1.6.2.3.7 1.2 1.6 2 1.1.9 2 1.2 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.2 1.4z"/></svg>'
 };
-const WORDMARK = fs.readFileSync(path.join(ROOT, "assets/site/logo/opiius-wordmark.svg"), "utf8").replace("<svg ", '<svg class="wm" aria-hidden="true" focusable="false" ');
-const LOGO = `<img class="bdg" src="/assets/site/logo/opiius-icon-96.png" width="40" height="40" alt="">${WORDMARK}<span class="sr">OPIIUS</span>`;
+const LOGO = `<img class="bdg" src="/assets/site/logo/opiius-icon-96.png" width="40" height="40" alt=""><span class="wm">OPIIUS</span>`;
 const CAR_LINE = '<svg viewBox="0 0 200 70" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M8 52h14m36 0h76m36 0h22v-12c0-5-3-8-8-9l-28-5-22-15c-4-3-8-4-13-4H74c-6 0-11 2-15 6L44 26l-24 4c-6 1-10 5-10 11v11"/><circle cx="40" cy="52" r="12"/><circle cx="152" cy="52" r="12"/></svg>';
 const BIKE_LINE = '<svg viewBox="0 0 200 70" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="42" cy="50" r="16"/><circle cx="158" cy="50" r="16"/><path d="M42 50l26-24h44l14 12h-34l-12 12M126 38l32 12M110 26l-8-10h-14M138 22l10 4"/></svg>';
 
@@ -215,13 +214,13 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap">
 <link rel="stylesheet" href="/assets/site/site.css?v=${ASSET_V}">
-<style>/* splash styles live in the page so a stale cached stylesheet can never break it */#splash{display:none}.splash #splash{position:fixed;inset:0;z-index:1000;display:grid!important;place-items:center;background:#f6f7f9;color:#1c3448;animation:spAuto .5s ease 3.2s forwards}#splash.out{animation:spOut .55s cubic-bezier(.22,1,.36,1) forwards}.sp-in{display:flex;flex-direction:column;align-items:center;text-align:center}.sp-medal{width:160px;height:160px;object-fit:contain;filter:drop-shadow(0 22px 30px rgba(28,52,72,.35));opacity:0;transform:scale(.7) rotate(-8deg);animation:spMedal .9s cubic-bezier(.22,1.2,.36,1) .05s forwards,spFloat 3s ease-in-out 1s infinite}@keyframes spMedal{to{opacity:1;transform:none}}@keyframes spFloat{50%{transform:translateY(-6px)}}.sp-wm{height:42px;width:auto;color:#1c3448;margin-top:26px;opacity:0;transform:translateY(10px);animation:spUp .6s ease .45s forwards}.sp-tag{font:400 15px -apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;letter-spacing:-.01em;color:rgba(28,52,72,.65);margin-top:14px;opacity:0;animation:spUp .6s ease .6s forwards}.sp-bar{width:120px;height:3px;border-radius:3px;background:rgba(28,52,72,.12);margin-top:26px;overflow:hidden;opacity:0;animation:spUp .4s ease .7s forwards}.sp-bar i{display:block;height:100%;width:40%;border-radius:3px;background:#3d6386;animation:spLoad 1.1s ease-in-out .9s infinite}@keyframes spUp{to{opacity:1;transform:none}}@keyframes spLoad{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}@keyframes spOut{to{opacity:0;transform:scale(1.04);visibility:hidden}}@keyframes spAuto{to{opacity:0;visibility:hidden}}@media(prefers-reduced-motion:reduce){.sp-medal,.sp-wm,.sp-tag,.sp-bar{opacity:1;transform:none;animation:none}.sp-bar i{animation:none;width:100%}}</style>
+<style>/* splash styles live in the page so a stale cached stylesheet can never break it */#splash{display:none}.splash #splash{position:fixed;inset:0;z-index:1000;display:grid!important;place-items:center;background:#f6f7f9;color:#1c3448;animation:spAuto .5s ease 3.2s forwards}#splash.out{animation:spOut .55s cubic-bezier(.22,1,.36,1) forwards}.sp-in{display:flex;flex-direction:column;align-items:center;text-align:center}.sp-medal{width:160px;height:160px;object-fit:contain;filter:drop-shadow(0 22px 30px rgba(28,52,72,.35));opacity:0;transform:scale(.7) rotate(-8deg);animation:spMedal .9s cubic-bezier(.22,1.2,.36,1) .05s forwards,spFloat 3s ease-in-out 1s infinite}@keyframes spMedal{to{opacity:1;transform:none}}@keyframes spFloat{50%{transform:translateY(-6px)}}.sp-wm{display:block;font:800 40px/1 Inter,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;letter-spacing:.1em;color:#1c3448;margin-top:26px;opacity:0;transform:translateY(10px);animation:spUp .6s ease .45s forwards}.sp-tag{font:400 15px -apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;letter-spacing:-.01em;color:rgba(28,52,72,.65);margin-top:14px;opacity:0;animation:spUp .6s ease .6s forwards}.sp-bar{width:120px;height:3px;border-radius:3px;background:rgba(28,52,72,.12);margin-top:26px;overflow:hidden;opacity:0;animation:spUp .4s ease .7s forwards}.sp-bar i{display:block;height:100%;width:40%;border-radius:3px;background:#3d6386;animation:spLoad 1.1s ease-in-out .9s infinite}@keyframes spUp{to{opacity:1;transform:none}}@keyframes spLoad{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}@keyframes spOut{to{opacity:0;transform:scale(1.04);visibility:hidden}}@keyframes spAuto{to{opacity:0;visibility:hidden}}@media(prefers-reduced-motion:reduce){.sp-medal,.sp-wm,.sp-tag,.sp-bar{opacity:1;transform:none;animation:none}.sp-bar i{animation:none;width:100%}}</style>
 <script>/* OPIIUS splash: first page of each visit only */try{if(!sessionStorage.getItem("op-splash")){document.documentElement.classList.add("splash");sessionStorage.setItem("op-splash","1")}}catch(e){}</script>
 ${jsonld.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join("\n")}${extraHead}
 </head>
 <body>
 <div id="splash" aria-hidden="true" style="display:none"><div class="sp-in">
-  <img class="sp-medal" src="/assets/site/logo/opiius-icon.webp" width="160" height="160" alt="">${WORDMARK.replace('class="wm"', 'class="sp-wm"')}
+  <img class="sp-medal" src="/assets/site/logo/opiius-icon.webp" width="160" height="160" alt=""><span class="sp-wm">OPIIUS</span>
   <div class="sp-tag">Car rentals · Assam</div><div class="sp-bar"><i></i></div>
 </div></div>
 ${header(active, app)}
@@ -240,7 +239,7 @@ ${tabbar()}
 
 /* ---------- shared blocks ---------- */
 function carCard(c, {showAgency = false} = {}) {
-  const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.sample ? "Sample photo of a " + c.name : c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">${c.sample ? `<span class="badge onph sample" title="Not the agency's own car: a photo of the same model">Sample photo</span>` : `<span class="badge onph real" title="A photo of the agency's own car">${I.check}Real photo</span>`}`
+  const ph = c.photo ? `<img src="${esc(c.photo)}" alt="${esc(c.sample ? "Sample photo of a " + c.name : c.a.name + "'s " + c.name)}" loading="lazy" decoding="async">${c.sample ? `<span class="badge onph sample" title="Not the agency's own car: a photo of the same model">Sample photo</span>` : `<span class="badge onph real" title="Verified: a photo of the agency's own car">${I.shield}Verified photo</span>`}`
     : `<div class="nametile"><small>${esc(c.brand)}</small><b>${esc(c.nm)}</b>${c.m.kind === "bike" ? BIKE_LINE : CAR_LINE}</div>`;
   return `<article class="car"><div class="ph">${ph}${c.units > 1 ? `<span class="badge onph">${c.units} in the fleet</span>` : ""}</div>
   <div class="bd"><div class="nm"><small>${esc(c.brand)}</small><h3>${esc(c.nm)}</h3></div>
@@ -249,7 +248,7 @@ function carCard(c, {showAgency = false} = {}) {
     <div class="ft"><div class="price"><b class="num">${inr(c.price)}</b><span>/ day</span></div><button type="button" class="btn dark sm" data-ask="${c.id}">Check availability</button></div></div></article>`;
 }
 function fleetBlocks(list, opts) {
-  return groupsOf(list).map(x => `<section class="catblock" id="${x.g.id}"><div class="head"><div><span class="eyebrow">${esc(x.g.e)}</span><h2>${esc(x.g.t)}</h2><p>${esc(x.g.d)}</p></div>
+  return groupsOf(list).map(x => `<section class="catblock" id="${x.g.id}"><div class="head"><div><span class="eyebrow">${esc(x.g.e)}</span><h2>${esc(x.g.t)}</h2></div>
     <span class="range num">${inr(minP(x.list))}${maxP(x.list) > minP(x.list) ? "–" + inr(maxP(x.list)) : ""} / day</span></div>
     <div class="grid">${x.list.map(c => carCard(c, opts)).join("")}</div></section>`).join("");
 }
@@ -354,7 +353,7 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
   if (!BRAND_LIST.length) return "";
   const item = b => `<a class="brand" href="${urlOf(brandPath(b.k))}">${brandLogo(b)}<span class="bn">${esc(b.name)}</span><span class="bc">${plural(b.cars.length, "car")}</span></a>`;
   const row = BRAND_LIST.map(item).join("");
-  return `<section class="brands"><div class="wrap"><div class="brands-h"><div><span class="eyebrow">Rentals</span><h2>${heading}</h2><p style="margin-top:6px">${sub} Swipe or drag to browse.</p></div>
+  return `<section class="brands"><div class="wrap"><div class="brands-h"><div><span class="eyebrow">Rentals</span><h2>${heading}</h2></div>
     <div class="bnav"><button type="button" data-bscroll="-1" aria-label="Previous brands">${I.arrow.replace("<svg", '<svg style="transform:rotate(180deg)"')}</button><button type="button" data-bscroll="1" aria-label="Next brands">${I.arrow}</button></div></div></div>
   <div class="marquee" aria-label="Car brands"><div class="track">${row}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}${row.replace(/<a class="brand"/g, '<a class="brand" aria-hidden="true" tabindex="-1"')}</div></div></section>`;
 }
@@ -401,14 +400,14 @@ function brandStrip(heading = "Select from brand", sub = "Tap a brand to see its
     <div>
       <section class="blk st"><div class="blk-h"><h2>Popular right now</h2><a href="${sdcUrl}">See all</a></div><div class="list">${pop.map(row).join("")}</div></section>
       <section class="blk st"><div class="blk-h"><h2>Quick searches</h2></div><div class="pchips">${quick.map(([e, t, h]) => `<a class="pchip" href="${h}"><span aria-hidden="true">${e}</span>${esc(t)}</a>`).join("")}</div></section>
-      <section class="blk st"><div class="blk-h"><h2>Why OPIIUS</h2></div><ul class="ticks" style="margin:0 2px 8px">${[[I.shield, "Agencies checked before they get the Verified badge"], [I.camera, "A “Real photo” tag on cars shown with the agency's own photos"], [I.tag, "The agency's own price, deposit and km limit upfront"], [I.check, "No booking fee. You pay the agency directly"]].map(([ic, t]) => `<li>${ic}<span>${t}</span></li>`).join("")}</ul></section>
+      <section class="blk st"><div class="blk-h"><h2>Why OPIIUS</h2></div><ul class="ticks" style="margin:0 2px 8px">${[[I.shield, "Checked local agencies"], [I.tag, "Prices and terms upfront"], [I.check, "No booking fee"]].map(([ic, t]) => `<li>${ic}<span>${t}</span></li>`).join("")}</ul></section>
     </div>
   </div>
   <section class="hsec"><div class="blk-h"><h2>Local rental agencies</h2><a href="/rentals/">All agencies</a></div>
     <div class="hscroll">${AGENCIES.map(agencyCard).join("")}${joinCard}</div></section>
 </div></section>
 ${brandStrip()}
-${howItWorks([["Pick a car", "Day price, deposit and km limit, from a local agency."], ["Send a request", "Pick your dates and pickup point here. The agency is told at once."], ["Get confirmed", "The agency confirms on WhatsApp or a call. You pay them at pickup. No booking fee."]])}
+${howItWorks([["Pick a car", "See the price first."], ["Send a request", "Choose dates and pickup."], ["Get confirmed", "On WhatsApp or a call. Pay at pickup."]])}
 ${askDialog(allCars)}`;
   write("index.html", layout({rel: "index.html", title: "OPIIUS · Rent a car in Assam from trusted local agencies",
     desc: `Self-drive cars and cars with driver in Assam from verified local rental agencies${allCars.length ? `, from ${inr(minP(allCars))}/day` : ""}. Clear day prices, booking requests in one tap.`,
@@ -421,7 +420,7 @@ function agencyRow(a, kind) {
   const list = CARS.filter(c => c.a.id === a.id && (!kind || c.m.kind === kind)), pol = a.policies || {};
   const cover = a.cover ? `/${a.cover}` : (list.find(c => c.photo && !c.sample) || {}).photo;
   const autos = list.filter(c => /auto/i.test(c.trans)).length;
-  const chips = [/agency/i.test(pol.deposit || "") ? "" : /^no /i.test(pol.deposit || "") ? pol.deposit : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : "", drv(a) ? "Cars with driver too" : ""].filter(Boolean);
+  const chips = [/agency/i.test(pol.deposit || "") ? "" : /^no /i.test(pol.deposit || "") ? pol.deposit : `${pol.deposit} deposit`, /agency/i.test(pol.km || "") ? "" : (pol.km || "").split(",")[0], a.delivery ? "Delivery available" : "", autos ? "Automatic available" : "", a.travel ? "Meghalaya & Arunachal allowed" : "", drv(a) ? "Cars with driver too" : ""].filter(Boolean).slice(0, 3);
   return `<a class="arow" href="${urlOf(agencyPath(a))}"><div class="ph" style="position:relative">${cover ? `<img src="${esc(cover)}" alt="${esc(a.coverAlt || a.name)}" loading="lazy"${a.coverPos ? ` style="object-position:${esc(a.coverPos)}"` : ""}>` : `<div class="nametile"><small>${esc(cityName(a.city))}</small><b>${esc(a.name)}</b>${CAR_LINE}</div>`}</div>
   <div class="bd"><div class="badges">${badge(a)}</div><h3>${esc(a.name)}</h3><p class="loc">${I.pin.replace("<svg", '<svg width="16" height="16"')}${esc(a.area ? a.area + ", " : "")}${esc(cityName(a.city))}</p>
     <div class="specs">${chips.map(t => `<span>${esc(t)}</span>`).join("")}</div><p class="fit" hidden></p>
@@ -569,7 +568,7 @@ function suggestions() {
     ...GENERAL_FAQ]);
   const sections = cat.subs.map(s => {
     const ags = typeAgencies(s);
-    return `<section class="atype" id="${s.id}"><div class="atype-h"><span class="ic">${I[s.icon]}</span><div><h2>${esc(s.name)}</h2><p>${esc(s.desc)}</p></div></div>
+    return `<section class="atype" id="${s.id}"><div class="atype-h"><span class="ic">${I[s.icon]}</span><div><h2>${esc(s.name)}</h2></div></div>
       ${ags.length ? `<div class="arows">${ags.map(a => s.id === "cars-with-driver" && drv(a)
           ? filterRow(a, driverRow(a), drvCars(a).map(c => [+c.local, +c.seats || 0]))
           : filterRow(a, agencyRow(a, s.kind), CARS.filter(c => c.a.id === a.id && (!s.kind || c.m.kind === s.kind)).map(c => [c.price, c.m.seats]))).join("")}</div>
@@ -582,12 +581,11 @@ function suggestions() {
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Rentals</span></nav>
   <span class="eyebrow">Rentals · Assam</span>
   <h1>Choose a rental agency</h1>
-  <p class="lede">Pick the type of rental, then open an agency to see its whole fleet, prices and terms.</p>
 </div></section>
 ${stickyNav([...cat.subs.map(s => typeAgencies(s).length ? [s.id, s.name] : ["match", s.name, s.id]), ["how", "How it works"], ["faq", "FAQ"]])}
 <div class="wrap">${filterBar()}${sections}</div>
 ${brandStrip("Or select from brand", "See every car of a brand across agencies.")}
-${howItWorks([["Choose an agency", "Each agency shows its verified badge, terms and price range."], ["Pick a car from its fleet", "Gearbox, model year and day price. Tap “Check availability”."], ["Get confirmed", "The agency confirms the car and pickup with you. You pay them directly. No booking fee."]])}
+${howItWorks([["Choose an agency", "See its prices and terms."], ["Pick a car", "Tap “Check availability”."], ["Get confirmed", "Pay the agency at pickup."]])}
 <div id="faq">${faq.html}</div>
 ${matchSection("cars-with-driver", "Need something else?", "Need a car with driver, or a car that isn't listed? Tell us the dates and where you're going, and we'll find a local agency.")}
 ${agencyBand("Run a rental agency?", "Showcase your cars to customers searching for rentals in Assam: a full profile, your car photos, day prices and booking requests with dates. Basic listing is free.")}`;
@@ -635,7 +633,7 @@ for (const kind of ["car", "bike"]) for (const city of liveCities(kind)) {
   <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/rentals/">Rentals</a><span>/</span><span>${esc(sub.name)} in ${esc(cn)}</span></nav>
   <span class="eyebrow">${plural(list.length, kind === "car" ? "car" : "bike")} · ${plural(ags.length, "agency", "agencies")} · from ${inr(minP(list))}/day</span>
   <h1>${esc(sub.name)} in ${esc(cn)}</h1>
-  <p class="lede">${kind === "car" ? "City hatchbacks, compact SUVs and 7-seaters from local agencies. Every car shows its day price and the agency behind it; cars tagged “Real photo” are shown with the agency's own photo. Pick one and send a booking request." : "Scooters and motorcycles from local agencies, with day prices upfront."}</p>
+  <p class="lede">${kind === "car" ? "Hatchbacks, SUVs and 7-seaters from local agencies, with day prices." : "Scooters and motorcycles from local agencies, with day prices upfront."}</p>
   <div class="ctas"><button type="button" class="btn primary" data-ask="">Check availability</button><a class="btn outline" href="#guide">Before you rent</a></div>
 </div></section>
 ${chipsNav(list, [["guide", "Before you rent"]])}
@@ -685,7 +683,7 @@ for (const a of AGENCIES) {
     <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/agency/">Agencies</a><span>/</span><span>${esc(a.name)}</span></nav>
     <div class="ahead"><span class="mono" aria-hidden="true">${esc(initials(a.name))}</span>${badge(a)}</div>
     <h1 style="max-width:14ch">${esc(a.name)}</h1>
-    <p class="lede">${esc(a.about)}</p>
+    <p class="lede clamp">${esc(a.about)}</p>
     <div class="ctas">${list.length ? `<a class="btn light" href="#${gs[0].g.id}">See the fleet</a><button type="button" class="btn ghost" data-ask="">Check availability</button>${dcars.length ? `<a class="btn ghost" href="#driver">Cars with driver</a>` : ""}`
       : `<a class="btn light" href="#driver">See driver rates</a>`}<button type="button" class="btn ghost like-btn" data-like="${esc(a.id)}" aria-pressed="false">${I.heart}<span class="l0">Like</span><span class="l1">Liked</span></button></div>
     <div class="facts"><div><b class="num">${list.length || dcars.length}</b><span>${list.length ? (list.length === 1 ? "model" : "models") : (dcars.length === 1 ? "car with driver" : "cars with driver")}</span></div><div><b class="num">${inr(lowest)}</b><span>${list.length ? "lowest day price" : "lowest day rate"}</span></div>${maxSeats ? `<div><b class="num">${maxSeats}</b><span>seats, largest</span></div>` : ""}<div><b>${esc(cityName(a.city))}</b><span>pickup city</span></div></div>
@@ -728,7 +726,7 @@ write("agency/index.html", layout({rel: "agency/index.html", app: {back: "/", ti
   desc: "Local car rental agencies on OPIIUS: profiles with day prices, terms and car photos.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>Agencies</span></nav>
   <span class="eyebrow">${plural(AGENCIES.length, "agency", "agencies")} on OPIIUS</span><h1>Local rental agencies on OPIIUS</h1>
-  <p class="lede">Every profile shows day prices and terms; cars tagged “Real photo” show the agency's own car. The Verified badge appears once OPIIUS has checked an agency's documents, owner and fleet.</p></div></section>
+  <p class="lede">Local agencies with their prices and terms.</p></div></section>
   <section class="sec"><div class="wrap"><div class="agrid">${AGENCIES.map(agencyCard).join("")}${joinCard}</div></div></section>
   ${agencyBand("Want your agency listed here?", "Basic listing is free. Upgrade for the Verified badge, priority placement and a monthly inquiry report.")}`}));
 
@@ -829,7 +827,7 @@ write("about/index.html", layout({rel: "about/index.html", app: {back: "/", titl
   desc: "OPIIUS is a Guwahati-based marketplace where customers compare local car rental agencies, and agencies showcase their fleets.",
   body: `<section class="plain-hero"><div class="wrap in"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><span>About</span></nav>
   <span class="eyebrow">About OPIIUS</span><h1>Local agencies deserve to be found. Customers deserve to trust who they find.</h1>
-  <p class="lede">Most car rental agencies in Assam are run by small local businesses that live on WhatsApp and Instagram. They're often excellent, and almost impossible to compare. OPIIUS puts them on one marketplace, with clear prices, a “Real photo” tag on actual car photos and a badge that means something.</p></div></section>
+  <p class="lede">Most car rental agencies in Assam are run by small local businesses that live on WhatsApp and Instagram. They're often excellent, and almost impossible to compare. OPIIUS puts them on one marketplace, with clear prices, a “Verified photo” tag on actual car photos and a badge that means something.</p></div></section>
 <section class="sec"><div class="wrap two">
   <div class="panel rv"><h2>What OPIIUS does</h2><ul class="ticks">
     <li>${I.check}<span>Shows local agencies with prices, terms and car photos</span></li><li>${I.check}<span>Checks agencies before they get the Verified badge</span></li>

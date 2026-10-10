@@ -449,3 +449,5 @@
     setTimeout(function(){var n=f.querySelector("[name=name]");if(n)n.focus({preventScroll:true})},700);
   });
 })();
+/* tap a shortened agency description to read all of it */
+document.querySelectorAll(".lede.clamp").forEach(function(p){p.addEventListener("click",function(){p.classList.toggle("open")})});

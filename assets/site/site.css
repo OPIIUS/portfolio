@@ -66,7 +66,7 @@ button{cursor:pointer}
 .hdr .wrap{height:var(--hdr);display:flex;align-items:center;gap:28px}
 .logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);flex:none}
 .logo .bdg{width:40px;height:40px;border-radius:12px;box-shadow:0 4px 10px -4px rgba(28,52,72,.45)}
-.logo .wm{height:23px;width:auto;display:block;color:#1c3448;margin-top:-2px}
+.logo .wm{font:800 21px/1 var(--f-d);letter-spacing:.09em;color:#1c3448}
 .nav{display:flex;gap:2px;flex:1;min-width:0;justify-content:center}
 .nav a{text-decoration:none;font-weight:500;font-size:14.5px;color:var(--ink2);padding:9px 14px;border-radius:999px;white-space:nowrap;transition:color .2s,background .2s}
 .nav a:hover{color:var(--ink);background:rgba(255,255,255,.7)}
@@ -661,7 +661,7 @@ dialog[open]::backdrop{animation:fadeIn .3s ease}
   /* app bar */
   .ab-ic,.menu-btn,.ab-back{width:38px;height:38px}
   .ab-ic svg,.menu-btn svg,.ab-back svg{width:19px;height:19px}
-  .logo{gap:8px}.logo .bdg{width:34px;height:34px;border-radius:10px}.logo .wm{height:19px}
+  .logo{gap:8px}.logo .bdg{width:34px;height:34px;border-radius:10px}.logo .wm{font-size:18px}
   .hdr.sub .ab-title{font-size:15.5px}
   .mnav a,.mnav .mi{font-size:15.5px;padding:9px 8px}
   .mnav .ic{width:34px;height:34px;border-radius:11px}.mnav .ic svg{width:18px;height:18px}
@@ -867,3 +867,6 @@ dialog[open]::backdrop{animation:fadeIn .3s ease}
 .btn.busy{opacity:.75;pointer-events:none}
 .btn.busy svg{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* long agency descriptions: three lines, tap to read the rest */
+.lede.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+.lede.clamp.open{display:block}

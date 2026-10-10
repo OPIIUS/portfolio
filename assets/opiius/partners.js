@@ -10,6 +10,7 @@ window.OPIIUS_PARTNERS = [
   {
     id: "nextgear-rental", name: "NextGear Rental", city: "guwahati", area: "Zoo Road", lat: 26.165, lon: 91.778, since: 2024,
     pickups: ["Zoo Road, Guwahati"], delivery: false, verified: false,
+    cover: "assets/partners/nextgear-rental/logo-card.jpg", coverAlt: "NextGear Rental logo", coverPos: "50% 50%",
     about: "Hassle-free booking with clean, well-serviced and new cars, from Zoo Road, Guwahati.",
     policies: {deposit: "No security deposit", km: "250–300 km per day, then ₹10 per km", fuel: "Same level as pick-up",
       cancel: "50% refund if cancelled at least 24 hours before pickup. No cancellation after the car is handed over",
