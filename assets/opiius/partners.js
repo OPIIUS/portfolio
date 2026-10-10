@@ -96,10 +96,11 @@ window.OPIIUS_PARTNERS = [
   /* Saraighat Travels: from the owner's onboarding block (Oct 2026). Owner phone numbers removed from "about" (never shown on the site).
      Own photos (Oct 2026): i20 (two), Fronx (sent as "breeza"), the white Thar, the Swift, Dzire and Creta.
      Dzire 1800 and Creta 2700 added Oct 2026 (prices from the owner, with their own photos).
+     Verified (Oct 2026) on the OPIIUS owner's say-so, like Real Drive: the agency sent real photos of its own fleet.
      Baleno, Brezza and Scorpio show internet photos of the same model (sample: true labels them "Sample photo") until the agency sends its own. */
   {
     id: "saraighat-travels", name: "Saraighat Travels", city: "guwahati", area: "Basistha, Barpathar", lat: 26.107, lon: 91.796, since: 2026,
-    pickups: ["Basistha Natun Bazar, Guwahati"], delivery: false, verified: false,
+    pickups: ["Basistha Natun Bazar, Guwahati"], delivery: false, verified: true, verifiedOn: "Oct 2026",
     about: "Self-drive cars in Basistha, Guwahati, for daily, weekly and monthly rentals. Drive and explore Guwahati, or ask about their tour packages and road trips.",
     policies: {deposit: "No security deposit", docs: "Original driving licence, Aadhaar card and PAN card", km: "300 km per day", fuel: "Same level as pick-up", cancel: "", docs: "Original driving licence and Aadhaar card"},
     trims: {thar: "Thar"}, cover: "assets/partners/saraighat-travels/banner.jpg", coverAlt: "Saraighat Rentals banner: safe, reliable, comfortable", coverPos: "50% 50%",
