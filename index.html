@@ -6,7 +6,7 @@
 <title>OPIIUS · Websites, software &amp; automation by Priyangshu Nath</title>
 <meta name="description" content="I build websites, web apps and AI automation for businesses in Guwahati and anywhere online. See my work, run my live demos and book a project.">
 <link rel="canonical" href="https://opiius.online/">
-<meta name="theme-color" content="#eef1f5">
+<meta name="theme-color" content="#ececec">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="OPIIUS">
 <meta property="og:title" content="OPIIUS · Websites, software & automation by Priyangshu Nath">
@@ -19,338 +19,600 @@
 <link rel="apple-touch-icon" href="/assets/site/logo/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800&display=swap">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"OPIIUS","url":"https://opiius.online/","founder":{"@type":"Person","name":"Priyangshu Nath"},"areaServed":"India","address":{"@type":"PostalAddress","addressLocality":"Guwahati","addressRegion":"Assam","addressCountry":"IN"},"email":"priyangshunath190@gmail.com","telephone":"+918638830682"}</script>
 <style>
 :root{
-  --bg:#eef1f5;--paper:#fff;--mist:#f4f6f9;--mist2:#e6eaf0;--line:rgba(16,32,48,.08);--line2:#d5dbe3;
-  --ink:#15202b;--ink2:#3a4654;--dim:#6b7684;
-  --brand:#1f3a52;--brand2:#16293b;--brand3:#3d6386;--brand-soft:#e2eaf3;
-  --mint:#e1f2e8;--mint-ink:#1f6b45;--peach:#fbe7da;--peach-ink:#9a4a1c;--sky:#e0ebf8;--sky-ink:#245585;--lilac:#ebe6f8;--lilac-ink:#5a3f9a;--sand:#f6eedb;--sand-ink:#7a5b12;
-  --wa:#1fa855;--bad:#c0392b;
-  --sh:0 1px 2px rgba(16,32,48,.04),0 4px 16px rgba(16,32,48,.05);
-  --sh-lift:0 2px 4px rgba(16,32,48,.05),0 18px 40px -8px rgba(16,32,48,.16);
-  --out:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.22,1.2,.36,1);
+  --bg:#ececec;--paper:#f6f6f6;--white:#fff;--line:rgba(0,0,0,.07);
+  --ink:#0e0e10;--ink2:#3b3b40;--dim:#6f6f75;--faint:#b8b8bd;
+  --red:#ff3d1f;--red2:#e02a0c;--red-soft:#ffe6e0;
+  --dark:#111113;--dark2:#1b1b1e;--dark3:#26262a;
+  --wa:#1fa855;--bad:#d93a22;
+  --sh:0 1px 2px rgba(0,0,0,.04),0 10px 30px -12px rgba(0,0,0,.12);
+  --sh2:0 2px 6px rgba(0,0,0,.06),0 30px 60px -20px rgba(0,0,0,.28);
+  --out:cubic-bezier(.22,1,.36,1);
+  --r:28px;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:76px;background:var(--bg)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
-h1,h2,h3,h4{margin:0;letter-spacing:-.025em;line-height:1.1;text-wrap:balance}
-p{margin:0}a{color:inherit}img{display:block;max-width:100%}
+html{scroll-behavior:smooth;scroll-padding-top:90px;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.55 Urbanist,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+h1,h2,h3,h4{margin:0;font-weight:600;letter-spacing:-.03em;line-height:1.05;text-wrap:balance}
+p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
 button,input,select,textarea{font:inherit;color:inherit}
-.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
-@media(max-width:560px){.wrap{padding:0 14px}}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--brand3)}
-.dot{width:8px;height:8px;border-radius:50%;background:#2fb46c;box-shadow:0 0 0 4px rgba(47,180,108,.18)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:999px;padding:13px 22px;font-weight:600;font-size:15.5px;text-decoration:none;white-space:nowrap;cursor:pointer;transition:transform .35s var(--spring),background .2s,box-shadow .25s}
-.btn:active{transform:scale(.96)}
-.btn svg{width:18px;height:18px}
-.btn.primary{background:var(--brand);color:#fff;box-shadow:0 8px 18px -10px rgba(31,58,82,.7)}
-.btn.primary:hover{background:var(--brand2)}
-.btn.outline{background:var(--paper);border-color:var(--line2)}
-.btn.wa{background:var(--wa);color:#fff}
+button{cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 22px;border-radius:999px;border:0;font-weight:600;font-size:15px;white-space:nowrap;transition:transform .25s var(--out),background .2s,box-shadow .25s}
+.btn:active{transform:scale(.97)}
+.btn.dark{background:var(--ink);color:#fff;box-shadow:0 8px 20px -8px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.12)}
+.btn.dark:hover{background:#26262a}
+.btn.light{background:#fff;color:var(--ink);box-shadow:var(--sh)}
+.btn.light:hover{box-shadow:var(--sh2)}
+.btn.red{background:linear-gradient(180deg,#ff5a3c,var(--red2));color:#fff;box-shadow:0 10px 24px -10px rgba(224,42,12,.7),inset 0 1px 0 rgba(255,255,255,.25)}
 .btn.block{width:100%}
-/* header */
-.hdr{position:sticky;top:0;z-index:50;background:rgba(238,241,245,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:box-shadow .3s}
-.hdr.up{box-shadow:0 1px 0 var(--line),0 6px 20px -12px rgba(16,32,48,.18)}
-.hdr .wrap{height:62px;display:flex;align-items:center;gap:20px}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex:none}
-.logo img{width:38px;height:38px;border-radius:11px;box-shadow:0 4px 10px -4px rgba(28,52,72,.45)}
-.logo b{font:800 19px Inter;letter-spacing:.02em;color:#1c3448}
-.logo small{display:block;font:500 11.5px Inter;color:var(--dim);letter-spacing:0;margin-top:-2px}
-.nav{display:flex;gap:2px;margin-left:auto}
-.nav a{text-decoration:none;font-weight:500;font-size:14.5px;color:var(--ink2);padding:9px 14px;border-radius:999px}
-.nav a:hover{background:rgba(255,255,255,.75);color:var(--ink)}
-.hdr .btn{padding:10px 18px;font-size:14.5px}
-@media(max-width:820px){.nav{display:none}.hdr .btn{margin-left:auto}}
+.btn .ar{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;font-size:13px;margin-right:-10px}
+.btn.wa{background:var(--wa);color:#fff}
+
+/* section label + headings */
+.lbl{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 13px;border-radius:999px;background:#fff;box-shadow:var(--sh);font-size:13px;font-weight:600;color:var(--ink2)}
+.lbl::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.h2{font-size:clamp(34px,5.2vw,60px);margin-top:18px}
+.h2 .f{color:var(--faint)}
+.lead{color:var(--dim);font-size:17px;max-width:46ch;margin-top:16px}
+.sec{padding:110px 0 0}
+.sec-h{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+
+/* fixed pill nav */
+.nav{position:fixed;z-index:50;top:16px;left:50%;transform:translateX(-50%);width:min(760px,calc(100% - 24px));display:flex;align-items:center;gap:6px;padding:6px 6px 6px 14px;border-radius:999px;background:rgba(255,255,255,.72);backdrop-filter:saturate(1.6) blur(16px);-webkit-backdrop-filter:saturate(1.6) blur(16px);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 8px 30px -12px rgba(0,0,0,.18);transition:box-shadow .3s}
+.nav.up{box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 14px 40px -14px rgba(0,0,0,.3)}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:17px;letter-spacing:-.02em;margin-right:auto}
+.logo img{width:30px;height:30px;border-radius:9px}
+.nav .links{display:flex;gap:2px}
+.nav .links a{padding:8px 12px;border-radius:999px;font-size:14.5px;font-weight:600;color:var(--ink2);transition:background .2s,color .2s}
+.nav .links a:hover{background:rgba(0,0,0,.05);color:var(--ink)}
+.nav .btn{height:42px;padding:0 18px;font-size:14px}
+.menu{display:none;width:42px;height:42px;border-radius:50%;border:0;background:rgba(0,0,0,.05);place-items:center}
+.menu span{display:block;width:16px;height:2px;border-radius:2px;background:var(--ink);box-shadow:0 5px 0 var(--ink),0 -5px 0 var(--ink);transition:.25s}
+.nav.open .menu span{box-shadow:none;transform:rotate(45deg)}
+.nav.open .menu span::after{content:"";display:block;width:16px;height:2px;border-radius:2px;background:var(--ink);transform:rotate(-90deg)}
+
 /* hero */
-.hero{padding:40px 0 10px}
-.hero h1{font-size:clamp(34px,6vw,64px);font-weight:800;letter-spacing:-.04em;margin-top:14px;max-width:15ch}
-.hero h1 em{font-style:normal;color:var(--brand3)}
-.hero .lede{font-size:clamp(16px,1.9vw,19px);color:var(--ink2);max-width:58ch;margin-top:16px}
-.hero .ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
-.hero .note{font-size:13.5px;color:var(--dim);margin-top:14px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:30px}
-.stat{background:var(--paper);border-radius:20px;box-shadow:var(--sh);padding:16px 18px}
-.stat b{display:block;font:800 26px Inter;letter-spacing:-.03em}
-.stat span{font-size:13px;color:var(--dim)}
-@media(max-width:700px){.stats{grid-template-columns:1fr 1fr}.hero{padding-top:22px}}
-/* sections */
-.sec{padding:56px 0 8px}
-.sec-h{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
-.sec-h h2{font-size:clamp(26px,3.6vw,40px);font-weight:800;margin-top:6px}
-.sec-h p{color:var(--dim);max-width:56ch;margin-top:8px}
-@media(max-width:700px){.sec{padding-top:40px}}
+.hero{position:relative;margin:12px;min-height:min(calc(100svh - 24px),820px);border-radius:var(--r);overflow:hidden;display:grid;place-items:center;text-align:center;
+  background:radial-gradient(120% 90% at 18% 20%,#fbfbfb 0,#ececee 45%,#dcdcdf 100%)}
+.hero .ghost{position:absolute;left:-12%;top:-30%;width:62%;aspect-ratio:1;border-radius:50%;border:70px solid #fff;filter:blur(40px);opacity:.9}
+.art{position:absolute;aspect-ratio:1;pointer-events:none}
+.hero .art{width:min(900px,72vw);right:-30vw;top:50%;transform:translateY(-50%)}
+@media (min-width:1500px){.hero .art{right:-22vw}}
+.art svg{width:100%;height:100%;overflow:visible}
+.spin{transform-box:fill-box;transform-origin:center;animation:spin 48s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-c{position:relative;z-index:2;padding:130px 20px 120px;max-width:980px}
+.tag{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px 0 6px;border-radius:999px;background:#fff;box-shadow:var(--sh);font-size:13.5px;font-weight:600}
+.tag i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;font-style:normal;font-size:12px}
+.hero h1{font-size:clamp(42px,6.6vw,88px);font-weight:600;letter-spacing:-.045em;line-height:1.02;margin-top:22px}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:.08em;vertical-align:-.1em;height:.9em;width:2.1em;border-radius:999px;margin-left:.12em;
+  background:radial-gradient(120% 140% at 30% 0%,#ff8a6b 0,var(--red) 40%,#b51800 100%);box-shadow:inset 0 2px 6px rgba(255,255,255,.4),inset 0 -6px 14px rgba(0,0,0,.25),0 14px 30px -10px rgba(224,42,12,.6)}
+.pill b{display:grid;place-items:center;width:.42em;height:.42em;border-radius:.11em;background:#fff;box-shadow:0 6px 12px -4px rgba(0,0,0,.35);animation:bob 4s ease-in-out infinite}
+.pill b:nth-child(1){transform:rotate(-14deg) translateY(-.06em)}
+.pill b:nth-child(2){transform:rotate(8deg) translateY(.08em);animation-delay:-1.3s}
+.pill b:nth-child(3){transform:rotate(-6deg) translateY(-.03em);animation-delay:-2.6s}
+.pill svg{width:62%;height:62%}
+@keyframes bob{50%{translate:0 -.05em}}
+.hero .sub{color:var(--ink2);font-size:clamp(16px,1.6vw,18px);max-width:52ch;margin:24px auto 0}
+.ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.notch{position:absolute;z-index:3;left:50%;bottom:0;transform:translateX(-50%);height:52px;padding:0 26px;display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:22px 22px 0 0;font-size:13.5px;font-weight:600}
+.notch::before,.notch::after{content:"";position:absolute;bottom:0;width:22px;height:22px;background:radial-gradient(circle at 0 0,transparent 21.5px,var(--bg) 22px)}
+.notch::before{left:-22px;transform:scaleX(-1)}.notch::after{right:-22px}
+.notch::before{background:radial-gradient(circle at 0 0,transparent 21.5px,var(--bg) 22px)}
+.notch i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:var(--sh);color:var(--red);font-style:normal;font-size:12px;animation:nudge 1.8s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(3px)}}
+
+/* hero entrance */
+.js .st{opacity:0;transform:translateY(18px);filter:blur(6px);animation:in .9s var(--out) forwards;animation-delay:calc(var(--i,0)*.09s + .1s)}
+@keyframes in{to{opacity:1;transform:none;filter:none}}
+.js .rv{opacity:0;transform:translateY(26px);transition:opacity .8s var(--out),transform .8s var(--out);transition-delay:var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+
+/* about */
+.about{display:grid;grid-template-columns:1.15fr 1fr;gap:16px;margin-top:44px}
+.card{background:var(--paper);border-radius:var(--r);box-shadow:var(--sh);padding:28px;position:relative;overflow:hidden}
+.globe{background:radial-gradient(90% 70% at 50% 110%,#2b2b30 0,#121214 55%,#0b0b0c 100%);color:#fff;min-height:440px;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:44px}
+.globe canvas{position:absolute;left:50%;top:44%;transform:translateX(-50%);width:118%;aspect-ratio:1;max-width:none}
+.globe .av{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:#cfcfd4}
+.globe .av::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(255,61,31,.2);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(255,61,31,0)}}
+.globe h3{font-size:clamp(26px,3vw,34px);margin-top:12px;font-weight:600}
+.globe h3 em{font-style:normal;color:var(--red)}
+.globe .btn{margin-top:20px;height:42px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(8px)}
+.globe .btn:hover{background:rgba(255,255,255,.16)}
+.stack{display:grid;gap:16px}
+.cnt p{font-size:18px;font-weight:600;max-width:30ch;line-height:1.35}
+.cnt .big{position:absolute;right:20px;bottom:-14px;font-size:clamp(90px,11vw,150px);font-weight:700;letter-spacing:-.06em;line-height:1;background:linear-gradient(180deg,#dedee1,rgba(222,222,225,.2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cnt .gh{display:flex;align-items:center;gap:8px;margin-top:44px;font-size:14px;font-weight:700}
+.cnt .gh svg{width:20px;height:20px}
+.cnt .gh small{display:block;color:var(--dim);font-weight:500;font-size:12.5px}
+.quote{display:grid;grid-template-columns:130px 1fr;gap:22px;align-items:center}
+.quote .ph{aspect-ratio:3/4;border-radius:18px;background:radial-gradient(120% 90% at 30% 10%,#ff8a6b,var(--red) 45%,#a31500);display:grid;place-items:center;box-shadow:0 18px 30px -14px rgba(224,42,12,.7)}
+.quote .ph span{font-size:38px;font-weight:700;color:#fff;letter-spacing:-.04em}
+.quote q{display:block;font-size:19px;font-weight:600;line-height:1.35;quotes:none}
+.quote q::before{content:"\201C";display:block;font-size:46px;line-height:.6;color:var(--faint);margin-bottom:6px}
+.quote .by{margin-top:14px;font-size:13.5px;color:var(--dim)}.quote .by b{color:var(--ink)}
+
+/* marquee */
+.mq{display:flex;align-items:center;gap:30px;margin-top:40px}
+.mq small{flex:none;font-size:13px;color:var(--dim);font-weight:600;max-width:110px;line-height:1.3}
+.mq .vp{overflow:hidden;flex:1;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.mq .tr{display:flex;gap:44px;width:max-content;animation:mq 34s linear infinite}
+.mq .tr span{font-size:22px;font-weight:700;color:#a4a4aa;letter-spacing:-.03em;white-space:nowrap}
+@keyframes mq{to{transform:translateX(-50%)}}
+
 /* services */
-.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:900px){.svc{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.svc{grid-template-columns:1fr}}
-.sv{position:relative;display:flex;flex-direction:column;gap:10px;border-radius:24px;padding:20px;background:var(--mint)}
-.sv .ic{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--mint-ink)}
-.sv .ic svg{width:22px;height:22px}
-.sv h3{font-size:20px;font-weight:700;margin-top:4px}
-.sv p{font-size:14.5px;color:var(--ink2)}
-.sv ul{margin:2px 0 0;padding:0;list-style:none;display:grid;gap:5px;font-size:14px;color:var(--ink2)}
-.sv li{display:flex;gap:8px}.sv li:before{content:"✓";font-weight:700;color:var(--mint-ink)}
-.sv .go{margin-top:auto;padding-top:8px}
-.sv .go button{border:0;background:#fff;border-radius:999px;padding:10px 16px;font-weight:600;font-size:14px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;transition:transform .35s var(--spring)}
-.sv .go button:active{transform:scale(.95)}
-.sv.peach{background:var(--peach)}.sv.peach .ic,.sv.peach li:before{color:var(--peach-ink)}
-.sv.sky{background:var(--sky)}.sv.sky .ic,.sv.sky li:before{color:var(--sky-ink)}
-.sv.lilac{background:var(--lilac)}.sv.lilac .ic,.sv.lilac li:before{color:var(--lilac-ink)}
-.sv.sand{background:var(--sand)}.sv.sand .ic,.sv.sand li:before{color:var(--sand-ink)}
-.sv.mist{background:var(--mist2)}.sv.mist .ic,.sv.mist li:before{color:var(--brand3)}
-/* process */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;counter-reset:s;padding:0;margin:0}
-@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.steps{grid-template-columns:1fr}}
-.steps li{list-style:none;background:var(--paper);border-radius:22px;box-shadow:var(--sh);padding:18px}
-.steps li:before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;font-size:15px}
-.steps b{display:block;font-size:17px;margin-top:12px}
-.steps span{display:block;color:var(--dim);font-size:14.5px;margin-top:4px}
+.svc{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
+.svc .side{position:sticky;top:110px}
+.svc .side .btn{margin-top:28px}
+.accs{display:grid;gap:12px}
+.acc{border-radius:24px;background:var(--paper);box-shadow:var(--sh);transition:background .45s var(--out),color .45s,box-shadow .45s}
+.acc-h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;width:100%;padding:24px 26px;background:none;border:0;text-align:left}
+.acc-h h3{font-size:clamp(22px,2.4vw,28px);font-weight:500}
+.acc-h span{font-size:14px;font-weight:600;color:var(--dim);margin-top:4px}
+.acc-b{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--out)}
+.acc-b>div{overflow:hidden}
+.acc-b .in{padding:0 26px 26px}
+.acc-b p{color:#bdbdc3;max-width:44ch}
+.chips2{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.chips2 span{padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);font-size:13.5px;color:#e8e8ec}
+.acc .go{margin-top:22px;height:42px;font-size:14px}
+.acc.open{background:radial-gradient(120% 120% at 100% 0,#2a2a2f 0,var(--dark) 55%);color:#fff;box-shadow:var(--sh2)}
+.acc.open .acc-h span{color:#9a9aa1}
+.acc.open .acc-b{grid-template-rows:1fr}
+
 /* work */
-.work{display:grid;gap:16px}
-.wk{display:grid;grid-template-columns:1.1fr 1fr;background:var(--paper);border-radius:26px;box-shadow:var(--sh);overflow:hidden}
-.wk .shot{background:var(--mist);padding:22px;display:flex;align-items:center;justify-content:center;gap:14px;min-height:260px}
-.wk .shot img{border-radius:12px;box-shadow:0 16px 36px -14px rgba(16,32,48,.35)}
-.wk .shot img.ph{width:46%;max-width:210px;border-radius:18px}
-.wk .shot img.dt{width:100%}
-.wk .bd{padding:24px 26px;display:flex;flex-direction:column;gap:10px}
-.wk h3{font-size:22px;font-weight:700}
-.wk p{color:var(--ink2);font-size:15px}
-.wk .built{font-size:14px;color:var(--dim)}
-.wk .built b{color:var(--ink2)}
+.work{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.wk{background:var(--paper);border-radius:var(--r);box-shadow:var(--sh);padding:12px;display:flex;flex-direction:column;transition:transform .5s var(--out),box-shadow .5s}
+.wk:hover{transform:translateY(-4px);box-shadow:var(--sh2)}
+.wk .shot{position:relative;aspect-ratio:16/11;border-radius:20px;overflow:hidden;background:radial-gradient(100% 100% at 50% 0,#fafafa,#dedee2);display:flex;justify-content:center;align-items:flex-end;gap:14px;padding:26px 20px 0}
+.wk .shot.dk{background:radial-gradient(100% 100% at 50% 0,#2c2c31,#0f0f11)}
+.wk .shot.rd{background:radial-gradient(110% 100% at 30% 0,#ff8a6b,var(--red) 45%,#a31500)}
+.wk .ph{width:34%;max-width:190px;border-radius:18px 18px 0 0;box-shadow:0 20px 40px -14px rgba(0,0,0,.45);transition:transform .6s var(--out)}
+.wk .ph:nth-child(2){transform:translateY(22px)}
+.wk:hover .ph{transform:translateY(-6px)}.wk:hover .ph:nth-child(2){transform:translateY(12px)}
+.wk .dt{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:12px 12px 0 0;box-shadow:0 20px 40px -14px rgba(0,0,0,.45);transition:transform .6s var(--out)}
+.wk:hover .dt{transform:scale(1.025)}
+.wk .dt+.ph{position:absolute;right:7%;bottom:-6%;width:24%}
+.wk .bd{padding:20px 14px 14px;display:flex;flex-direction:column;flex:1}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
-.tag{font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;background:var(--mist);color:var(--ink2)}
-.tag.live{background:var(--mint);color:var(--mint-ink)}
-.tag.past{background:var(--sand);color:var(--sand-ink)}
-.lnk{font-weight:600;color:var(--brand3);text-decoration:none;font-size:14.5px}
-.lnk:hover{text-decoration:underline}
-@media(max-width:820px){.wk{grid-template-columns:1fr}.wk .shot{min-height:0;padding:16px}.wk .bd{padding:18px}}
-/* demos */
+.tags span{padding:5px 11px;border-radius:999px;background:#fff;font-size:12.5px;font-weight:600;color:var(--ink2);box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.tags .live{background:#e3f5ea;color:#1c7a45}.tags .past{background:var(--red-soft);color:var(--red2)}
+.wk h3{font-size:24px;margin-top:14px;font-weight:600}
+.wk p{color:var(--dim);margin-top:8px;font-size:15.5px}
+.wk .lnk{display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:16px;font-weight:700;font-size:15px}
+.wk .lnk i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-style:normal;font-size:13px;transition:transform .3s var(--out)}
+.wk .lnk:hover i{transform:rotate(-45deg)}
+.wk .muted{margin-top:auto;padding-top:16px;font-size:14px;color:var(--dim)}
+
+/* process */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.steps li{background:var(--paper);border-radius:24px;box-shadow:var(--sh);padding:24px;position:relative}
+.steps li .n{display:inline-grid;place-items:center;height:30px;padding:0 12px;border-radius:999px;background:#fff;box-shadow:var(--sh);font-size:13px;font-weight:700}
+.steps li:first-child .n{background:var(--red);color:#fff}
+.steps li b{display:block;font-size:20px;font-weight:600;letter-spacing:-.02em;margin-top:40px}
+.steps li span{display:block;color:var(--dim);margin-top:8px;font-size:15px}
+.steps li:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:28px;z-index:2;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px}
+
+/* why */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.why .card{padding:24px}
+.why .ic{width:44px;height:44px;border-radius:14px;background:#fff;box-shadow:var(--sh);display:grid;place-items:center;color:var(--red)}
+.why .ic svg{width:22px;height:22px}
+.why h3{font-size:20px;margin-top:22px;font-weight:600}
+.why p{color:var(--dim);margin-top:6px;font-size:15px}
+
+/* dark demos block */
+.darkb{margin:110px 12px 0;border-radius:var(--r);background:radial-gradient(70% 50% at 85% 0,rgba(255,61,31,.22),transparent 70%),radial-gradient(60% 40% at 0 100%,rgba(255,61,31,.12),transparent 70%),#0c0c0d;color:#fff;padding:96px 0 90px;overflow:hidden}
+.darkb .lbl{background:rgba(255,255,255,.08);color:#e5e5ea;box-shadow:none;border:1px solid rgba(255,255,255,.1)}
+.darkb .lbl::before{box-shadow:0 0 0 3px rgba(255,61,31,.25)}
+.darkb .h2 .f{color:#55555c}
+.darkb .lead{color:#a2a2a9}
+.nums{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.08);border-radius:24px;overflow:hidden;margin-bottom:40px}
+.nums div{background:#141416;padding:26px 24px}
+.nums b{display:block;font-size:clamp(44px,5.5vw,72px);font-weight:600;letter-spacing:-.05em;line-height:1}
+.nums b em{font-style:normal;color:var(--red)}
+.nums div>span{display:block;color:#9b9ba2;margin-top:8px;font-size:14.5px}
 .demos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:900px){.demos{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.demos{grid-template-columns:1fr}}
-.dm{display:flex;flex-direction:column;background:var(--paper);border-radius:22px;box-shadow:var(--sh);overflow:hidden;text-decoration:none;transition:transform .4s var(--spring),box-shadow .3s}
-@media(hover:hover){.dm:hover{transform:translateY(-3px);box-shadow:var(--sh-lift)}}
-.dm img{aspect-ratio:16/10;object-fit:cover;object-position:top;width:100%;background:var(--mist2)}
-.dm .bd{padding:14px 16px 16px}
-.dm small{font-size:12px;font-weight:600;color:var(--brand3)}
-.dm h3{font-size:18px;font-weight:700;margin-top:3px}
-.dm p{font-size:14px;color:var(--dim);margin-top:4px}
-.dm .run{display:inline-block;margin-top:8px;font-weight:600;font-size:14px;color:var(--mint-ink)}
-.also{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
-@media(max-width:820px){.also{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.also{grid-template-columns:1fr}}
-.mini{background:var(--paper);border-radius:18px;box-shadow:var(--sh);padding:16px}
-.mini h4{font-size:15.5px}.mini p{font-size:13.5px;color:var(--dim);margin-top:4px}
-/* booking */
-.book{display:grid;grid-template-columns:1fr 1.15fr;gap:24px;align-items:start}
-@media(max-width:900px){.book{grid-template-columns:1fr}}
-.panel{background:var(--paper);border-radius:26px;box-shadow:var(--sh-lift);padding:24px}
-@media(max-width:560px){.panel{padding:18px}}
-.form{display:grid;gap:13px;grid-template-columns:minmax(0,1fr)}
+.dm{background:var(--dark2);border:1px solid rgba(255,255,255,.06);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:transform .5s var(--out),border-color .3s,background .3s}
+.dm:hover{transform:translateY(-4px);border-color:rgba(255,61,31,.45);background:#202024}
+.dm .im{margin:10px 10px 0;border-radius:16px;overflow:hidden;aspect-ratio:16/10;background:#26262a}
+.dm img{width:100%;height:100%;object-fit:cover;object-position:top left;transition:transform .7s var(--out)}
+.dm:hover img{transform:scale(1.04)}
+.dm .bd{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
+.dm small{color:var(--red);font-weight:700;font-size:12.5px;letter-spacing:.02em}
+.dm h3{font-size:22px;margin-top:6px;font-weight:600}
+.dm p{color:#a2a2a9;font-size:15px;margin-top:6px}
+.dm .run{margin-top:auto;padding-top:14px;font-weight:700;font-size:14.5px;display:inline-flex;align-items:center;gap:8px}
+.dm .run i{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--red);font-style:normal;font-size:12px}
+.also{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.07);border-radius:24px;overflow:hidden;margin-top:14px}
+.also div{background:#121214;padding:20px 22px}
+.also h4{font-size:17px;font-weight:600;letter-spacing:-.02em}
+.also p{color:#8d8d94;font-size:14.5px;margin-top:4px}
+
+/* faq */
+.faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:start}
+.qs{display:grid;gap:10px}
+.q{background:var(--paper);border-radius:20px;box-shadow:var(--sh)}
+.q button{display:flex;justify-content:space-between;align-items:center;gap:16px;width:100%;padding:20px 22px;background:none;border:0;text-align:left;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.q button i{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:var(--sh);font-style:normal;transition:transform .4s var(--out),background .3s,color .3s}
+.q.open button i{transform:rotate(45deg);background:var(--red);color:#fff}
+.q .a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--out)}
+.q .a>div{overflow:hidden}
+.q .a p{padding:0 22px 20px;color:var(--dim);max-width:60ch}
+.q.open .a{grid-template-rows:1fr}
+
+/* book (CTA + form) */
+.cta{position:relative;margin:110px 12px 0;border-radius:var(--r);overflow:hidden;background:radial-gradient(100% 90% at 10% 10%,#fbfbfb 0,#ececee 45%,#dcdcdf 100%);padding:90px 0}
+.cta .art{width:min(880px,74vw);right:-26vw;top:50%;transform:translateY(-50%)}
+.book{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center}
+.book h2{font-size:clamp(38px,5.4vw,66px)}
+.ticks{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px}
+.ticks li{display:flex;align-items:center;gap:12px;font-weight:600}
+.ticks i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:var(--sh);color:var(--red);font-style:normal;font-size:13px}
+.panel{background:rgba(255,255,255,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:var(--r);box-shadow:var(--sh2);padding:26px}
+.form{display:grid;gap:14px}
+.form label{display:block;font-size:13.5px;font-weight:700;margin-bottom:7px}
+.form label small{color:var(--dim);font-weight:500}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:520px){.row2{grid-template-columns:1fr}}
-label{display:block;font-weight:600;font-size:13px;color:var(--ink2);margin-bottom:5px}
-label small{font-weight:500;color:var(--dim)}
-input,select,textarea{width:100%;padding:12px 14px;border:1.5px solid transparent;border-radius:14px;background:var(--mist);font-size:16px;transition:border-color .2s,box-shadow .2s,background .2s}
-input:focus,select:focus,textarea:focus{outline:none;background:#fff;border-color:var(--brand3);box-shadow:0 0 0 4px rgba(61,99,134,.14)}
-textarea{min-height:100px;resize:vertical}
-.err{color:var(--bad);font-weight:600;font-size:13.5px;min-height:1px}
-.fine{font-size:12.5px;color:var(--dim)}
+.form input,.form select,.form textarea{width:100%;height:48px;border-radius:14px;border:1px solid transparent;background:#f1f1f2;padding:0 14px;font-size:16px;font-weight:500;outline:none;transition:border-color .2s,background .2s,box-shadow .2s}
+.form textarea{height:96px;padding:12px 14px;resize:vertical}
+.form input:focus,.form select:focus,.form textarea:focus{background:#fff;border-color:var(--ink);box-shadow:0 0 0 4px rgba(0,0,0,.06)}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{border:0;background:var(--mist);border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:500;cursor:pointer;transition:background .2s,color .2s,transform .3s var(--spring)}
-.chip[aria-pressed="true"]{background:var(--brand);color:#fff}
-.chip:active{transform:scale(.94)}
-.why{display:grid;gap:12px;margin-top:18px;padding:0;list-style:none}
-.why li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
-.why i{flex:none;width:32px;height:32px;border-radius:50%;background:var(--mint);color:var(--mint-ink);display:grid;place-items:center;font-style:normal;font-weight:700}
-.done{display:grid;gap:12px;justify-items:center;text-align:center;padding:10px 0}
-.done[hidden],.form[hidden]{display:none}
-.done .ok{width:64px;height:64px;border-radius:50%;background:var(--mint);color:var(--mint-ink);display:grid;place-items:center;font-size:30px;font-weight:700;animation:pop .5s var(--spring)}
-@keyframes pop{from{transform:scale(.6);opacity:0}}
-.done h3{font-size:22px}.done p{color:var(--dim);max-width:40ch}
-.ref{display:flex;justify-content:space-between;width:100%;background:var(--mist);border-radius:14px;padding:12px 14px;font-size:13.5px;color:var(--dim)}
-.ref b{color:var(--ink);font-size:16px;letter-spacing:.02em}
-/* contact + footer */
-.contact{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-@media(max-width:820px){.contact{grid-template-columns:1fr 1fr}}
-.ct{display:flex;flex-direction:column;gap:4px;background:var(--paper);border-radius:20px;box-shadow:var(--sh);padding:16px;text-decoration:none;transition:transform .35s var(--spring)}
-.ct:active{transform:scale(.97)}
-.ct small{font-size:12.5px;color:var(--dim);font-weight:600}.ct b{font-size:15px;letter-spacing:-.01em;overflow-wrap:anywhere}
-footer{padding:40px 0 calc(40px + env(safe-area-inset-bottom));color:var(--dim);font-size:13px}
-footer .wrap{display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:18px}
-/* motion */
-@media(prefers-reduced-motion:no-preference){
-  .js .rv{opacity:0;transform:translateY(16px);transition:opacity .55s var(--out),transform .6s var(--out);transition-delay:var(--d,0s)}
-  .js .rv.in{opacity:1;transform:none}
-  .js .st{animation:rise .6s var(--out) both;animation-delay:calc(var(--i,0) * 60ms + 40ms)}
+.chip{height:36px;padding:0 13px;border-radius:999px;border:1px solid rgba(0,0,0,.08);background:#fff;font-size:13.5px;font-weight:600;transition:background .2s,color .2s,border-color .2s,transform .2s var(--out)}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.err{color:var(--bad);font-size:14px;font-weight:600;min-height:0}
+.err:empty{display:none}
+.fine{font-size:13px;color:var(--dim);text-align:center}
+.done{display:grid;justify-items:center;text-align:center;gap:10px;padding:20px 6px}
+.done[hidden]{display:none}
+.done .ok{width:60px;height:60px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:28px;box-shadow:0 14px 30px -10px rgba(224,42,12,.7);animation:pop .6s var(--out)}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+.done h3{font-size:28px}
+.done p{color:var(--dim)}
+.ref{background:#f1f1f2;border-radius:14px;padding:10px 18px;margin:6px 0}
+.ref span{display:block;font-size:12px;color:var(--dim)}.ref b{font-size:18px;letter-spacing:.02em}
+#bWa:empty{display:none}
+
+/* footer */
+footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var(--sh);padding:56px 0 0;overflow:hidden}
+.ft{display:grid;grid-template-columns:1.2fr repeat(4,1fr);gap:16px}
+.ft .me p{color:var(--dim);margin-top:12px;max-width:30ch;font-size:15px}
+.ct{display:block;background:#fff;border-radius:20px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:transform .3s var(--out),box-shadow .3s}
+.ct:hover{transform:translateY(-3px);box-shadow:var(--sh)}
+.ct small{display:block;font-size:12.5px;color:var(--dim);font-weight:600}
+.ct b{display:block;margin-top:6px;font-size:15.5px;font-weight:700;overflow-wrap:anywhere}
+.fb{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:40px;font-size:13.5px;color:var(--dim)}
+.word{font-size:clamp(90px,24vw,330px);font-weight:700;letter-spacing:-.07em;line-height:.74;text-align:center;margin-top:24px;background:linear-gradient(180deg,#d4d4d8 10%,rgba(236,236,236,0) 95%);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none;transform:translateY(8%)}
+
+
+/* tablet */
+@media (max-width:980px){
+  .nav .links{display:none}
+  .menu{display:grid}
+  .nav.open{border-radius:26px;flex-wrap:wrap}
+  .nav.open .links{display:grid;order:9;width:100%;padding:8px 2px 4px}
+  .nav.open .links a{padding:12px 10px;font-size:16px}
+  .about,.svc,.faq,.book{grid-template-columns:1fr}
+  .svc .side{position:static}
+  .steps{grid-template-columns:1fr 1fr}
+  .steps li:nth-child(2)::after{display:none}
+  .why,.demos{grid-template-columns:1fr 1fr}
+  .also{grid-template-columns:1fr 1fr}
+  .nums{grid-template-columns:1fr 1fr}
+  .ft{grid-template-columns:1fr 1fr}.ft .me{grid-column:1/-1}
+  .ft .ct b{font-size:15px}
+  .hero .art{width:120vw;right:-78vw;top:auto;bottom:-46vw;transform:none}
+  .cta .art{width:130vw;right:-70vw;top:auto;bottom:-40vw;transform:none}
 }
-@keyframes rise{from{opacity:0;transform:translateY(16px)}}
-/* phone: floating book button */
-.fab{display:none}
-@media(max-width:820px){.fab{display:flex;position:fixed;left:14px;right:14px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:40;justify-content:center;box-shadow:0 14px 30px -10px rgba(22,41,59,.6);transition:transform .4s var(--out),opacity .3s}.fab.hide{transform:translateY(140%);opacity:0}body{padding-bottom:70px}}
+/* phone */
+@media (max-width:640px){
+  body{font-size:15.5px}
+  .sec{padding-top:76px}
+  .darkb,.cta{margin-top:76px}
+  .darkb{padding:64px 0 60px}
+  .cta{padding:56px 0}
+  .hero{margin:8px;border-radius:24px;min-height:auto}
+  .hero-c{padding:112px 16px 110px}
+  .hero .art{width:150vw;right:-100vw;bottom:-96vw}
+  .ctas .btn{flex:1 1 auto}
+  .about{margin-top:32px}
+  .globe{min-height:380px}
+  .globe canvas{width:150%;top:48%}
+  .quote{grid-template-columns:86px 1fr;gap:16px}
+  .quote q{font-size:17px}
+  .work,.why,.demos,.also,.steps{grid-template-columns:1fr}
+  .steps li:not(:last-child)::after{display:none}
+  .steps li b{margin-top:22px}
+  .row2{grid-template-columns:1fr}
+  .panel{padding:20px}
+  .mq{flex-direction:column;align-items:flex-start;gap:14px}.mq .vp{width:100%}
+  .mq small{max-width:none}
+  .card{padding:22px}
+  .acc-h{padding:20px}.acc-b .in{padding:0 20px 22px}
+  .darkb,.cta,footer{margin-left:8px;margin-right:8px;border-radius:24px}
+  .nums div{padding:20px 18px}
+  .ft{grid-template-columns:1fr}
+  footer{margin-bottom:8px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .st,.js .rv{opacity:1;transform:none;filter:none}
+  html{scroll-behavior:auto}
+}
 </style>
 </head>
 <body>
-<header class="hdr"><div class="wrap">
-  <a class="logo" href="/" aria-label="OPIIUS home"><img src="/assets/site/logo/opiius-icon-96.png" width="38" height="38" alt=""><span><b>OPIIUS</b><small>by Priyangshu Nath</small></span></a>
-  <nav class="nav" aria-label="Main"><a href="#services">Services</a><a href="#work">Work</a><a href="#demos">Live demos</a><a href="#contact">Contact</a></nav>
-  <a class="btn primary" href="#book">Book a project</a>
-</div></header>
+<!-- shared gradients for the glossy ring art -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gGlow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".22" stop-color="#ff6a45"/><stop offset=".45" stop-color="#e01e00"/><stop offset=".62" stop-color="#18181a"/><stop offset=".82" stop-color="#ff4a26"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <linearGradient id="gCore" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff3d1f"/><stop offset=".35" stop-color="#0b0b0c"/><stop offset=".55" stop-color="#2a0a04"/><stop offset=".75" stop-color="#ff3d1f"/><stop offset="1" stop-color="#ffd2c4"/></linearGradient>
+    <filter id="fSoft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="16"/></filter>
+    <filter id="fEdge" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>
+    <symbol id="ring" viewBox="0 0 600 600" overflow="visible"><g class="spin">
+      <circle cx="300" cy="300" r="215" fill="none" stroke="url(#gGlow)" stroke-width="150" filter="url(#fSoft)" opacity=".95"/>
+      <circle cx="300" cy="300" r="215" fill="none" stroke="url(#gCore)" stroke-width="70" filter="url(#fEdge)"/>
+      <circle cx="300" cy="300" r="262" fill="none" stroke="#fff" stroke-width="7" opacity=".75" filter="url(#fEdge)"/>
+      <circle cx="300" cy="300" r="176" fill="none" stroke="#ffb39f" stroke-width="4" opacity=".7" filter="url(#fEdge)"/>
+    </g></symbol>
+  </defs>
+</svg>
+
+<nav class="nav" id="nav" aria-label="Main">
+  <a class="logo" href="/" aria-label="OPIIUS home"><img src="/assets/site/logo/opiius-icon-96.png" width="30" height="30" alt="">OPIIUS</a>
+  <div class="links"><a href="#about">About</a><a href="#services">Services</a><a href="#work">Work</a><a href="#demos">Demos</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
+  <a class="btn dark" href="#book">Book a project</a>
+  <button class="menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span></button>
+</nav>
 
 <main id="main">
-<section class="hero"><div class="wrap">
-  <span class="eyebrow st"><span class="dot"></span>Taking new projects · Guwahati &amp; remote</span>
-  <h1 class="st">Websites, software and <em>automation</em> that actually ship.</h1>
-  <p class="lede st">I'm Priyangshu Nath, a fullstack and automation developer. Bring me a business problem, like enquiries going cold, hours of manual data entry or no online presence, and I hand back something running.</p>
-  <div class="ctas st"><a class="btn primary" href="#book">Book a project</a><a class="btn outline" href="#work">See my work</a><a class="btn outline" href="#demos">Try my live demos</a></div>
-  <p class="note st">Freelance or contract · Next.js, React, Node, Python · No agency overhead</p>
-  <div class="stats st">
-    <div class="stat"><b>11</b><span>projects shipped</span></div>
-    <div class="stat"><b>6</b><span>systems you can run here</span></div>
-    <div class="stat"><b>2</b><span>live for real clients</span></div>
-    <div class="stat"><b>100%</b><span>self-taught</span></div>
+<section class="hero">
+  <div class="ghost" aria-hidden="true"></div>
+  <div class="art" aria-hidden="true"><svg><use href="#ring"/></svg></div>
+  <div class="hero-c">
+    <span class="tag st"><i>✦</i>Websites · Software · Automation</span>
+    <h1 class="st">Your website &amp; software team, on demand<span class="pill" aria-hidden="true"><b><svg viewBox="0 0 24 24" fill="none" stroke="#ff3d1f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg></b><b><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 17.5h2"/></svg></b><b><svg viewBox="0 0 24 24" fill="#2b6cff"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></b></span></h1>
+    <p class="sub st">I'm Priyangshu Nath. From idea to launch, I design, build and ship websites, web apps and automation that your customers actually use.</p>
+    <div class="ctas st"><a class="btn dark" href="#book">Book a project</a><a class="btn light" href="#work">See my work</a></div>
+  </div>
+  <a class="notch" href="#about">Scroll for more <i>↓</i></a>
+</section>
+
+<section class="sec" id="about"><div class="wrap">
+  <span class="lbl rv">About me</span>
+  <h2 class="h2 rv">Human-centred software,<br><span class="f">built to actually ship.</span></h2>
+  <div class="about">
+    <div class="card globe rv">
+      <span class="av">Available for projects worldwide</span>
+      <h3>Based in <em>Guwahati, India</em></h3>
+      <a class="btn" href="#book">Start a project</a>
+      <canvas id="globe" aria-hidden="true"></canvas>
+    </div>
+    <div class="stack">
+      <div class="card cnt rv">
+        <p>11 projects shipped, from simple business sites to AI systems, with 2 live for real clients.</p>
+        <a class="gh" href="https://github.com/OPIIUS" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17.3 4.8 18.3 5.1 18.3 5.1c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg><span>github.com/OPIIUS<small>Code and projects</small></span></a>
+        <span class="big" aria-hidden="true">11+</span>
+      </div>
+      <div class="card quote rv">
+        <div class="ph" aria-hidden="true"><span>PN</span></div>
+        <div><q>The best software disappears. You just notice the work getting done.</q><p class="by"><b>Priyangshu Nath</b> · Founder, OPIIUS</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="mq rv"><small>Built with tools I use every day</small><div class="vp"><div class="tr" aria-hidden="true">
+    <span>Next.js</span><span>React</span><span>Node.js</span><span>Python</span><span>Supabase</span><span>PostgreSQL</span><span>Three.js</span><span>Kotlin</span><span>Tailwind</span><span>WhatsApp API</span><span>Apps Script</span><span>ffmpeg</span>
+    <span>Next.js</span><span>React</span><span>Node.js</span><span>Python</span><span>Supabase</span><span>PostgreSQL</span><span>Three.js</span><span>Kotlin</span><span>Tailwind</span><span>WhatsApp API</span><span>Apps Script</span><span>ffmpeg</span>
+  </div></div><p class="sr">Built with Next.js, React, Node.js, Python, Supabase, PostgreSQL, Three.js, Kotlin, Tailwind, the WhatsApp API, Apps Script and ffmpeg.</p></div>
+</div></section>
+
+<section class="sec" id="services"><div class="wrap svc">
+  <div class="side">
+    <span class="lbl rv">Services</span>
+    <h2 class="h2 rv">End-to-end<br>websites &amp; software</h2>
+    <p class="lead rv">I turn a business problem into something running: planned, designed, built and put live, then looked after.</p>
+    <a class="btn dark rv" href="#book">Book a project <span class="ar">→</span></a>
+  </div>
+  <div class="accs">
+    <div class="acc open rv"><button class="acc-h" type="button" aria-expanded="true"><h3>Business websites</h3><span>(01)</span></button>
+      <div class="acc-b"><div><div class="in"><p>A fast, mobile-first site that brings you enquiries.</p><div class="chips2"><span>Your services, prices and photos</span><span>WhatsApp and call buttons</span><span>Enquiry form</span><span>Found on Google, hosted for you</span></div><button class="btn red go" type="button" data-svc="Business website">Book this →</button></div></div></div></div>
+    <div class="acc rv"><button class="acc-h" type="button" aria-expanded="false"><h3>Web apps &amp; software</h3><span>(02)</span></button>
+      <div class="acc-b"><div><div class="in"><p>Tools your business runs on, built around how you work.</p><div class="chips2"><span>Booking systems and marketplaces</span><span>Dashboards, CRMs and admin panels</span><span>Logins, roles, database, payments</span></div><button class="btn red go" type="button" data-svc="Web app / software">Book this →</button></div></div></div></div>
+    <div class="acc rv"><button class="acc-h" type="button" aria-expanded="false"><h3>AI automation &amp; chatbots</h3><span>(03)</span></button>
+      <div class="acc-b"><div><div class="in"><p>Take the repetitive work off your plate.</p><div class="chips2"><span>Lead capture and follow-up reminders</span><span>WhatsApp bots that answer and book</span><span>Invoice reading, reports, data clean-up</span></div><button class="btn red go" type="button" data-svc="AI automation / chatbot">Book this →</button></div></div></div></div>
+    <div class="acc rv"><button class="acc-h" type="button" aria-expanded="false"><h3>App-style sites &amp; Android</h3><span>(04)</span></button>
+      <div class="acc-b"><div><div class="in"><p>Feels like an app, installs from the browser.</p><div class="chips2"><span>Installable sites (PWA) with offline mode</span><span>Android builds for the Play Store</span><span>Smooth, app-like design</span></div><button class="btn red go" type="button" data-svc="App-style site / Android app">Book this →</button></div></div></div></div>
+    <div class="acc rv"><button class="acc-h" type="button" aria-expanded="false"><h3>Video ads &amp; motion graphics</h3><span>(05)</span></button>
+      <div class="acc-b"><div><div class="in"><p>Short vertical ads that stop the scroll.</p><div class="chips2"><span>Instagram Reels and WhatsApp status ads</span><span>Animated text, phone and product scenes</span><span>Status posters to match</span></div><button class="btn red go" type="button" data-svc="Video ad / motion graphics">Book this →</button></div></div></div></div>
+    <div class="acc rv"><button class="acc-h" type="button" aria-expanded="false"><h3>Redesigns &amp; fixes</h3><span>(06)</span></button>
+      <div class="acc-b"><div><div class="in"><p>Make an old site fast, clean and easy to use.</p><div class="chips2"><span>Mobile layout and speed fixes</span><span>New look, same content</span><span>Ongoing updates and support</span></div><button class="btn red go" type="button" data-svc="Redesign / fixes">Book this →</button></div></div></div></div>
   </div>
 </div></section>
 
-<section class="sec" id="services"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">Services</span><h2>What I can build for you</h2><p>Every project starts with what you need it to do. Pick one to send me a request.</p></div></div>
-  <div class="svc">
-    <div class="sv rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2.5"/><path d="M3 9h18M8 21h8"/></svg></span><h3>Business websites</h3><p>A fast, mobile-first site that brings you enquiries.</p><ul><li>Your services, prices and photos</li><li>WhatsApp and call buttons, enquiry form</li><li>Found on Google, hosted for you</li></ul><div class="go"><button type="button" data-svc="Business website">Book this →</button></div></div>
-    <div class="sv sky rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="16" r="3"/><path d="m20.2 18.2 1.8 1.8"/></svg></span><h3>Web apps &amp; software</h3><p>Tools your business runs on, built around how you work.</p><ul><li>Booking systems and marketplaces</li><li>Dashboards, CRMs and admin panels</li><li>Logins, roles, database, payments</li></ul><div class="go"><button type="button" data-svc="Web app / software">Book this →</button></div></div>
-    <div class="sv lilac rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><rect x="7" y="7" width="10" height="10" rx="3"/><path d="M10 12h4"/></svg></span><h3>AI automation &amp; chatbots</h3><p>Take the repetitive work off your plate.</p><ul><li>Lead capture and follow-up reminders</li><li>WhatsApp bots that answer and book</li><li>Invoice reading, reports, data clean-up</li></ul><div class="go"><button type="button" data-svc="AI automation / chatbot">Book this →</button></div></div>
-    <div class="sv peach rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span><h3>App-style sites &amp; Android</h3><p>Feels like an app, installs from the browser.</p><ul><li>Installable sites (PWA) with offline mode</li><li>Android builds when you need the Play Store</li><li>Smooth, app-like design</li></ul><div class="go"><button type="button" data-svc="App-style site / Android app">Book this →</button></div></div>
-    <div class="sv sand rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="14" rx="2.5"/><path d="m17 10 4-2.5v9L17 14"/></svg></span><h3>Video ads &amp; motion graphics</h3><p>Short vertical ads that stop the scroll.</p><ul><li>Instagram Reels and WhatsApp status ads</li><li>Animated text, phone and product scenes</li><li>Status posters to match</li></ul><div class="go"><button type="button" data-svc="Video ad / motion graphics">Book this →</button></div></div>
-    <div class="sv mist rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="m14 6 3 3"/></svg></span><h3>Redesigns &amp; fixes</h3><p>Make an old site fast, clean and easy to use.</p><ul><li>Mobile layout and speed fixes</li><li>New look without losing your content</li><li>Ongoing updates and support</li></ul><div class="go"><button type="button" data-svc="Redesign / fixes">Book this →</button></div></div>
+<section class="sec" id="work"><div class="wrap">
+  <div class="sec-h"><div><span class="lbl rv">Selected work</span><h2 class="h2 rv">Things I've built<br><span class="f">and shipped.</span></h2></div><a class="btn light rv" href="#demos">Try the live demos</a></div>
+  <div class="work">
+    <article class="wk rv"><div class="shot rd"><img class="ph" src="/assets/studio/opiius-home.jpg" alt="OPIIUS car rental marketplace, home screen" loading="lazy"><img class="ph" src="/assets/studio/opiius-ask.jpg" alt="OPIIUS request screen" loading="lazy"></div>
+      <div class="bd"><div class="tags"><span class="past">Ran live · 2026</span><span>Marketplace</span><span>Installable app</span></div>
+        <h3>OPIIUS car rentals</h3>
+        <p>A marketplace where people compared local car rental agencies in Guwahati and Barama and sent booking requests without leaving the page. I built it, signed up 5 agencies with 62 cars, and ran it, with owner alerts, a bookings dashboard and the ads that promoted it.</p>
+        <p class="muted">Closed in November 2026</p></div></article>
+    <article class="wk rv"><div class="shot"><img class="ph" src="/shots/borewell.jpg" alt="A.S Borewell site on a phone" loading="lazy"></div>
+      <div class="bd"><div class="tags"><span class="live">Live · real client</span><span>HTML/CSS/JS</span><span>WhatsApp</span></div>
+        <h3>A.S Borewell</h3>
+        <p>A borewell contractor in Guwahati was reachable only by word of mouth. Now customers pick a service and the enquiry lands in his WhatsApp with an order code, so nothing gets lost.</p>
+        <a class="lnk" href="https://asborewell.netlify.app" target="_blank" rel="noopener">View live site <i>↗</i></a></div></article>
+    <article class="wk rv"><div class="shot dk"><img class="dt" src="/shots/opius.jpg" alt="OPIUS interior design marketplace" loading="lazy"><img class="ph" src="/shots/opiusapp.jpg" alt="OPIUS mobile app" loading="lazy"></div>
+      <div class="bd"><div class="tags"><span class="live">Live</span><span>3D / WebGL</span><span>Mobile app</span></div>
+        <h3>OPIUS interiors</h3>
+        <p>Browse a finished room, then buy every product in it. Rooms load as 360° 3D models you can spin in the browser. A desktop marketplace plus a 10-screen mobile app.</p>
+        <a class="lnk" href="https://opius-guwahati.netlify.app/" target="_blank" rel="noopener">View live site <i>↗</i></a></div></article>
+    <article class="wk rv"><div class="shot"><img class="dt" src="/shots/collabpay.jpg" alt="CollabPay dashboard" loading="lazy"></div>
+      <div class="bd"><div class="tags"><span class="live">Live</span><span>Next.js 14</span><span>Supabase</span></div>
+        <h3>CollabPay</h3>
+        <p>A creator monetisation SaaS: creators track earnings, brands book them, admins moderate. Real authentication and database, three separate dashboards.</p>
+        <p class="muted">Deployed · full walkthrough on request</p></div></article>
+    <article class="wk rv"><div class="shot dk"><img class="dt" src="/shots/enquiry.jpg" alt="Enquiry Desk dashboard" loading="lazy"></div>
+      <div class="bd"><div class="tags"><span>Automation</span><span>Python</span><span>Multi-client</span></div>
+        <h3>Enquiry Desk</h3>
+        <p>Logs every enquiry, values it, and pushes the ones going cold to the top with a "waiting 34 days" badge. One config file re-skins it for any client.</p>
+        <p class="muted">Screenshot shows demo data · live demo on request</p></div></article>
+    <article class="wk rv"><div class="shot"><img class="dt" src="/shots/luitpar.jpg" alt="Coaching institute compliance site" loading="lazy"></div>
+      <div class="bd"><div class="tags"><span>Compliance</span><span>Template</span></div>
+        <h3>Coaching institute site</h3>
+        <p>The Assam Coaching Institutes Act, 2025 makes every centre publish fees, refunds and registration details. A site template that covers it, re-skinnable in minutes.</p>
+        <a class="lnk" href="/coaching/">Open the demo site <i>↗</i></a></div></article>
   </div>
 </div></section>
 
 <section class="sec" id="process"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">How it works</span><h2>From idea to live, step by step</h2></div></div>
+  <div class="sec-h"><div><span class="lbl rv">How it works</span><h2 class="h2 rv">From idea<br><span class="f">to live.</span></h2></div><p class="lead rv">No jargon and no surprises. You always know the price, the timeline and where things stand.</p></div>
   <ol class="steps">
-    <li class="rv"><b>Tell me the problem</b><span>Send the form below or message me. The problem, not a spec.</span></li>
-    <li class="rv"><b>Get a plan and price</b><span>I tell you honestly what it takes, the price and the timeline, before any work starts.</span></li>
-    <li class="rv"><b>Watch it being built</b><span>You get a live preview link and see progress as it happens.</span></li>
-    <li class="rv"><b>Launch and support</b><span>I put it live, hand over everything, and stay around for changes.</span></li>
+    <li class="rv"><span class="n">01</span><b>Tell me the problem</b><span>Send the form or message me. The problem, not a spec.</span></li>
+    <li class="rv"><span class="n">02</span><b>Get a plan and price</b><span>What it takes, the price and the timeline, before any work starts.</span></li>
+    <li class="rv"><span class="n">03</span><b>Watch it being built</b><span>A live preview link, so you see progress as it happens.</span></li>
+    <li class="rv"><span class="n">04</span><b>Launch and support</b><span>I put it live, hand over everything, and stay around for changes.</span></li>
   </ol>
 </div></section>
 
-<section class="sec" id="work"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">Selected work</span><h2>Things I've built and shipped</h2></div></div>
-  <div class="work">
-    <article class="wk rv"><div class="shot"><img class="ph" src="/assets/studio/opiius-home.jpg" alt="OPIIUS car rental marketplace, home screen on a phone" loading="lazy"><img class="ph" src="/assets/studio/opiius-ask.jpg" alt="OPIIUS request screen on a phone" loading="lazy"></div>
-      <div class="bd"><div class="tags"><span class="tag past">Ran live · 2026</span><span class="tag">Marketplace</span><span class="tag">Installable app</span><span class="tag">Static site generator</span></div>
-        <h3>OPIIUS: a car rental marketplace for Assam</h3>
-        <p>A marketplace where people compared local car rental agencies in Guwahati and Barama and sent booking requests without leaving the page. I built it, signed up the agencies and ran it.</p>
-        <p class="built"><b>Built:</b> 5 agencies and 62 cars listed, search with filters and "near me", on-page booking requests with instant owner alerts, a private bookings dashboard, an installable app with offline mode, and the video ads and posters that promoted it.</p></div></article>
-    <article class="wk rv"><div class="shot"><img class="ph" src="/shots/borewell.jpg" alt="A.S Borewell site on a phone" loading="lazy"></div>
-      <div class="bd"><div class="tags"><span class="tag live">Live · real client</span><span class="tag">HTML/CSS/JS</span><span class="tag">WhatsApp</span></div>
-        <h3>A.S Borewell: a contractor's ordering site</h3>
-        <p>A borewell and piling contractor in Guwahati had no way for customers to reach him except a phone number passed around by word of mouth. Now a customer picks a service and the enquiry lands in his WhatsApp with an order code attached, so nothing gets lost.</p>
-        <p class="built"><b>Built:</b> app-style navigation, service catalogue, tracked order codes, one-tap call and WhatsApp, installable on Android.</p>
-        <a class="lnk" href="https://asborewell.netlify.app" target="_blank" rel="noopener">View live site →</a></div></article>
-    <article class="wk rv"><div class="shot"><img class="dt" src="/shots/opius.jpg" alt="OPIUS interior design marketplace" loading="lazy"></div>
-      <div class="bd"><div class="tags"><span class="tag live">Live</span><span class="tag">3D / WebGL</span><span class="tag">Mobile app</span></div>
-        <h3>OPIUS: an interior design marketplace</h3>
-        <p>Browse a finished room, then buy every product in it. Rooms load as 360° 3D models you can spin in the browser, with no plugin or app install. Shipped as a desktop marketplace and a separate 10-screen mobile app.</p>
-        <a class="lnk" href="https://opius-guwahati.netlify.app/" target="_blank" rel="noopener">View live site →</a></div></article>
-    <article class="wk rv"><div class="shot"><img class="dt" src="/shots/collabpay.jpg" alt="CollabPay dashboard" loading="lazy"></div>
-      <div class="bd"><div class="tags"><span class="tag live">Live</span><span class="tag">Next.js 14</span><span class="tag">Supabase</span></div>
-        <h3>CollabPay: a creator monetisation SaaS</h3>
-        <p>Creators build a business page and track earnings, brands browse a marketplace and book them, admins moderate. Real authentication and database, with three separate dashboards.</p>
-        <p class="built">Deployed · full walkthrough on request</p></div></article>
-    <article class="wk rv"><div class="shot"><img class="dt" src="/shots/enquiry.jpg" alt="Enquiry Desk dashboard" loading="lazy"></div>
-      <div class="bd"><div class="tags"><span class="tag">Automation</span><span class="tag">Python</span><span class="tag">Multi-client</span></div>
-        <h3>Enquiry Desk: the follow-up nobody does</h3>
-        <p>Small businesses lose money to enquiries they forget to chase. This dashboard logs every enquiry, values it, and pushes the ones going cold to the top with a "waiting 34 days" badge. One config file re-skins it for any client.</p>
-        <p class="built">Screenshot shows demo data · live demo on request</p></div></article>
-    <article class="wk rv"><div class="shot"><img class="dt" src="/shots/luitpar.jpg" alt="Coaching institute compliance site" loading="lazy"></div>
-      <div class="bd"><div class="tags"><span class="tag">Compliance</span><span class="tag">Template</span></div>
-        <h3>Coaching institute compliance site</h3>
-        <p>The Assam Coaching Institutes Act, 2025 makes every coaching centre publish fees, refunds and registration details. I read the Act and built a site template that covers it, re-skinnable for any institute in minutes. Shown with a demo institute.</p>
-        <a class="lnk" href="/coaching/">Open the demo site →</a></div></article>
+<section class="sec" id="why"><div class="wrap">
+  <div class="sec-h"><div><span class="lbl rv">Why work with me</span><h2 class="h2 rv">Straight to the person<br><span class="f">building it.</span></h2></div></div>
+  <div class="why">
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span><h3>A clear price first</h3><p>A fixed price for the whole job before any work starts.</p></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span><h3>Live preview link</h3><p>Watch it take shape instead of waiting until the end.</p></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><h3>You own everything</h3><p>The code, the domain and the content are yours.</p></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span><h3>Phone first</h3><p>Designed for the phone your customers actually use.</p></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><h3>No agency overhead</h3><p>You talk directly to the developer, on WhatsApp.</p></div>
+    <div class="card rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></span><h3>Support after launch</h3><p>Changes, fixes and monthly updates when you need them.</p></div>
   </div>
 </div></section>
 
-<section class="sec" id="demos"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">Live demos</span><h2>Run my automation systems yourself</h2><p>Six AI systems, open and working in your browser. No install, no sign-up. Change an input and the output really recomputes. Five use sample data; the research agent uses live public sources.</p></div></div>
+<section class="darkb" id="demos"><div class="wrap">
+  <div class="nums">
+    <div class="rv"><b data-n="11">11</b><span>projects shipped</span></div>
+    <div class="rv"><b data-n="6">6</b><span>systems you can run here</span></div>
+    <div class="rv"><b data-n="2">2</b><span>live for real clients</span></div>
+    <div class="rv"><b><span data-n="100">100</span><em>%</em></b><span>self-taught</span></div>
+  </div>
+  <div class="sec-h"><div><span class="lbl rv">Live demos</span><h2 class="h2 rv">Run my automation<br><span class="f">systems yourself.</span></h2></div><p class="lead rv">Six AI systems, working in your browser. No install, no sign-up. Five use sample data; the research agent uses live public sources.</p></div>
   <div class="demos">
-    <a class="dm rv" href="/demos/01-lead-gen.html"><img src="/shots/01-lead-gen.png" alt="" loading="lazy"><div class="bd"><small>AI lead generation</small><h3>LeadForge</h3><p>Scores businesses on buying signals and writes a first message quoting their own numbers.</p><span class="run">Run it →</span></div></a>
-    <a class="dm rv" href="/demos/02-support-bot.html"><img src="/shots/02-support-bot.png" alt="" loading="lazy"><div class="bd"><small>Customer support</small><h3>SupportDesk AI</h3><p>Answers questions from real order records, and raises a ticket instead of guessing.</p><span class="run">Talk to it →</span></div></a>
-    <a class="dm rv" href="/demos/03-invoice-ai.html"><img src="/shots/03-invoice-ai.png" alt="" loading="lazy"><div class="bd"><small>Document processing</small><h3>DocuParse AI</h3><p>Reads different invoice layouts, checks the maths, GST numbers and duplicates.</p><span class="run">Try it →</span></div></a>
-    <a class="dm rv" href="/demos/04-crm-autopilot.html"><img src="/shots/04-crm-autopilot.png" alt="" loading="lazy"><div class="bd"><small>Sales &amp; CRM</small><h3>PipelineIQ</h3><p>Finds the deals going quiet, ranks today's calls by money at risk, drafts the follow-ups.</p><span class="run">Run it →</span></div></a>
-    <a class="dm rv" href="/demos/05-research-agent.html"><img src="/shots/05-research-agent.png" alt="" loading="lazy"><div class="bd"><small>Research agent</small><h3>ScoutAI</h3><p>Searches live sources while you watch, cross-checks facts and says what it couldn't confirm.</p><span class="run">Send it →</span></div></a>
-    <a class="dm rv" href="/demos/hotel-front-desk.html"><img src="/shots/hotel-front-desk.png" alt="" loading="lazy"><div class="bd"><small>Booking bot</small><h3>AI Front Desk</h3><p>A hotel receptionist that checks rooms, quotes and books in conversation. Also runs on WhatsApp.</p><span class="run">Book a room →</span></div></a>
+    <a class="dm rv" href="/demos/01-lead-gen.html"><div class="im"><img src="/shots/01-lead-gen.png" alt="" loading="lazy"></div><div class="bd"><small>AI lead generation</small><h3>LeadForge</h3><p>Scores businesses on buying signals and writes a first message quoting their own numbers.</p><span class="run">Run it <i>→</i></span></div></a>
+    <a class="dm rv" href="/demos/02-support-bot.html"><div class="im"><img src="/shots/02-support-bot.png" alt="" loading="lazy"></div><div class="bd"><small>Customer support</small><h3>SupportDesk AI</h3><p>Answers questions from real order records, and raises a ticket instead of guessing.</p><span class="run">Talk to it <i>→</i></span></div></a>
+    <a class="dm rv" href="/demos/03-invoice-ai.html"><div class="im"><img src="/shots/03-invoice-ai.png" alt="" loading="lazy"></div><div class="bd"><small>Document processing</small><h3>DocuParse AI</h3><p>Reads different invoice layouts, checks the maths, GST numbers and duplicates.</p><span class="run">Try it <i>→</i></span></div></a>
+    <a class="dm rv" href="/demos/04-crm-autopilot.html"><div class="im"><img src="/shots/04-crm-autopilot.png" alt="" loading="lazy"></div><div class="bd"><small>Sales &amp; CRM</small><h3>PipelineIQ</h3><p>Finds the deals going quiet, ranks today's calls by money at risk, drafts the follow-ups.</p><span class="run">Run it <i>→</i></span></div></a>
+    <a class="dm rv" href="/demos/05-research-agent.html"><div class="im"><img src="/shots/05-research-agent.png" alt="" loading="lazy"></div><div class="bd"><small>Research agent</small><h3>ScoutAI</h3><p>Searches live sources while you watch, cross-checks facts and says what it couldn't confirm.</p><span class="run">Send it <i>→</i></span></div></a>
+    <a class="dm rv" href="/demos/hotel-front-desk.html"><div class="im"><img src="/shots/hotel-front-desk.png" alt="" loading="lazy"></div><div class="bd"><small>Booking bot</small><h3>AI Front Desk</h3><p>A hotel receptionist that checks rooms, quotes and books in conversation. Also runs on WhatsApp.</p><span class="run">Book a room <i>→</i></span></div></a>
   </div>
-  <div class="also">
-    <div class="mini rv"><h4>Contact centre platform</h4><p>Multi-tenant AI voice and chat SaaS. Node and Postgres, 243 passing tests.</p></div>
-    <div class="mini rv"><h4>AR navigation app</h4><p>Camera route guidance that draws the turn line on the road. React PWA and native Kotlin.</p></div>
-    <div class="mini rv"><h4>Task scheduler</h4><p>A pure-Python job runner with schedules, retries, logging and saved state.</p></div>
-    <div class="mini rv"><h4>Realty Desk</h4><p>Real-estate lead capture and CRM with lead scoring and property matching.</p></div>
-    <div class="mini rv"><h4>3D product pages</h4><p>Scroll-driven WebGL product stories with live configurators. React Three Fiber.</p></div>
-    <div class="mini rv"><h4>Video pipeline</h4><p>Script to voiceover to rendered vertical video, unattended, with ffmpeg.</p></div>
-  </div>
-</div></section>
-
-<section class="sec" id="book"><div class="wrap book">
-  <div>
-    <span class="eyebrow">Book a project</span>
-    <h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;margin-top:6px">Tell me what you need.</h2>
-    <p style="color:var(--ink2);margin-top:12px;max-width:44ch">Send the form and I'll get back to you on WhatsApp or by email with questions, a price and a timeline. No commitment until you say go.</p>
-    <ul class="why">
-      <li><i>✓</i><span>A clear price before any work starts</span></li>
-      <li><i>✓</i><span>A live preview link while it's being built</span></li>
-      <li><i>✓</i><span>You own the code, the domain and the content</span></li>
-    </ul>
-  </div>
-  <div class="panel">
-    <form class="form" id="bookF" novalidate>
-      <div><label>What do you need?</label><div class="chips" id="svcChips">
-        <button type="button" class="chip" aria-pressed="false">Business website</button><button type="button" class="chip" aria-pressed="false">Web app / software</button><button type="button" class="chip" aria-pressed="false">AI automation / chatbot</button><button type="button" class="chip" aria-pressed="false">App-style site / Android app</button><button type="button" class="chip" aria-pressed="false">Video ad / motion graphics</button><button type="button" class="chip" aria-pressed="false">Redesign / fixes</button><button type="button" class="chip" aria-pressed="false">Something else</button></div></div>
-      <div class="row2"><div><label for="bName">Your name</label><input id="bName" name="name" autocomplete="name" placeholder="Full name" required></div>
-        <div><label for="bPhone">WhatsApp number</label><input id="bPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile" required></div></div>
-      <div class="row2"><div><label for="bBiz">Business <small>(optional)</small></label><input id="bBiz" name="biz" placeholder="Name or type of business"></div>
-        <div><label for="bEmail">Email <small>(optional)</small></label><input id="bEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com"></div></div>
-      <div class="row2"><div><label for="bBudget">Budget</label><select id="bBudget" name="budget"><option>Not sure yet</option><option>Under ₹15,000</option><option>₹15,000 – ₹40,000</option><option>₹40,000 – ₹1,00,000</option><option>Above ₹1,00,000</option></select></div>
-        <div><label for="bWhen">When do you need it?</label><select id="bWhen" name="when"><option>Flexible</option><option>As soon as possible</option><option>Within a month</option><option>In 1–3 months</option></select></div></div>
-      <div><label for="bMsg">Tell me about it</label><textarea id="bMsg" name="msg" placeholder="What should it do? Any site or app you like? What's taking your time right now?"></textarea></div>
-      <p class="err" id="bErr" role="alert"></p>
-      <button type="submit" class="btn primary block" id="bSend">Send request</button>
-      <p class="fine">Your details go only to me, to reply about your project.</p>
-    </form>
-    <div class="done" id="bDone" hidden role="status" aria-live="polite"><span class="ok">✓</span><h3>Request received</h3><p>Thanks! I'll get back to you on WhatsApp or by email soon.</p><div class="ref"><span>Your reference</span><b id="bRef"></b></div><div id="bWa"></div><button type="button" class="btn outline" id="bAgain">Send another request</button></div>
+  <div class="also rv">
+    <div><h4>Contact centre platform</h4><p>Multi-tenant AI voice and chat SaaS. Node and Postgres, 243 passing tests.</p></div>
+    <div><h4>AR navigation app</h4><p>Camera route guidance that draws the turn line on the road. React PWA and Kotlin.</p></div>
+    <div><h4>Task scheduler</h4><p>A pure-Python job runner with schedules, retries, logging and saved state.</p></div>
+    <div><h4>Realty Desk</h4><p>Real-estate lead capture and CRM with lead scoring and property matching.</p></div>
+    <div><h4>3D product pages</h4><p>Scroll-driven WebGL product stories with live configurators.</p></div>
+    <div><h4>Video pipeline</h4><p>Script to voiceover to rendered vertical video, unattended, with ffmpeg.</p></div>
   </div>
 </div></section>
 
-<section class="sec" id="contact"><div class="wrap">
-  <div class="sec-h"><div><span class="eyebrow">Contact</span><h2>Prefer to just talk?</h2></div></div>
-  <div class="contact">
+<section class="sec" id="faq"><div class="wrap faq">
+  <div><span class="lbl rv">FAQ</span><h2 class="h2 rv">Questions,<br><span class="f">answered.</span></h2><p class="lead rv">Something else on your mind? Message me on WhatsApp at 86388 30682.</p></div>
+  <div class="qs">
+    <div class="q open rv"><button type="button" aria-expanded="true">How much does a website or app cost?<i>+</i></button><div class="a"><div><p>It depends on what it needs to do. After you send the form, I reply with a fixed price for the whole job before any work starts. The budget you pick just helps me suggest the right size of solution.</p></div></div></div>
+    <div class="q rv"><button type="button" aria-expanded="false">How long does it take?<i>+</i></button><div class="a"><div><p>You get a timeline together with the price. You also get a live preview link early on, so you see it take shape rather than waiting until the end.</p></div></div></div>
+    <div class="q rv"><button type="button" aria-expanded="false">Do I own the website and the code?<i>+</i></button><div class="a"><div><p>Yes. The code, the domain and the content are yours, and I hand everything over at launch.</p></div></div></div>
+    <div class="q rv"><button type="button" aria-expanded="false">Do you only work in Guwahati?<i>+</i></button><div class="a"><div><p>No. I'm based in Guwahati, Assam, and work with clients anywhere over WhatsApp, calls and email.</p></div></div></div>
+    <div class="q rv"><button type="button" aria-expanded="false">What happens after launch?<i>+</i></button><div class="a"><div><p>I stay around for changes and fixes, and can look after updates every month if you want.</p></div></div></div>
+    <div class="q rv"><button type="button" aria-expanded="false">Can you add AI or WhatsApp automation to what I already have?<i>+</i></button><div class="a"><div><p>Yes: lead capture, follow-up reminders, chatbots that answer and book, reading invoices or forms. The live demos above show what that looks like.</p></div></div></div>
+  </div>
+</div></section>
+
+<section class="cta" id="book">
+  <div class="art" aria-hidden="true"><svg><use href="#ring"/></svg></div>
+  <div class="wrap book">
+    <div>
+      <span class="lbl rv">Book a project</span>
+      <h2 class="h2 rv">Let's build something<br>that ships.</h2>
+      <p class="lead rv" style="color:var(--ink2)">Send the form and I'll get back to you on WhatsApp or by email with questions, a price and a timeline. No commitment until you say go.</p>
+      <ul class="ticks rv">
+        <li><i>✓</i>A clear price before any work starts</li>
+        <li><i>✓</i>A live preview link while it's being built</li>
+        <li><i>✓</i>You own the code, the domain and the content</li>
+      </ul>
+    </div>
+    <div class="panel rv">
+      <form class="form" id="bookF" novalidate>
+        <div><label>What do you need?</label><div class="chips" id="svcChips">
+          <button type="button" class="chip" aria-pressed="false">Business website</button><button type="button" class="chip" aria-pressed="false">Web app / software</button><button type="button" class="chip" aria-pressed="false">AI automation / chatbot</button><button type="button" class="chip" aria-pressed="false">App-style site / Android app</button><button type="button" class="chip" aria-pressed="false">Video ad / motion graphics</button><button type="button" class="chip" aria-pressed="false">Redesign / fixes</button><button type="button" class="chip" aria-pressed="false">Something else</button></div></div>
+        <div class="row2"><div><label for="bName">Your name</label><input id="bName" name="name" autocomplete="name" placeholder="Full name" required></div>
+          <div><label for="bPhone">WhatsApp number</label><input id="bPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile" required></div></div>
+        <div class="row2"><div><label for="bBiz">Business <small>(optional)</small></label><input id="bBiz" name="biz" placeholder="Name or type of business"></div>
+          <div><label for="bEmail">Email <small>(optional)</small></label><input id="bEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com"></div></div>
+        <div class="row2"><div><label for="bBudget">Budget</label><select id="bBudget" name="budget"><option>Not sure yet</option><option>Under ₹15,000</option><option>₹15,000 – ₹40,000</option><option>₹40,000 – ₹1,00,000</option><option>Above ₹1,00,000</option></select></div>
+          <div><label for="bWhen">When do you need it?</label><select id="bWhen" name="when"><option>Flexible</option><option>As soon as possible</option><option>Within a month</option><option>In 1–3 months</option></select></div></div>
+        <div><label for="bMsg">Tell me about it</label><textarea id="bMsg" name="msg" placeholder="What should it do? Any site or app you like? What's taking your time right now?"></textarea></div>
+        <p class="err" id="bErr" role="alert"></p>
+        <button type="submit" class="btn dark block" id="bSend">Send request</button>
+        <p class="fine">Your details go only to me, to reply about your project.</p>
+      </form>
+      <div class="done" id="bDone" hidden role="status" aria-live="polite"><span class="ok">✓</span><h3>Request received</h3><p>Thanks! I'll get back to you on WhatsApp or by email soon.</p><div class="ref"><span>Your reference</span><b id="bRef"></b></div><div id="bWa"></div><button type="button" class="btn light" id="bAgain">Send another request</button></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer id="contact"><div class="wrap">
+  <div class="ft">
+    <div class="me rv"><a class="logo" href="/"><img src="/assets/site/logo/opiius-icon-96.png" width="30" height="30" alt="">OPIIUS</a><p>Websites, software and automation by Priyangshu Nath. Guwahati, Assam, India.</p></div>
     <a class="ct rv" href="https://wa.me/918638830682?text=Hi%20Priyangshu%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener"><small>WhatsApp</small><b>86388 30682</b></a>
     <a class="ct rv" href="mailto:priyangshunath190@gmail.com"><small>Email</small><b>priyangshunath190<wbr>@gmail.com</b></a>
     <a class="ct rv" href="https://github.com/OPIIUS" target="_blank" rel="noopener"><small>GitHub</small><b>github.com/OPIIUS</b></a>
     <a class="ct rv" href="/resume/Priyangshu_Nath_Fullstack_Automation_Developer.pdf"><small>Resume</small><b>Download PDF</b></a>
   </div>
-</div></section>
-</main>
-
-<footer><div class="wrap"><span>© <span id="yr">2026</span> OPIIUS · Priyangshu Nath · Guwahati, Assam, India</span><span>Websites · Software · Automation</span></div></footer>
-<a class="btn primary fab" href="#book" id="fab">Book a project</a>
+  <div class="fb"><span>© <span id="yr">2026</span> OPIIUS · Priyangshu Nath</span><span>Websites · Software · Automation</span></div>
+</div><div class="word" aria-hidden="true">OPIIUS</div></footer>
 
 <script>
 (function(){
   var LOG="https://script.google.com/macros/s/AKfycbwf39vAUguEfWdsziGK_A_90BA-CuVjQZEXtNwu-5iTXTQrgCde2qGw9qqfMKLMRefe/exec", WA="918638830682";
   var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
+  var still=matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.documentElement.classList.add("js");
   document.getElementById("yr").textContent=new Date().getFullYear();
-  /* header shadow, floating button hides at the form */
-  var hdr=$(".hdr"),fab=$("#fab"),book=$("#book");
-  var onS=function(){hdr.classList.toggle("up",scrollY>4);var r=book.getBoundingClientRect();fab.classList.toggle("hide",r.top<innerHeight&&r.bottom>0)};onS();addEventListener("scroll",onS,{passive:true});
-  /* entrance + reveal */
+  /* nav: shadow on scroll, phone menu; floating button hides at the form */
+  var nav=$("#nav"),menu=$(".menu"),book=$("#book");
+  menu.addEventListener("click",function(){var o=nav.classList.toggle("open");menu.setAttribute("aria-expanded",o)});
+  $$(".nav .links a").forEach(function(a){a.addEventListener("click",function(){nav.classList.remove("open");menu.setAttribute("aria-expanded","false")})});
+  var onS=function(){nav.classList.toggle("up",scrollY>20)};onS();addEventListener("scroll",onS,{passive:true});
+  /* entrance + reveal + count-up */
   $$(".st").forEach(function(el,i){el.style.setProperty("--i",i)});
-  if("IntersectionObserver" in window){var ro=new IntersectionObserver(function(es){var k=0;es.forEach(function(e){if(e.isIntersecting){e.target.style.setProperty("--d",Math.min(k++,6)*.06+"s");e.target.classList.add("in");ro.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});$$(".rv").forEach(function(el){ro.observe(el)})}
+  var count=function(el){var n=+el.dataset.n,t0=null;if(still){el.textContent=n;return}var step=function(t){t0=t0||t;var p=Math.min((t-t0)/1200,1);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)};
+  if("IntersectionObserver" in window){var ro=new IntersectionObserver(function(es){var k=0;es.forEach(function(e){if(e.isIntersecting){e.target.style.setProperty("--d",Math.min(k++,6)*.07+"s");e.target.classList.add("in");e.target.querySelectorAll("[data-n]").forEach(count);ro.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});$$(".rv").forEach(function(el){ro.observe(el)})}
   else $$(".rv").forEach(function(el){el.classList.add("in")});
+  /* services accordion (one open) and FAQ */
+  $$(".acc").forEach(function(a){a.querySelector(".acc-h").addEventListener("click",function(){$$(".acc").forEach(function(b){var on=b===a;b.classList.toggle("open",on);b.querySelector(".acc-h").setAttribute("aria-expanded",on)})})});
+  $$(".q").forEach(function(q){var b=q.querySelector("button");b.addEventListener("click",function(){var o=q.classList.toggle("open");b.setAttribute("aria-expanded",o)})});
+  /* dotted globe */
+  (function(){var c=$("#globe");if(!c||!c.getContext)return;var x=c.getContext("2d"),pts=[],N=4200,W,R,rot=0,run=false,dpr=Math.min(devicePixelRatio||1,2);
+    var land=function(la,lo){return Math.sin(lo*2.1+1.3)*Math.cos(la*3.2)+Math.sin(lo*3.7-la*2.3)*.6+Math.cos(lo*1.3+la*4.1+.7)*.5>.35};
+    for(var i=0;i<N;i++){var y=1-2*(i+.5)/N,r=Math.sqrt(1-y*y),t=i*2.399963;var la=Math.asin(y),lo=t%(Math.PI*2);pts.push([Math.cos(t)*r,y,Math.sin(t)*r,land(la,lo)])}
+    var size=function(){W=c.clientWidth;c.width=c.height=W*dpr;R=W*.46};
+    var draw=function(){x.setTransform(dpr,0,0,dpr,0,0);x.clearRect(0,0,W,W);var cx=W/2,cy=W/2,s=Math.sin(rot),co=Math.cos(rot),tl=-.35,ts=Math.sin(tl),tc=Math.cos(tl);
+      var g=x.createRadialGradient(cx,cy-R*.2,R*.2,cx,cy,R*1.08);g.addColorStop(0,"rgba(255,255,255,.07)");g.addColorStop(.9,"rgba(255,255,255,.02)");g.addColorStop(1,"rgba(255,255,255,.12)");x.fillStyle=g;x.beginPath();x.arc(cx,cy,R,0,7);x.fill();
+      for(var i=0;i<N;i++){var p=pts[i],X=p[0]*co+p[2]*s,Z=-p[0]*s+p[2]*co,Y=p[1]*tc-Z*ts;Z=p[1]*ts+Z*tc;if(Z<0)continue;var a=.15+Z*(p[3]?.85:.22),rr=p[3]?1.8:1.1;x.fillStyle=p[3]?"rgba(240,240,245,"+a+")":"rgba(150,150,160,"+a+")";x.fillRect(cx+X*R-rr/2,cy-Y*R-rr/2,rr,rr)}
+      var rim=x.createLinearGradient(0,cy-R,0,cy);rim.addColorStop(0,"rgba(255,255,255,.55)");rim.addColorStop(1,"rgba(255,255,255,0)");x.strokeStyle=rim;x.lineWidth=1.5;x.shadowColor="rgba(255,255,255,.6)";x.shadowBlur=18;x.beginPath();x.arc(cx,cy,R,0,7);x.stroke();x.shadowBlur=0};
+    var loop=function(){if(!run)return;rot+=.0022;draw();requestAnimationFrame(loop)};
+    size();draw();addEventListener("resize",function(){size();draw()});
+    if(!still&&"IntersectionObserver" in window)new IntersectionObserver(function(es){var v=es[0].isIntersecting;if(v&&!run){run=true;loop()}else if(!v)run=false}).observe(c);
+  })();
   /* service chips (one choice) and "Book this" buttons */
   var chips=$$("#svcChips .chip"),svc="";
   var pick=function(name){svc=name;chips.forEach(function(c){c.setAttribute("aria-pressed",c.textContent===name?"true":"false")})};
@@ -380,7 +642,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:
       var wa=["Hi Priyangshu, I sent a project request on opiius.online.","","Need: "+svc,"Budget: "+v("#bBudget"),"When: "+v("#bWhen"),"Name: "+name,extra,"","About it: "+msg,"","Ref: "+r].filter(function(x,i,a){return x!==""||a[i-1]!==""}).join("\n");
       /* an older log can't send me an alert: offer WhatsApp as well */
       $("#bWa").innerHTML=res.v<2?'<a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/'+WA+'?text='+encodeURIComponent(wa)+'">Also send it on WhatsApp</a>':"";
-      f.hidden=true;$("#bDone").hidden=false;book.scrollIntoView({behavior:"smooth",block:"start"});
+      f.hidden=true;$("#bDone").hidden=false;$(".panel").scrollIntoView({behavior:"smooth",block:"center"});
     });
   });
   $("#bAgain").addEventListener("click",function(){f.reset();pick("");$("#bDone").hidden=true;f.hidden=false});
