@@ -494,7 +494,9 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
     /* contact also rides in the older log columns, so it is kept whichever script version is live */
     var rec={type:"project",ref:r,agency:"",agencyName:"OPIIUS studio",vehicle:svc,city:v("#bWhen"),budget:v("#bBudget"),pickup:(name+" · +91"+ph+(extra?" · "+extra:"")).slice(0,120),
       name:name,phone:ph,msg:(msg+(extra?"\n"+extra:"")).slice(0,500),page:"/",ua:/Mobi/i.test(navigator.userAgent)?"mobile":"desktop"};
-    Promise.all([send(rec),mail(rec,{name:name,biz:v("#bBiz"),email:v("#bEmail"),msg:msg})]).then(function(rs){var res=rs[0];
+    /* the email service can be slow to answer: wait at most 8 s for it; the email still goes out in the background */
+    var mailP=mail(rec,{name:name,biz:v("#bBiz"),email:v("#bEmail"),msg:msg}),late=new Promise(function(ok){setTimeout(function(){DBG.email=DBG.email||"still sending after 8 s";ok(false)},8000)});
+    Promise.all([send(rec),Promise.race([mailP,late])]).then(function(rs){var res=rs[0];
       /* delivered if either the request log or the email went through; an email counts as an alert, so no WhatsApp fallback is needed */
       if(rs[1]){res={ok:true,v:Math.max(res.v||0,2)}}
       btn.disabled=false;btn.textContent="Send enquiry";
