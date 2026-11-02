@@ -1,8 +1,8 @@
 /**
- * OPIIUS booking log: Google Apps Script web app (version 3).
+ * OPIIUS request log: Google Apps Script web app (version 3).
  *
  * Paste this whole file into Extensions > Apps Script of your OPIIUS Google Sheet (see DASHBOARD-SETUP.md).
- * - opiius.online POSTs one row per booking request, with the customer's name and WhatsApp number,
+ * - opiius.online POSTs one row per "Book a project" request, with the customer's name and WhatsApp number,
  *   and you are notified at once: by email (always) and on WhatsApp / Telegram (if set up below).
  * - dashboard.html reads the rows and updates statuses with your secret key.
  *
@@ -83,20 +83,20 @@ function doPost(e) {
 function notify_(d, phone) {
   const inr = n => "Rs " + Number(n).toLocaleString("en-IN");
   const lines = [
-    d.type === "rental" ? "New booking request on OPIIUS" : "New request on OPIIUS",
+    d.type === "rental" ? "New booking request on OPIIUS" : d.type === "project" ? "New project request on OPIIUS" : "New request on OPIIUS",
     "Ref: " + d.ref,
-    d.agencyName ? "Agency: " + d.agencyName : "",
+    d.agencyName && d.type !== "project" ? "Agency: " + d.agencyName : "",
     d.vehicle ? (d.type === "rental" ? "Car: " : "Need: ") + d.vehicle + (d.pricePerDay ? " (" + inr(d.pricePerDay) + "/day)" : "") : "",
     d.from ? "Dates: " + d.from + (d.to && d.to !== d.from ? " to " + d.to : "") + (d.days ? " (" + d.days + (d.days == 1 ? " day)" : " days)") : "") : "",
     d.total ? "Estimate: " + inr(d.total) : "",
     d.pickup ? "Pickup: " + d.pickup : "",
-    d.city ? "City: " + d.city : "",
+    d.city ? (d.type === "project" ? "When: " : "City: ") + d.city : "",
     d.budget ? "Budget: " + d.budget : "",
     d.msg ? "Message: " + d.msg : "",
     "Customer: " + (d.name || "-") + (phone ? ", +" + (phone.length === 10 ? "91" + phone : phone) : ""),
     phone ? "WhatsApp them: https://wa.me/" + (phone.length === 10 ? "91" + phone : phone) : ""
   ].filter(Boolean);
-  const asks = ownerLinks_(d);
+  const asks = d.type === "project" ? [] : ownerLinks_(d); /* project requests are for you, not the agencies */
   if (asks.length) lines.push("", "Ask the owners (tap, then send; first yes gets it):", ...asks);
   const text = lines.join("\n"), sent = [];
   try {
