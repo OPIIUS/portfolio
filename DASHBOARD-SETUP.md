@@ -1,10 +1,13 @@
-# OPIIUS bookings dashboard: one-time setup (about 10 minutes)
+# OPIIUS requests dashboard: one-time setup (about 10 minutes)
 
-Every "Check availability", "Ask OPIIUS" and "Get matched" request on opiius.online is sent from the page (the customer
-is not taken to WhatsApp) to a Google Sheet that only you own, with the time, reference (e.g. OP-261001-HKCD4), agency,
-vehicle, dates, price, and the customer's name and WhatsApp number. You get an alert for each one at once: an email
-(always) and a WhatsApp message (after the one-time CallMeBot step below). opiius.online/dashboard.html shows the
-requests per agency, with tap-to-call and WhatsApp links, and prints a dated report for any agency.
+Every "Book a project" request on opiius.online is sent from the page (the customer is not taken to WhatsApp) to a
+Google Sheet that only you own: the time, reference (e.g. OP-261102-HKCD4), the service, budget, timeline, message,
+and the customer's name and WhatsApp number. You get an alert for each one at once: an email (always), and a WhatsApp
+or Telegram message if you set one up below. opiius.online/dashboard.html lists the requests, with tap-to-call and
+WhatsApp links, and lets you set a status on each.
+
+Already set up the sheet for the old car rental site? Just do step 4 (update the script to the latest
+`tools/opiius-booking-log.gs` and deploy a new version). The URL stays the same, so the form keeps working.
 
 ## 1. Create the Sheet and the script
 1. Go to sheets.google.com and create a blank sheet named "OPIIUS bookings".
@@ -21,7 +24,7 @@ requests per agency, with tap-to-call and WhatsApp links, and prints a dated rep
 4. Copy the **Web app URL** (ends with `/exec`).
 
 ## 3. Connect
-1. Send the Web app URL to Claude: it goes into `assets/opiius/config.js` (`bookingLog`) so the site starts logging.
+1. Send the Web app URL to Claude: it goes into `index.html` (`var LOG=`) so the form starts logging.
    (The URL is not secret: anyone can only add rows; reading needs your key.)
 2. Open **opiius.online/dashboard.html**, paste the URL and your key, Save. They stay only in that browser.
 
@@ -41,25 +44,12 @@ WhatsApp alerts to your own number (free, via CallMeBot):
    Check `CALLMEBOT_PHONE` is your number (country code first, digits only). Deploy a new version again.
 3. In the dashboard, Settings > **Send a test alert**: you should get the email and the WhatsApp message.
 
-Until the script is updated, the website still works: it also opens WhatsApp for the customer, as before,
-so no request is missed. Once version 2 is live it stops doing that automatically.
-
-## 5. Ask two owners at once (version 3 of the script)
-Owners don't always reply quickly, so each alert can carry two ready-made WhatsApp messages: one to the agency the
-customer picked (or the fastest agency in that city) and one to the next agency in the same city as a backup.
-1. Replace the script with the new `tools/opiius-booking-log.gs` (keep your DASHBOARD_KEY and alert settings).
-2. In the `OWNERS` list, type each owner's WhatsApp number between the quotes, and put the agencies in the order
-   they reply, fastest first. These numbers stay in your private script; they never go on the website.
-3. Deploy > Manage deployments > Edit > New version > Deploy.
-
-In each alert, tap the first link and press send, then the "Backup" link. The message asks the owner to reply YES or NO
-within 30 minutes, and does not include the customer's number: you pass that on to the owner who says yes first.
+Until the script is updated, the form still works: the success screen also shows the customer a "send it on
+WhatsApp" button, so no request is missed. Once version 2 or later is live, that button goes away.
 
 ## Every day
-- When an alert arrives, open the dashboard, tap WhatsApp next to the customer, and pass the request to the agency.
-- Find its reference in the dashboard and set the status as it happens:
-  Sent to agency > Confirmed / Declined / No reply > Completed / Cancelled. Add a note, e.g. "Owner said YES 10:05".
-- Keep the owner's WhatsApp "YES" replies: together with the dashboard they are your proof.
-- Month end: filter by agency and month, Print report (or Save as PDF) and send it to the owner.
+- When an alert arrives, tap the customer's WhatsApp link in it (or in the dashboard) and reply.
+- Set the status in the dashboard as it goes, and add a note, e.g. "Quoted Rs 25,000, starts Monday".
+- The `OWNERS` list in the script was for the car rental site. Project requests never use it, so you can leave it empty.
 
 If you change the script later, use Deploy > Manage deployments > Edit > New version, so the URL stays the same.

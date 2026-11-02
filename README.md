@@ -1,28 +1,26 @@
 # OPIIUS
 
-A trust-first local marketplace for rental vehicles only: self-drive cars and cars with driver (bikes and tempo travellers
-appear once an agency offers them). Customers compare local rental agencies in Guwahati; agencies showcase their fleets and
-receive inquiries on WhatsApp. Tours were retired in October 2026: /tours/ and /onboard-tours.html now redirect.
+The studio site of Priyangshu Nath: websites, software and automation, with a "Book a project" form.
 
 Live: https://opiius.online/
 
-## How the site is built
-Static pages, generated from the data files. No framework, no server.
+## What's here
+- `index.html`: the home page (services, process, selected work, live demos, booking form, contact). Hand-written,
+  one file with inline CSS and JS. No framework, no build step.
+- `demos/`: the six runnable automation demos (and the desk demos).
+- `coaching/`: the coaching institute compliance site, shown with a demo institute.
+- `shots/`, `assets/studio/`: screenshots used on the home page. `assets/site/logo/`: logo and icons.
+- `resume/`: resume PDF.
+- `dashboard.html` (private, not indexed) and `tools/opiius-booking-log.gs`: the Google Sheet that stores every project
+  request and alerts you by email (and WhatsApp or Telegram, if set up). Setup: `DASHBOARD-SETUP.md`.
 
-- `assets/opiius/data.js`: real partner agencies, vehicles and day prices (plus places, brands and models)
-- `assets/opiius/partners.js`: agencies added through onboard.html; an optional `driver` block lists cars with driver and their rates
-- `assets/opiius/partners.js`: rental agencies added through `onboard.html`
-- `assets/opiius/config.js`: WhatsApp number and booking-log URL
-- `assets/site/`: shared design system (`site.css`) and behaviour (`site.js`)
-- `tools/build-site.mjs`: writes every marketplace page and `sitemap.xml`
+## Booking form
+The form posts the request to the booking-log web app (URL in `index.html`, `var LOG=`). The customer stays on the
+page and gets a reference number. If the deployed script is older than version 2, the success screen also offers a
+"send it on WhatsApp" button so the request still reaches you.
 
-After changing any data file, rebuild and commit the result:
-
-    node tools/build-site.mjs
-
-Pages: home (video background, two options: Self-drive cars and Cars with driver, the agencies, and a moving brand line), `rentals/` (agencies by rental type),
-`rentals/self-drive-cars/<city>/`, `rentals/brands/<brand>/`, `agency/<slug>/` (one per partner), `for-agencies/`, `verification/`,
-`about/`, `get-matched/`, `404.html`. `terms.html`, the onboarding forms and `dashboard.html` are hand-written.
-
-Other projects in this repo (`business.html`, `global.html`, `demos/`, `coaching/`, `profile.html`, `rideme/`,
-`agency/hotels.html`) are not linked from the marketplace.
+## The car rental marketplace (closed November 2026)
+OPIIUS ran as a car rental marketplace for Guwahati and Barama in 2026. It is now a case study on the home page. Its old
+URLs (`/rentals/`, `/agency/…`, `/get-matched/`, `/for-agencies/`, `/terms.html` and so on) redirect to the home page,
+and `sw.js` clears the old app's offline cache. The full marketplace, its generator (`tools/build-site.mjs`) and data
+are in the git history before this change.
