@@ -129,7 +129,7 @@ document.addEventListener("click",async e=>{
   const sv=e.target.closest("[data-save]");if(sv){const ref=sv.dataset.save,st=document.querySelector(`select[data-ref="${ref}"]`).value,note=document.querySelector(`input[data-note="${ref}"]`).value;
     sv.textContent="Saving…";try{await api({action:"status",ref,status:st,note});const r=rows.find(x=>x.Ref===ref);r.Status=st;r.Note=note;sv.textContent="Saved";setTimeout(render,600)}catch(err){sv.textContent="Failed";alert("Could not save: "+err.message)}}
 });
-$("test").addEventListener("click",async()=>{$("serr").textContent="Sending a test alert…";try{const j=await api({action:"test"});$("serr").textContent=j.notified&&j.notified.length?"Test alert sent by: "+j.notified.join(", ")+". Check your phone.":"The script answered but sent nothing. Update the script to version 2 (DASHBOARD-SETUP.md).";}catch(e){$("serr").textContent="Couldn't reach the script: "+e.message}});
+$("test").addEventListener("click",async()=>{$("serr").textContent="Sending a test alert…";try{const j=await api({action:"test"});const miss=j.detail?Object.keys(j.detail).filter(k=>j.detail[k]!=="sent").map(k=>k+": "+j.detail[k]).join(" · "):"";$("serr").textContent=(j.notified&&j.notified.length?"Test alert sent by: "+j.notified.join(", ")+". Check your phone.":"The script answered but sent nothing. Update the script (DASHBOARD-SETUP.md).")+(miss?" Not sent: "+miss:"");}catch(e){$("serr").textContent="Couldn't reach the script: "+e.message}});
 $("save").addEventListener("click",()=>{set("url",$("url").value.trim());set("key",$("key").value.trim());load()});
 $("settingsBtn").addEventListener("click",()=>{$("settings").style.display=$("settings").style.display==="none"?"block":"none"});
 $("refresh").addEventListener("click",load);

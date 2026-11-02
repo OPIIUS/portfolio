@@ -1,40 +1,39 @@
 /**
- * OPIIUS request log: Google Apps Script web app (version 3).
+ * OPIIUS request log: Google Apps Script web app (version 4).
  *
  * Paste this whole file into Extensions > Apps Script of your OPIIUS Google Sheet (see DASHBOARD-SETUP.md).
- * - opiius.online POSTs one row per "Book a project" request, with the customer's name and WhatsApp number,
- *   and you are notified at once: by email (always) and on WhatsApp / Telegram (if set up below).
+ * - opiius.online POSTs one row per enquiry, with the customer's name and WhatsApp number.
+ * - You get an alert at once: by email (always) and on WhatsApp (once one of the two WhatsApp options is filled in).
  * - dashboard.html reads the rows and updates statuses with your secret key.
  *
  * 1) Change DASHBOARD_KEY below to a long secret only you know (letters and numbers).
- * 2) Fill in the NOTIFY settings and the OWNERS list below.
- * 3) Deploy > Manage deployments > Edit (pencil) > Version: New version > Deploy. The URL stays the same.
- *    Google asks for permission again (email and outside requests): allow it.
+ * 2) Fill in the alert settings below.
+ * 3) Pick "testAlert" in the function menu at the top and press Run: you should get the test email and WhatsApp.
+ *    The log at the bottom says what each channel answered.
+ * 4) Deploy > Manage deployments > Edit (pencil) > Version: New version > Deploy. The URL stays the same.
+ *    Google asks for permission (send email, connect to an outside service): allow it.
  */
 const DASHBOARD_KEY = "CHANGE-ME-to-a-long-secret";
 
-/* ---- notifications for every new request ---- */
-const NOTIFY_EMAIL = "";                 // empty = the Google account that owns this script
-const CALLMEBOT_PHONE = "918638830682";  // your WhatsApp number for alerts, country code first, digits only
-const CALLMEBOT_APIKEY = "";             // the key CallMeBot sends you (DASHBOARD-SETUP.md); empty = no WhatsApp alert
-const TELEGRAM_TOKEN = "";               // optional: a Telegram bot token from @BotFather
-const TELEGRAM_CHAT = "";                // optional: your chat id with that bot
+/* ---- email alerts (always on) ---- */
+const NOTIFY_EMAIL = "opiiusservice@gmail.com";  // more than one: "a@gmail.com,b@gmail.com"; empty = the script owner
 
-/* ---- agency owners, fastest repliers first ----
-   Each alert carries ready-to-send WhatsApp links for TWO owners: the agency the customer picked (or, for a
-   "get matched" request, the fastest agency in that city) and the next agency in the same city as a backup.
-   Tap a link, press send; the first owner to say yes gets the customer. Keep this list in the order owners reply,
-   fastest first, and keep it here only: owner numbers never go on the website.
-   id = the agency id on the site (shown in the alert as "Agency ID"); phone = WhatsApp number, country code first. */
-const OWNERS = [
-  { id: "rd",                 name: "Real Drive Guwahati", city: "Guwahati", phone: "" },
-  { id: "nextgear-rental",    name: "NextGear Rental",     city: "Guwahati", phone: "" },
-  { id: "car-rental-barama",  name: "Car Rental Barama",   city: "Barama",   phone: "" },
-  { id: "guwahati-rides",     name: "Guwahati Rides",      city: "Guwahati", phone: "" },
-  { id: "saraighat-travels",  name: "Saraighat Travels",   city: "Guwahati", phone: "" }
-];
+/* ---- WhatsApp alerts: fill in ONE of the two options ---- */
+/* Option A, CallMeBot (free, 5 minutes): the key CallMeBot sends you on WhatsApp. */
+const CALLMEBOT_PHONE = "918638830682";          // your WhatsApp number, country code first, digits only
+const CALLMEBOT_APIKEY = "";                     // empty = option A off
+/* Option B, WhatsApp Cloud API by Meta (official, most reliable): see DASHBOARD-SETUP.md. */
+const WA_TOKEN = "";                             // permanent access token; empty = option B off
+const WA_PHONE_ID = "";                          // "Phone number ID" from the WhatsApp > API Setup page
+const WA_TO = "918638830682";                    // where alerts go: your WhatsApp number
+const WA_TEMPLATE = "new_enquiry";               // approved template with 4 variables (see DASHBOARD-SETUP.md)
+const WA_LANG = "en";
 
-const VERSION = 3;
+/* ---- optional: Telegram ---- */
+const TELEGRAM_TOKEN = "";
+const TELEGRAM_CHAT = "";
+
+const VERSION = 4;
 const SHEET = "Bookings";
 const HEAD = ["Received", "Ref", "Type", "Agency ID", "Agency", "Vehicle / trip", "City", "From", "To", "Days",
   "Price/day", "Total", "Pickup", "Budget", "Style", "Device", "Page", "Status", "Note", "Updated", "Customer", "Phone", "Message"];
@@ -52,8 +51,9 @@ function out_(obj) {
 }
 const s_ = (v, n) => String(v == null ? "" : v).replace(/^[=+\-@]/, "'$&").slice(0, n || 200);
 const digits_ = v => String(v || "").replace(/\D/g, "");
+const intl_ = p => (p.length === 10 ? "91" + p : p);
 
-/* the website sends requests here (public, append-only) */
+/* the website sends enquiries here (public, append-only) */
 function doPost(e) {
   let d = {};
   try { d = JSON.parse(e.postData.contents); } catch (err) { return out_({ ok: false, error: "bad json" }); }
@@ -75,64 +75,67 @@ function doPost(e) {
       s_(d.pickup, 120), s_(d.budget, 40), s_(d.style, 40), s_(d.ua, 10), s_(d.page, 120), "New", "", new Date(),
       s_(d.name, 80), phone ? "'" + phone : "", s_(d.msg, 500)]);
   } finally { lock.releaseLock(); }
-  const sent = notify_(d, phone);
-  return out_({ ok: true, v: VERSION, notified: sent });
+  const res = notify_(d, phone);
+  return out_({ ok: true, v: VERSION, notified: Object.keys(res).filter(k => res[k] === "sent") });
 }
 
-/* email always; WhatsApp (CallMeBot) and Telegram when their settings are filled in */
+/* Sends the alert on every channel that is set up. Returns { email: "sent" | error, whatsapp: ..., telegram: ... }. */
 function notify_(d, phone) {
-  const inr = n => "Rs " + Number(n).toLocaleString("en-IN");
+  const need = d.vehicle || "New enquiry";
+  const customer = (d.name || "-") + (phone ? ", +" + intl_(phone) : "");
   const lines = [
-    d.type === "rental" ? "New booking request on OPIIUS" : d.type === "project" ? "New project request on OPIIUS" : "New request on OPIIUS",
+    "New enquiry on OPIIUS",
     "Ref: " + d.ref,
-    d.agencyName && d.type !== "project" ? "Agency: " + d.agencyName : "",
-    d.vehicle ? (d.type === "rental" ? "Car: " : "Need: ") + d.vehicle + (d.pricePerDay ? " (" + inr(d.pricePerDay) + "/day)" : "") : "",
-    d.from ? "Dates: " + d.from + (d.to && d.to !== d.from ? " to " + d.to : "") + (d.days ? " (" + d.days + (d.days == 1 ? " day)" : " days)") : "") : "",
-    d.total ? "Estimate: " + inr(d.total) : "",
-    d.pickup ? "Pickup: " + d.pickup : "",
-    d.city ? (d.type === "project" ? "When: " : "City: ") + d.city : "",
-    d.budget ? (d.type === "project" ? "Plan: " : "Budget: ") + d.budget : "",
+    "Need: " + need,
+    d.budget ? "Plan: " + d.budget : "",
+    d.city ? "When: " + d.city : "",
     d.msg ? "Message: " + d.msg : "",
-    "Customer: " + (d.name || "-") + (phone ? ", +" + (phone.length === 10 ? "91" + phone : phone) : ""),
-    phone ? "WhatsApp them: https://wa.me/" + (phone.length === 10 ? "91" + phone : phone) : ""
+    "Customer: " + customer,
+    phone ? "WhatsApp them: https://wa.me/" + intl_(phone) : ""
   ].filter(Boolean);
-  const asks = d.type === "project" ? [] : ownerLinks_(d); /* project requests are for you, not the agencies */
-  if (asks.length) lines.push("", "Ask the owners (tap, then send; first yes gets it):", ...asks);
-  const text = lines.join("\n"), sent = [];
+  const text = lines.join("\n"), res = {};
+
   try {
-    MailApp.sendEmail(NOTIFY_EMAIL || Session.getEffectiveUser().getEmail(), "OPIIUS " + d.ref + ": " + (d.vehicle || "new request"), text);
-    sent.push("email");
-  } catch (err) {}
-  if (CALLMEBOT_APIKEY && CALLMEBOT_PHONE) try {
-    UrlFetchApp.fetch("https://api.callmebot.com/whatsapp.php?phone=" + CALLMEBOT_PHONE + "&text=" + encodeURIComponent(text) + "&apikey=" + encodeURIComponent(CALLMEBOT_APIKEY), { muteHttpExceptions: true });
-    sent.push("whatsapp");
-  } catch (err) {}
+    const mail = { to: NOTIFY_EMAIL || Session.getEffectiveUser().getEmail(), subject: "OPIIUS " + d.ref + ": " + need, body: text };
+    const em = String(d.msg || "").match(/[\w.+-]+@[\w-]+\.[\w.]+/);
+    if (em) mail.replyTo = em[0];   /* reply straight to the customer when they left an email */
+    MailApp.sendEmail(mail);
+    res.email = "sent";
+  } catch (err) { res.email = "failed: " + err; }
+
+  if (WA_TOKEN && WA_PHONE_ID && WA_TO) {
+    /* WhatsApp template variables cannot hold new lines or long runs of spaces */
+    const v = t => String(t || "-").replace(/\s+/g, " ").trim().slice(0, 300) || "-";
+    const body = { messaging_product: "whatsapp", to: digits_(WA_TO), type: "template",
+      template: { name: WA_TEMPLATE, language: { code: WA_LANG }, components: [{ type: "body", parameters:
+        [d.ref, need + (d.budget ? " (" + d.budget + ")" : ""), customer, d.msg || "-"].map(t => ({ type: "text", text: v(t) })) }] } };
+    try {
+      const r = UrlFetchApp.fetch("https://graph.facebook.com/v21.0/" + WA_PHONE_ID + "/messages", { method: "post", contentType: "application/json",
+        headers: { Authorization: "Bearer " + WA_TOKEN }, payload: JSON.stringify(body), muteHttpExceptions: true });
+      res.whatsapp = r.getResponseCode() === 200 ? "sent" : "Meta answered " + r.getResponseCode() + ": " + r.getContentText().slice(0, 300);
+    } catch (err) { res.whatsapp = "failed: " + err; }
+  } else if (CALLMEBOT_APIKEY && CALLMEBOT_PHONE) {
+    try {
+      const r = UrlFetchApp.fetch("https://api.callmebot.com/whatsapp.php?phone=" + digits_(CALLMEBOT_PHONE) + "&text=" + encodeURIComponent(text) +
+        "&apikey=" + encodeURIComponent(CALLMEBOT_APIKEY), { muteHttpExceptions: true });
+      const t = r.getContentText();
+      res.whatsapp = r.getResponseCode() === 200 && /queued|sent/i.test(t) ? "sent" : "CallMeBot answered " + r.getResponseCode() + ": " + t.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").slice(0, 300);
+    } catch (err) { res.whatsapp = "failed: " + err; }
+  } else res.whatsapp = "off (no WhatsApp option filled in)";
+
   if (TELEGRAM_TOKEN && TELEGRAM_CHAT) try {
-    UrlFetchApp.fetch("https://api.telegram.org/bot" + TELEGRAM_TOKEN + "/sendMessage", { method: "post", payload: { chat_id: TELEGRAM_CHAT, text: text }, muteHttpExceptions: true });
-    sent.push("telegram");
-  } catch (err) {}
-  return sent;
+    const r = UrlFetchApp.fetch("https://api.telegram.org/bot" + TELEGRAM_TOKEN + "/sendMessage", { method: "post", payload: { chat_id: TELEGRAM_CHAT, text: text }, muteHttpExceptions: true });
+    res.telegram = r.getResponseCode() === 200 ? "sent" : "Telegram answered " + r.getResponseCode();
+  } catch (err) { res.telegram = "failed: " + err; }
+  return res;
 }
 
-/* WhatsApp links to two owners: the chosen agency (or the fastest in the city) and the next one in the same city.
-   The message has the car, dates and pickup, but not the customer's number: OPIIUS passes that on once an owner says yes. */
-function ownerLinks_(d) {
-  const has = o => digits_(o.phone).length >= 10;
-  const city = String(d.city || "").toLowerCase();
-  const first = OWNERS.find(o => o.id === d.agency && has(o))
-    || OWNERS.find(o => has(o) && (!city || city.indexOf(o.city.toLowerCase()) >= 0));
-  if (!first) return [];
-  const backup = OWNERS.find(o => o !== first && has(o) && o.city === first.city);
-  const ask = (o, isBackup) => {
-    const msg = ["OPIIUS request " + d.ref,
-      d.vehicle ? (d.type === "rental" ? "Car: " : "Need: ") + d.vehicle + (isBackup && d.type === "rental" ? " or similar" : "") : "",
-      d.from ? "Dates: " + d.from + (d.to && d.to !== d.from ? " to " + d.to : "") : "",
-      d.pickup ? "Pickup: " + d.pickup : "",
-      "Is it free? Please reply YES or NO within 30 minutes."].filter(Boolean).join("\n");
-    const ph = digits_(o.phone);
-    return (isBackup ? "Backup, " : "") + o.name + ": https://wa.me/" + (ph.length === 10 ? "91" + ph : ph) + "?text=" + encodeURIComponent(msg);
-  };
-  return [ask(first, first.id !== d.agency && !!d.agency)].concat(backup ? [ask(backup, true)] : []);
+/* Run this from the editor (function menu > testAlert > Run) to check the alerts. The log shows what each channel said. */
+function testAlert() {
+  const res = notify_({ ref: "OP-000000-TEST", type: "project", vehicle: "Business website", budget: "India · from ₹2,000/month",
+    city: "Flexible", name: "OPIIUS test", msg: "This is a test alert from the request log." }, "8638830682");
+  Logger.log(JSON.stringify(res, null, 2));
+  return res;
 }
 
 /* the dashboard reads and updates here (needs the key); ?ping=1 tells the website this version */
@@ -153,8 +156,8 @@ function doGet(e) {
       return out_({ ok: true });
     } finally { lock.releaseLock(); }
   }
-  /* a test alert from the dashboard's Settings, to check notifications work */
-  if (p.action === "test") return out_({ ok: true, notified: notify_({ ref: "OP-000000-TEST", type: "rental", vehicle: "Test alert", name: "OPIIUS test" }, "") });
+  /* a test alert from the dashboard's Settings */
+  if (p.action === "test") { const r = testAlert(); return out_({ ok: true, notified: Object.keys(r).filter(k => r[k] === "sent"), detail: r }); }
   const n = sh.getLastRow() - 1;
   const rows = n > 0 ? sh.getRange(2, 1, n, HEAD.length).getValues() : [];
   return out_({ ok: true, head: HEAD, rows: rows.map(r => r.map(v => v instanceof Date ? v.toISOString() : v)) });
