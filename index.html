@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>OPIIUS · Any website or software, built for you</title>
-<meta name="description" content="OPIIUS builds any website or software you need, for your business or for yourself. ₹2,000 a month in India, $120 a month worldwide. Send an enquiry.">
+<meta name="description" content="OPIIUS builds any website or software you need, for your business or for yourself. Prices from ₹2,000 a month in India and $120 a month worldwide. Send an enquiry.">
 <link rel="canonical" href="https://opiius.online/">
 <meta name="theme-color" content="#ececec">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="OPIIUS">
 <meta property="og:title" content="OPIIUS · Any website or software, built for you">
-<meta property="og:description" content="Business websites, personal sites, custom software and automation. ₹2,000/month in India, $120/month worldwide.">
+<meta property="og:description" content="Business websites, personal sites, custom software and automation. From ₹2,000/month in India, $120/month worldwide.">
 <meta property="og:url" content="https://opiius.online/">
 <meta property="og:image" content="https://opiius.online/shots/01-lead-gen.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -126,6 +126,8 @@ button{cursor:pointer}
 .badge{padding:6px 12px;border-radius:999px;background:#fff;box-shadow:var(--sh);font-size:12.5px;font-weight:700;color:var(--ink2)}
 .plan.dk .badge{background:rgba(255,61,31,.16);color:#ff8a6b;box-shadow:none}
 .price{font-size:clamp(52px,6.4vw,72px);font-weight:600;letter-spacing:-.05em;line-height:1;margin:26px 0 24px}
+.price .from{display:block;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.plan.dk .price .from{color:#9a9aa1}
 .price small{font-size:18px;font-weight:600;letter-spacing:-.01em;color:var(--dim);margin-left:6px}
 .plan.dk .price small{color:#9a9aa1}
 .inc{list-style:none;padding:24px 0 0;margin:26px 0 0;display:grid;gap:13px;border-top:1px solid var(--line)}
@@ -350,7 +352,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
           <div><label for="bPhone">WhatsApp number</label><input id="bPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile" required></div></div>
         <div class="row2"><div><label for="bBiz">Business or project <small>(optional)</small></label><input id="bBiz" name="biz" placeholder="Name or type"></div>
           <div><label for="bEmail">Email <small>(optional)</small></label><input id="bEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com"></div></div>
-        <div class="row2"><div><label for="bBudget">Plan</label><select id="bBudget" name="plan"><option>India · ₹2,000/month</option><option>Worldwide · $120/month</option><option>Custom quote (bigger project)</option><option>Not sure yet</option></select></div>
+        <div class="row2"><div><label for="bBudget">Plan</label><select id="bBudget" name="plan"><option>India · from ₹2,000/month</option><option>Worldwide · from $120/month</option><option>Custom quote (bigger project)</option><option>Not sure yet</option></select></div>
           <div><label for="bWhen">When do you need it?</label><select id="bWhen" name="when"><option>Flexible</option><option>As soon as possible</option><option>Within a month</option><option>In 1–3 months</option></select></div></div>
         <div><label for="bMsg">Tell us about it</label><textarea id="bMsg" name="msg" placeholder="What should it do? Any website or app you like? It can be for your business or just for you."></textarea></div>
         <p class="err" id="bErr" role="alert"></p>
@@ -363,11 +365,11 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 </section>
 
 <section class="sec" id="pricing"><div class="wrap">
-  <div class="sec-h"><div><span class="lbl rv">Pricing</span><h2 class="h2 rv">One simple plan,<br><span class="f">paid monthly.</span></h2></div><p class="lead rv">Your business online and looked after every month. Pick the price for where you are.</p></div>
+  <div class="sec-h"><div><span class="lbl rv">Pricing</span><h2 class="h2 rv">Plans that start<br><span class="f">small.</span></h2></div><p class="lead rv">These are starting prices. The final price depends on what you need, and you get an exact quote before any work starts.</p></div>
   <div class="plans">
     <div class="plan rv"><div class="top"><h3>India</h3><span class="badge">For businesses in India</span></div>
-      <p class="price">₹2,000<small>/month</small></p>
-      <button class="btn dark block" type="button" data-plan="India · ₹2,000/month">Choose this plan</button>
+      <p class="price"><span class="from">Starting from</span>₹2,000<small>/month onwards</small></p>
+      <button class="btn dark block" type="button" data-plan="India · from ₹2,000/month">Get a quote</button>
       <ul class="inc">
         <li><i>✓</i>Business website or app-style site, designed and built for you</li>
         <li><i>✓</i>Hosting, security (SSL) and speed taken care of</li>
@@ -377,8 +379,8 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
         <li><i>✓</i>Support on WhatsApp</li>
       </ul></div>
     <div class="plan dk rv"><div class="top"><h3>Worldwide</h3><span class="badge">For clients outside India</span></div>
-      <p class="price">$120<small>/month</small></p>
-      <button class="btn red block" type="button" data-plan="Worldwide · $120/month">Choose this plan</button>
+      <p class="price"><span class="from">Starting from</span>$120<small>/month onwards</small></p>
+      <button class="btn red block" type="button" data-plan="Worldwide · from $120/month">Get a quote</button>
       <ul class="inc">
         <li><i>✓</i>Business website or app-style site, designed and built for you</li>
         <li><i>✓</i>Hosting, security (SSL) and speed taken care of</li>
@@ -425,8 +427,8 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   <div><span class="lbl rv">FAQ</span><h2 class="h2 rv">Questions,<br><span class="f">answered.</span></h2><p class="lead rv">Something else on your mind? Message OPIIUS on WhatsApp at 86388 30682.</p></div>
   <div class="qs">
     <div class="q open rv"><button type="button" aria-expanded="true">Can you build any website or software?<i>+</i></button><div class="a"><div><p>Yes. Business websites, personal and portfolio sites, custom software and web apps, AI automation and chatbots, Android apps and video ads. Tell us in the form what you want and we'll tell you how we'd build it.</p></div></div></div>
-    <div class="q rv"><button type="button" aria-expanded="false">What do I get for the monthly price?<i>+</i></button><div class="a"><div><p>A website built for you, kept online, fast and secure, with changes every month and support when you need it. Everything in the plan list is included.</p></div></div></div>
-    <div class="q rv"><button type="button" aria-expanded="false">Which plan is for me?<i>+</i></button><div class="a"><div><p>Clients in India pay ₹2,000 a month. Clients outside India pay $120 a month. Same work, same care. Bigger builds like custom software or apps get their own price.</p></div></div></div>
+    <div class="q rv"><button type="button" aria-expanded="false">Is the price fixed?<i>+</i></button><div class="a"><div><p>No. ₹2,000 and $120 a month are starting prices. The final price depends on the size of the website or software and what it needs to do. You get an exact quote before any work starts.</p></div></div></div>
+    <div class="q rv"><button type="button" aria-expanded="false">Which plan is for me?<i>+</i></button><div class="a"><div><p>Clients in India start from ₹2,000 a month. Clients outside India start from $120 a month. Every plan includes the website built for you, hosting, monthly changes and support.</p></div></div></div>
     <div class="q rv"><button type="button" aria-expanded="false">Do you only work in Guwahati?<i>+</i></button><div class="a"><div><p>No. OPIIUS is based in Guwahati, Assam, and works with clients anywhere over WhatsApp, calls and email.</p></div></div></div>
   </div>
 </div></section>
