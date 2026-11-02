@@ -472,13 +472,13 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   var ref=function(){var d=new Date();return "OP-"+String(d.getFullYear()).slice(2)+("0"+(d.getMonth()+1)).slice(-2)+("0"+d.getDate()).slice(-2)+"-"+Math.random().toString(36).slice(2,7).toUpperCase()};
   var phoneOk=function(v){var d=String(v||"").replace(/\D/g,"").replace(/^(91|0)(?=\d{10}$)/,"");return /^[6-9]\d{9}$/.test(d)?d:""};
   /* every enquiry is also emailed straight to OPIIUS through FormSubmit (no account needed; the first one asks to activate) */
-  var MAIL="opiiusservice@gmail.com";
+  var MAIL="opiiusservice@gmail.com", DBG={};
   function mail(rec,f){var ph=rec.phone?"+91 "+rec.phone:"-";
     return fetch("https://formsubmit.co/ajax/"+MAIL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
       _subject:"New OPIIUS enquiry "+rec.ref+": "+rec.vehicle,_template:"table",_captcha:"false",_replyto:f.email||undefined,
       "Reference":rec.ref,"Needs":rec.vehicle,"Plan":rec.budget,"When":rec.city,"Name":f.name,"WhatsApp":ph,"Message them":rec.phone?"https://wa.me/91"+rec.phone:"-",
       "Business":f.biz||"-","Email":f.email||"-","About the project":f.msg})})
-      .then(function(r){return r.json()}).then(function(j){return String(j.success)==="true"},function(){return false})}
+      .then(function(r){return r.json()}).then(function(j){DBG.email=j;return String(j.success)==="true"},function(e){DBG.email={error:String(e)};return false})}
   function send(rec){var body=JSON.stringify(rec);
     return fetch(LOG,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:body}).then(function(r){return r.json()}).then(function(j){return {ok:!!j.ok,v:j.v||1,error:j.error}})
       .catch(function(){return fetch(LOG,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:body}).then(function(){return {ok:true,v:0}},function(){return {ok:false}})})}
@@ -502,6 +502,8 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
       $("#bRef").textContent=r;
       var wa=["Hi OPIIUS, I sent an enquiry on opiius.online.","","Need: "+svc,"Plan: "+v("#bBudget"),"When: "+v("#bWhen"),"Name: "+name,extra,"","About it: "+msg,"","Ref: "+r].filter(function(x,i,a){return x!==""||a[i-1]!==""}).join("\n");
       /* an older log can't send an alert: offer WhatsApp as well */
+      /* opiius.online/?debug shows what each delivery route answered */
+      if(/[?&]debug/.test(location.search)){DBG.log=rs[0];setTimeout(function(){var d=document.createElement("pre");d.style.cssText="white-space:pre-wrap;text-align:left;font:12px/1.4 monospace;background:#111;color:#0f0;padding:12px;border-radius:12px;max-width:100%;overflow:auto";d.textContent=JSON.stringify(DBG,null,1);$("#bDone").appendChild(d)},0)}
       $("#bWa").innerHTML=res.v<2?'<a class="btn wa" target="_blank" rel="noopener" href="https://wa.me/'+WA+'?text='+encodeURIComponent(wa)+'">Also send it on WhatsApp</a>':"";
       f.hidden=true;$("#bDone").hidden=false;$(".panel").scrollIntoView({behavior:"smooth",block:"center"});
     });
