@@ -15,9 +15,14 @@ Live: https://opiius.online/
   request and alerts you by email (and WhatsApp or Telegram, if set up). Setup: `DASHBOARD-SETUP.md`.
 
 ## Booking form
-The form posts the request to the booking-log web app (URL in `index.html`, `var LOG=`). The customer stays on the
-page and gets a reference number. If the deployed script is older than version 2, the success screen also offers a
-"send it on WhatsApp" button so the request still reaches you.
+Each enquiry goes two ways at once:
+1. **Email** to opiiusservice@gmail.com through FormSubmit (`var MAIL=` in `index.html`). No account is needed; the
+   very first enquiry makes FormSubmit send an "Activate Form" email to that address, and one click turns it on.
+2. **The request log** (Google Sheet, `var LOG=`), which keeps every enquiry for the dashboard and can also send
+   WhatsApp alerts (see `DASHBOARD-SETUP.md`).
+
+The customer stays on the page and gets a reference number. If neither route answers, the form shows an error; if
+only an old log answers, the success screen also offers a "send it on WhatsApp" button.
 
 ## The car rental marketplace (closed November 2026)
 OPIIUS ran as a car rental marketplace for Guwahati and Barama in 2026. It is now a case study on the home page. Its old
