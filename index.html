@@ -474,7 +474,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   /* every enquiry is also emailed straight to OPIIUS through FormSubmit (no account needed; the first one asks to activate) */
   var MAIL="opiiusservice@gmail.com", DBG={};
   function mail(rec,f){var ph=rec.phone?"+91 "+rec.phone:"-";
-    return fetch("https://formsubmit.co/ajax/"+MAIL,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
+    return fetch("https://formsubmit.co/ajax/"+MAIL,{method:"POST",keepalive:true,headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({
       _subject:"New OPIIUS enquiry "+rec.ref+": "+rec.vehicle,_template:"table",_captcha:"false",_replyto:f.email||undefined,
       "Reference":rec.ref,"Needs":rec.vehicle,"Plan":rec.budget,"When":rec.city,"Name":f.name,"WhatsApp":ph,"Message them":rec.phone?"https://wa.me/91"+rec.phone:"-",
       "Business":f.biz||"-","Email":f.email||"-","About the project":f.msg})})
@@ -495,9 +495,10 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
     var rec={type:"project",ref:r,agency:"",agencyName:"OPIIUS studio",vehicle:svc,city:v("#bWhen"),budget:v("#bBudget"),pickup:(name+" · +91"+ph+(extra?" · "+extra:"")).slice(0,120),
       name:name,phone:ph,msg:(msg+(extra?"\n"+extra:"")).slice(0,500),page:"/",ua:/Mobi/i.test(navigator.userAgent)?"mobile":"desktop"};
     /* the email service can be slow to answer: wait at most 8 s for it; the email still goes out in the background */
-    var mailP=mail(rec,{name:name,biz:v("#bBiz"),email:v("#bEmail"),msg:msg}),late=new Promise(function(ok){setTimeout(function(){DBG.email=DBG.email||"still sending after 8 s";ok(false)},8000)});
+    var mailP=mail(rec,{name:name,biz:v("#bBiz"),email:v("#bEmail"),msg:msg}),late=new Promise(function(ok){setTimeout(function(){DBG.email=DBG.email||"still sending after 8 s";ok("pending")},8000)});
     Promise.all([send(rec),Promise.race([mailP,late])]).then(function(rs){var res=rs[0];
       /* delivered if either the request log or the email went through; an email counts as an alert, so no WhatsApp fallback is needed */
+      /* a slow answer still ends in an email (a blocked or failed request fails fast), so "pending" counts as sent */
       if(rs[1]){res={ok:true,v:Math.max(res.v||0,2)}}
       btn.disabled=false;btn.textContent="Send enquiry";
       if(!res.ok){err.textContent=res.error==="too many requests"?"Too many requests from this number. Please try again later.":"Couldn't send. Check your connection and try again, or message OPIIUS on WhatsApp.";return}
