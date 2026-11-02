@@ -91,7 +91,7 @@ function notify_(d, phone) {
     d.total ? "Estimate: " + inr(d.total) : "",
     d.pickup ? "Pickup: " + d.pickup : "",
     d.city ? (d.type === "project" ? "When: " : "City: ") + d.city : "",
-    d.budget ? "Budget: " + d.budget : "",
+    d.budget ? (d.type === "project" ? "Plan: " : "Budget: ") + d.budget : "",
     d.msg ? "Message: " + d.msg : "",
     "Customer: " + (d.name || "-") + (phone ? ", +" + (phone.length === 10 ? "91" + phone : phone) : ""),
     phone ? "WhatsApp them: https://wa.me/" + (phone.length === 10 ? "91" + phone : phone) : ""
