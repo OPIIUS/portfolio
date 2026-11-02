@@ -140,6 +140,47 @@ button{cursor:pointer}
 .chips2{display:flex;flex-wrap:wrap;gap:8px}
 .chips2 span{padding:8px 14px;border-radius:999px;background:#fff;font-size:13.5px;font-weight:600;color:var(--ink2);box-shadow:0 1px 2px rgba(0,0,0,.05)}
 
+/* plan calculator */
+.calc{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;margin-top:16px;align-items:start}
+.calc-l{background:var(--paper);border-radius:var(--r);box-shadow:var(--sh);padding:28px}
+.calc-h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.calc-h h3{font-size:28px}.calc-h p{color:var(--dim);margin-top:6px;font-size:15px;max-width:40ch}
+.seg{display:inline-flex;background:#fff;border-radius:999px;padding:4px;box-shadow:var(--sh)}
+.seg button{height:38px;padding:0 16px;border:0;border-radius:999px;background:none;font-weight:700;font-size:14px;color:var(--ink2)}
+.seg button.on{background:var(--ink);color:#fff}
+.base-row,.add{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:14px 16px;border-radius:18px;background:#fff;margin-top:8px}
+.base-row{background:var(--ink);color:#fff}
+.base-row small{display:block;color:#b7b7bd;font-size:13px;margin-top:3px;line-height:1.4}
+.base-row .tick{width:26px;height:26px;border-radius:50%;background:var(--red);display:grid;place-items:center;font-size:13px}
+.add{cursor:pointer;transition:box-shadow .25s,transform .25s var(--out);border:1.5px solid transparent;user-select:none}
+.add:hover{box-shadow:var(--sh)}
+.add.on{border-color:var(--red);box-shadow:0 8px 20px -10px rgba(224,42,12,.45)}
+.add b,.base-row b{font-size:16px;font-weight:700}
+.add small{display:block;color:var(--dim);font-size:13px;margin-top:2px;line-height:1.35}
+.sw{width:42px;height:26px;border-radius:999px;background:#dcdce0;position:relative;transition:background .25s;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .3s var(--out)}
+.add.on .sw{background:var(--red)}.add.on .sw::after{transform:translateX(16px)}
+.pr{font-weight:700;font-size:15px;white-space:nowrap}.pr small{color:var(--dim);font-weight:600;font-size:12px}
+.base-row .pr small{color:#9a9aa1}
+.grp{margin:22px 0 2px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--dim)}.grp small{text-transform:none;letter-spacing:0;font-weight:600}
+.custom{margin-top:18px;padding:14px 16px;border-radius:16px;background:var(--red-soft);color:#7a1c08;font-size:14px}
+.calc-r{position:sticky;top:96px;background:radial-gradient(120% 120% at 100% 0,#2c2c31 0,var(--dark) 55%);color:#fff;border-radius:var(--r);box-shadow:var(--sh2);padding:28px}
+.sum-l{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9a9aa1}
+.tot{font-size:clamp(46px,5.4vw,64px);font-weight:600;letter-spacing:-.05em;line-height:1;margin-top:10px}
+.tot small{font-size:18px;color:#9a9aa1;letter-spacing:0;margin-left:6px}
+.perday{color:#ff8a6b;font-weight:600;font-size:14px;margin-top:8px}
+.bar{display:flex;height:16px;border-radius:999px;overflow:hidden;background:#2a2a2f;margin:20px 0 16px}
+.bar i{display:block;height:100%;transition:flex-grow .5s var(--out)}
+.lines{list-style:none;padding:0;margin:0;display:grid;gap:9px}
+.lines li{display:flex;align-items:center;gap:10px;font-size:14.5px;animation:pop2 .35s var(--out)}
+.lines li i{width:10px;height:10px;border-radius:3px;flex:none}
+.lines li span{flex:1;color:#d6d6db}.lines li b{font-weight:700}
+@keyframes pop2{from{opacity:0;transform:translateY(6px)}}
+.once-l{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.12);font-size:14.5px;color:#d6d6db}
+.once-l:empty{display:none}.once-l b{color:#fff}
+.calc-r .btn{margin-top:20px}
+.mini-tot{display:none}
+.fine2{font-size:12.5px;color:#9a9aa1;margin-top:12px;text-align:center}
 /* work */
 .work{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 .wk{background:var(--paper);border-radius:var(--r);box-shadow:var(--sh);padding:12px;display:flex;flex-direction:column;transition:transform .5s var(--out),box-shadow .5s}
@@ -255,7 +296,10 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 
 /* tablet */
 @media (max-width:980px){
-  .faq,.book{grid-template-columns:1fr}
+  .faq,.book,.calc{grid-template-columns:1fr}
+  .calc-r{position:static}
+  .mini-tot{display:flex;position:sticky;top:84px;z-index:5;justify-content:space-between;align-items:center;padding:12px 18px;border-radius:999px;background:var(--ink);color:#fff;margin-bottom:6px;gap:8px;box-shadow:var(--sh2);font-weight:600}
+  .mini-tot b{font-size:16px;letter-spacing:-.01em;white-space:nowrap}.mini-tot span{font-size:13px;color:#b7b7bd;white-space:nowrap;margin-right:10px}
   .nav .links{display:none}
   .menu{display:grid}
   .nav.open{border-radius:26px;flex-wrap:wrap}
@@ -280,6 +324,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   .ctas .btn{flex:1 1 auto}
   .work,.demos,.demos.two,.plans{grid-template-columns:1fr}
   .plan{padding:24px}.extra{padding:20px}
+  .calc-l,.calc-r{padding:20px}.add,.base-row{padding:12px;gap:10px}
   .row2{grid-template-columns:1fr}
   .get{padding:10px;gap:10px}.get i{width:32px;height:32px;border-radius:10px}.get small{display:none}.get b{font-size:14px}
   .panel{padding:20px}
@@ -390,7 +435,29 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
         <li><i>✓</i>Support on WhatsApp or email</li>
       </ul></div>
   </div>
-  <div class="extra rv"><p><b>Also available, quoted per project</b>Bigger builds, priced separately. Tell us what you need in the form above.</p><div class="chips2"><span>Web apps &amp; software</span><span>AI automation &amp; chatbots</span><span>Android apps</span><span>Video ads &amp; motion graphics</span><span>Redesigns &amp; fixes</span></div></div>
+  <div class="calc rv" id="calc">
+    <div class="calc-l">
+      <div class="calc-h"><div><h3>Build your plan</h3><p>Start with the website plan, then add only what you need. Every price is shown, nothing is hidden.</p></div>
+        <div class="seg" role="tablist" aria-label="Currency"><button type="button" class="on" data-cur="inr" role="tab" aria-selected="true">India ₹</button><button type="button" data-cur="usd" role="tab" aria-selected="false">Worldwide $</button></div></div>
+      <div class="mini-tot" aria-live="polite"><span>Your plan</span><b id="miniTot"></b></div>
+      <div class="base-row"><span class="tick">✓</span><div><b>Website plan</b><small>Designed and built for you · hosting &amp; SSL · WhatsApp &amp; call buttons · enquiry form · found on Google · monthly changes · support</small></div><span class="pr" id="basePr"></span></div>
+      <p class="grp">Add features <small>(monthly)</small></p>
+      <div id="addMo"></div>
+      <p class="grp">One-time extras</p>
+      <div id="addOnce"></div>
+      <p class="custom"><b>Need custom software, a web app or an Android app?</b> Those are quoted per project. Describe it in the enquiry form and you get an exact price.</p>
+    </div>
+    <aside class="calc-r">
+      <p class="sum-l">Your plan</p>
+      <p class="tot"><span id="tot"></span><small>/month</small></p>
+      <p class="perday" id="perday"></p>
+      <div class="bar" id="bar" aria-hidden="true"></div>
+      <ul class="lines" id="lines"></ul>
+      <div class="once-l" id="onceL"></div>
+      <button class="btn red block" type="button" id="sendPlan">Send this plan with my enquiry</button>
+      <p class="fine2">Starting prices. You get an exact quote before any work starts.</p>
+    </aside>
+  </div>
 </div></section>
 
 <section class="sec" id="work"><div class="wrap">
@@ -461,6 +528,52 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   var count=function(el){var n=+el.dataset.n,t0=null;if(still){el.textContent=n;return}var step=function(t){t0=t0||t;var p=Math.min((t-t0)/1200,1);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)};
   if("IntersectionObserver" in window){var ro=new IntersectionObserver(function(es){var k=0;es.forEach(function(e){if(e.isIntersecting){e.target.style.setProperty("--d",Math.min(k++,6)*.07+"s");e.target.classList.add("in");e.target.querySelectorAll("[data-n]").forEach(count);ro.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});$$(".rv").forEach(function(el){ro.observe(el)})}
   else $$(".rv").forEach(function(el){el.classList.add("in")});
+  /* plan calculator: every price lives here (India ₹ / worldwide $) */
+  var BASE={inr:2000,usd:120};
+  var ADD=[
+    {id:"pages",name:"Extra pages",d:"Up to 5 more pages: gallery, blog, team, FAQ",inr:500,usd:25},
+    {id:"booking",name:"Booking & appointments",d:"Customers pick a date and time; you get an alert",inr:1000,usd:40},
+    {id:"store",name:"Online store",d:"Product catalogue with cart and WhatsApp checkout",inr:1500,usd:60},
+    {id:"pay",name:"Online payments",d:"UPI, cards and wallets on your site",inr:700,usd:30},
+    {id:"bot",name:"AI chatbot",d:"Answers questions and takes enquiries 24/7 on your site and WhatsApp",inr:2000,usd:80},
+    {id:"seo",name:"Google growth (SEO)",d:"Monthly SEO work and Google Business posts",inr:1500,usd:60},
+    {id:"lang",name:"Second language",d:"Your site in Assamese, Hindi or any language",inr:500,usd:25},
+    {id:"social",name:"Social media posts",d:"8 designed posts a month for Instagram and Facebook",inr:3000,usd:150}];
+  var ONCE=[
+    {id:"logo",name:"Logo & brand kit",d:"Logo, colours and fonts, as files you own",inr:3000,usd:100},
+    {id:"video",name:"Video ad",d:"A 30-second ad for Reels and WhatsApp status",inr:2500,usd:120}];
+  var COL=["#ff3d1f","#ff6a45","#ff8a6b","#ffb39f","#e02a0c","#c41d00","#ffd2c4","#ff9a80"];
+  var cur="inr",sel={};
+  var money=function(n){return cur==="inr"?"₹"+n.toLocaleString("en-IN"):"$"+n.toLocaleString("en-US")};
+  var row=function(a,once){return '<div class="add" role="switch" tabindex="0" aria-checked="false" data-id="'+a.id+'"><span class="sw"></span><div><b>'+a.name+'</b><small>'+a.d+'</small></div><span class="pr" data-p="'+a.id+'"></span></div>'};
+  $("#addMo").innerHTML=ADD.map(function(a){return row(a)}).join("");$("#addOnce").innerHTML=ONCE.map(function(a){return row(a,1)}).join("");
+  var all=ADD.concat(ONCE),isOnce=function(id){return ONCE.some(function(o){return o.id===id})};
+  var shown=0,anim=null;
+  function countTo(n){var from=shown,t0=null;cancelAnimationFrame(anim);var step=function(t){t0=t0||t;var p=Math.min((t-t0)/450,1),v=Math.round(from+(n-from)*(1-Math.pow(1-p,3)));$("#tot").textContent=money(v);if(p<1)anim=requestAnimationFrame(step);else shown=n};anim=requestAnimationFrame(step)}
+  function calc(){
+    $("#basePr").innerHTML=money(BASE[cur])+"<small>/mo</small>";
+    all.forEach(function(a){var el=document.querySelector('[data-p="'+a.id+'"]');el.innerHTML="+"+money(a[cur])+"<small>"+(isOnce(a.id)?" once":"/mo")+"</small>"});
+    var mo=BASE[cur],once=0,lines=[{n:"Website plan",v:BASE[cur],c:"#f4f4f5"}];
+    ADD.forEach(function(a,i){if(sel[a.id]){mo+=a[cur];lines.push({n:a.name,v:a[cur],c:COL[i%COL.length]})}});
+    var onceItems=ONCE.filter(function(a){return sel[a.id]});onceItems.forEach(function(a){once+=a[cur]});
+    countTo(mo);$("#miniTot").textContent=money(mo)+"/mo"+(once?" + "+money(once)+" once":"");
+    $("#perday").textContent="That's about "+money(Math.round(mo/30))+" a day";
+    $("#bar").innerHTML=lines.map(function(l){return '<i style="flex-grow:'+l.v+';background:'+l.c+'"></i>'}).join("");
+    $("#lines").innerHTML=lines.map(function(l){return '<li><i style="background:'+l.c+'"></i><span>'+l.n+'</span><b>'+money(l.v)+'</b></li>'}).join("");
+    $("#onceL").innerHTML=onceItems.length?"Plus one-time: <b>"+money(once)+"</b> ("+onceItems.map(function(a){return a.name}).join(", ")+")":"";
+    return {mo:mo,once:once,items:lines.slice(1).map(function(l){return l.n}),onceItems:onceItems.map(function(a){return a.name})};
+  }
+  $$("#calc .add").forEach(function(el){var t=function(){var id=el.dataset.id;sel[id]=!sel[id];el.classList.toggle("on",sel[id]);el.setAttribute("aria-checked",sel[id]);calc()};
+    el.addEventListener("click",t);el.addEventListener("keydown",function(e){if(e.key===" "||e.key==="Enter"){e.preventDefault();t()}})});
+  $$("#calc .seg button").forEach(function(b){b.addEventListener("click",function(){cur=b.dataset.cur;$$("#calc .seg button").forEach(function(x){var on=x===b;x.classList.toggle("on",on);x.setAttribute("aria-selected",on)});shown=0;calc()})});
+  calc();
+  $("#sendPlan").addEventListener("click",function(){var r=calc(),bud=$("#bBudget");
+    var label=(cur==="inr"?"India":"Worldwide")+" · "+money(r.mo)+"/month"+(r.once?" + "+money(r.once)+" once":"");
+    var o=bud.querySelector('option[data-built]');if(!o){o=document.createElement("option");o.setAttribute("data-built","1");bud.insertBefore(o,bud.firstChild)}
+    o.textContent=label;bud.value=label;
+    var m=$("#bMsg"),plan="My plan: Website plan"+(r.items.length?" + "+r.items.join(" + "):"")+(r.onceItems.length?". One-time: "+r.onceItems.join(", "):"")+". Estimate: "+label+".";
+    m.value=m.value.replace(/^My plan:[^\n]*\n*/,"");m.value=plan+(m.value?"\n"+m.value:"\n");
+    book.scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},600)});
   /* FAQ */
   $$(".q").forEach(function(q){var b=q.querySelector("button");b.addEventListener("click",function(){var o=q.classList.toggle("open");b.setAttribute("aria-expanded",o)})});
   /* service chips (one choice) and "Book this" buttons */
