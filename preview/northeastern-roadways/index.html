@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northeastern Roadways · website preview by OPIIUS</title>
+<meta name="description" content="A free website preview made by OPIIUS for Northeastern Roadways, a goods transportation service in Guwahati.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assets/site/logo/opiius-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Urbanist:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/samples/opiius-signature.css">
+<style>
+:root{--brand:#2f6fb5;--brand-2:#a8d0f5;--brand-deep:#0f2440;--bg:#eef1f5;--paper:#f8fafc;--ink:#0e1a2b;--dim:#5f6b7b;--faint:#b4bfcc;--f-head:"Archivo",system-ui,sans-serif;--orange:#e8541e}
+h1,h2,h3{font-weight:800;letter-spacing:-.03em}
+.strip{position:relative;z-index:61;background:#0e1a2b;color:#cfd8e3;font-size:13px;font-weight:600;text-align:center;padding:9px 16px}
+.strip b{color:#fff}.strip a{color:var(--brand-2);text-decoration:underline;text-underline-offset:2px}
+.o-nav{top:52px}
+.o-nav.up{top:12px}
+.o-nav{transition:box-shadow .3s,top .35s var(--out)}
+.o-btn.go{background:linear-gradient(180deg,#ff9a6a -40%,var(--orange) 55%,#a8340c 160%);color:#fff;box-shadow:0 10px 24px -10px var(--orange)}
+
+/* hero */
+.hero{background:radial-gradient(120% 100% at 80% 20%,#1d4a7d 0,#0f2440 50%,#08142a 100%);color:#fff}
+.hero .o-ring{width:min(620px,52vw);right:-4vw;top:46%;transform:translateY(-50%);opacity:.75}
+.road{position:absolute;left:0;right:0;bottom:0;height:42%;z-index:1;pointer-events:none}
+.road svg{width:100%;height:100%}
+.truckrun{animation:drive 14s linear infinite}
+@keyframes drive{from{transform:translateX(-260px)}to{transform:translateX(1700px)}}
+.hero-in{position:relative;z-index:3;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;padding:150px 20px 150px}
+.hero .o-lbl{background:rgba(255,255,255,.1);color:#d6e6f7;box-shadow:none;border:1px solid rgba(168,208,245,.25)}
+.hero h1{font-size:clamp(44px,6.2vw,80px);line-height:.98;margin-top:18px}
+.hero h1 em{font-style:normal;color:#ffb08a}
+.hero .sub{color:#c3d1e1;font-size:18px;max-width:46ch;margin-top:18px}
+.pts{display:flex;gap:10px 20px;flex-wrap:wrap;margin-top:24px;font-size:14.5px;font-weight:600;color:#d6e6f7}
+.pts span::before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;margin-right:8px;border-radius:50%;background:rgba(168,208,245,.18);color:var(--brand-2);font-size:11px}
+.qq{background:#fff;color:var(--ink);border-radius:24px;padding:24px;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)}
+.qq h2{font-size:26px}
+.qq p.s{color:var(--dim);font-size:14.5px;margin-top:4px}
+.qq form{display:grid;gap:12px;margin-top:16px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.err{color:#c0262d;font-size:14px;font-weight:600;min-height:1em}
+.fine{color:var(--dim);font-size:12.5px;text-align:center}
+
+/* services */
+.svc{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.sv{padding:24px}
+.sv .ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(180deg,var(--brand-2) -60%,var(--brand) 60%,var(--brand-deep) 160%);color:#fff}
+.sv .ic svg{width:24px;height:24px}
+.sv h3{font-size:21px;margin-top:16px}
+.sv p{color:var(--dim);margin-top:6px;font-size:15px}
+
+/* vehicles */
+.fleet{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.vh{padding:20px;display:flex;flex-direction:column}
+.vh .art{height:96px;border-radius:16px;background:linear-gradient(180deg,#e4ebf3,#f3f6f9);display:grid;place-items:center;overflow:hidden}
+.vh .art svg{height:70px;width:auto}
+.vh h3{font-size:21px;margin-top:14px}
+.vh .cap{display:inline-block;margin-top:6px;font-weight:700;font-size:13.5px;color:var(--brand)}
+.vh p{color:var(--dim);font-size:15px;margin-top:6px;flex:1}
+.vh button{margin-top:14px;align-self:flex-start;height:40px;padding:0 16px;font-size:14px}
+
+/* coverage */
+.cov{display:grid;grid-template-columns:1.4fr .6fr;gap:16px}
+.map{padding:14px}
+.map svg{width:100%;height:auto}
+.map .ln{fill:none;stroke:var(--brand);stroke-width:2;stroke-dasharray:5 6;opacity:.55}
+.map .nd{cursor:pointer}
+.map .nd circle{fill:#fff;stroke:var(--brand);stroke-width:3;transition:r .2s}
+.map .nd text{font:700 15px Urbanist,sans-serif;fill:var(--ink)}
+.map .nd .st{font-weight:600;font-size:12px;fill:var(--dim)}
+.map .nd:hover circle,.map .nd.on circle{fill:var(--orange);stroke:var(--orange)}
+.map .hub circle{fill:var(--brand-deep);stroke:var(--brand-2);stroke-width:5}
+.map .hub text{font-size:17px}
+.cl{padding:24px}
+.cl h3{font-size:22px}
+.cl ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.cl li{display:flex;justify-content:space-between;gap:10px;font-weight:600;font-size:15px;padding:8px 0;border-bottom:1px solid #e6ebf1}
+.cl li small{color:var(--dim);font-weight:600}
+.cl .o-btn{margin-top:18px}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stp{padding:26px}
+.stp .n{font-family:var(--f-head);font-weight:800;font-size:46px;line-height:1;color:var(--faint)}
+.stp h3{font-size:22px;margin-top:12px}
+.stp p{color:var(--dim);margin-top:6px}
+
+/* full quote */
+.qbig{display:grid;grid-template-columns:.85fr 1.15fr;gap:16px}
+.qbig .side{padding:30px;background:var(--brand-deep);color:#fff;border-radius:24px}
+.qbig .side .o-lbl{background:rgba(255,255,255,.1);color:#d6e6f7;box-shadow:none}
+.qbig .side h2{font-size:clamp(32px,4vw,46px);margin-top:16px}
+.qbig .side h2 .f{color:#7f9bbd}
+.qbig .side p{color:#c3d1e1;margin-top:12px}
+.qbig .side .call{display:grid;gap:10px;margin-top:22px}
+.qbig .side .call a{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.07);font-weight:700}
+.qbig .side .call small{display:block;color:#9fb3cb;font-weight:600;font-size:12.5px}
+.qbig form{padding:28px;display:grid;gap:12px}
+body:has(.o-sheet) .o-badge{opacity:0}
+
+@media (max-width:900px){
+  .hero-in{grid-template-columns:1fr;padding:140px 20px 160px}
+  .hero .o-ring{width:130vw;right:-60vw;top:6%;transform:none}
+  .svc{grid-template-columns:1fr 1fr}
+  .fleet{grid-template-columns:1fr 1fr}
+  .cov,.qbig,.steps{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .strip{font-size:12px}
+  .o-nav{top:58px}
+  .hero-in{padding:132px 16px 150px}
+  .qq{padding:20px}
+  .row2{grid-template-columns:1fr 1fr;gap:10px}
+  .svc,.fleet{grid-template-columns:1fr}
+  .sv,.vh,.stp{padding:20px}
+  .qbig .side,.qbig form{padding:22px}
+  .o-nav>.o-btn{display:none}.o-logo{font-size:16px}
+  .map{overflow-x:auto;-webkit-overflow-scrolling:touch}.map svg{min-width:640px}
+  .swipe{display:block!important}
+}
+</style>
+</head>
+<body data-sample="Preview for Northeastern Roadways">
+
+<div class="strip"><b>Free website preview</b> made for Northeastern Roadways by OPIIUS. This is not their official site yet. <a href="https://opiius.online/" target="_blank" rel="noopener">About OPIIUS</a></div>
+
+<nav class="o-nav" aria-label="Main">
+  <a class="o-logo" href="#top"><i></i>Northeastern Roadways</a>
+  <div class="o-links"><a href="#services">Services</a><a href="#vehicles">Vehicles</a><a href="#coverage">Coverage</a><a href="#quote">Get a quote</a></div>
+  <a class="o-btn go" href="#quote">Get a quote</a>
+  <button class="o-menu" type="button" aria-label="Menu" aria-expanded="false"><span></span></button>
+</nav>
+
+<header class="o-hero hero" id="top">
+  <div class="o-ring"></div>
+  <div class="road" aria-hidden="true">
+    <svg viewBox="0 0 1440 300" preserveAspectRatio="none">
+      <path d="M0 150 C200 110 380 170 560 130 S900 90 1080 140 S1320 120 1440 110 V300 H0Z" fill="#0c1d36" opacity=".8"/>
+      <path d="M0 200 C260 170 520 220 760 190 S1200 170 1440 180 V300 H0Z" fill="#081428"/>
+      <rect y="256" width="1440" height="44" fill="#050d1c"/>
+      <path d="M0 278 H1440" stroke="#f3c969" stroke-width="3" stroke-dasharray="26 30" opacity=".55"/>
+      <g class="truckrun"><g transform="translate(0 196) scale(.9)">
+        <rect x="0" y="6" width="150" height="58" rx="5" fill="#2f6fb5"/><rect x="8" y="14" width="134" height="6" rx="3" fill="#a8d0f5" opacity=".5"/>
+        <path d="M154 22 h34 l22 22 v20 h-56z" fill="#e8541e"/><path d="M162 28 h22 l14 14 h-36z" fill="#bfe0ff" opacity=".9"/>
+        <circle cx="34" cy="68" r="11" fill="#0b0b0c"/><circle cx="62" cy="68" r="11" fill="#0b0b0c"/><circle cx="182" cy="68" r="11" fill="#0b0b0c"/>
+        <circle cx="34" cy="68" r="4" fill="#8a96a5"/><circle cx="62" cy="68" r="4" fill="#8a96a5"/><circle cx="182" cy="68" r="4" fill="#8a96a5"/>
+        <rect x="206" y="50" width="6" height="5" fill="#ffd36a"/>
+      </g></g>
+    </svg>
+  </div>
+  <div class="o-wrap hero-in">
+    <div>
+      <span class="o-lbl o-st">Goods transport · Guwahati, Assam</span>
+      <h1 class="o-st">Your goods, safely across the <em>Northeast.</em></h1>
+      <p class="sub o-st">From Assam to any part of Northeast India. All kinds of heavy vehicles, safe and on time. Your goods transportation is our responsibility.</p>
+      <div class="pts o-st"><span>All 8 northeast states</span><span>Every size of truck</span><span>Price on WhatsApp</span></div>
+    </div>
+    <div class="qq o-st" id="qq">
+      <h2>Get a price in minutes</h2>
+      <p class="s">Tell us the route. We reply on WhatsApp with a price.</p>
+      <form id="qf" novalidate>
+        <div class="row2">
+          <div class="o-field"><label for="qFrom">From</label><input id="qFrom" value="Guwahati"></div>
+          <div class="o-field"><label for="qTo">To</label><select id="qTo"></select></div>
+        </div>
+        <div class="o-field"><label for="qVeh">Vehicle</label><select id="qVeh"></select></div>
+        <div class="row2">
+          <div class="o-field"><label for="qName">Name</label><input id="qName" autocomplete="name" placeholder="Your name"></div>
+          <div class="o-field"><label for="qPhone">WhatsApp</label><input id="qPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit"></div>
+        </div>
+        <p class="err" id="qErr" role="alert"></p>
+        <button class="o-btn go block" type="submit">Get my price</button>
+        <p class="fine">No calls unless you want one.</p>
+      </form>
+    </div>
+  </div>
+  <a class="o-notch" href="#services">Scroll for more <i>↓</i></a>
+</header>
+
+<main>
+<section class="o-sec" id="services"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Services</span><h2 class="o-h2 o-rv">Whatever you need moved,<br><span class="f">we have a truck for it.</span></h2></div><p class="o-lead o-rv">Safety and efficiency guaranteed, on every trip from Guwahati to the rest of the Northeast.</p></div>
+  <div class="svc">
+    <div class="o-card sv o-rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="14" height="11" rx="1.5"/><path d="M15 9h4l3 4v4h-7z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span><h3>Full truck load</h3><p>A whole truck for your goods, straight from pickup to delivery.</p></div>
+    <div class="o-card sv o-rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg></span><h3>Part load</h3><p>Smaller consignment? Share the truck and pay only for your space.</p></div>
+    <div class="o-card sv o-rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M5 20V10l7-6 7 6v10"/><path d="M9 20v-6h6v6"/></svg></span><h3>Construction material</h3><p>Cement, steel, sand and stone, delivered to your site on time.</p></div>
+    <div class="o-card sv o-rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><h3>Machinery &amp; heavy goods</h3><p>Heavy equipment moved on the right vehicle, loaded with care.</p></div>
+  </div>
+</div></section>
+
+<section class="o-sec" id="vehicles"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Vehicles</span><h2 class="o-h2 o-rv">All kinds of heavy vehicles,<br><span class="f">ready when you are.</span></h2></div><p class="o-lead o-rv">Not sure which one you need? Pick the closest and we'll suggest the right truck.</p></div>
+  <div class="fleet" id="fleet"></div>
+</div></section>
+
+<section class="o-sec" id="coverage"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Coverage</span><h2 class="o-h2 o-rv">From Assam to any part<br><span class="f">of Northeast India.</span></h2></div><p class="o-lead o-rv">Tap a city on the map to get a price for that route.</p></div>
+  <div class="cov">
+    <div class="o-card map o-rv"><p class="swipe" style="display:none;font-size:13px;font-weight:600;color:var(--dim);margin:2px 6px 8px">Swipe the map →</p><svg id="map" viewBox="0 0 800 520" role="img" aria-label="Routes from Guwahati to cities across Northeast India"></svg></div>
+    <div class="o-card cl o-rv"><h3>Popular routes</h3><ul id="routes"></ul><a class="o-btn solid block" href="#quote">Get a price for any route</a></div>
+  </div>
+</div></section>
+
+<section class="o-sec"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">How it works</span><h2 class="o-h2 o-rv">Booked in three steps,<br><span class="f">no running around.</span></h2></div></div>
+  <div class="steps">
+    <div class="o-card stp o-rv"><span class="n">01</span><h3>Tell us the route</h3><p>Where from, where to, what goods and which vehicle. It takes a minute.</p></div>
+    <div class="o-card stp o-rv"><span class="n">02</span><h3>Get your price</h3><p>We reply on WhatsApp with the price and pickup time.</p></div>
+    <div class="o-card stp o-rv"><span class="n">03</span><h3>We deliver</h3><p>The truck arrives, your goods are loaded with care, and we keep you updated on WhatsApp until delivery.</p></div>
+  </div>
+</div></section>
+
+<section class="o-sec" id="quote"><div class="o-wrap">
+  <div class="qbig">
+    <div class="side o-rv">
+      <span class="o-lbl">Get a quote</span>
+      <h2>Need goods moved?<br><span class="f">Let's talk price.</span></h2>
+      <p>Fill this in and get a price on WhatsApp. Prefer to talk? Call or message directly.</p>
+      <div class="call"><a href="#quote" data-demo="call"><span><small>Call</small>Your phone number here</span></a><a href="#quote" data-demo="wa"><span><small>WhatsApp</small>Your WhatsApp number here</span></a></div>
+    </div>
+    <form class="o-card o-rv" id="bf" novalidate>
+      <div class="row2">
+        <div class="o-field"><label for="bFrom">Pickup city</label><input id="bFrom" value="Guwahati"></div>
+        <div class="o-field"><label for="bTo">Drop city</label><select id="bTo"></select></div>
+      </div>
+      <div class="row2">
+        <div class="o-field"><label for="bGoods">Goods</label><select id="bGoods"><option>Construction material</option><option>Machinery / heavy goods</option><option>Food &amp; FMCG</option><option>Household goods</option><option>Furniture</option><option>Something else</option></select></div>
+        <div class="o-field"><label for="bVeh">Vehicle</label><select id="bVeh"></select></div>
+      </div>
+      <div class="row2">
+        <div class="o-field"><label for="bWt">Approx. weight</label><select id="bWt"><option>Under 1 tonne</option><option>1–4 tonnes</option><option>4–9 tonnes</option><option>9–15 tonnes</option><option>Over 15 tonnes</option><option>Not sure</option></select></div>
+        <div class="o-field"><label for="bDate">Pickup date</label><input id="bDate" type="date"></div>
+      </div>
+      <div class="row2">
+        <div class="o-field"><label for="bName">Name</label><input id="bName" autocomplete="name" placeholder="Your name"></div>
+        <div class="o-field"><label for="bPhone">WhatsApp number</label><input id="bPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile"></div>
+      </div>
+      <p class="err" id="bErr" role="alert"></p>
+      <button class="o-btn go block" type="submit">Get my price on WhatsApp</button>
+    </form>
+  </div>
+</div></section>
+</main>
+
+<footer class="o-foot"><div class="o-wrap">
+  <div class="cols">
+    <div><a class="o-logo" href="#top"><i></i>Northeastern Roadways</a><p style="margin-top:12px;color:var(--dim)">Safe and sound goods transportation across Northeast India. Guwahati, Assam.</p></div>
+    <div><h4>Services</h4><p><a href="#services">What we move</a></p><p><a href="#vehicles">Vehicles</a></p></div>
+    <div><h4>Book</h4><p><a href="#coverage">Routes</a></p><p><a href="#quote">Get a quote</a></p></div>
+    <div><h4>Made by</h4><p><a class="o-made" href="https://opiius.online/" target="_blank" rel="noopener"><img src="/assets/site/logo/opiius-mark.svg" alt="">OPIIUS</a></p><p><a href="https://opiius.online/#book" target="_blank" rel="noopener">Get a site like this →</a></p></div>
+  </div>
+  <div class="fb"><span>Website preview for Northeastern Roadways</span><span>Website by OPIIUS</span></div>
+</div><div class="o-word" aria-hidden="true">Roadways</div></footer>
+
+<script src="/samples/opiius-signature.js"></script>
+<script>
+(function(){
+  var $=O.$,$$=O.$$;
+  function truck(len,cab,kind){var w=len+70,b='<svg viewBox="0 0 '+(w+10)+' 90">';
+    if(kind==="tip")b+='<path d="M4 30 h'+len+' l-8 34 h-'+(len-16)+'z" fill="#2f6fb5"/>';
+    else if(kind==="flat")b+='<rect x="4" y="52" width="'+len+'" height="10" rx="2" fill="#2f6fb5"/><rect x="'+(len*.2)+'" y="30" width="'+(len*.5)+'" height="22" rx="3" fill="#8aa6c4"/>';
+    else if(kind==="open")b+='<path d="M4 34 h'+len+' v30 h-'+len+'z" fill="#2f6fb5"/><path d="M4 34 h'+len+'" stroke="#a8d0f5" stroke-width="3"/>';
+    else b+='<rect x="4" y="16" width="'+len+'" height="48" rx="4" fill="#2f6fb5"/><rect x="12" y="24" width="'+(len-16)+'" height="5" rx="2.5" fill="#a8d0f5" opacity=".6"/>';
+    b+='<path d="M'+(len+8)+' 30 h'+(cab-14)+' l18 18 v16 h-'+(cab+4)+'z" fill="#e8541e"/><path d="M'+(len+14)+' 35 h'+(cab-22)+' l12 12 h-'+(cab-10)+'z" fill="#cfe6ff"/>';
+    var wh=[24,len<110?0:52,len+cab-2];if(len>=200)wh.splice(2,0,len-40);
+    wh.forEach(function(x){if(x)b+='<circle cx="'+x+'" cy="68" r="10" fill="#111"/><circle cx="'+x+'" cy="68" r="3.5" fill="#9aa6b5"/>'});
+    return b+'</svg>'}
+  var V=[
+    {n:"Pickup",c:"Up to about 1.5 tonnes",d:"Small loads and quick deliveries in and around the city.",a:truck(70,46,"open")},
+    {n:"14 ft truck",c:"Up to about 4 tonnes",d:"Shop stock, furniture and medium loads between cities.",a:truck(120,50,"box")},
+    {n:"19 ft truck",c:"Up to about 9 tonnes",d:"Bigger consignments and regular business deliveries.",a:truck(160,52,"box")},
+    {n:"22 ft truck",c:"Up to about 15 tonnes",d:"Large loads across the Northeast in one trip.",a:truck(190,54,"open")},
+    {n:"Tipper",c:"Sand, stone and gravel",d:"Construction material delivered and tipped at your site.",a:truck(130,52,"tip")},
+    {n:"Trailer / low-bed",c:"Heavy machinery",d:"Excavators, generators and other heavy equipment.",a:truck(230,56,"flat")}];
+  $("#fleet").innerHTML=V.map(function(v){return '<div class="o-card vh o-rv"><div class="art">'+v.a+'</div><h3>'+v.n+'</h3><span class="cap">'+v.c+'</span><p>'+v.d+'</p><button class="o-btn light" type="button" data-veh="'+v.n+'">Get a price</button></div>'}).join("");
+  var vo=V.map(function(v){return "<option>"+v.n+"</option>"}).join("")+"<option>Not sure, suggest one</option>";
+  $("#qVeh").innerHTML=vo;$("#bVeh").innerHTML=vo;$("#qVeh").value="14 ft truck";$("#bVeh").value="14 ft truck";
+
+  /* coverage map: cities placed by their real longitude and latitude */
+  var C=[["Guwahati","Assam",91.74,26.14],["Shillong","Meghalaya",91.89,25.58],["Tura","Meghalaya",90.22,25.51],["Tezpur","Assam",92.8,26.63],["Jorhat","Assam",94.2,26.75],["Dibrugarh","Assam",94.91,27.47],["Silchar","Assam",92.8,24.83],["Itanagar","Arunachal Pradesh",93.62,27.08],["Dimapur","Nagaland",93.73,25.9],["Kohima","Nagaland",94.11,25.67],["Imphal","Manipur",93.94,24.82],["Aizawl","Mizoram",92.72,23.73],["Agartala","Tripura",91.28,23.83],["Gangtok","Sikkim",88.61,27.33]];
+  var X=function(l){return (l-88.2)*104+30},Y=function(l){return (28-l)*112+20};
+  var hub=C[0],hx=X(hub[2]),hy=Y(hub[3]),g="";
+  C.slice(1).forEach(function(c){var x=X(c[2]),y=Y(c[3]),mx=(hx+x)/2,my=(hy+y)/2-30;g+='<path class="ln" d="M'+hx+' '+hy+' Q'+mx+' '+my+' '+x+' '+y+'"/>'});
+  C.forEach(function(c,i){var x=X(c[2]),y=Y(c[3]),left=c[0]==="Gangtok"||c[0]==="Tura"||c[0]==="Agartala",ax=left?x-14:x+14,an=left?"end":"start";
+    if(c[0]==="Gangtok"){ax=x+14;an="start"}
+    g+='<g class="nd'+(i?'':' hub')+'" data-city="'+c[0]+'" tabindex="0" role="button" aria-label="Price from Guwahati to '+c[0]+'"><circle cx="'+x+'" cy="'+y+'" r="'+(i?8:12)+'"/><text x="'+ax+'" y="'+(y-2)+'" text-anchor="'+an+'">'+c[0]+'</text><text class="st" x="'+ax+'" y="'+(y+15)+'" text-anchor="'+an+'">'+(i?c[1]:"Our base")+'</text></g>'});
+  $("#map").innerHTML=g;
+  var to=C.slice(1).map(function(c){return "<option>"+c[0]+", "+c[1]+"</option>"}).join("")+"<option>Somewhere else</option>";
+  $("#qTo").innerHTML=to;$("#bTo").innerHTML=to;
+  $("#routes").innerHTML=["Shillong","Itanagar","Dimapur","Imphal","Agartala","Silchar"].map(function(n){var c=C.filter(function(x){return x[0]===n})[0];return '<li><span>Guwahati → '+n+'</span><small>'+c[1]+'</small></li>'}).join("");
+  O.reveal();
+
+  function toQuote(city,veh){if(city){var o=[].slice.call($("#bTo").options).filter(function(x){return x.text.indexOf(city+",")===0})[0];if(o)$("#bTo").value=o.text}
+    if(veh)$("#bVeh").value=veh;$("#quote").scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},700)}
+  $$("#map .nd").forEach(function(n){if(n.classList.contains("hub"))return;var go=function(){$$("#map .nd").forEach(function(x){x.classList.toggle("on",x===n)});toQuote(n.dataset.city)};
+    n.addEventListener("click",go);n.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}})});
+  $$("[data-veh]").forEach(function(b){b.addEventListener("click",function(){toQuote(null,b.dataset.veh)})});
+  $$("[data-demo]").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();O.confirm("Your number goes here","On the real site, this button calls or opens WhatsApp with Northeastern Roadways directly.","Tap to call\nTap to WhatsApp\nBoth work from any phone.")})});
+
+  function submit(f,ids){f.addEventListener("submit",function(e){e.preventDefault();
+    var v=function(id){return $(id).value.trim()},nm=v(ids.name),ph=v(ids.phone).replace(/\D/g,""),er=$(ids.err);
+    if(!nm)return er.textContent="Please add your name.";
+    if(ph.length<10)return er.textContent="Please add a 10-digit WhatsApp number.";
+    er.textContent="";
+    var lines=["Ref: "+O.ref("NER"),v(ids.from)+" → "+v(ids.to),"Vehicle: "+v(ids.veh)];
+    if(ids.goods)lines.push("Goods: "+v(ids.goods)+" · "+v(ids.wt));
+    if(ids.date&&v(ids.date))lines.push("Pickup: "+new Date(v(ids.date)).toLocaleDateString("en-IN",{day:"numeric",month:"short"}));
+    lines.push("Name: "+nm+" · +91 "+ph.slice(-10));
+    O.confirm("Request received","Northeastern Roadways will WhatsApp you a price shortly.",lines.join("\n"));
+    f.reset();$(ids.from).value="Guwahati"})}
+  submit($("#qf"),{from:"#qFrom",to:"#qTo",veh:"#qVeh",name:"#qName",phone:"#qPhone",err:"#qErr"});
+  submit($("#bf"),{from:"#bFrom",to:"#bTo",veh:"#bVeh",goods:"#bGoods",wt:"#bWt",date:"#bDate",name:"#bName",phone:"#bPhone",err:"#bErr"});
+})();
+</script>
+</body>
+</html>

@@ -19,7 +19,8 @@
   if (d.body.dataset.sample !== undefined) {
     var b = d.createElement("a");
     b.className = "o-badge"; b.href = "https://opiius.online/#book"; b.target = "_blank"; b.rel = "noopener";
-    b.innerHTML = '<img src="/assets/site/logo/opiius-mark.svg" alt="">Sample site · <small>made by OPIIUS</small>';
+    b.innerHTML = '<img src="/assets/site/logo/opiius-mark.svg" alt=""><span></span> · <small>made by OPIIUS</small>';
+    b.querySelector("span").textContent = d.body.dataset.sample || "Sample site";
     d.body.appendChild(b);
     var sb = function () { b.classList.toggle("show", scrollY > innerHeight * 0.6); };
     sb(); addEventListener("scroll", sb, { passive: true });
