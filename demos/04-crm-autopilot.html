@@ -138,7 +138,7 @@ function nextAction(d){
 
   if(d.st==="quote"&&d.days>=7) return {pri:1,title:"Quote is dying - call today",
     why:"Quote of ₹"+d.val.toLocaleString('en-IN')+" sent "+d.days+" days ago with no reply. After 10 days a quote almost never closes.",
-    msg:"Hello "+d.ppl+", Rishi here.\n\nI sent you the quote for the "+d.need.toLowerCase()+" about "+d.days+" days ago. I am not chasing you for an answer - I only want to know if the price was the problem or the timing.\n\nIf it is the price, tell me your number and I will tell you honestly whether I can do it. If it is timing, tell me the month and I will stop bothering you until then."};
+    msg:"Hello "+d.ppl+", OPIIUS here.\n\nI sent you the quote for the "+d.need.toLowerCase()+" about "+d.days+" days ago. I am not chasing you for an answer - I only want to know if the price was the problem or the timing.\n\nIf it is the price, tell me your number and I will tell you honestly whether I can do it. If it is timing, tell me the month and I will stop bothering you until then."};
 
   if(d.st==="quote") return {pri:2,title:"Confirm they got the quote",
     why:"Quote sent "+d.days+" day(s) ago. A short nudge now doubles the reply rate.",
@@ -154,7 +154,7 @@ function nextAction(d){
 
   if(d.st==="contact"&&d.days>=7) return {pri:1,title:"Going cold - book the demo",
     why:"Contacted "+d.days+" days ago and still no demo. Without a demo this deal is only a name on a list.",
-    msg:"Hello "+d.ppl+", Rishi here from Guwahati.\n\nWe spoke about "+d.need.toLowerCase()+". Rather than explaining it again, may I show you a 2 minute working demo? I can come to your shop or send a short video - whichever is easier for you."};
+    msg:"Hello "+d.ppl+", OPIIUS here, from Guwahati.\n\nWe spoke about "+d.need.toLowerCase()+". Rather than explaining it again, may I show you a 2 minute working demo? I can come to your shop or send a short video - whichever is easier for you."};
 
   if(d.st==="contact") return {pri:2,title:"Book the demo",
     why:"Contacted "+d.days+" day(s) ago. Move it to a demo before the interest cools.",
@@ -162,11 +162,11 @@ function nextAction(d){
 
   if(d.st==="new"&&d.days>=3) return {pri:1,title:"Enquiry not answered yet",
     why:"This enquiry came in "+d.days+" days ago and nobody has called. Most buyers pick whoever replies first.",
-    msg:"Hello "+d.ppl+", I am Rishi. You had enquired about "+d.need.toLowerCase()+".\n\nSorry for the delay in reaching you. Are you free for a 5 minute call today or tomorrow?"};
+    msg:"Hello "+d.ppl+", this is OPIIUS. You had enquired about "+d.need.toLowerCase()+".\n\nSorry for the delay in reaching you. Are you free for a 5 minute call today or tomorrow?"};
 
   return {pri:2,title:"Make the first call",
     why:"New enquiry from "+d.src+", "+d.days+" day(s) old. Call while it is warm.",
-    msg:"Hello "+d.ppl+", I am Rishi from Guwahati. You enquired about "+d.need.toLowerCase()+".\n\nCan I call you for 5 minutes today to understand exactly what you need?"};
+    msg:"Hello "+d.ppl+", this is OPIIUS from Guwahati. You enquired about "+d.need.toLowerCase()+".\n\nCan I call you for 5 minutes today to understand exactly what you need?"};
 }
 
 /* ---------- UI ---------- */
