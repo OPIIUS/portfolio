@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Greenway Driving School · website preview by OPIIUS</title>
+<meta name="description" content="A free website preview made by OPIIUS for Greenway Driving School, Brampton and Mississauga.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/assets/site/logo/opiius-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Urbanist:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/samples/opiius-signature.css">
+<style>
+:root{--brand:#1e9e4a;--brand-2:#b9f2c8;--brand-deep:#0a3d1e;--bg:#eef3ef;--paper:#f8fbf8;--ink:#0d1a12;--dim:#5d6b62;--faint:#b3c2b8;--f-head:"Sora",system-ui,sans-serif}
+h1,h2,h3{font-weight:700;letter-spacing:-.035em}
+.strip{position:relative;z-index:61;background:#0d1a12;color:#cfe0d4;font-size:13px;font-weight:600;text-align:center;padding:9px 16px}
+.strip b{color:#fff}.strip a{color:var(--brand-2);text-decoration:underline;text-underline-offset:2px}
+.o-nav{top:52px;transition:box-shadow .3s,top .35s var(--out)}
+.o-nav.up{top:12px}
+
+/* hero */
+.hero{background:radial-gradient(110% 90% at 85% 15%,#ffffff 0,#e6f6ea 45%,#cfeedb 100%)}
+.hero .o-ring{width:min(600px,50vw);right:-6vw;top:44%;transform:translateY(-50%)}
+.road{position:absolute;left:0;right:0;bottom:0;height:120px;z-index:2;pointer-events:none}
+.road svg{width:100%;height:100%}
+.carrun{animation:drive 11s linear infinite}
+@keyframes drive{from{transform:translateX(-300px)}to{transform:translateX(1750px)}}
+.hero-in{position:relative;z-index:3;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;padding:150px 20px 170px}
+.hero h1{font-size:clamp(42px,5.8vw,74px);line-height:1;margin-top:18px}
+.hero h1 em{font-style:normal;color:var(--brand)}
+.hero .sub{color:var(--dim);font-size:18px;max-width:44ch;margin-top:18px}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.badges span{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 12px;border-radius:999px;background:#fff;box-shadow:var(--sh);font-size:13.5px;font-weight:700}
+.badges b{display:grid;place-items:center;min-width:24px;height:22px;padding:0 5px;border-radius:6px;background:var(--brand);color:#fff;font-size:12px}
+.bk{background:#fff;border-radius:24px;padding:24px;box-shadow:var(--sh2)}
+.bk h2{font-size:24px}
+.bk p.s{color:var(--dim);font-size:14.5px;margin-top:4px}
+.bk form{display:grid;gap:12px;margin-top:16px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0}
+.seg span{display:grid;place-items:center;height:44px;border-radius:12px;background:#f1f1f2;font-weight:700;font-size:14px;cursor:pointer;transition:background .2s,color .2s}
+.seg input:checked+span{background:var(--ink);color:#fff}
+.seg input:focus-visible+span{outline:2px solid var(--brand);outline-offset:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.err{color:#c0262d;font-size:14px;font-weight:600;min-height:1em}
+.fine{color:var(--dim);font-size:12.5px;text-align:center}
+
+/* packages */
+.pk{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pc{padding:24px;display:flex;flex-direction:column}
+.pc .tg{display:inline-grid;place-items:center;width:46px;height:46px;border-radius:14px;background:linear-gradient(180deg,var(--brand-2) -60%,var(--brand) 60%,var(--brand-deep) 160%);color:#fff;font-family:var(--f-head);font-weight:800;font-size:17px}
+.pc h3{font-size:22px;margin-top:16px}
+.pc p{color:var(--dim);font-size:15px;margin-top:6px}
+.pc ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:7px;font-size:14.5px;font-weight:600}
+.pc li::before{content:"✓";color:var(--brand);margin-right:8px}
+.pc .pr{margin-top:auto;padding-top:18px;font-family:var(--f-head);font-weight:800;font-size:28px;letter-spacing:-.03em}
+.pc .pr small{font-family:var(--f-body);font-weight:600;font-size:13.5px;color:var(--dim);letter-spacing:0}
+.pc .o-btn{margin-top:14px}
+.pc.hot{background:var(--brand-deep);color:#fff}
+.pc.hot p,.pc.hot .pr small{color:#a9c9b3}
+.pc.hot li::before{color:var(--brand-2)}
+.note{color:var(--dim);font-size:13.5px;margin-top:14px;text-align:center}
+
+/* early test band */
+.early{margin-top:100px}
+.early .in{position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(120deg,#0a3d1e,#14693a);color:#fff;padding:44px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
+.early .o-lbl{background:rgba(255,255,255,.12);color:#d8f5df;box-shadow:none}
+.early h2{font-size:clamp(30px,4vw,46px);margin-top:14px}
+.early p{color:#c4e3cd;margin-top:10px;max-width:50ch}
+.cal{background:#fff;color:var(--ink);border-radius:20px;padding:18px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+.cal .r{display:flex;justify-content:space-between;align-items:center;padding:10px 4px;border-bottom:1px solid #edf1ee;font-weight:600;font-size:14.5px}
+.cal .r:last-child{border-bottom:0}
+.cal s{color:var(--dim)}
+.cal b{color:var(--brand)}
+
+/* why + steps */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.wy{padding:24px}
+.wy .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:#e3f5e8;color:var(--brand)}
+.wy .ic svg{width:24px;height:24px}
+.wy h3{font-size:20px;margin-top:14px}
+.wy p{color:var(--dim);font-size:15px;margin-top:6px}
+.areas{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ar{padding:26px}
+.ar h3{font-size:24px}
+.ar .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ar .tags span{height:36px;padding:0 14px;border-radius:999px;background:#fff;box-shadow:var(--sh);display:inline-flex;align-items:center;font-weight:600;font-size:14px}
+.faq{display:grid;gap:10px;max-width:820px}
+.q{padding:4px 22px}
+.q summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:16px 0;font-weight:700;font-size:16.5px}
+.q summary::-webkit-details-marker{display:none}
+.q summary::after{content:"+";font-size:22px;line-height:1;color:var(--brand)}
+.q[open] summary::after{content:"−"}
+.q p{color:var(--dim);padding:0 0 18px}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ct{padding:22px;display:block}
+.ct small{display:block;color:var(--dim);font-weight:600;font-size:13px}
+.ct b{display:block;font-size:20px;margin-top:4px;font-family:var(--f-head);letter-spacing:-.02em}
+body:has(.o-sheet) .o-badge{opacity:0}
+
+@media (max-width:900px){
+  .hero-in{grid-template-columns:1fr;padding:140px 20px 150px}
+  .hero .o-ring{width:130vw;right:-65vw;top:4%;transform:none}
+  .pk{grid-template-columns:1fr 1fr}
+  .why,.contact{grid-template-columns:1fr}
+  .areas,.early .in{grid-template-columns:1fr}
+  .early .in{padding:30px}
+}
+@media (max-width:600px){
+  .strip{font-size:12px}
+  .o-nav{top:58px}
+  .o-nav>.o-btn{display:none}.o-logo{font-size:16px}
+  .hero-in{padding:132px 16px 140px}
+  .bk{padding:20px}
+  .pk{grid-template-columns:1fr}
+  .early .in{padding:24px;border-radius:24px}
+  .early{margin:72px 0 0}
+  .ctas .o-btn{flex:1 1 auto}
+}
+</style>
+</head>
+<body data-sample="Preview for Greenway Driving School">
+
+<div class="strip"><b>Free website preview</b> made for Greenway Driving School by OPIIUS. This is not their official site yet. <a href="https://opiius.online/" target="_blank" rel="noopener">About OPIIUS</a></div>
+
+<nav class="o-nav" aria-label="Main">
+  <a class="o-logo" href="#top"><i></i>Greenway Driving School</a>
+  <div class="o-links"><a href="#lessons">Lessons</a><a href="#early">Early road test</a><a href="#areas">Areas</a><a href="#faq">FAQ</a></div>
+  <a class="o-btn solid" href="#top" data-focus>Book a lesson</a>
+  <button class="o-menu" type="button" aria-label="Menu" aria-expanded="false"><span></span></button>
+</nav>
+
+<header class="o-hero hero" id="top">
+  <div class="o-ring"></div>
+  <div class="road" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <rect y="40" width="1440" height="80" fill="#2b332e"/>
+      <path d="M0 82 H1440" stroke="#fff" stroke-width="4" stroke-dasharray="40 34" opacity=".75"/>
+      <g class="carrun"><g transform="translate(0 2) scale(.82)">
+        <rect x="104" y="2" width="72" height="18" rx="5" fill="#1e9e4a"/><text x="140" y="15" text-anchor="middle" font-family="Sora,sans-serif" font-weight="800" font-size="10" fill="#fff">GREENWAY</text>
+        <path d="M10 70 Q12 52 42 48 L82 46 Q104 24 134 22 L176 22 Q204 24 222 46 L244 50 Q258 54 257 70 L253 76 H14 Z" fill="#fff"/>
+        <path d="M94 46 Q110 30 134 28 L152 28 V46 Z M158 28 H175 Q196 30 210 46 H158 Z" fill="#a9d6ff"/>
+        <path d="M18 62 H252" stroke="#1e9e4a" stroke-width="6"/>
+        <circle cx="64" cy="76" r="16" fill="#111"/><circle cx="64" cy="76" r="6" fill="#aab"/>
+        <circle cx="206" cy="76" r="16" fill="#111"/><circle cx="206" cy="76" r="6" fill="#aab"/>
+        <rect x="248" y="56" width="8" height="6" rx="2" fill="#ffd36a"/>
+      </g></g>
+    </svg>
+  </div>
+  <div class="o-wrap hero-in">
+    <div>
+      <span class="o-lbl o-st">Brampton &amp; Mississauga</span>
+      <h1 class="o-st">Learn to drive with <em>confidence.</em></h1>
+      <p class="sub o-st">G2 and G lessons, early road test booking, and a car ready for your road test. Book your first lesson in under a minute.</p>
+      <div class="ctas o-st"><a class="o-btn solid" href="#lessons">See lessons</a><a class="o-btn light" href="tel:+16476270110">Call 647-627-0110</a></div>
+      <div class="badges o-st"><span><b>G2</b>Lessons</span><span><b>G</b>Lessons</span><span>🚗 Car for road test</span></div>
+    </div>
+    <div class="bk o-st">
+      <h2>Book a lesson</h2>
+      <p class="s">Pick a time. We confirm on WhatsApp or text.</p>
+      <form id="bf" novalidate>
+        <div><span style="display:block;font-size:13.5px;font-weight:700;margin-bottom:6px">Lesson for</span>
+          <div class="seg" role="radiogroup" aria-label="Lesson for"><label><input type="radio" name="lv" value="G2" checked><span>G2</span></label><label><input type="radio" name="lv" value="G"><span>G</span></label><label><input type="radio" name="lv" value="Beginner"><span>Beginner</span></label></div></div>
+        <div class="o-field"><label for="bType">What do you need?</label><select id="bType"><option>Driving lesson</option><option>Road test package (car + warm-up)</option><option>Lesson package</option><option>Early road test booking help</option></select></div>
+        <div class="row2">
+          <div class="o-field"><label for="bDate">Preferred day</label><input id="bDate" type="date"></div>
+          <div class="o-field"><label for="bTime">Time</label><select id="bTime"><option>Morning</option><option>Afternoon</option><option>Evening</option><option>Weekend</option></select></div>
+        </div>
+        <div class="row2">
+          <div class="o-field"><label for="bName">Name</label><input id="bName" autocomplete="name" placeholder="Your name"></div>
+          <div class="o-field"><label for="bPhone">Phone</label><input id="bPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(647) 000-0000"></div>
+        </div>
+        <p class="err" id="bErr" role="alert"></p>
+        <button class="o-btn brand block" type="submit">Request my lesson</button>
+        <p class="fine">Brampton &amp; Mississauga · we reply the same day</p>
+      </form>
+    </div>
+  </div>
+  <a class="o-notch" href="#lessons">Scroll for more <i>↓</i></a>
+</header>
+
+<main>
+<section class="o-sec" id="lessons"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Lessons</span><h2 class="o-h2 o-rv">From your first drive<br><span class="f">to your full G licence.</span></h2></div><p class="o-lead o-rv">Pick what fits where you are now. Not sure? Book a lesson and your instructor will tell you.</p></div>
+  <div class="pk">
+    <div class="o-card pc o-rv"><span class="tg">1</span><h3>Single lesson</h3><p>One-to-one practice on the roads you'll be tested on.</p><ul><li>60 minutes</li><li>G2 or G</li><li>Pickup in your area</li></ul><p class="pr">$50 <small>per lesson</small></p><button class="o-btn light block" type="button" data-pick="Driving lesson">Book this</button></div>
+    <div class="o-card pc o-rv"><span class="tg">G2</span><h3>G2 road test package</h3><p>Use our car for your G2 test, with a warm-up lesson first.</p><ul><li>Warm-up lesson</li><li>Car for the road test</li><li>Test-route practice</li></ul><p class="pr">$180 <small>package</small></p><button class="o-btn light block" type="button" data-pick="Road test package (car + warm-up)" data-lv="G2">Book this</button></div>
+    <div class="o-card pc hot o-rv"><span class="tg">G</span><h3>G road test package</h3><p>Highway practice and our car for your full G test.</p><ul><li>Highway warm-up</li><li>Car for the road test</li><li>Mock test feedback</li></ul><p class="pr">$220 <small>package</small></p><button class="o-btn brand block" type="button" data-pick="Road test package (car + warm-up)" data-lv="G">Book this</button></div>
+    <div class="o-card pc o-rv"><span class="tg">5×</span><h3>5-lesson package</h3><p>For new drivers who want to feel ready, not rushed.</p><ul><li>5 × 60-minute lessons</li><li>Progress notes after each</li><li>Flexible times</li></ul><p class="pr">$230 <small>package</small></p><button class="o-btn light block" type="button" data-pick="Lesson package" data-lv="Beginner">Book this</button></div>
+  </div>
+  <p class="note o-rv">Sample prices for this preview. Greenway sets its own.</p>
+</div></section>
+
+<section class="o-wrap early" id="early">
+  <div class="in o-rv">
+    <div>
+      <span class="o-lbl">Early road test booking</span>
+      <h2>Test date months away?<br>We'll help you get it sooner.</h2>
+      <p>Tell us your licence level and current test date. We look for earlier openings and help you book, so you're not waiting all season.</p>
+      <div class="ctas"><button class="o-btn brand" type="button" data-pick="Early road test booking help">Get an earlier date</button></div>
+    </div>
+    <div class="cal" aria-hidden="true">
+      <div class="r"><span>Your current test</span><s>14 March</s></div>
+      <div class="r"><span>Earlier date found</span><b>2 December ✓</b></div>
+      <div class="r"><span>Car for the test</span><b>Included ✓</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="o-sec"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Why Greenway</span><h2 class="o-h2 o-rv">Calm lessons,<br><span class="f">confident drivers.</span></h2></div></div>
+  <div class="why">
+    <div class="o-card wy o-rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span><h3>Pickup near you</h3><p>Lessons start from home, school or work across Brampton and Mississauga.</p></div>
+    <div class="o-card wy o-rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14l-1.5-6.5A2 2 0 0 0 15.6 9H8.4a2 2 0 0 0-1.9 1.5z"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="16.5" cy="17.5" r="1.8"/></svg></span><h3>Car for your road test</h3><p>Take your G2 or G test in the car you practised in.</p></div>
+    <div class="o-card wy o-rv"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="m9 15 2 2 4-4"/></svg></span><h3>Earlier test dates</h3><p>We help you find and book an earlier road test.</p></div>
+  </div>
+</div></section>
+
+<section class="o-sec" id="areas"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Areas</span><h2 class="o-h2 o-rv">Serving Brampton<br><span class="f">and Mississauga.</span></h2></div></div>
+  <div class="areas">
+    <div class="o-card ar o-rv"><h3>Brampton</h3><div class="tags"><span>Bramalea</span><span>Springdale</span><span>Castlemore</span><span>Heart Lake</span><span>Mount Pleasant</span><span>Sandalwood</span></div></div>
+    <div class="o-card ar o-rv"><h3>Mississauga</h3><div class="tags"><span>Malton</span><span>Meadowvale</span><span>Churchill Meadows</span><span>Erin Mills</span><span>City Centre</span><span>Streetsville</span></div></div>
+  </div>
+</div></section>
+
+<section class="o-sec" id="faq"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">FAQ</span><h2 class="o-h2 o-rv">Before you book.</h2></div></div>
+  <div class="faq">
+    <details class="o-card q o-rv" open><summary>Do I need my G1 to start lessons?</summary><p>Yes. In Ontario you need a G1 licence to drive with an instructor. Book your first lesson as soon as you have it.</p></details>
+    <details class="o-card q o-rv"><summary>Can I use your car for my road test?</summary><p>Yes. Choose a road test package and we bring the car, with a warm-up lesson before your test.</p></details>
+    <details class="o-card q o-rv"><summary>Can you help me get an earlier road test?</summary><p>Yes. Pick "Early road test booking help" in the form and tell us your current date.</p></details>
+    <details class="o-card q o-rv"><summary>How do I pay?</summary><p>Your instructor will confirm payment options when your lesson is booked.</p></details>
+  </div>
+</div></section>
+
+<section class="o-sec"><div class="o-wrap">
+  <div class="contact">
+    <a class="o-card ct o-rv" href="tel:+16476270110"><small>Call</small><b>647-627-0110</b></a>
+    <a class="o-card ct o-rv" href="sms:+16476270110"><small>Text</small><b>647-627-0110</b></a>
+    <a class="o-card ct o-rv" href="#top" data-focus><small>Online</small><b>Book a lesson →</b></a>
+  </div>
+</div></section>
+</main>
+
+<footer class="o-foot"><div class="o-wrap">
+  <div class="cols">
+    <div><a class="o-logo" href="#top"><i></i>Greenway Driving School</a><p style="margin-top:12px;color:var(--dim)">G2 &amp; G lessons in Brampton and Mississauga.</p></div>
+    <div><h4>Lessons</h4><p><a href="#lessons">Packages</a></p><p><a href="#early">Early road test</a></p></div>
+    <div><h4>Help</h4><p><a href="#areas">Areas</a></p><p><a href="#faq">FAQ</a></p></div>
+    <div><h4>Made by</h4><p><a class="o-made" href="https://opiius.online/" target="_blank" rel="noopener"><img src="/assets/site/logo/opiius-mark.svg" alt="">OPIIUS</a></p><p><a href="https://opiius.online/#book" target="_blank" rel="noopener">Get a site like this →</a></p></div>
+  </div>
+  <div class="fb"><span>Website preview for Greenway Driving School</span><span>Website by OPIIUS</span></div>
+</div><div class="o-word" aria-hidden="true">Greenway</div></footer>
+
+<script src="/samples/opiius-signature.js"></script>
+<script>
+(function(){
+  var $=O.$,$$=O.$$,f=$("#bf");
+  var d=new Date();d.setDate(d.getDate()+1);$("#bDate").min=d.toISOString().slice(0,10);
+  function toForm(){$("#top").scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},700)}
+  $$("[data-pick]").forEach(function(b){b.addEventListener("click",function(){$("#bType").value=b.dataset.pick;if(b.dataset.lv){var r=$('input[name=lv][value="'+b.dataset.lv+'"]');if(r)r.checked=true}toForm()})});
+  $$("[data-focus]").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();toForm()})});
+  f.addEventListener("submit",function(e){e.preventDefault();
+    var nm=$("#bName").value.trim(),ph=$("#bPhone").value.replace(/\D/g,"").replace(/^1(?=\d{10}$)/,""),er=$("#bErr");
+    if(!nm)return er.textContent="Please add your name.";
+    if(ph.length!==10)return er.textContent="Please add a 10-digit phone number.";
+    er.textContent="";
+    var lv=$("input[name=lv]:checked").value,dt=$("#bDate").value?new Date($("#bDate").value+"T12:00").toLocaleDateString("en-CA",{weekday:"short",day:"numeric",month:"short"}):"Any day";
+    O.confirm("Lesson requested","Greenway will confirm your time by text or WhatsApp shortly.","Ref: "+O.ref("GW")+"\n"+$("#bType").value+" · "+lv+"\n"+dt+" · "+$("#bTime").value+"\nName: "+nm+"\nPhone: ("+ph.slice(0,3)+") "+ph.slice(3,6)+"-"+ph.slice(6));
+    f.reset()});
+})();
+</script>
+</body>
+</html>
