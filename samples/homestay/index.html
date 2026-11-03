@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pine &amp; Mist Homestay · Sohra, Meghalaya (sample site by OPIIUS)</title>
+<meta name="description" content="A sample homestay website made by OPIIUS: rooms, live availability and booking for a homestay in Sohra (Cherrapunji), Meghalaya.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/site/logo/opiius-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Urbanist:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/samples/opiius-signature.css">
+<style>
+:root{--brand:#3f8f5f;--brand-2:#cdeec0;--brand-deep:#163a28;--bg:#eceee8;--paper:#f6f7f3;--ink:#13201a;--dim:#5f6b64;--faint:#b5bdb7;--f-head:"Fraunces",Georgia,serif}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(180deg,#dfe9e2 0%,#eef2ec 45%,#cfdcd2 100%)}
+.hills{position:absolute;left:0;right:0;bottom:0;width:100%;height:72%;z-index:2}
+.mist{position:absolute;left:-10%;right:-10%;height:90px;border-radius:50%;background:rgba(255,255,255,.75);filter:blur(22px);z-index:3;animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(6%)}}
+.hero .o-ring{width:min(760px,64vw);right:-18vw;top:-14%}
+.hero-c{position:relative;z-index:5;padding:140px 20px 170px}
+.hero h1{font-size:clamp(46px,7vw,92px);font-weight:600;letter-spacing:-.035em;max-width:11ch;margin-top:18px}
+.hero h1 em{font-style:italic;color:var(--brand)}
+.hero .sub{font-size:18px;color:#33433a;max-width:42ch;margin-top:18px}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:-56px;position:relative;z-index:6}
+.fact{background:#fff;border-radius:20px;padding:18px 20px;box-shadow:var(--sh)}
+.fact b{display:block;font-family:var(--f-head);font-size:28px;letter-spacing:-.02em}
+.fact span{color:var(--dim);font-size:14px}
+.rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.room{background:var(--paper);border-radius:24px;box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column}
+.room .art{height:190px;position:relative;overflow:hidden}
+.room .bd{padding:20px;display:flex;flex-direction:column;flex:1}
+.room h3{font-size:26px}
+.room .pr{font-weight:700;margin-top:6px}.room .pr small{color:var(--dim);font-weight:600}
+.room p{color:var(--dim);font-size:15px;margin-top:8px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 18px}
+.tags span{padding:5px 11px;border-radius:999px;background:#fff;font-size:12.5px;font-weight:700;color:#3a473f}
+.room .o-btn{margin-top:auto}
+.book{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.bform{padding:26px;display:grid;gap:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bsum{position:sticky;top:96px;background:var(--brand-deep);color:#fff;border-radius:24px;padding:26px;box-shadow:var(--sh2)}
+.bsum .l{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#a9c7b5;font-weight:700}
+.bsum .tot{font-family:var(--f-head);font-size:56px;letter-spacing:-.03em;line-height:1;margin-top:10px}
+.bsum ul{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px;font-size:15px;color:#d5e6dc}
+.bsum li{display:flex;justify-content:space-between;gap:10px}.bsum li b{color:#fff}
+.avail{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:7px 12px;border-radius:999px;background:rgba(205,238,192,.15);color:#cdeec0;font-weight:700;font-size:13.5px}
+.avail::before{content:"";width:8px;height:8px;border-radius:50%;background:#7be08f}
+.avail.no{background:rgba(255,160,140,.15);color:#ffc2b2}.avail.no::before{background:#ff7a55}
+.err{color:#c0392b;font-weight:700;font-size:14px}
+.near{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.place{padding:20px;border-radius:22px;background:var(--paper);box-shadow:var(--sh)}
+.place b{display:block;font-family:var(--f-head);font-size:21px}
+.place span{display:inline-block;margin-top:8px;padding:4px 10px;border-radius:999px;background:#fff;font-size:12.5px;font-weight:700;color:var(--brand)}
+.place p{color:var(--dim);font-size:14.5px;margin-top:8px}
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rev{padding:24px;border-radius:24px;background:var(--paper);box-shadow:var(--sh)}
+.rev q{display:block;font-family:var(--f-head);font-size:20px;line-height:1.35;quotes:none}
+.rev .by{margin-top:14px;color:var(--dim);font-size:14px}.rev .by b{color:var(--ink)}
+.stars{color:#d9a400;letter-spacing:2px;font-size:14px}
+.note{font-size:12.5px;color:var(--dim);margin-top:12px}
+@media (max-width:900px){.rooms,.revs{grid-template-columns:1fr}.book{grid-template-columns:1fr}.bsum{position:static}.near,.facts{grid-template-columns:1fr 1fr}.hero .o-ring{width:120vw;right:-70vw;top:auto;bottom:10%}}
+@media (max-width:600px){.hero-c{padding:116px 20px 150px}.row2{grid-template-columns:1fr}.facts{margin-top:-40px}.bform,.bsum{padding:20px}}
+</style>
+</head>
+<body data-sample>
+<nav class="o-nav" aria-label="Main">
+  <a class="o-logo" href="#top"><i></i>Pine &amp; Mist</a>
+  <div class="o-links"><a href="#rooms">Rooms</a><a href="#book">Availability</a><a href="#nearby">Nearby</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a></div>
+  <a class="o-btn solid" href="#book">Book a stay</a>
+  <button class="o-menu" type="button" aria-label="Menu"><span></span></button>
+</nav>
+
+<header class="o-hero hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="o-ring"></div>
+  <svg class="hills" viewBox="0 0 1440 560" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="h1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fbcaa"/><stop offset="1" stop-color="#c9d9cd"/></linearGradient>
+      <linearGradient id="h2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5f8f73"/><stop offset="1" stop-color="#86a993"/></linearGradient>
+      <linearGradient id="h3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f6b4f"/><stop offset="1" stop-color="#1d4a35"/></linearGradient>
+      <linearGradient id="wf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity=".2"/></linearGradient>
+    </defs>
+    <path d="M0 260 C160 170 300 230 430 180 C560 130 700 220 840 170 C990 115 1120 210 1260 160 C1340 135 1400 150 1440 140 V560 H0Z" fill="url(#h1)"/>
+    <path d="M0 340 C140 280 260 330 380 290 C520 240 640 320 780 280 C930 236 1060 310 1210 270 C1320 240 1390 262 1440 250 V560 H0Z" fill="url(#h2)"/>
+    <path d="M986 300 L996 300 L1004 520 L978 520Z" fill="url(#wf)" opacity=".55"/>
+    <path d="M0 420 C170 370 300 410 450 380 C620 345 760 410 920 380 C1080 350 1230 405 1440 370 V560 H0Z" fill="url(#h3)"/>
+    <g fill="#163a28">
+      <path d="M120 430 l18 -60 l18 60z M150 436 l14 -46 l14 46z M1240 400 l20 -66 l20 66z M1275 408 l15 -50 l15 50z M640 410 l16 -54 l16 54z M300 422 l13 -44 l13 44z"/>
+    </g>
+  </svg>
+  <div class="mist" style="top:46%"></div>
+  <div class="mist" style="top:64%;animation-duration:24s;opacity:.7"></div>
+  <div class="o-wrap hero-c">
+    <span class="o-lbl o-st">Sohra · Cherrapunji, Meghalaya</span>
+    <h1 class="o-st">Wake up <em>above</em> the clouds.</h1>
+    <p class="sub o-st">A family-run homestay on the edge of the Khasi hills. Four warm rooms, home-cooked Khasi breakfast, and the waterfalls a short drive away.</p>
+    <div class="ctas o-st"><a class="o-btn brand" href="#book">Check availability</a><a class="o-btn light" href="#rooms">See rooms</a></div>
+  </div>
+  <a class="o-notch" href="#rooms">Scroll for more <i>↓</i></a>
+</header>
+
+<main>
+<div class="o-wrap">
+  <div class="facts">
+    <div class="fact o-rv"><b>4 rooms</b><span>Valley views from every one</span></div>
+    <div class="fact o-rv"><b>Breakfast</b><span>Home-cooked, included</span></div>
+    <div class="fact o-rv"><b>15 min</b><span>to Nohkalikai Falls</span></div>
+    <div class="fact o-rv"><b>4.9 ★</b><span>from guest reviews (sample)</span></div>
+  </div>
+</div>
+
+<section class="o-sec" id="rooms"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Rooms</span><h2 class="o-h2 o-rv">Pick your room,<br><span class="f">we'll light the fire.</span></h2></div><p class="o-lead o-rv">Every room has a private bathroom, hot water, heater and Wi-Fi. Prices are per night with breakfast.</p></div>
+  <div class="rooms">
+    <article class="room o-rv">
+      <div class="art" style="background:linear-gradient(180deg,#cfe3d5,#8fb59c)"><svg viewBox="0 0 400 190" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><path d="M0 120 C80 80 150 110 220 85 C300 58 350 95 400 80 V190 H0Z" fill="#5f8f73"/><path d="M0 150 C100 120 180 150 270 128 C340 112 380 130 400 124 V190 H0Z" fill="#2f6b4f"/><rect x="40" y="30" width="120" height="80" rx="8" fill="#fff" opacity=".35"/></svg></div>
+      <div class="bd"><h3>Valley View Room</h3><p class="pr">₹2,800 <small>/ night · up to 2 guests</small></p><p>A queen bed facing the valley. Watch the clouds roll in from your window.</p>
+        <div class="tags"><span>Queen bed</span><span>Valley view</span><span>Heater</span></div>
+        <button class="o-btn solid block" type="button" data-room="valley">Book this room</button></div>
+    </article>
+    <article class="room o-rv">
+      <div class="art" style="background:linear-gradient(180deg,#e9e1cf,#c7b28a)"><svg viewBox="0 0 400 190" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><path d="M120 190 V110 L200 60 L280 110 V190Z" fill="#8a5a3b"/><path d="M110 112 L200 52 L290 112" fill="none" stroke="#5b3a26" stroke-width="10"/><rect x="185" y="135" width="30" height="55" fill="#3d2618"/><rect x="140" y="125" width="28" height="22" fill="#ffe7a8"/><rect x="232" y="125" width="28" height="22" fill="#ffe7a8"/><path d="M0 170 C120 150 260 175 400 160 V190 H0Z" fill="#2f6b4f"/></svg></div>
+      <div class="bd"><h3>Family Cottage</h3><p class="pr">₹4,200 <small>/ night · up to 4 guests</small></p><p>A separate wooden cottage with two beds and a sit-out, made for families.</p>
+        <div class="tags"><span>2 beds</span><span>Private sit-out</span><span>Kids stay free under 6</span></div>
+        <button class="o-btn solid block" type="button" data-room="cottage">Book this room</button></div>
+    </article>
+    <article class="room o-rv">
+      <div class="art" style="background:linear-gradient(180deg,#d8e4ef,#9db7cf)"><svg viewBox="0 0 400 190" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><ellipse cx="110" cy="70" rx="80" ry="22" fill="#fff" opacity=".8"/><ellipse cx="290" cy="50" rx="70" ry="18" fill="#fff" opacity=".7"/><path d="M0 140 C90 110 170 135 250 118 C320 104 370 120 400 112 V190 H0Z" fill="#5f8f73"/><rect x="0" y="150" width="400" height="10" fill="#8a5a3b"/><path d="M20 150 V125 M70 150 V125 M120 150 V125 M170 150 V125 M220 150 V125 M270 150 V125 M320 150 V125 M370 150 V125" stroke="#8a5a3b" stroke-width="6"/></svg></div>
+      <div class="bd"><h3>Cloud Deck Suite</h3><p class="pr">₹5,500 <small>/ night · up to 2 guests</small></p><p>Our top room with its own wooden deck. Morning tea on the deck, above the mist.</p>
+        <div class="tags"><span>King bed</span><span>Private deck</span><span>Bathtub</span></div>
+        <button class="o-btn solid block" type="button" data-room="suite">Book this room</button></div>
+    </article>
+  </div>
+</div></section>
+
+<section class="o-sec" id="book"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Availability</span><h2 class="o-h2 o-rv">Check dates,<br><span class="f">see the price instantly.</span></h2></div><p class="o-lead o-rv">No booking site in between: you book directly with the family and pay nothing extra.</p></div>
+  <div class="book">
+    <form class="o-card bform o-rv" id="bf" novalidate>
+      <div class="o-field"><label for="room">Room</label><select id="room"><option value="valley">Valley View Room · ₹2,800/night</option><option value="cottage">Family Cottage · ₹4,200/night</option><option value="suite">Cloud Deck Suite · ₹5,500/night</option></select></div>
+      <div class="row2"><div class="o-field"><label for="ci">Check-in</label><input id="ci" type="date"></div><div class="o-field"><label for="co">Check-out</label><input id="co" type="date"></div></div>
+      <div class="row2"><div class="o-field"><label for="gu">Guests</label><select id="gu"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div><div class="o-field"><label for="nm">Your name</label><input id="nm" autocomplete="name" placeholder="Full name"></div></div>
+      <div class="o-field"><label for="ph">WhatsApp number</label><input id="ph" type="tel" inputmode="tel" placeholder="10-digit mobile"></div>
+      <p class="err" id="err" role="alert"></p>
+      <button class="o-btn brand block" type="submit">Request this booking</button>
+    </form>
+    <aside class="bsum o-rv" aria-live="polite">
+      <p class="l">Your stay</p>
+      <p class="tot" id="tot">₹0</p>
+      <ul id="lines"></ul>
+      <span class="avail" id="avail">Available</span>
+      <p class="note" style="color:#a9c7b5">Breakfast and taxes included. Pay at the homestay or by UPI after we confirm.</p>
+    </aside>
+  </div>
+</div></section>
+
+<section class="o-sec" id="nearby"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Nearby</span><h2 class="o-h2 o-rv">Sohra, on your<br><span class="f">doorstep.</span></h2></div><p class="o-lead o-rv">We help you plan the day and book a local driver. Approximate drive times from the homestay.</p></div>
+  <div class="near">
+    <div class="place o-rv"><b>Nohkalikai Falls</b><span>15 min drive</span><p>One of India's tallest plunge waterfalls, best after the rains.</p></div>
+    <div class="place o-rv"><b>Double-Decker Root Bridge</b><span>Trek · half day</span><p>The famous living root bridge at Nongriat. Start early, carry water.</p></div>
+    <div class="place o-rv"><b>Mawsmai Cave</b><span>10 min drive</span><p>A short, lit limestone cave walk, great for kids.</p></div>
+    <div class="place o-rv"><b>Seven Sisters Falls</b><span>20 min drive</span><p>Seven streams over the cliff, with a viewpoint for sunset.</p></div>
+  </div>
+</div></section>
+
+<section class="o-sec" id="reviews"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Reviews</span><h2 class="o-h2 o-rv">Guests come back<br><span class="f">for the breakfast.</span></h2></div><p class="o-lead o-rv">Sample reviews for this demo site. On your site, these come from your real guests.</p></div>
+  <div class="revs">
+    <div class="rev o-rv"><p class="stars">★★★★★</p><q>We woke up to clouds in the valley and fresh jadoh for breakfast. The family planned our whole trip.</q><p class="by"><b>Sample guest</b> · Kolkata</p></div>
+    <div class="rev o-rv"><p class="stars">★★★★★</p><q>Booking took two minutes on the website and they confirmed on WhatsApp right away.</q><p class="by"><b>Sample guest</b> · Bengaluru</p></div>
+    <div class="rev o-rv"><p class="stars">★★★★★</p><q>The cottage was perfect for our family. The kids loved the cave and the root bridge.</q><p class="by"><b>Sample guest</b> · Guwahati</p></div>
+  </div>
+</div></section>
+</main>
+
+<footer class="o-foot" id="contact"><div class="o-wrap">
+  <div class="cols">
+    <div><a class="o-logo" href="#top"><i></i>Pine &amp; Mist Homestay</a><p style="margin-top:12px;color:var(--dim)">Sohra (Cherrapunji), East Khasi Hills, Meghalaya. A sample homestay site.</p></div>
+    <div><h4>Stay</h4><p><a href="#rooms">Rooms</a></p><p><a href="#book">Availability</a></p></div>
+    <div><h4>Visit</h4><p><a href="#nearby">Things to do</a></p><p>About 2 hours from Shillong</p></div>
+    <div><h4>Made by</h4><p><a class="o-made" href="https://opiius.online/" target="_blank" rel="noopener"><img src="/assets/site/logo/opiius-mark.svg" alt="">OPIIUS</a></p><p><a href="https://opiius.online/#book" target="_blank" rel="noopener">Get a site like this →</a></p></div>
+  </div>
+  <div class="fb"><span>© Pine &amp; Mist Homestay (sample)</span><span>Website by OPIIUS</span></div>
+</div><div class="o-word" aria-hidden="true">Pine &amp; Mist</div></footer>
+
+<script src="/samples/opiius-signature.js"></script>
+<script>
+(function(){
+  var $=O.$,$$=O.$$;
+  var ROOMS={valley:{n:"Valley View Room",p:2800,max:2},cottage:{n:"Family Cottage",p:4200,max:4},suite:{n:"Cloud Deck Suite",p:5500,max:2}};
+  var iso=function(d){return d.toISOString().slice(0,10)};
+  var t=new Date();t.setDate(t.getDate()+7);$("#ci").value=iso(t);$("#ci").min=iso(new Date());var t2=new Date(t);t2.setDate(t2.getDate()+2);$("#co").value=iso(t2);
+  function nights(){var a=new Date($("#ci").value),b=new Date($("#co").value);return Math.round((b-a)/864e5)}
+  /* sample availability: the Cloud Deck Suite is booked on Saturdays */
+  function free(room){if(room!=="suite")return true;var a=new Date($("#ci").value);for(var i=0;i<Math.max(nights(),0);i++){var d=new Date(a);d.setDate(d.getDate()+i);if(d.getDay()===6)return false}return true}
+  function calc(){var r=ROOMS[$("#room").value],n=nights(),g=+$("#gu").value;$("#co").min=$("#ci").value;
+    var ok=n>0,tot=ok?n*r.p:0;$("#tot").textContent=O.inr(tot);
+    $("#lines").innerHTML=ok?'<li><span>'+r.n+'</span><b>'+O.inr(r.p)+' × '+n+' night'+(n>1?'s':'')+'</b></li><li><span>Guests</span><b>'+g+'</b></li><li><span>Breakfast</span><b>Included</b></li>':'<li><span>Pick your dates</span><b>—</b></li>';
+    var av=$("#avail"),f=free($("#room").value),fits=g<=r.max;av.classList.toggle("no",!(f&&fits));
+    av.textContent=!ok?"Pick check-in and check-out":!fits?"Fits up to "+r.max+" guests: try the Family Cottage":f?"Available for these dates":"Booked on Saturday: try the Valley View Room";
+    return {r:r,n:n,g:g,tot:tot,ok:ok&&f&&fits}}
+  ["#room","#ci","#co","#gu"].forEach(function(s){$(s).addEventListener("input",calc)});calc();
+  $$("[data-room]").forEach(function(b){b.addEventListener("click",function(){$("#room").value=b.dataset.room;calc();$("#book").scrollIntoView({behavior:"smooth"})})});
+  $("#bf").addEventListener("submit",function(e){e.preventDefault();var c=calc(),err=$("#err"),ph=$("#ph").value.replace(/\D/g,"");
+    if(!c.ok){err.textContent="Please pick dates and a room that is available.";return}
+    if(!$("#nm").value.trim()){err.textContent="Please add your name.";return}
+    if(!/^[6-9]\d{9}$/.test(ph.slice(-10))){err.textContent="Please add a 10-digit WhatsApp number.";return}
+    err.textContent="";var ref=O.ref("PM");
+    O.confirm("Booking requested","The family will confirm on WhatsApp within the hour.","Ref: "+ref+"\n"+c.r.n+"\n"+$("#ci").value+" → "+$("#co").value+" ("+c.n+" night"+(c.n>1?"s":"")+")\n"+c.g+" guest"+(c.g>1?"s":"")+"\nTotal: "+O.inr(c.tot))});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xuta Handloom Studio · Guwahati (sample site by OPIIUS)</title>
+<meta name="description" content="A sample online store made by OPIIUS: hand-woven Assam silk mekhela sador, sarees, stoles and home textiles with a bag and checkout.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/site/logo/opiius-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Urbanist:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/samples/opiius-signature.css">
+<style>
+:root{--brand:#9b1c31;--brand-2:#f3cf7a;--brand-deep:#3d0a14;--bg:#f4eee6;--paper:#fbf7f1;--ink:#2a1216;--dim:#7c6a66;--faint:#cdb9b0;--f-head:"Cormorant Garamond",Georgia,serif;--gold:#c99a2e}
+h1,h2,h3,h4{font-weight:700;letter-spacing:-.015em}
+.o-h2{font-size:clamp(38px,5.4vw,64px)}
+
+/* hero */
+.hero{background:radial-gradient(110% 90% at 85% 30%,#5a0f1f 0,#3d0a14 45%,#22060b 100%);color:#fff}
+.hero::before{content:"";position:absolute;inset:0;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M24 8l10 16-10 16-10-16z' fill='none' stroke='%23f3cf7a' stroke-width='1.5'/%3E%3Ccircle cx='24' cy='24' r='2.5' fill='%23f3cf7a'/%3E%3C/svg%3E")}
+.hero .o-ring{width:min(640px,54vw);right:-2vw;top:50%;transform:translateY(-50%);opacity:.85}
+.hero-in{position:relative;z-index:3;display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;padding:130px 20px 130px}
+.hero .o-lbl{background:rgba(255,255,255,.1);color:#f6e6c2;box-shadow:none;border:1px solid rgba(243,207,122,.25)}
+.hero h1{font-size:clamp(50px,7vw,96px);line-height:.95;margin-top:18px}
+.hero h1 em{font-style:italic;color:var(--brand-2)}
+.hero .sub{color:#e3cfc9;font-size:18px;max-width:44ch;margin-top:18px}
+.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.hero .o-btn.brand{background:linear-gradient(180deg,#fbe3a4,#e0b04a 60%,#a5761c);color:#2a1216;box-shadow:0 12px 26px -10px #e0b04a}
+.trust{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;color:#e3cfc9;font-size:14px;font-weight:600}
+.trust span::before{content:"✦ ";color:var(--brand-2)}
+.drape{position:relative;height:440px}
+.drape .sw{position:absolute;width:52%;border-radius:18px;overflow:hidden;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
+.drape .sw:nth-child(1){left:2%;top:40px;transform:rotate(-9deg)}
+.drape .sw:nth-child(2){left:26%;top:0;transform:rotate(3deg);z-index:2}
+.drape .sw:nth-child(3){left:46%;top:70px;transform:rotate(11deg)}
+.drape .tag{position:absolute;z-index:3;left:30%;bottom:18px;background:#fff;color:var(--ink);border-radius:16px;padding:10px 14px;box-shadow:var(--sh2);font-size:13.5px;font-weight:600}
+.drape .tag b{display:block;font-family:var(--f-head);font-size:20px}
+
+/* shop */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.chip{height:42px;padding:0 18px;border-radius:999px;border:1px solid rgba(0,0,0,.08);background:#fff;font-weight:700;font-size:14.5px}
+.chip small{color:var(--dim);font-weight:600;margin-left:4px}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip[aria-pressed=true] small{color:#d9c4bf}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pc{background:var(--paper);border-radius:24px;box-shadow:var(--sh);padding:10px;display:flex;flex-direction:column}
+.pc .sw{border-radius:18px;overflow:hidden;aspect-ratio:4/5;position:relative}
+.pc .sw svg{width:100%;height:100%}
+.pc .new{position:absolute;left:10px;top:10px;background:#fff;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700}
+.pc .bd{padding:14px 8px 6px;display:flex;flex-direction:column;flex:1}
+.pc h3{font-size:24px;line-height:1.1}
+.pc .fab{color:var(--dim);font-size:14px;margin-top:4px}
+.pc .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:14px}
+.pc .pr{font-weight:700;font-size:17px}
+.pc .o-btn{height:42px;padding:0 16px;font-size:14px}
+.pc .o-btn.in{background:#fff;color:var(--ink);box-shadow:var(--sh)}
+.ship{margin-top:22px;color:var(--dim);font-size:14.5px;text-align:center}
+
+/* craft */
+.craft{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{padding:26px}
+.step .n{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:linear-gradient(180deg,var(--brand-2) -60%,var(--brand) 60%,var(--brand-deep) 160%);color:#fff;font-weight:700}
+.step h3{font-size:28px;margin-top:16px}
+.step p{color:var(--dim);margin-top:8px}
+
+/* custom order */
+.custom{display:grid;grid-template-columns:.9fr 1.1fr;gap:20px;align-items:stretch}
+.custom .pitch{padding:32px;background:var(--brand-deep);color:#fff;border-radius:24px;position:relative;overflow:hidden}
+.custom .pitch .o-lbl{background:rgba(255,255,255,.1);color:#f6e6c2;box-shadow:none}
+.custom .pitch h2{font-size:clamp(34px,4.4vw,52px);margin-top:16px}
+.custom .pitch h2 .f{color:#b98c8f}
+.custom .pitch p{color:#e3cfc9;margin-top:12px}
+.custom .pitch ul{margin:18px 0 0;padding:0;list-style:none;display:grid;gap:8px;font-weight:600}
+.custom .pitch li::before{content:"✦ ";color:var(--brand-2)}
+.custom form{padding:28px;display:grid;gap:12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.err{color:#b4232f;font-size:14px;font-weight:600;min-height:1em}
+
+/* reviews */
+.revs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rv{padding:24px}
+.rv .st{color:var(--gold);letter-spacing:2px}
+.rv p{margin-top:10px;font-size:16.5px}
+.rv b{display:block;margin-top:14px;font-size:14px}.rv small{color:var(--dim)}
+
+/* bag button + drawer */
+.bagb{position:relative}
+.bagb em{font-style:normal;display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--brand-2);color:var(--ink);font-size:12px}
+.drawer{position:fixed;inset:0;z-index:65;background:rgba(30,6,10,.5);display:flex;justify-content:flex-end}
+.drawer .box{width:min(460px,100%);height:100%;overflow:auto;background:#fff;padding:24px;animation:sl .45s var(--out);display:flex;flex-direction:column}
+@keyframes sl{from{transform:translateX(100%)}}
+.drawer .top{display:flex;justify-content:space-between;align-items:center}
+.drawer h3{font-size:34px}
+.drawer .x{width:40px;height:40px;border-radius:50%;border:0;background:#f1ecea;font-size:18px}
+.lines{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:12px}
+.lines li{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center}
+.lines .th{width:64px;height:80px;border-radius:12px;overflow:hidden}
+.lines .th svg{width:100%;height:100%}
+.lines b{display:block;font-size:15px}.lines small{color:var(--dim)}
+.qty{display:flex;align-items:center;gap:8px;font-weight:700}
+.qty button{width:30px;height:30px;border-radius:50%;border:0;background:#f1ecea;font-size:16px}
+.tot{border-top:1px solid #eee;margin-top:16px;padding-top:12px;display:grid;gap:6px;font-size:15px}
+.tot div{display:flex;justify-content:space-between}
+.tot .g{font-weight:700;font-size:18px}
+.empty{color:var(--dim);margin-top:20px}
+.pay{display:flex;gap:8px;margin-top:4px}
+.pay label{flex:1;display:flex;align-items:center;gap:8px;padding:12px;border-radius:14px;background:#f1f1f2;font-size:14px;font-weight:600;cursor:pointer}
+.pay input{accent-color:var(--brand)}
+body:has(.drawer) .o-badge{opacity:0;pointer-events:none}
+
+@media (max-width:900px){
+  .hero-in{grid-template-columns:1fr;padding:120px 20px 120px}
+  .drape{height:360px;max-width:440px;width:100%;margin:10px auto 0}
+  .hero .o-ring{width:120vw;right:-50vw;top:auto;bottom:-25%;transform:none}
+  .grid{grid-template-columns:1fr 1fr}
+  .craft,.revs,.custom{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .hero-in{padding:112px 20px 112px}
+  .drape{height:300px}
+  .grid{gap:10px}
+  .pc{padding:6px;border-radius:20px}
+  .pc .bd{padding:10px 6px 4px}
+  .pc h3{font-size:20px}
+  .pc .fab{font-size:13px}
+  .pc .row{flex-direction:column;align-items:stretch;gap:8px}
+  .pc .o-btn{height:40px}
+  .row2{grid-template-columns:1fr}
+  .custom .pitch,.custom form{padding:22px}
+  .bagb .t{display:none}
+}
+</style>
+</head>
+<body data-sample>
+
+<nav class="o-nav" aria-label="Main">
+  <a class="o-logo" href="#top"><i></i>Xuta</a>
+  <div class="o-links"><a href="#shop">Shop</a><a href="#craft">The weave</a><a href="#custom">Made to order</a><a href="#reviews">Reviews</a></div>
+  <button class="o-btn solid bagb" type="button" id="bagBtn"><span class="t">Bag</span> <em id="bagN">0</em></button>
+  <button class="o-menu" type="button" aria-label="Menu" aria-expanded="false"><span></span></button>
+</nav>
+
+<header class="o-hero hero" id="top">
+  <div class="o-ring"></div>
+  <div class="o-wrap hero-in">
+    <div>
+      <span class="o-lbl o-st">Hand-woven in Sualkuchi, Assam</span>
+      <h1 class="o-st">Silk that is <em>woven</em>, not made.</h1>
+      <p class="sub o-st">Muga, pat and eri silk mekhela sador, sarees and stoles from the looms of Sualkuchi. Every piece is woven by hand and shipped across India.</p>
+      <div class="ctas o-st"><a class="o-btn brand" href="#shop">Shop the collection</a><a class="o-btn light" href="#custom">Get one made for you</a></div>
+      <div class="trust o-st"><span>Silk Mark certified</span><span>Free shipping over ₹5,000</span><span>Easy 7-day returns</span></div>
+    </div>
+    <div class="drape o-st" id="drape" aria-hidden="true"></div>
+  </div>
+  <a class="o-notch" href="#shop">Scroll for more <i>↓</i></a>
+</header>
+
+<main>
+<section class="o-sec" id="shop"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">The collection</span><h2 class="o-h2 o-rv">Woven this season,<br><span class="f">ready to ship.</span></h2></div><p class="o-lead o-rv">Each piece is one of a few. When it's gone, the loom starts on something new.</p></div>
+  <div class="chips o-rv" id="chips" role="group" aria-label="Filter the collection"></div>
+  <div class="grid" id="grid"></div>
+  <p class="ship o-rv">Free shipping across India on orders over ₹5,000 · Cash on delivery and UPI accepted</p>
+</div></section>
+
+<section class="o-sec" id="craft"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">The weave</span><h2 class="o-h2 o-rv">From the silkworm<br><span class="f">to your wardrobe.</span></h2></div></div>
+  <div class="craft">
+    <div class="o-card step o-rv"><span class="n">1</span><h3>Golden muga silk</h3><p>Muga silk is found only in Assam. Its natural gold sheen gets brighter with every wash.</p></div>
+    <div class="o-card step o-rv"><span class="n">2</span><h3>Woven by hand</h3><p>Our weavers in Sualkuchi spend up to three weeks on one mekhela sador, thread by thread.</p></div>
+    <div class="o-card step o-rv"><span class="n">3</span><h3>Packed with care</h3><p>Each piece is checked, folded in cotton and shipped with its Silk Mark tag.</p></div>
+  </div>
+</div></section>
+
+<section class="o-sec" id="custom"><div class="o-wrap">
+  <div class="custom">
+    <div class="pitch o-rv">
+      <span class="o-lbl">Made to order</span>
+      <h2>Your colours,<br><span class="f">our looms.</span></h2>
+      <p>Wedding, Bihu or a gift? Tell us what you have in mind and a weaver will sketch it for you on WhatsApp.</p>
+      <ul><li>Pick the silk, colours and motif</li><li>See a sketch before weaving starts</li><li>Ready in 3 to 5 weeks</li></ul>
+    </div>
+    <form class="o-card o-rv" id="cf" novalidate>
+      <div class="row2">
+        <div class="o-field"><label for="cPiece">What would you like?</label><select id="cPiece"><option>Mekhela sador</option><option>Saree</option><option>Stole or shawl</option><option>Something else</option></select></div>
+        <div class="o-field"><label for="cSilk">Silk</label><select id="cSilk"><option>Muga (golden)</option><option>Pat (white silk)</option><option>Eri (soft, warm)</option><option>Not sure, help me choose</option></select></div>
+      </div>
+      <div class="row2">
+        <div class="o-field"><label for="cFor">Occasion</label><select id="cFor"><option>Wedding</option><option>Bihu</option><option>Gift</option><option>Everyday</option></select></div>
+        <div class="o-field"><label for="cDate">Needed by</label><input id="cDate" type="date"></div>
+      </div>
+      <div class="o-field"><label for="cIdea">Colours or design idea</label><textarea id="cIdea" placeholder="E.g. maroon with golden kesh motifs, for my sister's wedding"></textarea></div>
+      <div class="row2">
+        <div class="o-field"><label for="cName">Your name</label><input id="cName" autocomplete="name" placeholder="Name"></div>
+        <div class="o-field"><label for="cPhone">WhatsApp number</label><input id="cPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile"></div>
+      </div>
+      <p class="err" id="cErr" role="alert"></p>
+      <button class="o-btn brand block" type="submit">Send my request</button>
+    </form>
+  </div>
+</div></section>
+
+<section class="o-sec" id="reviews"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Reviews</span><h2 class="o-h2 o-rv">Worn at weddings,<br><span class="f">kept for generations.</span></h2></div><p class="o-lead o-rv">Sample reviews for this demo site. Your site shows your real ones.</p></div>
+  <div class="revs">
+    <div class="o-card rv o-rv"><span class="st">★★★★★</span><p>The muga mekhela looked even richer in person. My mother cried when she saw it.</p><b>Sample customer</b><small>Bengaluru</small></div>
+    <div class="o-card rv o-rv"><span class="st">★★★★★</span><p>They sent me a sketch on WhatsApp before weaving. It came out exactly like we planned.</p><b>Sample customer</b><small>Guwahati</small></div>
+    <div class="o-card rv o-rv"><span class="st">★★★★★</span><p>Ordered an eri stole for Delhi winters. Soft, warm and beautifully packed.</p><b>Sample customer</b><small>New Delhi</small></div>
+  </div>
+</div></section>
+</main>
+
+<footer class="o-foot"><div class="o-wrap">
+  <div class="cols">
+    <div><a class="o-logo" href="#top"><i></i>Xuta Handloom Studio</a><p style="margin-top:12px;color:var(--dim)">Hand-woven Assam silk from Sualkuchi. A sample store site.</p></div>
+    <div><h4>Shop</h4><p><a href="#shop">Collection</a></p><p><a href="#custom">Made to order</a></p></div>
+    <div><h4>Help</h4><p><a href="#craft">About the silk</a></p><p><a href="#reviews">Reviews</a></p></div>
+    <div><h4>Made by</h4><p><a class="o-made" href="https://opiius.online/" target="_blank" rel="noopener"><img src="/assets/site/logo/opiius-mark.svg" alt="">OPIIUS</a></p><p><a href="https://opiius.online/#book" target="_blank" rel="noopener">Get a site like this →</a></p></div>
+  </div>
+  <div class="fb"><span>© Xuta Handloom Studio (sample)</span><span>Website by OPIIUS</span></div>
+</div><div class="o-word" aria-hidden="true">Xuta</div></footer>
+
+<script src="/samples/opiius-signature.js"></script>
+<script>
+(function(){
+  var $=O.$,$$=O.$$,uid=0;
+  /* woven fabric swatches, drawn in SVG */
+  var MOTIF={
+    kesh:function(c){return '<path d="M20 8l9 12-9 12-9-12z" fill="none" stroke="'+c+'" stroke-width="2"/><circle cx="20" cy="20" r="2.6" fill="'+c+'"/>'},
+    phool:function(c){return '<g fill="'+c+'"><ellipse cx="20" cy="13" rx="3.5" ry="6"/><ellipse cx="20" cy="27" rx="3.5" ry="6"/><ellipse cx="13" cy="20" rx="6" ry="3.5"/><ellipse cx="27" cy="20" rx="6" ry="3.5"/></g><circle cx="20" cy="20" r="2.6" fill="#fff" opacity=".7"/>'},
+    dot:function(c){return '<circle cx="10" cy="10" r="2.4" fill="'+c+'"/><circle cx="30" cy="30" r="2.4" fill="'+c+'"/>'},
+    check:function(c){return '<path d="M0 10h40M0 30h40M10 0v40M30 0v40" stroke="'+c+'" stroke-width="3" opacity=".8"/>'}};
+  function sw(base,acc,m,band){var i=++uid;
+    var b='';for(var x=-6;x<220;x+=28)b+='<path d="M'+(x+14)+' 196l10 14-10 14-10-14z" fill="'+base+'"/>';
+    return '<svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice"><defs>'+
+      '<pattern id="w'+i+'" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="'+base+'"/><path d="M0 3h6M3 0v6" stroke="#000" stroke-opacity=".07"/></pattern>'+
+      '<pattern id="m'+i+'" width="40" height="40" patternUnits="userSpaceOnUse">'+MOTIF[m](acc)+'</pattern>'+
+      '<linearGradient id="s'+i+'" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset=".35" stop-color="#fff" stop-opacity=".18"/><stop offset=".55" stop-color="#000" stop-opacity=".08"/><stop offset=".8" stop-color="#fff" stop-opacity=".14"/><stop offset="1" stop-color="#000" stop-opacity=".2"/></linearGradient></defs>'+
+      '<rect width="200" height="250" fill="url(#w'+i+')"/><rect width="200" height="250" fill="url(#m'+i+')" opacity=".55"/>'+
+      (band?'<rect y="178" width="200" height="72" fill="'+acc+'"/><rect y="184" width="200" height="3" fill="'+base+'"/><rect y="234" width="200" height="3" fill="'+base+'"/>'+b:'')+
+      '<rect width="200" height="250" fill="url(#s'+i+')"/></svg>'}
+
+  var P=[
+    {n:"Golden Kesh mekhela sador",f:"Muga silk · hand-woven",c:"Mekhela sador",p:18500,s:["#d9a441","#7a1424","kesh",1],nw:1},
+    {n:"Rongali mekhela sador",f:"Pat silk · red kesh border",c:"Mekhela sador",p:12800,s:["#f3ead7","#9b1c31","kesh",1]},
+    {n:"Kopou Phool saree",f:"Pat silk · orchid motifs",c:"Sarees",p:9600,s:["#efe4f0","#7b3b8c","phool",1],nw:1},
+    {n:"Brahmaputra cotton saree",f:"Handloom cotton",c:"Sarees",p:4200,s:["#2e5d86","#f3cf7a","dot",1]},
+    {n:"Eri silk stole",f:"Eri silk · undyed",c:"Stoles & shawls",p:2400,s:["#e9dcc4","#a8875a","check",0]},
+    {n:"Winter eri shawl",f:"Eri silk · maroon",c:"Stoles & shawls",p:5800,s:["#6d1222","#d9a441","kesh",1]},
+    {n:"Gamosa, pair",f:"Cotton · red and white",c:"Gamosa & home",p:650,s:["#fbf7f1","#c0182d","phool",1]},
+    {n:"Cushion covers, set of 2",f:"Handloom cotton",c:"Gamosa & home",p:1200,s:["#3e6b4f","#f3cf7a","kesh",0]},
+    {n:"Table runner",f:"Muga-blend",c:"Gamosa & home",p:1500,s:["#c99a2e","#3d0a14","dot",1]}];
+  var CATS=["All"].concat(P.map(function(x){return x.c}).filter(function(c,i,a){return a.indexOf(c)===i}));
+  var cur="All",bag={};
+  function find(n){return P.filter(function(x){return x.n===n})[0]}
+  function art(x){return sw.apply(null,x.s)}
+
+  $("#drape").innerHTML=[0,2,5].map(function(k){return '<div class="sw">'+art(P[k])+'</div>'}).join("")+'<div class="tag"><b>'+P[2].n+'</b>'+O.inr(P[2].p)+' · new this week</div>';
+  $("#chips").innerHTML=CATS.map(function(c){var n=c==="All"?P.length:P.filter(function(x){return x.c===c}).length;return '<button type="button" class="chip" aria-pressed="'+(c===cur)+'" data-cat="'+c+'">'+c+'<small>'+n+'</small></button>'}).join("");
+
+  function card(x){var q=bag[x.n]||0;
+    return '<article class="pc o-rv"><div class="sw">'+art(x)+(x.nw?'<span class="new">New</span>':'')+'</div><div class="bd"><h3>'+x.n+'</h3><p class="fab">'+x.f+'</p><div class="row"><span class="pr">'+O.inr(x.p)+'</span><button class="o-btn '+(q?'in':'solid')+'" type="button" data-add="'+x.n+'">'+(q?'In bag ('+q+') +':'Add to bag')+'</button></div></div></article>'}
+  function render(){$("#grid").innerHTML=P.filter(function(x){return cur==="All"||x.c===cur}).map(card).join("");O.reveal($("#grid"))}
+  function totals(){var n=0,t=0;Object.keys(bag).forEach(function(k){n+=bag[k];t+=bag[k]*find(k).p});var sh=t>=5000||!t?0:150;return {n:n,t:t,sh:sh,g:t+sh}}
+  function update(){render();$("#bagN").textContent=totals().n;if($(".drawer"))openBag()}
+
+  $("#chips").addEventListener("click",function(e){var b=e.target.closest("[data-cat]");if(!b)return;cur=b.dataset.cat;$$("#chips .chip").forEach(function(c){c.setAttribute("aria-pressed",c===b)});render()});
+  document.addEventListener("click",function(e){var a=e.target.closest("[data-add]"),d=e.target.closest("[data-dec]");
+    if(a){bag[a.dataset.add]=(bag[a.dataset.add]||0)+1;update()}
+    if(d){var k=d.dataset.dec;bag[k]--;if(bag[k]<=0)delete bag[k];update()}});
+
+  function openBag(){var keep=$(".drawer"),scrollTop=keep?$(".box",keep).scrollTop:0,vals={};
+    if(keep){$$("input,select",keep).forEach(function(i){vals[i.id]=i.type==="radio"?i.checked:i.value});keep.remove()}
+    var s=totals(),dr=document.createElement("div");dr.className="drawer";
+    var lines=Object.keys(bag).map(function(k){var x=find(k);return '<li><div class="th">'+art(x)+'</div><div><b>'+k+'</b><small>'+O.inr(x.p)+'</small></div><div class="qty"><button type="button" data-dec="'+k+'" aria-label="Remove one">−</button><span>'+bag[k]+'</span><button type="button" data-add="'+k+'" aria-label="Add one">+</button></div></li>'}).join("");
+    dr.innerHTML='<div class="box" role="dialog" aria-modal="true" aria-label="Your bag"><div class="top"><h3>Your bag</h3><button class="x" type="button" aria-label="Close">✕</button></div>'+
+      (s.n?'<ul class="lines">'+lines+'</ul><div class="tot"><div><span>Items</span><span>'+O.inr(s.t)+'</span></div><div><span>Shipping</span><span>'+(s.sh?O.inr(s.sh):'Free')+'</span></div><div class="g"><span>Total</span><span>'+O.inr(s.g)+'</span></div></div>'+
+      '<div style="display:grid;gap:12px;margin-top:18px"><div class="row2"><div class="o-field"><label for="bn">Name</label><input id="bn" autocomplete="name" placeholder="Full name"></div><div class="o-field"><label for="bp">WhatsApp number</label><input id="bp" type="tel" inputmode="tel" placeholder="10-digit mobile"></div></div>'+
+      '<div class="o-field"><label for="ba">Delivery address</label><input id="ba" autocomplete="street-address" placeholder="House, street, area"></div>'+
+      '<div class="row2"><div class="o-field"><label for="bc">City</label><input id="bc" autocomplete="address-level2" placeholder="City"></div><div class="o-field"><label for="bz">PIN code</label><input id="bz" inputmode="numeric" maxlength="6" placeholder="6 digits"></div></div>'+
+      '<div class="pay"><label><input type="radio" name="pm" id="pmU" checked>UPI</label><label><input type="radio" name="pm" id="pmC">Cash on delivery</label></div>'+
+      '<p class="err" id="berr" role="alert"></p><button class="o-btn brand block" type="button" id="place">Place order · '+O.inr(s.g)+'</button></div>'
+      :'<p class="empty">Your bag is empty. Add something beautiful from the collection.</p><button class="o-btn solid block" type="button" id="shopNow" style="margin-top:16px">Browse the collection</button>')+'</div>';
+    document.body.appendChild(dr);
+    Object.keys(vals).forEach(function(id){var el=$("#"+id,dr);if(!el)return;if(el.type==="radio")el.checked=vals[id];else el.value=vals[id]});
+    $(".box",dr).scrollTop=scrollTop;
+    var close=function(){dr.remove()};
+    dr.addEventListener("click",function(e){if(e.target===dr)close()});$(".x",dr).addEventListener("click",close);
+    if(!keep)$(".x",dr).focus();
+    var sn=$("#shopNow",dr);if(sn)sn.addEventListener("click",function(){close();$("#shop").scrollIntoView({behavior:"smooth"})});
+    var pl=$("#place",dr);if(pl)pl.addEventListener("click",function(){
+      var nm=$("#bn",dr).value.trim(),ph=$("#bp",dr).value.replace(/\D/g,""),ad=$("#ba",dr).value.trim(),ct=$("#bc",dr).value.trim(),pz=$("#bz",dr).value.replace(/\D/g,""),er=$("#berr",dr);
+      if(!nm)return er.textContent="Please add your name.";
+      if(ph.length<10)return er.textContent="Please add a 10-digit WhatsApp number.";
+      if(!ad||!ct)return er.textContent="Please add your delivery address and city.";
+      if(pz.length!==6)return er.textContent="Please add a 6-digit PIN code.";
+      var t=totals(),sum="Ref: "+O.ref("XT")+"\n"+Object.keys(bag).map(function(k){return bag[k]+" × "+k}).join("\n")+"\nShip to: "+ct+" "+pz+"\nPayment: "+($("#pmU",dr).checked?"UPI":"Cash on delivery")+"\nTotal: "+O.inr(t.g);
+      close();bag={};update();
+      O.confirm("Order placed","Thank you, "+nm.split(" ")[0]+". We'll WhatsApp you the tracking link when it ships.",sum)})}
+  $("#bagBtn").addEventListener("click",openBag);
+
+  $("#cf").addEventListener("submit",function(e){e.preventDefault();
+    var nm=$("#cName").value.trim(),ph=$("#cPhone").value.replace(/\D/g,""),er=$("#cErr");
+    if(!nm)return er.textContent="Please add your name.";
+    if(ph.length<10)return er.textContent="Please add a 10-digit WhatsApp number.";
+    er.textContent="";
+    var dt=$("#cDate").value?new Date($("#cDate").value).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}):"Flexible";
+    O.confirm("Request sent","A weaver will WhatsApp you a sketch within a day.","Ref: "+O.ref("XC")+"\n"+$("#cPiece").value+" in "+$("#cSilk").value+"\nFor: "+$("#cFor").value+" · needed by "+dt+($("#cIdea").value.trim()?"\nIdea: "+$("#cIdea").value.trim():""));
+    this.reset()});
+
+  render();
+})();
+</script>
+</body>
+</html>

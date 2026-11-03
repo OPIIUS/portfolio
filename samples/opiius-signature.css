@@ -1,0 +1,121 @@
+/* OPIIUS Signature: the shared design DNA of every website OPIIUS builds.
+   Each site sets its own brand colours and heading font in :root; the signature pieces
+   (pill nav, glowing ring, scroll notch, label pills, faded second-line headings, giant footer
+   wordmark and the "Made by OPIIUS" badge) stay the same, so every OPIIUS site is recognisable. */
+:root{
+  --brand:#ff3d1f;--brand-2:#ffb39f;--brand-deep:#7a0e00;
+  --bg:#efefef;--paper:#f7f7f7;--card:#fff;--ink:#121214;--dim:#6f6f75;--faint:#bdbdc2;
+  --f-head:"Urbanist",system-ui,sans-serif;--f-body:"Urbanist",system-ui,sans-serif;
+  --r:28px;--out:cubic-bezier(.22,1,.36,1);
+  --sh:0 1px 2px rgba(0,0,0,.04),0 10px 30px -12px rgba(0,0,0,.14);
+  --sh2:0 2px 6px rgba(0,0,0,.06),0 30px 60px -20px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.6 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{margin:0;font-family:var(--f-head);font-weight:600;letter-spacing:-.025em;line-height:1.05;text-wrap:balance}
+p{margin:0}a{color:inherit;text-decoration:none}img,svg{display:block;max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+.o-wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+[hidden]{display:none!important}
+
+/* signature 1: floating glass pill nav */
+.o-nav{position:fixed;z-index:50;top:16px;left:50%;transform:translateX(-50%);width:min(820px,calc(100% - 24px));display:flex;align-items:center;gap:6px;padding:6px 6px 6px 16px;border-radius:999px;background:rgba(255,255,255,.74);backdrop-filter:saturate(1.6) blur(16px);-webkit-backdrop-filter:saturate(1.6) blur(16px);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 8px 30px -12px rgba(0,0,0,.2);transition:box-shadow .3s}
+.o-nav.up{box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 14px 40px -14px rgba(0,0,0,.32)}
+.o-logo{display:flex;align-items:center;gap:10px;font-family:var(--f-head);font-weight:700;font-size:18px;letter-spacing:-.02em;margin-right:auto;white-space:nowrap}
+.o-logo i{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--brand-2),var(--brand) 55%,var(--brand-deep));box-shadow:0 4px 10px -3px var(--brand)}
+.o-links{display:flex;gap:2px}
+.o-links a{padding:8px 12px;border-radius:999px;font-size:14.5px;font-weight:600;color:#3a3a40;transition:background .2s}
+.o-links a:hover{background:rgba(0,0,0,.05)}
+.o-menu{display:none;width:42px;height:42px;border-radius:50%;border:0;background:rgba(0,0,0,.05);place-items:center}
+.o-menu span{display:block;width:16px;height:2px;border-radius:2px;background:var(--ink);box-shadow:0 5px 0 var(--ink),0 -5px 0 var(--ink)}
+
+/* buttons */
+.o-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 22px;border-radius:999px;border:0;font-weight:700;font-size:15px;white-space:nowrap;transition:transform .25s var(--out),box-shadow .25s,background .2s}
+.o-btn:active{transform:scale(.97)}
+.o-btn.solid{background:var(--ink);color:#fff;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)}
+.o-btn.brand{background:linear-gradient(180deg,var(--brand-2) -60%,var(--brand) 60%,var(--brand-deep) 160%);color:#fff;box-shadow:0 10px 24px -10px var(--brand)}
+.o-btn.light{background:#fff;color:var(--ink);box-shadow:var(--sh)}
+.o-btn.block{width:100%}
+.o-nav .o-btn{height:42px;padding:0 18px;font-size:14px}
+
+/* signature 2: rounded hero with the glowing ring + scroll notch */
+.o-hero{position:relative;margin:12px;min-height:min(calc(100svh - 24px),800px);border-radius:var(--r);overflow:hidden;display:grid;align-items:center}
+.o-ring{position:absolute;aspect-ratio:1;pointer-events:none;z-index:1}
+.o-ring svg{width:100%;height:100%;overflow:visible}
+.o-ring .spin{transform-box:fill-box;transform-origin:center;animation:o-spin 50s linear infinite}
+@keyframes o-spin{to{transform:rotate(360deg)}}
+.o-notch{position:absolute;z-index:4;left:50%;bottom:0;transform:translateX(-50%);height:52px;padding:0 26px;display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:22px 22px 0 0;font-size:13.5px;font-weight:700;color:var(--ink)}
+.o-notch::before,.o-notch::after{content:"";position:absolute;bottom:0;width:22px;height:22px;background:radial-gradient(circle at 0 0,transparent 21.5px,var(--bg) 22px)}
+.o-notch::before{left:-22px;transform:scaleX(-1)}.o-notch::after{right:-22px}
+.o-notch i{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:var(--sh);color:var(--brand);font-style:normal;font-size:12px;animation:o-nudge 1.8s ease-in-out infinite}
+@keyframes o-nudge{50%{transform:translateY(3px)}}
+
+/* signature 3: label pills + faded second-line headings */
+.o-lbl{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 13px;border-radius:999px;background:#fff;box-shadow:var(--sh);font-size:13px;font-weight:700;color:#3a3a40}
+.o-lbl::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent)}
+.o-h2{font-size:clamp(34px,5vw,58px);margin-top:16px}
+.o-h2 .f{color:var(--faint)}
+.o-lead{color:var(--dim);font-size:17px;max-width:48ch;margin-top:14px}
+.o-sec{padding:100px 0 0}
+.o-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.o-card{background:var(--paper);border-radius:24px;box-shadow:var(--sh)}
+
+/* signature 4: footer with giant faded wordmark + Made by OPIIUS */
+.o-foot{margin:100px 12px 12px;border-radius:var(--r);background:var(--paper);box-shadow:var(--sh);padding:52px 0 0;overflow:hidden}
+.o-foot .cols{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:24px}
+.o-foot h4{font-family:var(--f-body);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.o-foot p,.o-foot a{font-size:15px;color:#3a3a40}
+.o-foot .fb{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:36px;font-size:13.5px;color:var(--dim)}
+.o-word{font-family:var(--f-head);font-size:clamp(70px,17vw,240px);font-weight:700;letter-spacing:-.05em;line-height:.78;text-align:center;margin-top:20px;white-space:nowrap;background:linear-gradient(180deg,color-mix(in srgb,var(--brand) 26%,#d8d8dc) 10%,rgba(239,239,239,0) 95%);-webkit-background-clip:text;background-clip:text;color:transparent;user-select:none;transform:translateY(8%)}
+.o-made{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--ink)!important}
+.o-made img{width:20px;height:20px}
+
+/* signature 5: the "Made by OPIIUS" demo badge */
+.o-badge{position:fixed;z-index:60;left:14px;bottom:14px;opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .4s,transform .4s var(--out);display:flex;align-items:center;gap:8px;padding:6px 14px 6px 6px;border-radius:999px;background:#111113;color:#fff;font-size:12.5px;font-weight:700;box-shadow:0 10px 26px -10px rgba(0,0,0,.6)}
+.o-badge.show{opacity:1;transform:none;pointer-events:auto}
+.o-badge img{width:24px;height:24px}
+.o-badge small{color:#b7b7bd;font-weight:600}
+
+/* toast / confirmation sheet */
+.o-sheet{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:16px;background:rgba(10,10,12,.45);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.o-sheet .box{width:min(440px,100%);background:#fff;border-radius:var(--r);padding:28px;box-shadow:var(--sh2);text-align:center;animation:o-pop .5s var(--out)}
+.o-sheet .ok{width:64px;height:64px;margin:0 auto;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:28px;background:linear-gradient(180deg,var(--brand-2) -60%,var(--brand) 60%,var(--brand-deep) 160%);box-shadow:0 14px 30px -10px var(--brand)}
+.o-sheet h3{font-size:26px;margin-top:16px}
+.o-sheet p{color:var(--dim);margin-top:8px}
+.o-sheet .sum{text-align:left;background:var(--bg);border-radius:16px;padding:14px 16px;margin-top:16px;font-size:14.5px;white-space:pre-line}
+.o-sheet .note{font-size:12.5px;margin-top:14px}
+.o-sheet .o-btn{margin-top:16px}
+@keyframes o-pop{from{transform:scale(.92);opacity:0}}
+
+/* reveal */
+.js .o-rv{opacity:0;transform:translateY(24px);transition:opacity .8s var(--out),transform .8s var(--out);transition-delay:var(--d,0s)}
+.js .o-rv.in{opacity:1;transform:none}
+.js .o-st{opacity:0;transform:translateY(18px);filter:blur(6px);animation:o-in .9s var(--out) forwards;animation-delay:calc(var(--i,0)*.09s + .1s)}
+@keyframes o-in{to{opacity:1;transform:none;filter:none}}
+
+/* form controls */
+.o-field label{display:block;font-size:13.5px;font-weight:700;margin-bottom:6px}
+.o-field input,.o-field select,.o-field textarea{width:100%;height:48px;border-radius:14px;border:1px solid transparent;background:#f1f1f2;padding:0 14px;font-size:16px;outline:none;transition:border-color .2s,background .2s}
+.o-field textarea{height:90px;padding:12px 14px;resize:vertical}
+.o-field input:focus,.o-field select:focus,.o-field textarea:focus{background:#fff;border-color:var(--ink)}
+
+@media (max-width:900px){
+  .o-links{display:none}.o-menu{display:grid}
+  .o-nav.open{border-radius:26px;flex-wrap:wrap}
+  .o-nav.open .o-links{display:grid;order:9;width:100%;padding:8px 2px 4px}
+  .o-nav.open .o-links a{padding:12px 10px;font-size:16px}
+  .o-foot .cols{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){
+  .o-hero{margin:8px;border-radius:24px}
+  .o-sec{padding-top:72px}
+  .o-foot{margin:72px 8px 8px;border-radius:24px}
+  .o-foot .cols{grid-template-columns:1fr}
+  .o-foot .fb{padding-bottom:56px}
+  .o-nav .o-btn{padding:0 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .o-rv,.js .o-st{opacity:1;transform:none;filter:none}
+}
