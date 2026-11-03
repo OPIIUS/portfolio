@@ -117,127 +117,25 @@ button{cursor:pointer}
 .js .rv{opacity:0;transform:translateY(26px);transition:opacity .8s var(--out),transform .8s var(--out);transition-delay:var(--d,0s)}
 .js .rv.in{opacity:1;transform:none}
 
-/* pricing */
-.plans{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.plan{background:var(--paper);border-radius:var(--r);box-shadow:var(--sh);padding:30px;display:flex;flex-direction:column}
-.plan.dk{background:radial-gradient(120% 120% at 100% 0,#2c2c31 0,var(--dark) 55%);color:#fff;box-shadow:var(--sh2)}
-.plan .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.plan h3{font-size:24px}
-.badge{padding:6px 12px;border-radius:999px;background:#fff;box-shadow:var(--sh);font-size:12.5px;font-weight:700;color:var(--ink2)}
-.plan.dk .badge{background:rgba(255,61,31,.16);color:#ff8a6b;box-shadow:none}
-.price{font-size:clamp(52px,6.4vw,72px);font-weight:600;letter-spacing:-.05em;line-height:1;margin:26px 0 24px}
-.price .from{display:block;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
-.plan.dk .price .from{color:#9a9aa1}
-.alt{font-weight:600;color:var(--dim);margin:-14px 0 20px;font-size:15px}
-.plan.dk .alt{color:#ff8a6b}
-.inc li b{font-weight:700}
-.pnote{margin-top:16px;color:var(--dim);font-size:15px;text-align:center;max-width:70ch;margin-left:auto;margin-right:auto}
-.pnote b{color:var(--ink)}
-.price small{font-size:18px;font-weight:600;letter-spacing:-.01em;color:var(--dim);margin-left:6px}
-.plan.dk .price small{color:#9a9aa1}
-.inc{list-style:none;padding:24px 0 0;margin:26px 0 0;display:grid;gap:13px;border-top:1px solid var(--line)}
-.plan.dk .inc{border-color:rgba(255,255,255,.1)}
-.inc li{display:flex;gap:12px;align-items:flex-start;font-weight:600;font-size:15.5px;line-height:1.4}
-.inc i{flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--red-soft);color:var(--red2);font-style:normal;font-size:11px;margin-top:-1px}
-.plan.dk .inc i{background:var(--red);color:#fff}
-.extra{margin-top:16px;background:var(--paper);border-radius:24px;box-shadow:var(--sh);padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
-.extra p{color:var(--dim);font-size:15px;max-width:34ch}.extra p b{display:block;color:var(--ink);font-size:17px;margin-bottom:2px}
-.chips2{display:flex;flex-wrap:wrap;gap:8px}
-.chips2 span{padding:8px 14px;border-radius:999px;background:#fff;font-size:13.5px;font-weight:600;color:var(--ink2);box-shadow:0 1px 2px rgba(0,0,0,.05)}
-
-/* work */
-.work{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.wk{background:var(--paper);border-radius:var(--r);box-shadow:var(--sh);padding:12px;display:flex;flex-direction:column;transition:transform .5s var(--out),box-shadow .5s}
-.wk:hover{transform:translateY(-4px);box-shadow:var(--sh2)}
-.wk .shot{position:relative;aspect-ratio:16/11;border-radius:20px;overflow:hidden;background:radial-gradient(100% 100% at 50% 0,#fafafa,#dedee2);display:flex;justify-content:center;align-items:flex-end;gap:14px;padding:26px 20px 0}
-.wk .shot.dk{background:radial-gradient(100% 100% at 50% 0,#2c2c31,#0f0f11)}
-.wk .shot.rd{background:radial-gradient(110% 100% at 30% 0,#ff8a6b,var(--red) 45%,#a31500)}
-.wk .ph{width:34%;max-width:190px;border-radius:18px 18px 0 0;box-shadow:0 20px 40px -14px rgba(0,0,0,.45);transition:transform .6s var(--out)}
-.wk .ph:nth-child(2){transform:translateY(22px)}
-.wk:hover .ph{transform:translateY(-6px)}.wk:hover .ph:nth-child(2){transform:translateY(12px)}
-.wk .dt{width:100%;height:100%;object-fit:cover;object-position:top;border-radius:12px 12px 0 0;box-shadow:0 20px 40px -14px rgba(0,0,0,.45);transition:transform .6s var(--out)}
-.wk:hover .dt{transform:scale(1.025)}
-.wk .dt+.ph{position:absolute;right:7%;bottom:-6%;width:24%}
-.wk .bd{padding:20px 14px 14px;display:flex;flex-direction:column;flex:1}
-.tags{display:flex;flex-wrap:wrap;gap:6px}
-.tags span{padding:5px 11px;border-radius:999px;background:#fff;font-size:12.5px;font-weight:600;color:var(--ink2);box-shadow:0 1px 2px rgba(0,0,0,.05)}
-.tags .live{background:#e3f5ea;color:#1c7a45}.tags .past{background:var(--red-soft);color:var(--red2)}
-.wk h3{font-size:24px;margin-top:14px;font-weight:600}
-.wk p{color:var(--dim);margin-top:8px;font-size:15.5px}
-.wk .lnk{display:inline-flex;align-items:center;gap:8px;margin-top:auto;padding-top:16px;font-weight:700;font-size:15px}
-.wk .lnk i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-style:normal;font-size:13px;transition:transform .3s var(--out)}
-.wk .lnk:hover i{transform:rotate(-45deg)}
-.wk .muted{margin-top:auto;padding-top:16px;font-size:14px;color:var(--dim)}
-
-/* dark demos block */
-.darkb{margin:110px 12px 0;border-radius:var(--r);background:radial-gradient(70% 50% at 85% 0,rgba(255,61,31,.22),transparent 70%),radial-gradient(60% 40% at 0 100%,rgba(255,61,31,.12),transparent 70%),#0c0c0d;color:#fff;padding:96px 0 90px;overflow:hidden}
-.darkb .lbl{background:rgba(255,255,255,.08);color:#e5e5ea;box-shadow:none;border:1px solid rgba(255,255,255,.1)}
-.darkb .lbl::before{box-shadow:0 0 0 3px rgba(255,61,31,.25)}
-.darkb .h2 .f{color:#55555c}
-.darkb .lead{color:#a2a2a9}
-.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.08);border-radius:24px;overflow:hidden;margin-bottom:40px}
-.nums div{background:#141416;padding:26px 24px}
-.nums b{display:block;font-size:clamp(44px,5.5vw,72px);font-weight:600;letter-spacing:-.05em;line-height:1}
-.nums b em{font-style:normal;color:var(--red)}
-.nums div>span{display:block;color:#9b9ba2;margin-top:8px;font-size:14.5px}
-.demos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.dm{background:var(--dark2);border:1px solid rgba(255,255,255,.06);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;transition:transform .5s var(--out),border-color .3s,background .3s}
-.dm:hover{transform:translateY(-4px);border-color:rgba(255,61,31,.45);background:#202024}
-.dm .im{margin:10px 10px 0;border-radius:16px;overflow:hidden;aspect-ratio:16/10;background:#26262a}
-.dm img{width:100%;height:100%;object-fit:cover;object-position:top left;transition:transform .7s var(--out)}
-.dm:hover img{transform:scale(1.04)}
-.dm .bd{padding:18px 20px 20px;display:flex;flex-direction:column;flex:1}
-.dm small{color:var(--red);font-weight:700;font-size:12.5px;letter-spacing:.02em}
-.dm h3{font-size:22px;margin-top:6px;font-weight:600}
-.dm p{color:#a2a2a9;font-size:15px;margin-top:6px}
-.dm .run{margin-top:auto;padding-top:14px;font-weight:700;font-size:14.5px;display:inline-flex;align-items:center;gap:8px}
-.dm .run i{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--red);font-style:normal;font-size:12px}
-.demos.two{grid-template-columns:1fr 1fr}
-.more{margin-top:20px;background:rgba(255,255,255,.08);color:#fff;box-shadow:none;border:1px solid rgba(255,255,255,.12)}
-.more:hover{background:rgba(255,255,255,.14)}
-
-/* products */
-.prods .more{margin-top:28px}
-.prod{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center;padding:44px 0;border-top:1px solid rgba(255,255,255,.08)}
-.prod:first-of-type{border-top:0}
-.prod.rev .pv{order:2}
-.pv{position:relative;padding:0 40px 40px 0}
-.lap .scr{background:#0a0a0b;border-radius:16px 16px 4px 4px;padding:10px 10px 14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.8),inset 0 0 0 1.5px #2c2c31}
-.lap .scr img{display:block;width:100%;height:auto;border-radius:6px;aspect-ratio:16/10;object-fit:cover;object-position:top left}
-.lap .base{height:14px;margin:0 -26px;border-radius:0 0 14px 14px;background:linear-gradient(#d9d9de,#8e8e94)}
-.phn{position:absolute;right:0;bottom:0;width:30%;max-width:190px;border-radius:30px;background:#0b0b0c;padding:7px;box-shadow:0 30px 50px -16px rgba(0,0,0,.9),inset 0 0 0 1.5px #2c2c31}
-.phn img{display:block;width:100%;height:auto;border-radius:24px;aspect-ratio:9/17;object-fit:cover;object-position:top}
-.pn{display:flex;align-items:center;gap:10px;color:#ff8a6b;font-weight:700;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
-.pn span{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:rgba(255,61,31,.16);color:#ff8a6b;letter-spacing:0}
-.pt h3{font-size:clamp(34px,4vw,46px);font-weight:600;margin-top:14px}
-.ph2{font-size:20px;font-weight:600;color:#e8e8ec;margin-top:8px}
-.pd{color:#a2a2a9;margin-top:12px;max-width:52ch}
-.pf{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}
-.pf li{display:flex;gap:10px;align-items:flex-start;font-weight:600;font-size:15.5px}
-.pf i{flex:none;width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-style:normal;font-size:11px}
-.best{margin-top:16px;color:#a2a2a9;font-size:14.5px}.best b{color:#fff}
-.pprice{display:inline-block;margin-top:16px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-weight:700;font-size:14px}
-.pbtn{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-.btn.ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.16)}
-.btn.ghost:hover{background:rgba(255,255,255,.16)}
-.lnk2{display:inline-block;margin-top:14px;color:#ff8a6b;font-weight:600;font-size:14.5px}
-.smp{margin-top:18px}.smp p{color:#a2a2a9;font-size:14.5px}
-.smp div{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.smp a{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px 0 8px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-weight:700;font-size:14px;transition:background .2s}
-.smp a:hover{background:rgba(255,255,255,.16)}
-.smp i{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--c) 55%,#111)}
-/* faq */
-.faq{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:start}
-.qs{display:grid;gap:10px}
-.q{background:var(--paper);border-radius:20px;box-shadow:var(--sh)}
-.q button{display:flex;justify-content:space-between;align-items:center;gap:16px;width:100%;padding:20px 22px;background:none;border:0;text-align:left;font-size:17px;font-weight:600;letter-spacing:-.01em}
-.q button i{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#fff;box-shadow:var(--sh);font-style:normal;transition:transform .4s var(--out),background .3s,color .3s}
-.q.open button i{transform:rotate(45deg);background:var(--red);color:#fff}
-.q .a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--out)}
-.q .a>div{overflow:hidden}
-.q .a p{padding:0 22px 20px;color:var(--dim);max-width:60ch}
-.q.open .a{grid-template-rows:1fr}
-
+/* gallery */
+.direct{margin-top:22px;color:var(--ink2);font-weight:600}
+.direct a{color:var(--ink);text-decoration:underline;text-decoration-color:rgba(0,0,0,.25);text-underline-offset:3px}
+.gf{display:flex;gap:6px;padding:5px;border-radius:999px;background:#fff;box-shadow:var(--sh)}
+.gf button{height:38px;padding:0 16px;border-radius:999px;border:0;background:none;font-weight:700;font-size:14px;color:#55555b;cursor:pointer}
+.gf button[aria-pressed=true]{background:var(--ink);color:#fff}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.gi{position:relative;display:block;background:#fff;border-radius:24px;padding:8px;box-shadow:var(--sh);transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s}
+.gi:hover{transform:translateY(-4px);box-shadow:0 2px 6px rgba(0,0,0,.06),0 30px 50px -24px rgba(0,0,0,.35)}
+.gimg{display:block;border-radius:18px;overflow:hidden;aspect-ratio:16/10;background:#eee}
+.gimg img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.gi:hover .gimg img{transform:scale(1.04)}
+.gt{display:grid;gap:3px;padding:14px 46px 10px 10px}
+.gt b{font-size:19px;letter-spacing:-.01em}
+.gt small{color:var(--ink2);font-size:14.5px;line-height:1.45}
+.gtag{justify-self:start;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--red)}
+.gi i{position:absolute;right:16px;bottom:18px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#f1f1f2;font-style:normal;font-size:14px;transition:background .2s,color .2s}
+.gi:hover i{background:var(--ink);color:#fff}
+.gi.hide{display:none}
 /* book (CTA + form) */
 .cta{position:relative;margin:12px 12px 0;border-radius:var(--r);overflow:hidden;background:radial-gradient(100% 90% at 10% 10%,#fbfbfb 0,#ececee 45%,#dcdcdf 100%);padding:90px 0}
 .cta .art{width:min(880px,74vw);right:-26vw;top:50%;transform:translateY(-50%)}
@@ -290,15 +188,13 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 
 /* tablet */
 @media (max-width:980px){
-  .faq,.book,.prod{grid-template-columns:1fr}
-  .prod.rev .pv{order:0}
-  .prod{gap:28px}
+  .book{grid-template-columns:1fr}
+  .gal{grid-template-columns:1fr 1fr}
   .nav .links{display:none}
   .menu{display:grid}
   .nav.open{border-radius:26px;flex-wrap:wrap}
   .nav.open .links{display:grid;order:9;width:100%;padding:8px 2px 4px}
   .nav.open .links a{padding:12px 10px;font-size:16px}
-  .demos{grid-template-columns:1fr 1fr}
   .ft{grid-template-columns:1fr 1fr}.ft .me{grid-column:1/-1}
   .ft .ct b{font-size:15px}
   .hero .art{width:120vw;right:-78vw;top:auto;bottom:-46vw;transform:none}
@@ -306,23 +202,19 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 }
 /* phone */
 @media (max-width:640px){
+  .gal{grid-template-columns:1fr;gap:14px}.gf{width:100%}.gf button{flex:1}
   body{font-size:15.5px}
   .sec{padding-top:76px}
-  .darkb{margin-top:76px}.cta{margin-top:8px}
-  .darkb{padding:64px 0 60px}
+  .cta{margin-top:8px}
   .cta{padding:56px 0}
   .hero{margin:8px;border-radius:24px;min-height:auto}
   .hero-c{padding:112px 16px 110px}
   .hero .art{width:150vw;right:-100vw;bottom:-96vw}
   .ctas .btn{flex:1 1 auto}
-  .work,.demos,.demos.two,.plans{grid-template-columns:1fr}
-  .plan{padding:24px}.extra{padding:20px}
   .row2{grid-template-columns:1fr}
-  .get{padding:10px;gap:10px}.get i{width:32px;height:32px;border-radius:10px}.get small{display:none}.get b{font-size:14px}
   .panel{padding:20px}
   .card{padding:22px}
-  .darkb,.cta,footer{margin-left:8px;margin-right:8px;border-radius:24px}
-  .nums div{padding:20px 18px}
+  .cta,footer{margin-left:8px;margin-right:8px;border-radius:24px}
   .ft{grid-template-columns:1fr}
   footer{margin-bottom:8px}
 }
@@ -352,7 +244,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 
 <nav class="nav" id="nav" aria-label="Main">
   <a class="logo" href="/" aria-label="OPIIUS home"><img src="/assets/site/logo/opiius-mark.svg" width="30" height="30" alt="">OPIIUS</a>
-  <div class="links"><a href="#book">Enquire</a><a href="#pricing">Pricing</a><a href="#work">Work</a><a href="#products">Products</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
+  <div class="links"><a href="#book">Enquire</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a></div>
   <a class="btn dark" href="#book">Enquire now</a>
   <button class="menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span></button>
 </nav>
@@ -365,7 +257,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
     <span class="tag st"><i>✦</i>Websites · Software · Automation</span>
     <h1 class="st">Any website or software, built for you<span class="pill" aria-hidden="true"><b><svg viewBox="0 0 24 24" fill="none" stroke="#ff3d1f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg></b><b><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 17.5h2"/></svg></b><b><svg viewBox="0 0 24 24" fill="#2b6cff"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></b></span></h1>
     <p class="sub st">For your business or just for you. Tell OPIIUS what you need, and we design it, build it and keep it running.</p>
-    <div class="ctas st"><a class="btn dark" href="#book">Send an enquiry</a><a class="btn light" href="#pricing">See pricing</a></div>
+    <div class="ctas st"><a class="btn dark" href="#book">Send an enquiry</a><a class="btn light" href="#gallery">View our work</a></div>
   </div>
   <a class="notch" href="#book">Scroll for more <i>↓</i></a>
 </section>
@@ -377,9 +269,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
       <span class="lbl rv">Enquire</span>
       <h2 class="h2 rv">Tell us what<br>you want built.</h2>
       <p class="lead rv" style="color:var(--ink2)">Ask for any website or software, for your business or for yourself. We reply on WhatsApp or email with a plan and a price.</p>
-      <p class="gl rv">What you can get from OPIIUS</p>
-      <div class="gets rv"><div class="get"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2.5"/><path d="M3 9h18M8 21h8"/></svg></i><span><b>Business websites</b><small>Bring in enquiries</small></span></div><div class="get"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></i><span><b>Personal sites</b><small>Portfolio, resume, blog</small></span></div><div class="get"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg></i><span><b>Custom software</b><small>Web apps, dashboards, tools</small></span></div><div class="get"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="3"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg></i><span><b>AI automation</b><small>Chatbots, WhatsApp bots</small></span></div><div class="get"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></i><span><b>Android apps</b><small>On the Play Store</small></span></div><div class="get"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12h11.5L22 7H6"/></svg></i><span><b>Online stores</b><small>Catalogue, cart and payments</small></span></div></div>
-      <p class="any rv">Something else? If it's a website or software, just ask.</p>
+      <p class="direct rv">Prefer to talk? <a href="https://wa.me/918638830682" target="_blank" rel="noopener">WhatsApp 86388 30682</a> or <a href="mailto:opiiusservice@gmail.com">opiiusservice@gmail.com</a></p>
     </div>
     <div class="panel rv">
       <form class="form" id="bookF" novalidate>
@@ -401,118 +291,19 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   </div>
 </section>
 
-<section class="darkb prods" id="products"><div class="wrap">
-  <div class="sec-h"><div><span class="lbl rv">Products</span><h2 class="h2 rv">Three OPIIUS products,<br><span class="f">ready for your business.</span></h2></div><p class="lead rv">Each one is working right now. Try the live demo, then we set it up with your name, your prices and your customers.</p></div>
-    <article class="prod rv">
-      <div class="pv">
-        <div class="lap"><div class="scr"><img src="/assets/products/leads-desktop.jpg" alt="OPIIUS Leads on a laptop" loading="lazy" width="1280" height="800"></div><div class="base"></div></div>
-        <div class="phn"><img src="/assets/products/leads-phone.jpg" alt="OPIIUS Leads on a phone" loading="lazy" width="520" height="1125"></div>
-      </div>
-      <div class="pt">
-        <p class="pn"><span>01</span>Lead generation software</p>
-        <h3>OPIIUS Leads</h3>
-        <p class="ph2">Find customers before your competitors do.</p>
-        <p class="pd">Scans businesses in your city, scores each one on buying signals and writes a first message about their real problem. Then it tells you who to follow up with, so no lead goes cold.</p>
-        <ul class="pf"><li><i>✓</i>Finds and scores leads automatically</li><li><i>✓</i>Writes a personal first message for each lead</li><li><i>✓</i>Follow-up reminders and a deal pipeline</li><li><i>✓</i>Export to Excel or send on WhatsApp</li></ul>
-        <p class="best"><b>Best for:</b> agencies, real estate, coaching institutes and anyone selling to other businesses</p>
-        <p class="pprice">Price on request · quoted for your business</p>
-        <div class="pbtn"><a class="btn red" href="/demos/01-lead-gen.html" target="_blank" rel="noopener">Try the live demo ↗</a><button class="btn ghost" type="button" data-prod="Lead generation software" data-plan2="Custom quote (bigger project)">Get this for my business</button></div>
-        <a class="lnk2" href="/demos/04-crm-autopilot.html" target="_blank" rel="noopener">See the follow-up autopilot demo ↗</a>
-      </div>
-    </article>
-    <article class="prod rv rev">
-      <div class="pv">
-        <div class="lap"><div class="scr"><img src="/assets/products/booking-desktop.jpg" alt="OPIIUS Booking on a laptop" loading="lazy" width="1280" height="800"></div><div class="base"></div></div>
-        <div class="phn"><img src="/assets/products/booking-phone.jpg" alt="OPIIUS Booking on a phone" loading="lazy" width="520" height="1125"></div>
-      </div>
-      <div class="pt">
-        <p class="pn"><span>02</span>Booking software</p>
-        <h3>OPIIUS Booking</h3>
-        <p class="ph2">Take bookings 24/7, without picking up the phone.</p>
-        <p class="pd">An AI front desk that answers customers on your website and WhatsApp, checks availability, quotes your prices and confirms the booking. Every booking lands in one dashboard.</p>
-        <ul class="pf"><li><i>✓</i>AI replies on WhatsApp and your website, day and night</li><li><i>✓</i>Live availability and instant price quotes</li><li><i>✓</i>Bookings dashboard with calendar and payments</li><li><i>✓</i>An alert on your phone for every booking</li></ul>
-        <p class="best"><b>Best for:</b> homestays, hotels, car and bike rentals, tour operators, clinics and salons</p>
-        <p class="pprice">Included in the Advanced plan · up to ₹5,000/month ($300)</p>
-        <div class="pbtn"><a class="btn red" href="/demos/hotel-front-desk.html" target="_blank" rel="noopener">Try the live demo ↗</a><button class="btn ghost" type="button" data-prod="Booking software" data-plan2="Advanced · up to ₹5,000/month ($300)">Get this for my business</button></div>
-        <a class="lnk2" href="/demos/car-desk.html" target="_blank" rel="noopener">See the rental booking dashboard demo ↗</a>
-      </div>
-    </article>
-    <article class="prod rv">
-      <div class="pv">
-        <div class="lap"><div class="scr"><img src="/assets/products/site-desktop.jpg" alt="OPIIUS Sites on a laptop" loading="lazy" width="1280" height="800"></div><div class="base"></div></div>
-        <div class="phn"><img src="/assets/products/site-phone.jpg" alt="OPIIUS Sites on a phone" loading="lazy" width="520" height="1125"></div>
-      </div>
-      <div class="pt">
-        <p class="pn"><span>03</span>Business website</p>
-        <h3>OPIIUS Sites</h3>
-        <p class="ph2">A website that brings you enquiries.</p>
-        <p class="pd">A fast, mobile-first website with your services, prices and photos. Every enquiry comes straight to your WhatsApp and email, and we keep it updated every month.</p>
-        <ul class="pf"><li><i>✓</i>Designed and built for your business</li><li><i>✓</i>Enquiry form, WhatsApp and call buttons</li><li><i>✓</i>Set up to be found on Google</li><li><i>✓</i>Monthly changes and support included</li></ul>
-        <p class="best"><b>Best for:</b> coaching institutes, cafés, home bakers, shops, clinics and any local business</p>
-        <p class="pprice">Basic plan · ₹2,000/month ($120)</p>
-        <div class="pbtn"><a class="btn red" href="/samples/homestay/" target="_blank" rel="noopener">See a sample site ↗</a><button class="btn ghost" type="button" data-prod="Business website" data-plan2="Basic · ₹2,000/month ($120)">Get this for my business</button></div>
-        <div class="smp"><p>Three sample sites. Each has its own look, and all carry the OPIIUS signature design.</p><div><a href="/samples/homestay/" target="_blank" rel="noopener"><i style="--c:#3f8f5f"></i>Homestay ↗</a><a href="/samples/cafe/" target="_blank" rel="noopener"><i style="--c:#c8692b"></i>Café ↗</a><a href="/samples/boutique/" target="_blank" rel="noopener"><i style="--c:#9b1c31"></i>Handloom store ↗</a></div></div>
-      </div>
-    </article>
-  <a class="btn light more rv" href="/demos/">See all our live demos →</a>
-</div></section>
-
-<section class="sec" id="pricing"><div class="wrap">
-  <div class="sec-h"><div><span class="lbl rv">Pricing</span><h2 class="h2 rv">Two plans.<br><span class="f">No surprises.</span></h2></div><p class="lead rv">Basic has everything a normal business needs to run online. Advanced takes it to the next level, and never costs more than ₹5,000 a month ($300 worldwide).</p></div>
-  <div class="plans">
-    <div class="plan rv"><div class="top"><h3>Basic</h3><span class="badge">Everything a business needs</span></div>
-      <p class="price">₹2,000<small>/month</small></p>
-      <p class="alt">$120/month outside India</p>
-      <button class="btn dark block" type="button" data-plan="Basic · ₹2,000/month ($120)">Choose Basic</button>
-      <ul class="inc">
-        <li><i>✓</i>Business website designed and built for you</li>
-        <li><i>✓</i>Hosting, security (SSL) and speed taken care of</li>
-        <li><i>✓</i>WhatsApp and call buttons, enquiry form that reaches your phone</li>
-        <li><i>✓</i>Set up to be found on Google</li>
-        <li><i>✓</i>Monthly changes: prices, photos, offers, new pages</li>
-        <li><i>✓</i>Support on WhatsApp or email</li>
-      </ul></div>
-    <div class="plan dk rv"><div class="top"><h3>Advanced</h3><span class="badge">Take it to the next level</span></div>
-      <p class="price"><span class="from">Up to</span>₹5,000<small>/month</small></p>
-      <p class="alt">Up to $300/month outside India</p>
-      <button class="btn red block" type="button" data-plan="Advanced · up to ₹5,000/month ($300)">Choose Advanced</button>
-      <ul class="inc">
-        <li><i>✓</i><b>Everything in Basic, plus:</b></li>
-        <li><i>✓</i>More pages: gallery, blog, team, FAQ</li>
-        <li><i>✓</i>Booking and appointments</li>
-        <li><i>✓</i>Online store with online payments</li>
-        <li><i>✓</i>AI chatbot on your site and WhatsApp</li>
-        <li><i>✓</i>Google growth (SEO) every month</li>
-        <li><i>✓</i>Second language</li>
-      </ul></div>
-  </div>
-  <p class="pnote rv">You only pay for what your business uses, never more than the price shown. <b>Custom software, web apps and Android apps</b> are quoted per project: describe yours in the enquiry form.</p>
-</div></section>
-
-<section class="sec" id="work"><div class="wrap">
-  <div class="sec-h"><div><span class="lbl rv">Selected work</span><h2 class="h2 rv">Built by OPIIUS,<br><span class="f">live and working.</span></h2></div><a class="btn light rv" href="#book">Send an enquiry</a></div>
-  <div class="work">
-    <article class="wk rv"><div class="shot"><img class="ph" src="/shots/borewell.jpg" alt="A.S Borewell site on a phone" loading="lazy"></div>
-      <div class="bd"><div class="tags"><span class="live">Live · real client</span><span>HTML/CSS/JS</span><span>WhatsApp</span></div>
-        <h3>A.S Borewell</h3>
-        <p>A borewell contractor in Guwahati was reachable only by word of mouth. Now customers pick a service and the enquiry lands in his WhatsApp with an order code, so nothing gets lost.</p>
-        <a class="lnk" href="https://asborewell.netlify.app" target="_blank" rel="noopener">View live site <i>↗</i></a></div></article>
-    <article class="wk rv"><div class="shot dk"><img class="dt" src="/shots/opius.jpg" alt="OPIUS interior design marketplace" loading="lazy"><img class="ph" src="/shots/opiusapp.jpg" alt="OPIUS mobile app" loading="lazy"></div>
-      <div class="bd"><div class="tags"><span class="live">Live</span><span>3D / WebGL</span><span>Mobile app</span></div>
-        <h3>OPIUS interiors</h3>
-        <p>Browse a finished room, then buy every product in it. Rooms load as 360° 3D models you can spin in the browser. A desktop marketplace plus a 10-screen mobile app.</p>
-        <a class="lnk" href="https://opius-guwahati.netlify.app/" target="_blank" rel="noopener">View live site <i>↗</i></a></div></article>
-  </div>
-</div></section>
-
-
-<section class="sec" id="faq"><div class="wrap faq">
-  <div><span class="lbl rv">FAQ</span><h2 class="h2 rv">Questions,<br><span class="f">answered.</span></h2><p class="lead rv">Something else on your mind? Message OPIIUS on WhatsApp at 86388 30682 or email <a href="mailto:opiiusservice@gmail.com" style="color:var(--ink);font-weight:700">opiiusservice@gmail.com</a>.</p></div>
-  <div class="qs">
-    <div class="q open rv"><button type="button" aria-expanded="true">Can you build any website or software?<i>+</i></button><div class="a"><div><p>Yes. Business websites, personal and portfolio sites, custom software and web apps, AI automation and chatbots, online stores and Android apps. Tell us in the form what you want and we'll tell you how we'd build it.</p></div></div></div>
-    <div class="q rv"><button type="button" aria-expanded="false">How much does it cost?<i>+</i></button><div class="a"><div><p>Basic is ₹2,000 a month ($120 outside India) and covers everything a normal business needs. Advanced adds features like booking, an online store, payments and an AI chatbot, and never costs more than ₹5,000 a month ($300). You get an exact price before any work starts.</p></div></div></div>
-    <div class="q rv"><button type="button" aria-expanded="false">Which plan is for me?<i>+</i></button><div class="a"><div><p>If you need a website that brings in enquiries, Basic is enough. If you want customers to book, buy or pay online, or want an AI chatbot answering them, choose Advanced. Not sure? Pick "Not sure yet" in the form and we will tell you.</p></div></div></div>
-    <div class="q rv"><button type="button" aria-expanded="false">Do you only work in Guwahati?<i>+</i></button><div class="a"><div><p>No. OPIIUS is based in Guwahati, Assam, and works with clients anywhere over WhatsApp, calls and email.</p></div></div></div>
+<section class="sec" id="gallery"><div class="wrap">
+  <div class="sec-h"><div><span class="lbl rv">Gallery</span><h2 class="h2 rv">Our work,<br><span class="f">live and working.</span></h2></div>
+    <div class="gf rv" role="group" aria-label="Filter projects"><button type="button" aria-pressed="true" data-f="all">All</button><button type="button" aria-pressed="false" data-f="web">Websites</button><button type="button" aria-pressed="false" data-f="sw">Software</button></div></div>
+  <div class="gal" id="gal">
+    <a class="gi rv" data-k="web" href="https://asborewell.netlify.app" target="_blank" rel="noopener"><span class="gimg"><img src="/assets/gallery/borewell.jpg" alt="A.S Borewell screenshot" loading="lazy" width="1280" height="800"></span><span class="gt"><span class="gtag">Live client</span><b>A.S Borewell</b><small>Customers pick a service and the enquiry lands on WhatsApp.</small></span><i aria-hidden="true">↗</i></a>
+    <a class="gi rv" data-k="web" href="https://opius-guwahati.netlify.app/" target="_blank" rel="noopener"><span class="gimg"><img src="/assets/gallery/interiors.jpg" alt="OPIUS interiors screenshot" loading="lazy" width="1280" height="800"></span><span class="gt"><span class="gtag">Live · 3D</span><b>OPIUS interiors</b><small>Explore rooms in 360° 3D and buy everything in them.</small></span><i aria-hidden="true">↗</i></a>
+    <a class="gi rv" data-k="web" href="/samples/homestay/" target="_blank" rel="noopener"><span class="gimg"><img src="/assets/gallery/homestay.jpg" alt="Pine &amp; Mist Homestay screenshot" loading="lazy" width="1280" height="800"></span><span class="gt"><span class="gtag">Sample website</span><b>Pine &amp; Mist Homestay</b><small>Rooms, live prices and online booking.</small></span><i aria-hidden="true">↗</i></a>
+    <a class="gi rv" data-k="web" href="/samples/cafe/" target="_blank" rel="noopener"><span class="gimg"><img src="/assets/gallery/cafe.jpg" alt="Brew &amp; Bloom Café screenshot" loading="lazy" width="1280" height="800"></span><span class="gt"><span class="gtag">Sample website</span><b>Brew &amp; Bloom Café</b><small>Menu, daily specials and pickup orders.</small></span><i aria-hidden="true">↗</i></a>
+    <a class="gi rv" data-k="web" href="/samples/boutique/" target="_blank" rel="noopener"><span class="gimg"><img src="/assets/gallery/boutique.jpg" alt="Xuta Handloom Studio screenshot" loading="lazy" width="1280" height="800"></span><span class="gt"><span class="gtag">Sample online store</span><b>Xuta Handloom Studio</b><small>Collection, shopping bag and checkout.</small></span><i aria-hidden="true">↗</i></a>
+    <a class="gi rv" data-k="web" href="/coaching/" target="_blank" rel="noopener"><span class="gimg"><img src="/assets/gallery/coaching.jpg" alt="Luitpar Academy screenshot" loading="lazy" width="1280" height="800"></span><span class="gt"><span class="gtag">Sample website</span><b>Luitpar Academy</b><small>Courses, fees and demo-class booking.</small></span><i aria-hidden="true">↗</i></a>
+    <a class="gi rv" data-k="sw" href="/demos/01-lead-gen.html" target="_blank" rel="noopener"><span class="gimg"><img src="/assets/gallery/leads.jpg" alt="OPIIUS Leads screenshot" loading="lazy" width="1280" height="800"></span><span class="gt"><span class="gtag">Software</span><b>OPIIUS Leads</b><small>Finds and scores leads, then writes the first message.</small></span><i aria-hidden="true">↗</i></a>
+    <a class="gi rv" data-k="sw" href="/demos/hotel-front-desk.html" target="_blank" rel="noopener"><span class="gimg"><img src="/assets/gallery/booking.jpg" alt="OPIIUS Booking screenshot" loading="lazy" width="1280" height="800"></span><span class="gt"><span class="gtag">Software</span><b>OPIIUS Booking</b><small>An AI front desk that confirms bookings on WhatsApp.</small></span><i aria-hidden="true">↗</i></a>
+    <a class="gi rv" data-k="sw" href="/demos/04-crm-autopilot.html" target="_blank" rel="noopener"><span class="gimg"><img src="/assets/gallery/crm.jpg" alt="Sales autopilot screenshot" loading="lazy" width="1280" height="800"></span><span class="gt"><span class="gtag">Software</span><b>Sales autopilot</b><small>Tells you who to follow up with today, and what to say.</small></span><i aria-hidden="true">↗</i></a>
   </div>
 </div></section>
 </main>
@@ -544,15 +335,12 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   var count=function(el){var n=+el.dataset.n,t0=null;if(still){el.textContent=n;return}var step=function(t){t0=t0||t;var p=Math.min((t-t0)/1200,1);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)};
   if("IntersectionObserver" in window){var ro=new IntersectionObserver(function(es){var k=0;es.forEach(function(e){if(e.isIntersecting){e.target.style.setProperty("--d",Math.min(k++,6)*.07+"s");e.target.classList.add("in");e.target.querySelectorAll("[data-n]").forEach(count);ro.unobserve(e.target)}})},{rootMargin:"0px 0px -8% 0px"});$$(".rv").forEach(function(el){ro.observe(el)})}
   else $$(".rv").forEach(function(el){el.classList.add("in")});
-  /* FAQ */
-  $$(".q").forEach(function(q){var b=q.querySelector("button");b.addEventListener("click",function(){var o=q.classList.toggle("open");b.setAttribute("aria-expanded",o)})});
   /* service chips (one choice) and "Book this" buttons */
   var chips=$$("#svcChips .chip"),svc="";
   var pick=function(name){svc=name;chips.forEach(function(c){c.setAttribute("aria-pressed",c.textContent===name?"true":"false")})};
   chips.forEach(function(c){c.addEventListener("click",function(){pick(c.getAttribute("aria-pressed")==="true"?"":c.textContent)})});
-  $$("[data-plan]").forEach(function(b){b.addEventListener("click",function(){$("#bBudget").value=b.dataset.plan;book.scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},600)})});
-  /* "Get this for my business": pick the product in the form and its plan */
-  $$("[data-prod]").forEach(function(b){b.addEventListener("click",function(){pick(b.dataset.prod);$("#bBudget").value=b.dataset.plan2;book.scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},600)})});
+  /* gallery filter */
+  $$(".gf button").forEach(function(b){b.addEventListener("click",function(){var f=b.dataset.f;$$(".gf button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});$$(".gi").forEach(function(g){g.classList.toggle("hide",f!=="all"&&g.dataset.k!==f);g.classList.add("in")})})});
   /* booking request: sent from the page to the OPIIUS log, which notifies the owner */
   var ref=function(){var d=new Date();return "OP-"+String(d.getFullYear()).slice(2)+("0"+(d.getMonth()+1)).slice(-2)+("0"+d.getDate()).slice(-2)+"-"+Math.random().toString(36).slice(2,7).toUpperCase()};
   var phoneOk=function(v){var d=String(v||"").replace(/\D/g,"").replace(/^(91|0)(?=\d{10}$)/,"");return /^[6-9]\d{9}$/.test(d)?d:""};
