@@ -6,6 +6,10 @@ and the customer's name and WhatsApp number. You get an alert for each one at on
 (always), and a WhatsApp message once you set one up below. opiius.online/dashboard.html lists the requests, with tap-to-call and
 WhatsApp links, and lets you set a status on each.
 
+**Current setup (5 Nov 2026):** the live log is the Sheet "OPIIUS enquiries" in the **opiiusservice@gmail.com** Google account,
+running version 4 of the script. It saves every enquiry and emails the alert from Gmail itself. FormSubmit is only a
+backup the website uses if this log ever fails.
+
 Already set up the sheet before? Just do step 4 (update the script to the latest `tools/opiius-booking-log.gs`
 and deploy a new version). The URL stays the same, so the form keeps working.
 
