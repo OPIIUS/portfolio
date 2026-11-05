@@ -326,7 +326,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 
 <script>
 (function(){
-  var LOG="https://script.google.com/macros/s/AKfycbwf39vAUguEfWdsziGK_A_90BA-CuVjQZEXtNwu-5iTXTQrgCde2qGw9qqfMKLMRefe/exec", WA="918638830682";
+  var LOG="https://script.google.com/macros/s/AKfycbxAkqL5NFjT2qMZZCZNnTkNcxhnct94No6_ZxM3-F89KrJkMcHuC_KjeQ2DfdpSbAs/exec", WA="918638830682";
   var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
   var still=matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.documentElement.classList.add("js");
@@ -373,9 +373,15 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
     /* contact also rides in the older log columns, so it is kept whichever script version is live */
     var rec={type:"project",ref:r,agency:"",agencyName:"OPIIUS studio",vehicle:svc,city:v("#bWhen"),budget:v("#bBudget"),pickup:(name+" · +91"+ph+(extra?" · "+extra:"")).slice(0,120),
       name:name,phone:ph,msg:(msg+(extra?"\n"+extra:"")).slice(0,500),page:"/",ua:/Mobi/i.test(navigator.userAgent)?"mobile":"desktop"};
-    /* the email service can be slow to answer: wait at most 8 s for it; the email still goes out in the background */
-    var mailP=mail(rec,{name:name,biz:v("#bBiz"),email:v("#bEmail"),msg:msg}),late=new Promise(function(ok){setTimeout(function(){DBG.email=DBG.email||"still sending after 8 s";ok("pending")},8000)});
-    Promise.all([send(rec),Promise.race([mailP,late])]).then(function(rs){var res=rs[0];
+    /* the request log (Apps Script v4+) saves the enquiry and emails OPIIUS itself from Gmail.
+       FormSubmit is only the backup, used when the log fails or is an older version without alerts;
+       it can be slow, so wait at most 8 s for it (the email still goes out in the background) */
+    var fb={name:name,biz:v("#bBiz"),email:v("#bEmail"),msg:msg};
+    send(rec).then(function(res){
+      if(res.ok&&res.v>=4)return [res,"log"];
+      var late=new Promise(function(ok){setTimeout(function(){DBG.email=DBG.email||"still sending after 8 s";ok("pending")},8000)});
+      return Promise.race([mail(rec,fb),late]).then(function(m){return [res,m]});
+    }).then(function(rs){var res=rs[0];
       /* delivered if either the request log or the email went through; an email counts as an alert, so no WhatsApp fallback is needed */
       /* a slow answer still ends in an email (a blocked or failed request fails fast), so "pending" counts as sent */
       if(rs[1]===true){res={ok:true,v:Math.max(res.v||0,2)}}else if(rs[1]==="pending"&&!res.ok){res={ok:true,v:1}}
