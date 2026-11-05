@@ -378,7 +378,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
     Promise.all([send(rec),Promise.race([mailP,late])]).then(function(rs){var res=rs[0];
       /* delivered if either the request log or the email went through; an email counts as an alert, so no WhatsApp fallback is needed */
       /* a slow answer still ends in an email (a blocked or failed request fails fast), so "pending" counts as sent */
-      if(rs[1]){res={ok:true,v:Math.max(res.v||0,2)}}
+      if(rs[1]===true){res={ok:true,v:Math.max(res.v||0,2)}}else if(rs[1]==="pending"&&!res.ok){res={ok:true,v:1}}
       btn.disabled=false;btn.textContent="Get my free preview";
       if(!res.ok){err.textContent=res.error==="too many requests"?"Too many requests from this number. Please try again later.":"Couldn't send. Check your connection and try again, or message OPIIUS on WhatsApp.";return}
       $("#bRef").textContent=r;
