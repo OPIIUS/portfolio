@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>OPIIUS · Any website or software, built for you</title>
-<meta name="description" content="OPIIUS builds any website or software you need, for your business or for yourself. Plans from ₹2,000 a month in India and $120 a month worldwide. Send an enquiry.">
+<title>OPIIUS · We build your website first. You decide after.</title>
+<meta name="description" content="OPIIUS builds a free preview of your website first, with bookings and enquiries going to your WhatsApp. Like it? ₹2,000 a month in India, $120 worldwide. Changes included, cancel anytime.">
 <link rel="canonical" href="https://opiius.online/">
 <meta name="theme-color" content="#ececec">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="OPIIUS">
-<meta property="og:title" content="OPIIUS · Any website or software, built for you">
-<meta property="og:description" content="Business websites, personal sites, custom software and automation. From ₹2,000/month in India, $120/month worldwide.">
+<meta property="og:title" content="OPIIUS · We build your website first. You decide after.">
+<meta property="og:description" content="Get a free preview of your website before you pay anything. Then ₹2,000/month in India, $120/month worldwide, changes included, cancel anytime.">
 <meta property="og:url" content="https://opiius.online/">
 <meta property="og:image" content="https://opiius.online/shots/01-lead-gen.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -102,7 +102,11 @@ button{cursor:pointer}
 .pill b:nth-child(3){transform:rotate(-6deg) translateY(-.03em);animation-delay:-2.6s}
 .pill svg{width:62%;height:62%}
 @keyframes bob{50%{translate:0 -.05em}}
-.hero .sub{color:var(--ink2);font-size:clamp(16px,1.6vw,18px);max-width:52ch;margin:24px auto 0}
+.hero .sub{color:var(--ink2);font-size:clamp(16px,1.6vw,18px);max-width:56ch;margin:24px auto 0}
+.hero h1 .soft{color:#9a9aa0}
+.how{list-style:none;margin:30px auto 0;padding:0;display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.how li{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px 0 6px;border-radius:999px;background:rgba(255,255,255,.75);box-shadow:var(--sh);font-size:14px;font-weight:600;color:var(--ink2)}
+.how b{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:12.5px}
 .ctas{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:30px}
 .notch{position:absolute;z-index:3;left:50%;bottom:0;transform:translateX(-50%);height:52px;padding:0 26px;display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:22px 22px 0 0;font-size:13.5px;font-weight:600}
 .notch::before,.notch::after{content:"";position:absolute;bottom:0;width:22px;height:22px;background:radial-gradient(circle at 0 0,transparent 21.5px,var(--bg) 22px)}
@@ -202,6 +206,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 }
 /* phone */
 @media (max-width:640px){
+  .how{flex-direction:column;align-items:center}
   .gal{grid-template-columns:1fr;gap:14px}.gf{width:100%}.gf button{flex:1}
   body{font-size:15.5px}
   .sec{padding-top:76px}
@@ -245,7 +250,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 <nav class="nav" id="nav" aria-label="Main">
   <a class="logo" href="/" aria-label="OPIIUS home"><img src="/assets/site/logo/opiius-mark.svg" width="30" height="30" alt="">OPIIUS</a>
   <div class="links"><a href="#book">Enquire</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a></div>
-  <a class="btn dark" href="#book">Enquire now</a>
+  <a class="btn dark" href="#book">Free preview</a>
   <button class="menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span></button>
 </nav>
 
@@ -254,10 +259,11 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   <div class="ghost" aria-hidden="true"></div>
   <div class="art" aria-hidden="true"><svg><use href="#ring"/></svg></div>
   <div class="hero-c">
-    <span class="tag st"><i>✦</i>Websites · Software · Automation</span>
-    <h1 class="st">Any website or software, built for you<span class="pill" aria-hidden="true"><b><svg viewBox="0 0 24 24" fill="none" stroke="#ff3d1f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg></b><b><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 17.5h2"/></svg></b><b><svg viewBox="0 0 24 24" fill="#2b6cff"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></b></span></h1>
-    <p class="sub st">For your business or just for you. Tell OPIIUS what you need, and we design it, build it and keep it running.</p>
-    <div class="ctas st"><a class="btn dark" href="#book">Send an enquiry</a><a class="btn light" href="#gallery">View our work</a></div>
+    <span class="tag st"><i>✦</i>Free preview · Pay monthly · Cancel anytime</span>
+    <h1 class="st">We build your website first.<br><span class="soft">You decide after.</span><span class="pill" aria-hidden="true"><b><svg viewBox="0 0 24 24" fill="none" stroke="#ff3d1f" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg></b><b><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 17.5h2"/></svg></b><b><svg viewBox="0 0 24 24" fill="#2b6cff"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></b></span></h1>
+    <p class="sub st">Tell us about your business. We build a working preview of your website, with bookings and enquiries going straight to your WhatsApp. Like it? It's ₹2,000 a month ($120 outside India), changes included, cancel anytime.</p>
+    <div class="ctas st"><a class="btn dark" href="#book">Get my free preview</a><a class="btn light" href="#gallery">See our work</a></div>
+    <ol class="how st"><li><b>1</b>Tell us about your business</li><li><b>2</b>Get your free preview in 2–3 days</li><li><b>3</b>Like it? Live in about a week</li></ol>
   </div>
   <a class="notch" href="#book">Scroll for more <i>↓</i></a>
 </section>
@@ -266,9 +272,9 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   <div class="art" aria-hidden="true"><svg><use href="#ring"/></svg></div>
   <div class="wrap book">
     <div>
-      <span class="lbl rv">Enquire</span>
-      <h2 class="h2 rv">Tell us what<br>you want built.</h2>
-      <p class="lead rv" style="color:var(--ink2)">Ask for any website or software, for your business or for yourself. We reply on WhatsApp or email with a plan and a price.</p>
+      <span class="lbl rv">Free preview</span>
+      <h2 class="h2 rv">Get your free<br>preview.</h2>
+      <p class="lead rv" style="color:var(--ink2)">Tell us about your business. We build a preview of your website and send it to you on WhatsApp in 2–3 days. No payment, no commitment. For custom software, we send a free plan and demo first.</p>
       <p class="direct rv">Prefer to talk? <a href="https://wa.me/918638830682" target="_blank" rel="noopener">WhatsApp 86388 30682</a> or <a href="mailto:opiiusservice@gmail.com">opiiusservice@gmail.com</a></p>
     </div>
     <div class="panel rv">
@@ -281,12 +287,12 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
           <div><label for="bEmail">Email <small>(optional)</small></label><input id="bEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com"></div></div>
         <div class="row2"><div><label for="bBudget">Plan</label><select id="bBudget" name="plan"><option>Basic · ₹2,000/month ($120)</option><option>Advanced · up to ₹5,000/month ($300)</option><option>Custom quote (bigger project)</option><option>Not sure yet</option></select></div>
           <div><label for="bWhen">When do you need it?</label><select id="bWhen" name="when"><option>Flexible</option><option>As soon as possible</option><option>Within a month</option><option>In 1–3 months</option></select></div></div>
-        <div><label for="bMsg">Tell us about it</label><textarea id="bMsg" name="msg" placeholder="What should it do? Any website or app you like? It can be for your business or just for you."></textarea></div>
+        <div><label for="bMsg">Tell us about it</label><textarea id="bMsg" name="msg" placeholder="What does your business do? Should customers book, order or ask for a price? Add your Instagram if you have one."></textarea></div>
         <p class="err" id="bErr" role="alert"></p>
-        <button type="submit" class="btn dark block" id="bSend">Send enquiry</button>
-        <p class="fine">Your details are used only to reply about your project.</p>
+        <button type="submit" class="btn dark block" id="bSend">Get my free preview</button>
+        <p class="fine">Free to look. You only pay if you decide to go live.</p>
       </form>
-      <div class="done" id="bDone" hidden role="status" aria-live="polite"><span class="ok">✓</span><h3>Enquiry received</h3><p>Thanks! OPIIUS will get back to you on WhatsApp or by email soon.</p><div class="ref"><span>Your reference</span><b id="bRef"></b></div><div id="bWa"></div><button type="button" class="btn light" id="bAgain">Send another enquiry</button></div>
+      <div class="done" id="bDone" hidden role="status" aria-live="polite"><span class="ok">✓</span><h3>Request received</h3><p>Thanks! OPIIUS will start on your preview and send it to you on WhatsApp or by email.</p><div class="ref"><span>Your reference</span><b id="bRef"></b></div><div id="bWa"></div><button type="button" class="btn light" id="bAgain">Send another enquiry</button></div>
     </div>
   </div>
 </section>
@@ -373,7 +379,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
       /* delivered if either the request log or the email went through; an email counts as an alert, so no WhatsApp fallback is needed */
       /* a slow answer still ends in an email (a blocked or failed request fails fast), so "pending" counts as sent */
       if(rs[1]){res={ok:true,v:Math.max(res.v||0,2)}}
-      btn.disabled=false;btn.textContent="Send enquiry";
+      btn.disabled=false;btn.textContent="Get my free preview";
       if(!res.ok){err.textContent=res.error==="too many requests"?"Too many requests from this number. Please try again later.":"Couldn't send. Check your connection and try again, or message OPIIUS on WhatsApp.";return}
       $("#bRef").textContent=r;
       var wa=["Hi OPIIUS, I sent an enquiry on opiius.online.","","Need: "+svc,"Plan: "+v("#bBudget"),"When: "+v("#bWhen"),"Name: "+name,extra,"","About it: "+msg,"","Ref: "+r].filter(function(x,i,a){return x!==""||a[i-1]!==""}).join("\n");
