@@ -52,8 +52,9 @@ h1,h2,h3{font-weight:800;letter-spacing:-.035em}
 .chip[aria-pressed=true] small{color:#c4d3ea}
 .fleet{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .car{padding:12px;display:flex;flex-direction:column}
-.car .art{border-radius:16px;background:linear-gradient(180deg,#e3ebf6,#f4f7fb);aspect-ratio:5/3;display:grid;place-items:center;position:relative}
-.car .art svg{width:86%;height:auto}
+.car .art{border-radius:16px;background:#dfe6ef;aspect-ratio:8/5;position:relative;overflow:hidden}
+.car .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 65%;transition:transform .6s var(--out)}
+.car:hover .art img{transform:scale(1.04)}
 .car .tagx{position:absolute;left:10px;top:10px;height:24px;padding:0 9px;border-radius:999px;background:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center}
 .car .tagx.auto{left:auto;top:auto;right:10px;bottom:10px;background:var(--ink);color:#fff}
 .car .bd{padding:12px 6px 4px;display:flex;flex-direction:column;flex:1}
@@ -178,7 +179,7 @@ details.more ol{color:var(--dim);font-size:14.5px;padding-left:20px;margin:10px 
   <div class="o-head"><div><span class="o-lbl o-rv">Our cars</span><h2 class="o-h2 o-rv">Pick the right car<br><span class="f">for every trip.</span></h2></div><p class="o-lead o-rv">City runs, family trips to Shillong or a long drive to Tawang. Prices are per day.</p></div>
   <div class="chips o-rv" id="chips" role="group" aria-label="Filter cars"></div>
   <div class="fleet" id="fleet"></div>
-  <p class="note o-rv">Hatchbacks and sedans include 280 km a day, SUVs and 7-seaters 300 km a day. Extra km ₹8 each. Need a bike? Ask us on WhatsApp.</p>
+  <p class="note o-rv">Hatchbacks and sedans include 280 km a day, SUVs and 7-seaters 300 km a day. Extra km ₹10 each. Need a bike? Ask us on WhatsApp.<br><small>Car photos are for illustration. The actual car and colour may vary.</small></p>
 </div></section>
 
 <section class="o-sec" id="how"><div class="o-wrap">
@@ -206,7 +207,7 @@ details.more ol{color:var(--dim);font-size:14.5px;padding-left:20px;margin:10px 
       <h3>Rental rules, in short</h3>
       <div class="rl">
         <div><b>Km per day</b><span>280 km hatchbacks and sedans, 300 km SUVs and 7-seaters</span></div>
-        <div><b>Extra km</b><span>₹8 per km</span></div>
+        <div><b>Extra km</b><span>₹10 per km</span></div>
         <div><b>Late return</b><span>₹300 per hour</span></div>
         <div><b>Extending your trip?</b><span>Tell us at least 12 hours before return</span></div>
         <div><b>Speed</b><span>80 to 110 km/h maximum</span></div>
@@ -279,32 +280,32 @@ details.more ol{color:var(--dim);font-size:14.5px;padding-left:20px;margin:10px 
   var CAT={hatch:"Hatchback",sedan:"Sedan",csuv:"Compact SUV",suv:"SUV",mpv:"7-seater"};
   var KM={hatch:280,sedan:280,csuv:300,suv:300,mpv:300};
   var CARS=[
-    {n:"Alto K10",c:"hatch",p:1500,s:5,col:"#8d939c"},
-    {n:"Swift",c:"hatch",p:1800,s:5,col:"#f2f4f7"},
-    {n:"Grand i10 Nios",c:"hatch",p:1800,s:5,col:"#f2f4f7"},
-    {n:"i20 (Optional)",c:"hatch",p:2000,s:5,col:"#c9ced6"},
-    {n:"Swift Dzire",c:"sedan",p:2000,s:5,col:"#f2f4f7"},
-    {n:"Punch",c:"csuv",p:2000,s:5,col:"#e4572e"},
-    {n:"Fronx",c:"csuv",p:2200,s:5,col:"#f2f4f7"},
-    {n:"Nexon",c:"csuv",p:2500,s:5,col:"#2f6fb5"},
-    {n:"Brezza",c:"csuv",p:2500,s:5,col:"#f2f4f7"},
-    {n:"Venue",c:"csuv",p:2500,s:5,col:"#1b1e24"},
-    {n:"XUV300",c:"csuv",p:2500,s:5,col:"#f2f4f7",auto:1},
-    {n:"Kia Seltos",c:"suv",p:2700,s:5,col:"#f2f4f7"},
-    {n:"Creta",c:"suv",p:2700,s:5,col:"#f2f4f7"},
-    {n:"Scorpio N",c:"suv",p:4000,s:7,col:"#f2f4f7"},
-    {n:"XUV700",c:"suv",p:4000,s:7,col:"#2a4f8f"},
-    {n:"Thar Roxx",c:"suv",p:4000,s:5,col:"#f2f4f7"},
-    {n:"Ertiga",c:"mpv",p:3000,s:7,col:"#f2f4f7"},
-    {n:"Kia Carens",c:"mpv",p:3000,s:7,col:"#c9ced6"},
-    {n:"Innova Crysta",c:"mpv",p:4000,s:7,col:"#f2f4f7"}];
+    {n:"Alto K10",img:"alto-k10",c:"hatch",p:1500,s:5,col:"#8d939c"},
+    {n:"Swift",img:"swift",c:"hatch",p:1800,s:5,col:"#f2f4f7"},
+    {n:"Grand i10 Nios",img:"grand-i10-nios",c:"hatch",p:1800,s:5,col:"#f2f4f7"},
+    {n:"i20 (Optional)",img:"i20",c:"hatch",p:2000,s:5,col:"#c9ced6"},
+    {n:"Swift Dzire",img:"swift-dzire",c:"sedan",p:2000,s:5,col:"#f2f4f7"},
+    {n:"Punch",img:"punch",c:"csuv",p:2000,s:5,col:"#e4572e"},
+    {n:"Fronx",img:"fronx",c:"csuv",p:2200,s:5,col:"#f2f4f7"},
+    {n:"Nexon",img:"nexon",c:"csuv",p:2500,s:5,col:"#2f6fb5"},
+    {n:"Brezza",img:"brezza",c:"csuv",p:2500,s:5,col:"#f2f4f7"},
+    {n:"Venue",img:"venue",c:"csuv",p:2500,s:5,col:"#1b1e24"},
+    {n:"XUV300",img:"xuv300",c:"csuv",p:2500,s:5,col:"#f2f4f7",auto:1},
+    {n:"Kia Seltos",img:"kia-seltos",c:"suv",p:2700,s:5,col:"#f2f4f7"},
+    {n:"Creta",img:"creta",c:"suv",p:2700,s:5,col:"#f2f4f7"},
+    {n:"Scorpio N",img:"scorpio-n",c:"suv",p:4000,s:7,col:"#f2f4f7"},
+    {n:"XUV700",img:"xuv700",c:"suv",p:4000,s:7,col:"#2a4f8f"},
+    {n:"Thar Roxx",img:"thar-roxx",c:"suv",p:4000,s:5,col:"#f2f4f7"},
+    {n:"Ertiga",img:"ertiga",c:"mpv",p:3000,s:7,col:"#f2f4f7"},
+    {n:"Kia Carens",img:"kia-carens",c:"mpv",p:3000,s:7,col:"#c9ced6"},
+    {n:"Innova Crysta",img:"innova-crysta",c:"mpv",p:4000,s:7,col:"#f2f4f7"}];
   var SHAPE={hatch:"hatch",sedan:"sedan",csuv:"suv",suv:"suv",mpv:"mpv"};
   $("#runner").innerHTML='<g transform="translate(0 6) scale(.8)">'+car("suv","#ffb020").replace('<svg viewBox="0 0 300 120" aria-hidden="true">','').replace('</svg>','')+'</g>';
 
   var cur="all",cats=["all","hatch","sedan","csuv","suv","mpv"];
   $("#chips").innerHTML=cats.map(function(k){var n=k==="all"?CARS.length:CARS.filter(function(c){return c.c===k}).length;return '<button type="button" class="chip" data-cat="'+k+'" aria-pressed="'+(k===cur)+'">'+(k==="all"?"All cars":CAT[k])+'<small>'+n+'</small></button>'}).join("");
   function render(){$("#fleet").innerHTML=CARS.filter(function(c){return cur==="all"||c.c===cur}).map(function(c){
-    return '<article class="o-card car o-rv"><div class="art">'+car(SHAPE[c.c],c.col)+'<span class="tagx">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tagx auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+O.inr(c.p)+' <small>/ day</small></p><button class="o-btn solid" type="button" data-pick="'+c.n+'">Book</button></div></div></article>'}).join("");O.reveal($("#fleet"))}
+    return '<article class="o-card car o-rv"><div class="art"><img src="cars/'+c.img+'.jpg" alt="'+c.n+'" loading="lazy" width="600" height="370">'+'<span class="tagx">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tagx auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+O.inr(c.p)+' <small>/ day</small></p><button class="o-btn solid" type="button" data-pick="'+c.n+'">Book</button></div></div></article>'}).join("");O.reveal($("#fleet"))}
   render();
   $("#chips").addEventListener("click",function(e){var b=e.target.closest("[data-cat]");if(!b)return;cur=b.dataset.cat;$$("#chips .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});render()});
 
@@ -322,7 +323,7 @@ details.more ol{color:var(--dim);font-size:14.5px;padding-left:20px;margin:10px 
     var days=Math.max(1,Math.ceil((b-a)/864e5));return {c:c,a:a,b:b,days:days,total:days*c.p,km:days*KM[c.c]}}
   function fmt(d){return d.toLocaleString("en-IN",{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}
   function est(){var e=calc(),el=$("#est");if(!e){el.classList.remove("on");return}
-    el.innerHTML='<div><span>'+e.c.n+' · '+e.days+' day'+(e.days>1?'s':'')+'</span><b>'+O.inr(e.total)+'</b></div><small>'+e.km+' km included · extra km ₹8 · estimate, confirmed on WhatsApp</small>';el.classList.add("on")}
+    el.innerHTML='<div><span>'+e.c.n+' · '+e.days+' day'+(e.days>1?'s':'')+'</span><b>'+O.inr(e.total)+'</b></div><small>'+e.km+' km included · extra km ₹10 · estimate, confirmed on WhatsApp</small>';el.classList.add("on")}
   ["change","input"].forEach(function(ev){[sel,$("#bFrom"),$("#bTo")].forEach(function(x){x.addEventListener(ev,est)})});est();
   function toForm(){$("#top").scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},700)}
   document.addEventListener("click",function(e){var p=e.target.closest("[data-pick]");if(p){sel.value=p.dataset.pick;est();toForm()}var b=e.target.closest("[data-book]");if(b){e.preventDefault();toForm()}});
