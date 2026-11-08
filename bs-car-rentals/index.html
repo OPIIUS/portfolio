@@ -8,6 +8,7 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#111416">
 <link rel="icon" href="/assets/site/logo/opiius-mark.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="cars/thar-roxx.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
 <style>
@@ -34,22 +35,25 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 /* ---------- HERO SHOWCASE ---------- */
 .hero{position:relative;height:100svh;min-height:620px;max-height:980px;background:var(--dark);color:#fff;overflow:hidden;isolation:isolate}
 .stage{position:absolute;inset:0}
-.shot{position:absolute;inset:0;background:radial-gradient(90% 80% at 62% 55%,#2c3337 0,#171b1e 55%,#0d1012 100%)}
-.shot::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.035) 0 8%,transparent 8% 20%,rgba(255,255,255,.03) 20% 23%,transparent 23% 70%,rgba(255,255,255,.025) 70% 74%,transparent 74%)}
-.shot .car{position:absolute;left:52%;bottom:7%;width:min(66vw,940px);transform:translateX(-42%);
+.shot{position:absolute;inset:0;overflow:hidden}
+.inner{position:absolute;inset:0;background:radial-gradient(90% 80% at 62% 55%,#2c3337 0,#171b1e 55%,#0d1012 100%)}
+.inner::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.035) 0 8%,transparent 8% 20%,rgba(255,255,255,.03) 20% 23%,transparent 23% 70%,rgba(255,255,255,.025) 70% 74%,transparent 74%)}
+.shot .car{position:absolute;left:56%;bottom:7%;width:min(66vw,980px);transform:translate3d(-42%,0,0);
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 20%,#000 80%,transparent 100%);-webkit-mask-composite:source-in;
-  mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 20%,#000 80%,transparent 100%);mask-composite:intersect;
-  filter:saturate(.72) contrast(1.08) brightness(.8)}
-.shot::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(13,16,18,.92) 0,rgba(13,16,18,.55) 26%,rgba(13,16,18,0) 52%),linear-gradient(90deg,#0f1214 0,rgba(15,18,20,.7) 28%,rgba(15,18,20,0) 48%)}
+  mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 20%,#000 80%,transparent 100%);mask-composite:intersect;opacity:.9}
+.inner::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(13,16,18,.92) 0,rgba(13,16,18,.55) 26%,rgba(13,16,18,0) 52%),linear-gradient(90deg,#0f1214 0,rgba(15,18,20,.7) 28%,rgba(15,18,20,0) 48%)}
 .shot .floor{position:absolute;left:0;right:0;bottom:0;height:24%;background:linear-gradient(180deg,rgba(17,20,22,0),#111416)}
-.shot.in{clip-path:inset(0 0 0 100%);animation:wipe 1.15s var(--ease) forwards}
+/* the wipe: the new slide slides in from the right while its content slides the other way,
+   so it looks like a curtain revealing it; transforms only, so it runs on the graphics chip */
+.shot.in{transform:translate3d(100%,0,0);animation:slide 1.15s var(--ease) forwards;will-change:transform}
+.shot.in>.inner{transform:translate3d(-100%,0,0);animation:slide 1.15s var(--ease) forwards;will-change:transform}
 .shot.in .car{animation:settle 1.6s var(--out) both}
-@keyframes wipe{to{clip-path:inset(0 0 0 0)}}
-@keyframes settle{from{transform:translateX(-36%) scale(1.06)}}
+@keyframes slide{to{transform:translate3d(0,0,0)}}
+@keyframes settle{from{transform:translate3d(-38%,0,0) scale(1.05)}}
 /* the sweeping edge of the wipe */
 .edge{position:absolute;top:0;bottom:0;width:22%;right:-22%;z-index:2;background:linear-gradient(90deg,rgba(13,16,18,0),#0d1012 60%);pointer-events:none}
-.edge.go{animation:edge 1.15s var(--ease) forwards}
-@keyframes edge{from{right:-22%}to{right:100%}}
+.edge.go{animation:edge 1.15s var(--ease) forwards;will-change:transform}
+@keyframes edge{from{transform:translate3d(0,0,0)}to{transform:translate3d(-555%,0,0)}}
 
 .top{position:absolute;z-index:5;left:0;right:0;top:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:20px;padding:30px 4vw}
 .brand{font-size:21px;font-weight:500;letter-spacing:-.01em;justify-self:start}
@@ -73,17 +77,6 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 .txt{transition:opacity .45s,transform .6s var(--out)}
 .swap .txt{opacity:0;transform:translateY(14px)}
 
-.next{position:absolute;z-index:5;right:0;top:27%;width:min(21vw,300px);height:46%;background:#f4f6f7;color:var(--ink);display:flex;flex-direction:column;cursor:pointer;border:0;padding:0;text-align:left;overflow:hidden}
-.next .lbl{padding:26px 26px 0;font-size:14px;font-weight:500;display:flex;gap:8px;align-items:center}
-.next .lbl i{color:var(--red);font-style:normal;transition:transform .3s}
-.next:hover .lbl i{transform:translateX(4px)}
-.next .pic{position:relative;flex:1;margin-top:16px;overflow:hidden;display:block}
-.next .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:28% 72%;filter:saturate(.8) brightness(.95)}
-.next .pic::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,#f4f6f7 0,rgba(244,246,247,0) 30%);pointer-events:none}
-.next .pic img.in{clip-path:inset(0 0 0 100%);animation:wipe 1.15s var(--ease) .12s forwards}
-
-.dock{position:absolute;z-index:5;right:0;bottom:4.5%;width:min(21vw,300px);height:44px;background:#f4f6f7;color:var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 18px;font-size:13.5px;font-weight:500}
-.dock svg{width:18px;height:18px}
 .foot{position:absolute;z-index:5;left:4vw;bottom:4.5%;font-size:12px;color:#8f989e}
 .arrows{position:absolute;z-index:5;left:4vw;bottom:calc(4.5% + 30px);display:flex;gap:8px}
 .arrows button{width:42px;height:42px;border:1px solid rgba(255,255,255,.22);background:none;color:#fff;font-size:16px;transition:background .2s}
@@ -211,19 +204,20 @@ footer .made img{width:18px;height:18px}
 .fab.show{opacity:1;transform:none;pointer-events:auto}
 .fab svg{width:30px;height:30px}
 
+@media (min-width:861px) and (max-width:1180px){.shot .car{left:63%;width:62vw}}
 @media (max-width:1000px){.fleet{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:1fr 1fr;row-gap:30px}}
 @media (max-width:860px){
   .top{grid-template-columns:1fr auto;padding:22px 20px}.tagline{display:none}
   .hero{height:auto;min-height:0;max-height:none;padding-bottom:30px}
   .stage{position:relative;height:52vh;min-height:300px}
-  .shot{background:linear-gradient(180deg,#1d2226,#111416)}
-  .shot::after{background:linear-gradient(180deg,rgba(13,16,18,.85) 0,rgba(13,16,18,0) 40%)}
-  .shot .car{width:118vw;left:50%;bottom:0;transform:translateX(-50%)}
+  .inner{background:linear-gradient(180deg,#1d2226,#111416)}
+  .inner::after{background:linear-gradient(180deg,rgba(13,16,18,.85) 0,rgba(13,16,18,0) 40%)}
+  .shot .car{width:118vw;left:50%;bottom:0;transform:translate3d(-50%,0,0)}
   .shot.in .car{animation:none}
   .edge{height:52vh;min-height:300px;bottom:auto}
   .copy{position:relative;left:auto;top:auto;transform:none;width:auto;padding:0 20px;margin-top:-10px}
   .copy h1{margin-top:16px}.copy .dash{margin:16px 0}
-  .next,.dock,.foot{display:none}
+  .foot{display:none}
   .arrows{left:auto;right:20px;bottom:auto;top:calc(max(52vh,300px) - 8px)}
   .arrows button{width:38px;height:38px}
   .book .grid,.two{grid-template-columns:1fr}
@@ -272,8 +266,6 @@ footer .made img{width:18px;height:18px}
     <button class="cta" type="button" id="sBook"><b>Book this car</b><i aria-hidden="true">→</i></button>
   </div>
 
-  <button class="next" type="button" id="next" aria-label="Show next car"><span class="lbl">Next: <span id="nName">XUV700</span> <i aria-hidden="true">→</i></span><span class="pic" id="nPic"></span></button>
-  <a class="dock" href="tel:+919101583341"><span>Call 91015 83341</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>
   <div class="arrows"><button type="button" id="prev" aria-label="Previous car">←</button><button type="button" id="nextB" aria-label="Next car">→</button></div>
   <p class="foot">Lokhra, Guwahati · Book on WhatsApp</p>
 </header>
@@ -435,13 +427,10 @@ footer .made img{width:18px;height:18px}
   var i=0,timer=null,busy=false,DUR=6000,stage=$("#stage"),copy=$("#copy");
   $("#tot").textContent=("0"+FEAT.length).slice(-2);
   FEAT.forEach(function(f){var im=new Image();im.src=src(find(f.n))});
-  function shot(c,anim){var s=d.createElement("div");s.className="shot"+(anim?" in":"");s.innerHTML='<img class="car" src="'+src(c)+'" alt="'+c.n+'"><div class="floor"></div>';return s}
-  function fill(){var f=FEAT[i],c=find(f.n),nc=find(FEAT[(i+1)%FEAT.length].n);
+  function shot(c,anim){var s=d.createElement("div");s.className="shot"+(anim?" in":"");s.innerHTML='<div class="inner"><img class="car" src="'+src(c)+'" alt="'+c.n+'" decoding="async"><div class="floor"></div></div>';return s}
+  function fill(){var f=FEAT[i],c=find(f.n);
     $("#idx").textContent=("0"+(i+1)).slice(-2);$("#sName").textContent=c.n;$("#sLine").textContent=f.line;
-    $("#sPrice").innerHTML="From <b>"+inr(c.p)+"</b> a day · "+c.s+" seats · "+KM[c.c]+" km/day";
-    $("#nName").textContent=nc.n}
-  function nextPic(anim){var c=find(FEAT[(i+1)%FEAT.length].n),p=$("#nPic"),im=d.createElement("img");im.src=src(c);im.alt="";if(anim)im.className="in";p.appendChild(im);
-    var clean=function(){while(p.children.length>1)p.removeChild(p.firstChild)};if(anim)setTimeout(clean,1400);else clean()}
+    $("#sPrice").innerHTML="From <b>"+inr(c.p)+"</b> a day · "+c.s+" seats · "+KM[c.c]+" km/day"}
   function progress(){var b=$("#prog");b.classList.remove("run");void b.offsetWidth;b.style.setProperty("--dur",DUR+"ms");if(!still)b.classList.add("run")}
   function restart(){clearTimeout(timer);progress();if(!still)timer=setTimeout(function(){go(i+1)},DUR)}
   function go(to){if(busy)return;var n=(to+FEAT.length)%FEAT.length;if(n===i)return;busy=true;i=n;
@@ -449,11 +438,9 @@ footer .made img{width:18px;height:18px}
     stage.appendChild(shot(find(FEAT[i].n),!still));
     if(!still){var e=$("#edge");e.classList.remove("go");void e.offsetWidth;e.classList.add("go")}
     setTimeout(function(){fill();copy.classList.remove("swap")},still?0:520);
-    nextPic(!still);
     setTimeout(function(){while(stage.children.length>1)stage.removeChild(stage.firstChild);busy=false},still?0:1200);
     restart()}
-  stage.appendChild(shot(find(FEAT[0].n),false));fill();nextPic(false);restart();
-  $("#next").addEventListener("click",function(){go(i+1)});
+  stage.appendChild(shot(find(FEAT[0].n),false));fill();restart();
   $("#nextB").addEventListener("click",function(){go(i+1)});
   $("#prev").addEventListener("click",function(){go(i-1)});
   d.addEventListener("keydown",function(e){if(scrollY>innerHeight*.6||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==="ArrowRight")go(i+1);if(e.key==="ArrowLeft")go(i-1)});
@@ -468,7 +455,7 @@ footer .made img{width:18px;height:18px}
   var cur="all",cats=["all","hatch","sedan","csuv","suv","mpv"];
   $("#chips").innerHTML=cats.map(function(k){var n=k==="all"?CARS.length:CARS.filter(function(c){return c.c===k}).length;return '<button type="button" class="chip" data-cat="'+k+'" aria-pressed="'+(k===cur)+'">'+(k==="all"?"All cars":CAT[k])+'<small>'+n+'</small></button>'}).join("");
   function render(){$("#fleet").innerHTML=CARS.filter(function(c){return cur==="all"||c.c===cur}).map(function(c){
-    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="Book '+c.n+'"><div class="pic"><img src="'+src(c)+'" alt="'+c.n+'" loading="lazy" width="600" height="370"><span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">Book <i>→</i></span></div></div></article>'}).join("")}
+    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="Book '+c.n+'"><div class="pic"><img src="'+src(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="600" height="370"><span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">Book <i>→</i></span></div></div></article>'}).join("")}
   render();
   $("#chips").addEventListener("click",function(e){var b=e.target.closest("[data-cat]");if(!b)return;cur=b.dataset.cat;$$("#chips .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});render()});
 
