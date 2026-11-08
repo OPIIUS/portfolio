@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BS Car Rentals · Self-drive cars in Guwahati from ₹1,500/day</title>
+<meta name="description" content="Self-drive car rental in Guwahati. Hatchbacks, sedans, SUVs and 7-seaters from ₹1,500 a day. Pick your car and book on WhatsApp. Lokhra, Guwahati.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/site/logo/opiius-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Urbanist:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/samples/opiius-signature.css">
+<style>
+:root{--brand:#1d6ff2;--brand-2:#9cc6ff;--brand-deep:#0b2a66;--bg:#eef2f7;--paper:#f8fafd;--ink:#0c1526;--dim:#5b6678;--faint:#b3bdcc;--f-head:"Plus Jakarta Sans",system-ui,sans-serif;--amber:#ffb020;--wa:#1faa59}
+h1,h2,h3{font-weight:800;letter-spacing:-.035em}
+
+/* hero */
+.hero{background:radial-gradient(120% 100% at 85% 15%,#1e4fae 0,#0b2a66 48%,#06142f 100%);color:#fff}
+.hero .o-ring{width:min(620px,52vw);right:-6vw;top:44%;transform:translateY(-50%);opacity:.8}
+.road{position:absolute;left:0;right:0;bottom:0;height:110px;z-index:2;pointer-events:none}
+.road svg{width:100%;height:100%}
+.carrun{animation:drive 12s linear infinite}
+@keyframes drive{from{transform:translateX(-320px)}to{transform:translateX(1760px)}}
+.hero-in{position:relative;z-index:3;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;padding:130px 20px 160px}
+.hero .o-lbl{background:rgba(255,255,255,.1);color:#d7e6ff;box-shadow:none;border:1px solid rgba(156,198,255,.25)}
+.hero h1{font-size:clamp(42px,5.8vw,76px);line-height:1;margin-top:18px}
+.hero h1 em{font-style:normal;color:var(--amber)}
+.hero .sub{color:#c4d3ea;font-size:18px;max-width:44ch;margin-top:18px}
+.pts{display:flex;gap:10px 20px;flex-wrap:wrap;margin-top:24px;font-size:14.5px;font-weight:600;color:#d7e6ff}
+.pts span::before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;margin-right:8px;border-radius:50%;background:rgba(156,198,255,.18);color:var(--brand-2);font-size:11px}
+.bk{background:#fff;color:var(--ink);border-radius:24px;padding:22px;box-shadow:0 40px 80px -30px rgba(0,0,0,.7)}
+.bk h2{font-size:24px}
+.bk p.s{color:var(--dim);font-size:14.5px;margin-top:4px}
+.bk form{display:grid;gap:12px;margin-top:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hero-in>*,.row2>*{min-width:0}
+.o-field input{min-width:0}
+.est{display:none;background:#f1f5fb;border-radius:16px;padding:12px 14px;font-size:14.5px}
+.est.on{display:grid;gap:4px}
+.est div{display:flex;justify-content:space-between;gap:10px}
+.est b{font-family:var(--f-head);font-size:20px}
+.est small{color:var(--dim)}
+.err{color:#c0262d;font-size:14px;font-weight:600;min-height:1em}
+.o-btn.wa{background:var(--wa);color:#fff;box-shadow:0 10px 24px -10px var(--wa)}
+.fine{color:var(--dim);font-size:12.5px;text-align:center}
+
+/* fleet */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.chip{height:42px;padding:0 16px;border-radius:999px;border:1px solid rgba(0,0,0,.08);background:#fff;font-weight:700;font-size:14.5px}
+.chip small{color:var(--dim);font-weight:600;margin-left:4px}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip[aria-pressed=true] small{color:#c4d3ea}
+.fleet{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.car{padding:12px;display:flex;flex-direction:column}
+.car .art{border-radius:16px;background:linear-gradient(180deg,#e3ebf6,#f4f7fb);aspect-ratio:5/3;display:grid;place-items:center;position:relative}
+.car .art svg{width:86%;height:auto}
+.car .tagx{position:absolute;left:10px;top:10px;height:24px;padding:0 9px;border-radius:999px;background:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center}
+.car .tagx.auto{left:auto;top:auto;right:10px;bottom:10px;background:var(--ink);color:#fff}
+.car .bd{padding:12px 6px 4px;display:flex;flex-direction:column;flex:1}
+.car h3{font-size:19px;letter-spacing:-.02em}
+.car .meta{color:var(--dim);font-size:13.5px;font-weight:600;margin-top:4px}
+.car .row{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px}
+.car .pr{font-family:var(--f-head);font-weight:800;font-size:24px;letter-spacing:-.03em;line-height:1}
+.car .pr small{font-family:var(--f-body);font-weight:600;font-size:12.5px;color:var(--dim);letter-spacing:0}
+.car .o-btn{height:40px;padding:0 14px;font-size:14px}
+.note{color:var(--dim);font-size:14px;margin-top:14px;text-align:center}
+
+/* steps, docs, rules */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stp{padding:22px}
+.stp .n{font-family:var(--f-head);font-weight:800;font-size:40px;line-height:1;color:var(--faint)}
+.stp h3{font-size:19px;margin-top:10px}
+.stp p{color:var(--dim);font-size:15px;margin-top:6px}
+.docs{display:grid;grid-template-columns:.9fr 1.1fr;gap:16px}
+.dk{padding:28px;background:var(--brand-deep);color:#fff;border-radius:24px}
+.dk .o-lbl{background:rgba(255,255,255,.1);color:#d7e6ff;box-shadow:none}
+.dk h2{font-size:clamp(28px,3.6vw,40px);margin-top:14px}
+.dk ul{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:12px}
+.dk li{display:flex;gap:12px;align-items:flex-start;font-weight:600}
+.dk li i{flex:none;width:28px;height:28px;border-radius:9px;background:rgba(156,198,255,.18);color:var(--brand-2);display:grid;place-items:center;font-style:normal;font-size:14px}
+.dk li small{display:block;color:#a9bcd8;font-weight:500;font-size:14px;margin-top:2px}
+.rules{padding:26px}
+.rules h3{font-size:22px}
+.rl{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin-top:14px}
+.rl div{padding:12px 0;border-bottom:1px solid #e3e9f2}
+.rl b{display:block;font-size:15px}
+.rl span{color:var(--dim);font-size:14px}
+details.more{margin-top:14px}
+details.more summary{cursor:pointer;font-weight:700;color:var(--brand)}
+details.more ol{color:var(--dim);font-size:14.5px;padding-left:20px;margin:10px 0 0;display:grid;gap:6px}
+.faq{display:grid;gap:10px;max-width:820px}
+.q{padding:4px 22px}
+.q summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:16px 0;font-weight:700;font-size:16.5px}
+.q summary::-webkit-details-marker{display:none}
+.q summary::after{content:"+";font-size:22px;line-height:1;color:var(--brand)}
+.q[open] summary::after{content:"−"}
+.q p{color:var(--dim);padding:0 0 18px}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ct{padding:22px;display:block}
+.ct small{display:block;color:var(--dim);font-weight:600;font-size:13px}
+.ct b{display:block;font-size:19px;margin-top:4px;font-family:var(--f-head);letter-spacing:-.02em}
+.ct span{display:block;color:var(--dim);font-size:14px;margin-top:4px}
+.fab{position:fixed;z-index:58;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;background:var(--wa);display:grid;place-items:center;box-shadow:0 12px 26px -8px rgba(0,0,0,.45)}
+.fab svg{width:30px;height:30px}
+
+@media (max-width:1000px){.fleet{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:1fr 1fr}}
+@media (max-width:900px){
+  .hero-in{grid-template-columns:1fr;padding:120px 20px 150px}
+  .hero .o-ring{width:130vw;right:-70vw;top:auto;bottom:6%;transform:none}
+  .fleet{grid-template-columns:1fr 1fr}
+  .docs,.contact{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .o-nav>.o-btn{display:none}
+  .hero-in{padding:108px 16px 140px}
+  .bk{padding:18px}
+  .row2.dates{grid-template-columns:1fr}
+  .fleet{gap:10px}
+  .car{padding:8px}
+  .car h3{font-size:16.5px}
+  .car .row{flex-direction:column;align-items:stretch;gap:8px}
+  .car .o-btn{height:38px}
+  .steps,.rl{grid-template-columns:1fr}
+  .dk,.rules{padding:22px}
+}
+</style>
+</head>
+<body>
+
+<nav class="o-nav" aria-label="Main">
+  <a class="o-logo" href="#top"><i></i>BS Car Rentals</a>
+  <div class="o-links"><a href="#cars">Cars</a><a href="#how">How it works</a><a href="#rules">Rules</a><a href="#contact">Contact</a></div>
+  <a class="o-btn solid" href="#top" data-book>Book a car</a>
+  <button class="o-menu" type="button" aria-label="Menu" aria-expanded="false"><span></span></button>
+</nav>
+
+<header class="o-hero hero" id="top">
+  <div class="o-ring"></div>
+  <div class="road" aria-hidden="true">
+    <svg viewBox="0 0 1440 110" preserveAspectRatio="none">
+      <rect y="40" width="1440" height="70" fill="#050d1c"/>
+      <path d="M0 78 H1440" stroke="#ffb020" stroke-width="4" stroke-dasharray="38 34" opacity=".6"/>
+      <g class="carrun" id="runner"></g>
+    </svg>
+  </div>
+  <div class="o-wrap hero-in">
+    <div>
+      <span class="o-lbl o-st">Self-drive car rental · Guwahati</span>
+      <h1 class="o-st">Your car, your trip, <em>your way.</em></h1>
+      <p class="sub o-st">Hatchbacks, SUVs and 7-seaters for self-drive in Guwahati, from ₹1,500 a day. Pick a car, see your price, and book on WhatsApp.</p>
+      <div class="pts o-st"><span>19 cars to choose from</span><span>Clean, checked cars</span><span>Help if anything goes wrong</span></div>
+    </div>
+    <div class="bk o-st">
+      <h2>Book your car</h2>
+      <p class="s">See your price now. We confirm on WhatsApp.</p>
+      <form id="bf" novalidate>
+        <div class="o-field"><label for="bCar">Car</label><select id="bCar"></select></div>
+        <div class="row2 dates">
+          <div class="o-field"><label for="bFrom">Pickup</label><input id="bFrom" type="datetime-local"></div>
+          <div class="o-field"><label for="bTo">Return</label><input id="bTo" type="datetime-local"></div>
+        </div>
+        <div class="est" id="est" aria-live="polite"></div>
+        <div class="row2">
+          <div class="o-field"><label for="bName">Name</label><input id="bName" autocomplete="name" placeholder="Your name"></div>
+          <div class="o-field"><label for="bPhone">WhatsApp</label><input id="bPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile"></div>
+        </div>
+        <p class="err" id="bErr" role="alert"></p>
+        <button class="o-btn wa block" type="submit">Book on WhatsApp</button>
+        <p class="fine">Bring your driving licence and an original ID at pickup.</p>
+      </form>
+    </div>
+  </div>
+  <a class="o-notch" href="#cars">Scroll for more <i>↓</i></a>
+</header>
+
+<main>
+<section class="o-sec" id="cars"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Our cars</span><h2 class="o-h2 o-rv">Pick the right car<br><span class="f">for every trip.</span></h2></div><p class="o-lead o-rv">City runs, family trips to Shillong or a long drive to Tawang. Prices are per day.</p></div>
+  <div class="chips o-rv" id="chips" role="group" aria-label="Filter cars"></div>
+  <div class="fleet" id="fleet"></div>
+  <p class="note o-rv">Hatchbacks and sedans include 280 km a day, SUVs and 7-seaters 300 km a day. Extra km ₹8 each. Need a bike? Ask us on WhatsApp.</p>
+</div></section>
+
+<section class="o-sec" id="how"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">How it works</span><h2 class="o-h2 o-rv">On the road<br><span class="f">in four steps.</span></h2></div></div>
+  <div class="steps">
+    <div class="o-card stp o-rv"><span class="n">01</span><h3>Pick your car</h3><p>Choose the car and your pickup and return times. You see the price straight away.</p></div>
+    <div class="o-card stp o-rv"><span class="n">02</span><h3>Book on WhatsApp</h3><p>Your booking comes to us on WhatsApp and we confirm the car for you.</p></div>
+    <div class="o-card stp o-rv"><span class="n">03</span><h3>Pick it up</h3><p>Bring your driving licence and original ID. We check the car together and record its condition.</p></div>
+    <div class="o-card stp o-rv"><span class="n">04</span><h3>Drive and return</h3><p>Enjoy the trip and return the car on time, in the same condition.</p></div>
+  </div>
+</div></section>
+
+<section class="o-sec" id="rules"><div class="o-wrap">
+  <div class="docs">
+    <div class="dk o-rv">
+      <span class="o-lbl">What to bring</span>
+      <h2>Documents at pickup</h2>
+      <ul>
+        <li><i>✓</i><span>Valid driving licence<small>You must be 18 or older.</small></span></li>
+        <li><i>✓</i><span>Original Voter ID or driving licence<small>Kept with us as security until you return the car.</small></span></li>
+        <li><i>✓</i><span>Your phone number and an alternate number<small>So we can reach you during the trip.</small></span></li>
+      </ul>
+    </div>
+    <div class="o-card rules o-rv">
+      <h3>Rental rules, in short</h3>
+      <div class="rl">
+        <div><b>Km per day</b><span>280 km hatchbacks and sedans, 300 km SUVs and 7-seaters</span></div>
+        <div><b>Extra km</b><span>₹8 per km</span></div>
+        <div><b>Late return</b><span>₹300 per hour</span></div>
+        <div><b>Extending your trip?</b><span>Tell us at least 12 hours before return</span></div>
+        <div><b>Speed</b><span>80 to 110 km/h maximum</span></div>
+        <div><b>Fuel and FASTag</b><span>Your responsibility, no refund on extra fuel left</span></div>
+      </div>
+      <details class="more"><summary>Read the full terms</summary>
+        <ol>
+          <li>You must be 18 or older with a valid driving licence. Traffic fines during your booking are paid by you.</li>
+          <li>Your original Voter ID or driving licence stays with us as security. You are responsible for accidental damage, theft or misuse during the booking.</li>
+          <li>Extensions must be told at least 12 hours before return, otherwise a late fee of ₹300 per hour applies.</li>
+          <li>Repair costs for damage are paid by you up to ₹50,000. Above that, insurance is claimed and ₹50,000 is still payable.</li>
+          <li>If the car has a technical or mechanical problem, tell us right away. We help at once and may give a replacement car at no extra cost (not for burnt clutch, burst or flat tyres, or accidental damage).</li>
+          <li>Returning the car dirty (pan masala stains, cigarette butts) means cleaning charges. Alcohol bottles found in the car mean a ₹1,500 fine.</li>
+          <li>Fake documents or criminal use of the car lead to legal action and cancellation without refund.</li>
+          <li>No refund for extra fuel or remaining FASTag balance.</li>
+          <li>Photos taken at pickup are used as the reference for the car's condition and pickup time.</li>
+        </ol>
+      </details>
+    </div>
+  </div>
+</div></section>
+
+<section class="o-sec" id="faq"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">FAQ</span><h2 class="o-h2 o-rv">Before you book.</h2></div></div>
+  <div class="faq">
+    <details class="o-card q o-rv" open><summary>How is the price worked out?</summary><p>Each car has a price per day. A booking is counted in 24-hour days from your pickup time. The price you see in the booking form is your estimate, and we confirm it on WhatsApp.</p></details>
+    <details class="o-card q o-rv"><summary>Can I take the car to Shillong, Tawang or other states?</summary><p>Tell us your route when you book on WhatsApp and we'll confirm.</p></details>
+    <details class="o-card q o-rv"><summary>What happens if the car breaks down?</summary><p>Call us right away. We act immediately, and if it can't be fixed we may give you a replacement car at no extra cost.</p></details>
+    <details class="o-card q o-rv"><summary>Do you rent bikes too?</summary><p>Yes, ask us on WhatsApp for the bikes available on your dates.</p></details>
+  </div>
+</div></section>
+
+<section class="o-sec" id="contact"><div class="o-wrap">
+  <div class="o-head"><div><span class="o-lbl o-rv">Contact</span><h2 class="o-h2 o-rv">Talk to us.</h2></div></div>
+  <div class="contact">
+    <a class="o-card ct o-rv" href="tel:+919101583341"><small>Call</small><b>91015 83341</b><span>Tap to call</span></a>
+    <a class="o-card ct o-rv" href="https://wa.me/919101583341" target="_blank" rel="noopener"><small>WhatsApp</small><b>91015 83341</b><span>Tap to chat</span></a>
+    <a class="o-card ct o-rv" href="https://www.google.com/maps/search/?api=1&amp;query=Lokhra+Chagalpara+Sawkuchi+Guwahati+781040" target="_blank" rel="noopener"><small>Visit</small><b>Lokhra, Guwahati</b><span>Chagalpara, Sawkuchi, Guwahati 781040</span></a>
+  </div>
+</div></section>
+</main>
+
+<a class="fab" href="https://wa.me/919101583341" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 32 32" fill="#fff"><path d="M16 3C9 3 3.4 8.6 3.4 15.5c0 2.3.6 4.5 1.8 6.4L3.3 29l7.3-1.9c1.8 1 3.9 1.5 6 1.5h.1c6.9 0 12.5-5.6 12.5-12.5S22.9 3 16 3zm7.3 17.7c-.3.9-1.8 1.7-2.5 1.8-.6.1-1.5.1-2.4-.2-.5-.2-1.3-.4-2.2-.8-3.8-1.6-6.3-5.5-6.5-5.8-.2-.3-1.5-2-1.5-3.8s1-2.7 1.3-3.1c.3-.4.7-.5 1-.5h.7c.2 0 .5-.1.8.6.3.7 1 2.5 1.1 2.7.1.2.2.4 0 .7-.1.3-.2.4-.4.7l-.6.7c-.2.2-.4.4-.2.8.2.4 1 1.7 2.2 2.7 1.5 1.3 2.8 1.7 3.2 1.9.4.2.6.2.8-.1.2-.3 1-1.1 1.2-1.5.3-.4.5-.3.9-.2.4.1 2.3 1.1 2.7 1.3.4.2.7.3.8.4.1.2.1 1-.2 1.9z"/></svg></a>
+
+<footer class="o-foot"><div class="o-wrap">
+  <div class="cols">
+    <div><a class="o-logo" href="#top"><i></i>BS Car Rentals</a><p style="margin-top:12px;color:var(--dim)">BS Self Drive Car and Bike Rental Services, Lokhra Chagalpara, Sawkuchi, Guwahati 781040. Registered with Guwahati Municipal Corporation (trade licence 1747900575107751).</p></div>
+    <div><h4>Rent</h4><p><a href="#cars">Our cars</a></p><p><a href="#how">How it works</a></p></div>
+    <div><h4>Help</h4><p><a href="#rules">Rules and documents</a></p><p><a href="#faq">FAQ</a></p></div>
+    <div><h4>Contact</h4><p><a href="tel:+919101583341">91015 83341</a></p><p><a href="https://wa.me/919101583341" target="_blank" rel="noopener">WhatsApp us</a></p></div>
+  </div>
+  <div class="fb"><span>© <span id="yr">2026</span> BS Car Rentals</span><a class="o-made" href="https://opiius.online/" target="_blank" rel="noopener"><img src="/assets/site/logo/opiius-mark.svg" alt="">Website by OPIIUS</a></div>
+</div><div class="o-word" aria-hidden="true">BS Rentals</div></footer>
+
+<script src="/samples/opiius-signature.js"></script>
+<script>
+(function(){
+  var $=O.$,$$=O.$$,WA="919101583341";
+  $("#yr").textContent=new Date().getFullYear();
+  /* side-view car drawings by body type */
+  var BODY={
+    hatch:{b:"M20 88 Q20 70 40 66 L70 62 Q92 34 130 30 L200 30 Q222 32 236 58 L262 64 Q280 68 280 86 L276 92 H24 Z",w:"M84 62 Q100 40 130 37 L196 37 Q212 39 224 62 Z",p:160,wh:[72,232]},
+    sedan:{b:"M12 88 Q12 72 32 68 L80 64 Q102 38 138 36 L186 36 Q210 38 228 62 L272 66 Q290 70 290 86 L286 92 H16 Z",w:"M92 64 Q110 44 138 42 L184 42 Q204 44 218 64 Z",p:160,wh:[74,240]},
+    suv:{b:"M16 90 Q16 70 28 66 L58 62 Q72 28 100 26 L226 26 Q246 28 258 58 L274 62 Q288 66 288 86 L284 92 H20 Z",w:"M70 62 Q82 34 102 32 L222 32 Q238 34 248 60 Z",p:160,wh:[76,238]},
+    mpv:{b:"M12 90 Q12 70 24 66 L52 62 Q68 28 96 24 L240 24 Q262 26 270 60 L282 64 Q294 68 294 86 L290 92 H16 Z",w:"M64 62 Q78 32 98 30 L236 30 Q254 32 262 60 Z",p:150,wh:[70,250]}};
+  function car(t,c){var d=BODY[t],dark=/^#(e|f|d)/i.test(c)?"#9aa6b8":"rgba(0,0,0,.18)";
+    return '<svg viewBox="0 0 300 120" aria-hidden="true"><ellipse cx="150" cy="108" rx="128" ry="7" fill="#000" opacity=".12"/><path d="'+d.b+'" fill="'+c+'" stroke="'+dark+'" stroke-width="1.5"/><path d="'+d.w+'" fill="#1b2a44" opacity=".85"/><path d="M'+d.p+' 30 V64" stroke="'+c+'" stroke-width="5"/><path d="M30 76 H270" stroke="'+dark+'" stroke-width="1.2" opacity=".6"/>'+
+      d.wh.map(function(x){return '<circle cx="'+x+'" cy="92" r="18" fill="#141820"/><circle cx="'+x+'" cy="92" r="8" fill="#a7b0bd"/>'}).join("")+'</svg>'}
+
+  var CAT={hatch:"Hatchback",sedan:"Sedan",csuv:"Compact SUV",suv:"SUV",mpv:"7-seater"};
+  var KM={hatch:280,sedan:280,csuv:300,suv:300,mpv:300};
+  var CARS=[
+    {n:"Alto K10",c:"hatch",p:1500,s:5,col:"#8d939c"},
+    {n:"Swift",c:"hatch",p:1800,s:5,col:"#f2f4f7"},
+    {n:"Grand i10 Nios",c:"hatch",p:1800,s:5,col:"#f2f4f7"},
+    {n:"i20 (Optional)",c:"hatch",p:2000,s:5,col:"#c9ced6"},
+    {n:"Swift Dzire",c:"sedan",p:2000,s:5,col:"#f2f4f7"},
+    {n:"Punch",c:"csuv",p:2000,s:5,col:"#e4572e"},
+    {n:"Fronx",c:"csuv",p:2200,s:5,col:"#f2f4f7"},
+    {n:"Nexon",c:"csuv",p:2500,s:5,col:"#2f6fb5"},
+    {n:"Brezza",c:"csuv",p:2500,s:5,col:"#f2f4f7"},
+    {n:"Venue",c:"csuv",p:2500,s:5,col:"#1b1e24"},
+    {n:"XUV300",c:"csuv",p:2500,s:5,col:"#f2f4f7",auto:1},
+    {n:"Kia Seltos",c:"suv",p:2700,s:5,col:"#f2f4f7"},
+    {n:"Creta",c:"suv",p:2700,s:5,col:"#f2f4f7"},
+    {n:"Scorpio N",c:"suv",p:4000,s:7,col:"#f2f4f7"},
+    {n:"XUV700",c:"suv",p:4000,s:7,col:"#2a4f8f"},
+    {n:"Thar Roxx",c:"suv",p:4000,s:5,col:"#f2f4f7"},
+    {n:"Ertiga",c:"mpv",p:3000,s:7,col:"#f2f4f7"},
+    {n:"Kia Carens",c:"mpv",p:3000,s:7,col:"#c9ced6"},
+    {n:"Innova Crysta",c:"mpv",p:4000,s:7,col:"#f2f4f7"}];
+  var SHAPE={hatch:"hatch",sedan:"sedan",csuv:"suv",suv:"suv",mpv:"mpv"};
+  $("#runner").innerHTML='<g transform="translate(0 6) scale(.8)">'+car("suv","#ffb020").replace('<svg viewBox="0 0 300 120" aria-hidden="true">','').replace('</svg>','')+'</g>';
+
+  var cur="all",cats=["all","hatch","sedan","csuv","suv","mpv"];
+  $("#chips").innerHTML=cats.map(function(k){var n=k==="all"?CARS.length:CARS.filter(function(c){return c.c===k}).length;return '<button type="button" class="chip" data-cat="'+k+'" aria-pressed="'+(k===cur)+'">'+(k==="all"?"All cars":CAT[k])+'<small>'+n+'</small></button>'}).join("");
+  function render(){$("#fleet").innerHTML=CARS.filter(function(c){return cur==="all"||c.c===cur}).map(function(c){
+    return '<article class="o-card car o-rv"><div class="art">'+car(SHAPE[c.c],c.col)+'<span class="tagx">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tagx auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+O.inr(c.p)+' <small>/ day</small></p><button class="o-btn solid" type="button" data-pick="'+c.n+'">Book</button></div></div></article>'}).join("");O.reveal($("#fleet"))}
+  render();
+  $("#chips").addEventListener("click",function(e){var b=e.target.closest("[data-cat]");if(!b)return;cur=b.dataset.cat;$$("#chips .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});render()});
+
+  /* booking form */
+  var sel=$("#bCar");
+  sel.innerHTML=cats.slice(1).map(function(k){return '<optgroup label="'+CAT[k]+'">'+CARS.filter(function(c){return c.c===k}).map(function(c){return '<option value="'+c.n+'">'+c.n+' · '+O.inr(c.p)+'/day</option>'}).join("")+'</optgroup>'}).join("");
+  sel.value="Swift";
+  function find(n){return CARS.filter(function(c){return c.n===n})[0]}
+  function pad(n){return ("0"+n).slice(-2)}
+  function local(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+"T"+pad(d.getHours())+":"+pad(d.getMinutes())}
+  var t=new Date();t.setDate(t.getDate()+1);t.setHours(10,0,0,0);var r=new Date(t);r.setDate(r.getDate()+1);
+  $("#bFrom").value=local(t);$("#bTo").value=local(r);$("#bFrom").min=local(new Date());
+  function calc(){var c=find(sel.value),a=new Date($("#bFrom").value),b=new Date($("#bTo").value);
+    if(!c||isNaN(a)||isNaN(b)||b<=a)return null;
+    var days=Math.max(1,Math.ceil((b-a)/864e5));return {c:c,a:a,b:b,days:days,total:days*c.p,km:days*KM[c.c]}}
+  function fmt(d){return d.toLocaleString("en-IN",{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}
+  function est(){var e=calc(),el=$("#est");if(!e){el.classList.remove("on");return}
+    el.innerHTML='<div><span>'+e.c.n+' · '+e.days+' day'+(e.days>1?'s':'')+'</span><b>'+O.inr(e.total)+'</b></div><small>'+e.km+' km included · extra km ₹8 · estimate, confirmed on WhatsApp</small>';el.classList.add("on")}
+  ["change","input"].forEach(function(ev){[sel,$("#bFrom"),$("#bTo")].forEach(function(x){x.addEventListener(ev,est)})});est();
+  function toForm(){$("#top").scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},700)}
+  document.addEventListener("click",function(e){var p=e.target.closest("[data-pick]");if(p){sel.value=p.dataset.pick;est();toForm()}var b=e.target.closest("[data-book]");if(b){e.preventDefault();toForm()}});
+  $("#bf").addEventListener("submit",function(e){e.preventDefault();
+    var er=$("#bErr"),x=calc(),nm=$("#bName").value.trim(),ph=$("#bPhone").value.replace(/\D/g,"").replace(/^(91|0)(?=\d{10}$)/,"");
+    if(!x)return er.textContent="Please pick a return time after the pickup time.";
+    if(!nm)return er.textContent="Please add your name.";
+    if(!/^[6-9]\d{9}$/.test(ph))return er.textContent="Please add a 10-digit mobile number.";
+    er.textContent="";
+    var msg=["Hi BS Car Rentals, I'd like to book a car.","","Car: "+x.c.n+" ("+O.inr(x.c.p)+"/day)","Pickup: "+fmt(x.a),"Return: "+fmt(x.b),"Days: "+x.days+" · Estimate: "+O.inr(x.total),"","Name: "+nm,"Phone: "+ph].join("\n");
+    window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank","noopener")});
+})();
+</script>
+</body>
+</html>
