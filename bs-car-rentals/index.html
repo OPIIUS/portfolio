@@ -179,6 +179,16 @@ details.more ol{color:var(--dim);font-size:14.5px;padding-left:20px;margin:12px 
 .q[open] summary::after{transform:rotate(45deg)}
 .q p{color:var(--dim);padding:0 0 22px;max-width:62ch}
 
+/* map */
+.map{position:relative;margin-top:2px;border:2px solid var(--line);border-top:0;height:420px;background:#dfe4e8}
+.map iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(1) contrast(1.05)}
+.map .pin{position:absolute;left:24px;bottom:24px;width:min(340px,calc(100% - 48px));background:var(--dark);color:#fff;padding:24px}
+.map .pin small{display:block;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#aeb6bc}
+.map .pin>b{display:block;font-size:22px;font-weight:400;margin-top:8px}
+.map .pin p{color:#aeb6bc;font-size:14.5px;margin-top:6px}
+.map .pin .cta{margin-top:18px;height:46px}
+.map .pin .cta b{font-size:14px;margin:0;padding:0 22px}
+.map .pin .cta i{width:46px}
 /* contact + footer */
 .contact{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:2px solid var(--line)}
 .ct{background:var(--paper);padding:28px;display:block;transition:background .2s}
@@ -220,6 +230,9 @@ footer .made img{width:18px;height:18px}
   .book .grid{gap:30px}
   .fleet{grid-template-columns:1fr 1fr}
   .contact{grid-template-columns:1fr}
+  .map{height:auto;border-top:0}
+  .map iframe{position:relative;height:320px;display:block}
+  .map .pin{position:relative;left:auto;bottom:auto;width:auto}
   footer .cols{grid-template-columns:1fr 1fr}
 }
 @media (max-width:560px){
@@ -355,11 +368,15 @@ footer .made img{width:18px;height:18px}
 </div></section>
 
 <section class="sec" id="contact"><div class="wrap">
-  <div class="head"><div><p class="kick rv">Contact</p><h2 class="h2 rv">Talk to us.</h2></div></div>
+  <div class="head"><div><p class="kick rv">Contact</p><h2 class="h2 rv">Talk to us,<br><span class="f">or come and see the cars.</span></h2></div></div>
   <div class="contact rv">
     <a class="ct" href="tel:+919101583341"><small>Call</small><b>91015 83341</b><span>Tap to call <i>→</i></span></a>
     <a class="ct" href="https://wa.me/919101583341" target="_blank" rel="noopener"><small>WhatsApp</small><b>91015 83341</b><span>Tap to chat <i>→</i></span></a>
     <a class="ct" href="https://www.google.com/maps/search/?api=1&amp;query=Lokhra+Chagalpara+Sawkuchi+Guwahati+781040" target="_blank" rel="noopener"><small>Visit</small><b>Lokhra, Guwahati</b><span>Chagalpara, Sawkuchi, 781040 <i>→</i></span></a>
+  </div>
+  <div class="map rv">
+    <iframe title="Map: BS Car Rentals, Lokhra Chagalpara, Sawkuchi, Guwahati" src="https://www.google.com/maps?q=Lokhra+Chagalpara,+Sawkuchi,+Guwahati,+Assam+781040&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    <div class="pin"><small>Find us</small><b>BS Car Rentals</b><p>Lokhra Chagalpara, Sawkuchi<br>Guwahati, Assam 781040</p><a class="cta" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lokhra+Chagalpara+Sawkuchi+Guwahati+781040" target="_blank" rel="noopener"><b>Get directions</b><i aria-hidden="true">→</i></a></div>
   </div>
 </div></section>
 </main>
@@ -412,9 +429,9 @@ footer .made img{width:18px;height:18px}
   var FEAT=[
     {n:"Thar Roxx",line:"Five doors, made for hills and weekend getaways."},
     {n:"XUV700",line:"Seven seats and real comfort for the family road trip."},
-    {n:"Creta",line:"The easy SUV for the city and a drive to Shillong."},
-    {n:"Innova Crysta",line:"Space for everyone, and everything, on long journeys."},
-    {n:"Swift",line:"Easy to park, light on fuel, made for Guwahati."}];
+    {n:"Scorpio N",line:"Seven seats and real road presence for any trip."},
+    {n:"XUV300",line:"Automatic and easy to drive, made for city traffic."},
+    {n:"Swift Dzire",line:"A comfortable sedan for family trips, light on fuel."}];
   var i=0,timer=null,busy=false,DUR=6000,stage=$("#stage"),copy=$("#copy");
   $("#tot").textContent=("0"+FEAT.length).slice(-2);
   FEAT.forEach(function(f){var im=new Image();im.src=src(find(f.n))});
