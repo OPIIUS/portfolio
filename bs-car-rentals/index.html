@@ -269,6 +269,10 @@ footer .made img{width:18px;height:18px}
   footer .cols{grid-template-columns:1fr 1fr}
 }
 @media (max-width:560px){
+  footer p a{display:inline-block;padding:11px 0}
+  details.more summary{padding:12px 0}
+  footer .made{padding:10px 0}
+  .carc .meta{font-size:12px}
   .f2,.rl{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
   .carc .bd{padding:12px 12px 14px}.carc h3{font-size:14.5px}.carc .pr{font-size:19px}.carc .row{flex-direction:column;align-items:flex-start;gap:6px}
@@ -469,6 +473,7 @@ footer .made img{width:18px;height:18px}
     {n:"Innova Crysta",img:"innova-crysta",c:"mpv",p:4000,s:7}];
   function find(n){return CARS.filter(function(c){return c.n===n})[0]}
   function src(c){return "cars/"+c.img+".jpg"}
+  function sm(c){return "cars/sm/"+c.img+".jpg"}
 
   /* ---------- intro, then the hero comes in ---------- */
   var hero=$(".hero"),intro=$("#intro"),seen=false;
@@ -488,8 +493,8 @@ footer .made img{width:18px;height:18px}
   FEAT.forEach(function(f){var im=new Image();im.src=src(find(f.n))});
   function shot(c,anim){var s=d.createElement("div");s.className="shot"+(anim?" in":"");s.innerHTML='<div class="inner"><img src="'+src(c)+'" alt="'+c.n+'" decoding="async"></div>';return s}
   function info(c){var e=d.createElement("div");e.className="pvi";
-    e.innerHTML='<div class="sp"><small>Per day</small><b>'+inr(c.p)+'</b></div><div class="sp"><small>Seats</small><b>'+c.s+'</b></div><div class="sp"><small>Km per day</small><b>'+KM[c.c]+'<em>km</em></b></div><button class="pbtn" type="button" data-pick="'+c.n+'">Book now</button>';return e}
-  function thumbImg(c){var e=d.createElement("img");e.src=src(c);e.alt="";e.decoding="async";return e}
+    e.innerHTML='<div class="sp"><small>Per day</small><b>'+inr(c.p)+'</b></div><div class="sp"><small>Seats</small><b>'+c.s+'</b></div><div class="sp"><small>Km/day</small><b>'+KM[c.c]+'<em>km</em></b></div><button class="pbtn" type="button" data-pick="'+c.n+'">Book now</button>';return e}
+  function thumbImg(c){var e=d.createElement("img");e.src=sm(c);e.alt="";e.decoding="async";return e}
   function setText(){var f=FEAT[i];$("#idx").textContent=("0"+(i+1)).slice(-2);$("#bar").style.width=((i+1)/FEAT.length*100)+"%";
     var tg=$("#tag");tg.innerHTML='<span>'+f.t+'</span> <b>'+f.b+'</b>'}
   function go(to){if(busy)return;var n=(to+FEAT.length)%FEAT.length;if(n===i)return;var dir=to<i&&!(i===FEAT.length-1&&n===0)?-1:1;busy=true;i=n;var c=find(FEAT[i].n);
@@ -526,7 +531,7 @@ footer .made img{width:18px;height:18px}
   var cur="all",cats=["all","hatch","sedan","csuv","suv","mpv"];
   $("#chips").innerHTML=cats.map(function(k){var n=k==="all"?CARS.length:CARS.filter(function(c){return c.c===k}).length;return '<button type="button" class="chip" data-cat="'+k+'" aria-pressed="'+(k===cur)+'">'+(k==="all"?"All cars":CAT[k])+'<small>'+n+'</small></button>'}).join("");
   function render(){$("#fleet").innerHTML=CARS.filter(function(c){return cur==="all"||c.c===cur}).map(function(c){
-    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="Book '+c.n+'"><div class="pic2">'+(c.img?'<img src="'+src(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="600" height="370">':'<span class="ph"><b>'+c.n+'</b><small>Photo coming soon</small></span>')+'<span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">Book <i>→</i></span></div></div></article>'}).join("")}
+    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="Book '+c.n+'"><div class="pic2">'+(c.img?'<img src="'+sm(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="640" height="360">':'<span class="ph"><b>'+c.n+'</b><small>Photo coming soon</small></span>')+'<span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">Book <i>→</i></span></div></div></article>'}).join("")}
   render();
   $("#chips").addEventListener("click",function(e){var b=e.target.closest("[data-cat]");if(!b)return;cur=b.dataset.cat;$$("#chips .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});render()});
 
