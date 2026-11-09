@@ -161,6 +161,9 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 .carc .pic2 img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 62%;transition:transform .8s var(--out)}
 .carc .pic2::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,24,28,.25),rgba(18,24,28,0) 40%,rgba(18,24,28,.35))}
 .carc:hover .pic2 img{transform:scale(1.06)}
+.carc .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:radial-gradient(70% 60% at 50% 0,rgba(207,49,41,.45),rgba(207,49,41,0) 70%),linear-gradient(160deg,#2b343a,#1a2126);text-align:center;padding:0 12px}
+.carc .ph b{font-size:clamp(22px,2.6vw,34px);font-weight:900;text-transform:uppercase;color:transparent;-webkit-text-stroke:1.2px #fff;line-height:1}
+.carc .ph small{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#aab4ba}
 .carc .tg{position:absolute;z-index:1;left:0;top:12px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:#fff;padding:5px 10px}
 .carc .tg.auto{left:auto;right:0;background:#fff;color:var(--ink)}
 .carc .bd{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
@@ -343,7 +346,7 @@ footer .made img{width:18px;height:18px}
 </div></section>
 
 <section class="sec" id="cars"><div class="wrap">
-  <div class="head"><div><p class="kick rv">Our cars</p><h2 class="h2 rv"><span class="o">Nineteen</span> cars</h2></div><p class="lead2 rv">City runs, family trips or a long drive. Prices are per day.</p></div>
+  <div class="head"><div><p class="kick rv">Our cars</p><h2 class="h2 rv"><span class="o">Twenty-one</span> cars</h2></div><p class="lead2 rv">City runs, family trips or a long drive. Prices are per day.</p></div>
   <div class="chips rv" id="chips" role="group" aria-label="Filter cars"></div>
   <div class="fleet" id="fleet"></div>
   <p class="note">Hatchbacks and sedans include 280 km a day, SUVs and 7-seaters 300 km a day. Extra km ₹10 each. Need a bike? Ask us on WhatsApp.<small>Car photos are for illustration. The actual car and colour may vary.</small></p>
@@ -448,6 +451,7 @@ footer .made img{width:18px;height:18px}
     {n:"Grand i10 Nios",img:"grand-i10-nios",c:"hatch",p:1800,s:5},
     {n:"i20 (Optional)",img:"i20",c:"hatch",p:2000,s:5},
     {n:"Swift Dzire",img:"swift-dzire",c:"sedan",p:2000,s:5},
+    {n:"Verna",c:"sedan",p:2500,s:5},
     {n:"Punch",img:"punch",c:"csuv",p:2000,s:5},
     {n:"Fronx",img:"fronx",c:"csuv",p:2200,s:5},
     {n:"Nexon",img:"nexon",c:"csuv",p:2500,s:5},
@@ -458,6 +462,7 @@ footer .made img{width:18px;height:18px}
     {n:"Creta",img:"creta",c:"suv",p:2700,s:5},
     {n:"Scorpio N",img:"scorpio-n",c:"suv",p:4000,s:7},
     {n:"XUV700",img:"xuv700",c:"suv",p:4000,s:7},
+    {n:"Thar",c:"suv",p:3500,s:4},
     {n:"Thar Roxx",img:"thar-roxx",c:"suv",p:4000,s:5},
     {n:"Ertiga",img:"ertiga",c:"mpv",p:3000,s:7},
     {n:"Kia Carens",img:"kia-carens",c:"mpv",p:3000,s:7},
@@ -521,7 +526,7 @@ footer .made img{width:18px;height:18px}
   var cur="all",cats=["all","hatch","sedan","csuv","suv","mpv"];
   $("#chips").innerHTML=cats.map(function(k){var n=k==="all"?CARS.length:CARS.filter(function(c){return c.c===k}).length;return '<button type="button" class="chip" data-cat="'+k+'" aria-pressed="'+(k===cur)+'">'+(k==="all"?"All cars":CAT[k])+'<small>'+n+'</small></button>'}).join("");
   function render(){$("#fleet").innerHTML=CARS.filter(function(c){return cur==="all"||c.c===cur}).map(function(c){
-    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="Book '+c.n+'"><div class="pic2"><img src="'+src(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="600" height="370"><span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">Book <i>→</i></span></div></div></article>'}).join("")}
+    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="Book '+c.n+'"><div class="pic2">'+(c.img?'<img src="'+src(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="600" height="370">':'<span class="ph"><b>'+c.n+'</b><small>Photo coming soon</small></span>')+'<span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">Book <i>→</i></span></div></div></article>'}).join("")}
   render();
   $("#chips").addEventListener("click",function(e){var b=e.target.closest("[data-cat]");if(!b)return;cur=b.dataset.cat;$$("#chips .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});render()});
 
