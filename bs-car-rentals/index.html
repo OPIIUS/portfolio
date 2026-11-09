@@ -268,6 +268,59 @@ footer .made img{width:18px;height:18px}
 .fab.show{opacity:1;transform:none;pointer-events:auto}
 .fab svg{width:52%;height:52%}
 
+/* ---------- car detail panel ---------- */
+html.lock,html.lock body{overflow:hidden}
+.dlg{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:clamp(0px,3vw,32px);visibility:hidden;pointer-events:none}
+.dlg.open{visibility:visible;pointer-events:auto}
+.dlg-bg{position:absolute;inset:0;background:rgba(10,13,15,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .45s var(--out)}
+.dlg.open .dlg-bg{opacity:1}
+.dlg-box{position:relative;width:min(1120px,100%);max-height:min(860px,100%);display:grid;grid-template-columns:1.12fr .88fr;background:#fff;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.6);opacity:0;transform:translate3d(0,40px,0) scale(.98);transition:opacity .45s var(--out),transform .6s var(--out)}
+.dlg.open .dlg-box{opacity:1;transform:none}
+.dlg-x{position:absolute;z-index:5;right:12px;top:12px;width:44px;height:44px;border:0;background:rgba(18,23,26,.7);color:#fff;display:grid;place-items:center;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:background .2s}
+.dlg-x:hover{background:var(--red)}
+.dlg-x svg{width:18px;height:18px}
+.dlg-l{overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column}
+.dlg-hero{position:relative;flex:none;aspect-ratio:16/9;background:#161c20;overflow:hidden}
+.dlg-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 62%}
+.dlg-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,21,25,0) 45%,rgba(16,21,25,.85))}
+.dlg-hero .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(28px,4vw,48px);font-weight:900;text-transform:uppercase;color:transparent;-webkit-text-stroke:1.2px #fff;background:radial-gradient(70% 60% at 50% 0,rgba(208,52,44,.45),rgba(208,52,44,0) 70%),linear-gradient(160deg,#29323a,#161c20)}
+.dlg-hero .cap{position:absolute;z-index:1;left:clamp(16px,2.4vw,28px);right:clamp(16px,2.4vw,28px);bottom:clamp(14px,2vw,24px);display:flex;justify-content:space-between;align-items:flex-end;gap:12px;color:#fff}
+.dlg-hero .cap small{display:inline-block;background:var(--red);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px}
+.dlg-hero h3{font-size:clamp(24px,3.4vw,42px);font-weight:900;text-transform:uppercase;line-height:1;margin-top:8px}
+.dlg-hero .pr{text-align:right;white-space:nowrap}
+.dlg-hero .pr b{display:block;font-size:clamp(24px,3vw,36px);font-weight:300;line-height:1}
+.dlg-hero .pr span{font-size:11.5px;color:#c9d1d5}
+.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.spec{background:#fff;padding:clamp(12px,1.6vw,18px) clamp(12px,1.6vw,18px)}
+.spec i{display:grid;place-items:center;width:30px;height:30px;background:#f4e6e5;color:var(--red);margin-bottom:8px}
+.spec i svg{width:16px;height:16px}
+.spec small{display:block;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.spec b{display:block;font-size:clamp(14px,1.4vw,17px);font-weight:700;margin-top:2px;line-height:1.25}
+.dlg-note{padding:clamp(14px,1.8vw,20px) clamp(16px,2.4vw,28px);font-size:12.5px;color:var(--dim);display:grid;gap:6px}
+.dlg-note p::before{content:"";display:inline-block;width:6px;height:6px;background:var(--red);margin-right:8px;vertical-align:2px}
+.dlg-r{background:linear-gradient(180deg,#1f272d,#161c20);color:#fff;padding:clamp(20px,2.6vw,34px);overflow:auto;overscroll-behavior:contain;display:flex;flex-direction:column;gap:12px}
+.dlg-r .kick{color:#ff8f88}
+.dlg-r h4{font-size:clamp(20px,2vw,26px);font-weight:900;text-transform:uppercase;line-height:1.1}
+.dlg-r .sub{color:#a9b3b9;font-size:13px;margin-top:-4px}
+.dlg-r .dates input{padding:0 8px;letter-spacing:-.01em}
+.dgo{display:none}
+@media (max-width:860px){
+  .dlg{padding:0;place-items:end stretch}
+  .dlg-box{grid-template-columns:1fr;width:100%;height:100%;max-height:100%;overflow:auto;overscroll-behavior:contain;transform:translate3d(0,100%,0);transition:transform .55s var(--out),opacity .3s}
+  .dlg.open .dlg-box{transform:none}
+  .dlg-l,.dlg-r{overflow:visible}
+  .dlg-x{top:max(12px,env(safe-area-inset-top))}
+  .specs{grid-template-columns:repeat(2,1fr)}
+  .spec{display:grid;grid-template-columns:30px 1fr;column-gap:10px;align-items:center}
+  .spec i{grid-row:span 2;margin:0}
+  .dlg-r{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+  .dgo{display:flex;position:sticky;z-index:4;bottom:0;align-items:center;gap:12px;padding:10px var(--pad) calc(10px + env(safe-area-inset-bottom));background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);transition:transform .35s var(--out)}
+  .dgo.hide{transform:translate3d(0,110%,0)}
+  .dgo b{display:block;font-size:20px;font-weight:300;color:var(--red);line-height:1.1}
+  .dgo small{font-size:11px;color:var(--dim)}
+  .dgo .btn{margin-left:auto;height:46px;padding:0 20px}
+}
+
 @media (max-width:1100px){.fleet{grid-template-columns:repeat(3,1fr)}.tools{display:none}.bar nav{display:none}}
 
 /* ---------- phones and small tablets ---------- */
@@ -487,6 +540,35 @@ footer .made img{width:18px;height:18px}
 </div></section>
 </main>
 
+<div class="dlg" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dName" aria-hidden="true">
+  <div class="dlg-bg" data-close></div>
+  <div class="dlg-box">
+    <button class="dlg-x" type="button" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="dlg-l">
+      <div class="dlg-hero" id="dHero"></div>
+      <div class="specs" id="dSpecs"></div>
+      <div class="dlg-note" id="dNote"></div>
+      <div class="dgo" id="dGo"><div><b id="dGoP"></b><small>per day</small></div><button class="btn" type="button" id="dGoB">Enquire now</button></div>
+    </div>
+    <form class="dlg-r form" id="mf" novalidate>
+      <p class="kick">Enquire about this car</p>
+      <h4 id="dTitle">Book this car</h4>
+      <p class="sub">Pick your times and see the price. We confirm on WhatsApp.</p>
+      <div class="f2 dates">
+        <div class="fld"><label for="mFrom">Pickup</label><input id="mFrom" type="datetime-local"></div>
+        <div class="fld"><label for="mTo">Return</label><input id="mTo" type="datetime-local"></div>
+      </div>
+      <div class="est" id="mEst" aria-live="polite"></div>
+      <div class="fld"><label for="mName">Name</label><input id="mName" autocomplete="name" placeholder="Your name"></div>
+      <div class="fld"><label for="mPhone">WhatsApp number</label><input id="mPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile"></div>
+      <div class="fld"><label for="mNote">Anything else? <span style="text-transform:none;letter-spacing:0;font-weight:500">(optional)</span></label><input id="mNote" placeholder="Trip plan, pickup place, questions"></div>
+      <p class="err" id="mErr" role="alert"></p>
+      <button class="btn block" type="submit"><svg viewBox="0 0 32 32" fill="#fff"><path d="M16 3C9 3 3.4 8.6 3.4 15.5c0 2.3.6 4.5 1.8 6.4L3.3 29l7.3-1.9c1.8 1 3.9 1.5 6 1.5h.1c6.9 0 12.5-5.6 12.5-12.5S22.9 3 16 3z"/></svg>Send enquiry on WhatsApp</button>
+      <p class="fine">Bring your driving licence and an original ID at pickup.</p>
+    </form>
+  </div>
+</div>
+
 <a class="fab" id="fab" href="https://wa.me/919101583341" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 32 32" fill="#fff"><path d="M16 3C9 3 3.4 8.6 3.4 15.5c0 2.3.6 4.5 1.8 6.4L3.3 29l7.3-1.9c1.8 1 3.9 1.5 6 1.5h.1c6.9 0 12.5-5.6 12.5-12.5S22.9 3 16 3zm7.3 17.7c-.3.9-1.8 1.7-2.5 1.8-.6.1-1.5.1-2.4-.2-.5-.2-1.3-.4-2.2-.8-3.8-1.6-6.3-5.5-6.5-5.8-.2-.3-1.5-2-1.5-3.8s1-2.7 1.3-3.1c.3-.4.7-.5 1-.5h.7c.2 0 .5-.1.8.6.3.7 1 2.5 1.1 2.7.1.2.2.4 0 .7-.1.3-.2.4-.4.7l-.6.7c-.2.2-.4.4-.2.8.2.4 1 1.7 2.2 2.7 1.5 1.3 2.8 1.7 3.2 1.9.4.2.6.2.8-.1.2-.3 1-1.1 1.2-1.5.3-.4.5-.3.9-.2.4.1 2.3 1.1 2.7 1.3.4.2.7.3.8.4.1.2.1 1-.2 1.9z"/></svg></a>
 
 <footer><div class="wrap">
@@ -533,6 +615,38 @@ footer .made img{width:18px;height:18px}
     {n:"Kia Carens",img:"kia-carens",c:"mpv",p:3000,s:7},
     {n:"Innova Crysta",img:"innova-crysta",c:"mpv",p:4000,s:7}];
   function find(n){return CARS.filter(function(c){return c.n===n})[0]}
+  /* typical figures for each model (approximate; the exact variant may differ) */
+  var SPEC={
+    "Alto K10":["1.0 L","Petrol","67 PS","24 km/l","~140 km/h"],
+    "Swift":["1.2 L","Petrol","82 PS","24 km/l","~165 km/h"],
+    "Grand i10 Nios":["1.2 L","Petrol","83 PS","18 km/l","~165 km/h"],
+    "i20 (Optional)":["1.2 L","Petrol","83 PS","20 km/l","~170 km/h"],
+    "Swift Dzire":["1.2 L","Petrol","82 PS","24 km/l","~165 km/h"],
+    "Verna":["1.5 L","Petrol","115 PS","18 km/l","~190 km/h"],
+    "Punch":["1.2 L","Petrol","88 PS","20 km/l","~150 km/h"],
+    "Fronx":["1.2 L","Petrol","90 PS","21 km/l","~170 km/h"],
+    "Nexon":["1.2 L turbo","Petrol","120 PS","17 km/l","~180 km/h"],
+    "Brezza":["1.5 L","Petrol","103 PS","19 km/l","~170 km/h"],
+    "Venue":["1.2 L","Petrol","83 PS","17 km/l","~165 km/h"],
+    "XUV300":["1.2 L turbo","Petrol","110 PS","17 km/l","~170 km/h"],
+    "Kia Seltos":["1.5 L","Petrol","115 PS","17 km/l","~170 km/h"],
+    "Creta":["1.5 L","Petrol","115 PS","17 km/l","~180 km/h"],
+    "Thar":["2.2 L","Diesel","132 PS","15 km/l","~155 km/h"],
+    "Scorpio N":["2.2 L","Diesel","175 PS","15 km/l","~185 km/h"],
+    "XUV700":["2.2 L","Diesel","185 PS","16 km/l","~200 km/h"],
+    "Thar Roxx":["2.2 L","Diesel","175 PS","15 km/l","~170 km/h"],
+    "Ertiga":["1.5 L","Petrol","103 PS","20 km/l","~170 km/h"],
+    "Kia Carens":["1.5 L","Petrol","115 PS","16 km/l","~180 km/h"],
+    "Innova Crysta":["2.4 L","Diesel","150 PS","13 km/l","~180 km/h"]};
+  var IC={
+    mil:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v17M3 22h12M15 10h2a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V8l-3-3M6 8h6"/></svg>',
+    spd:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l4-4"/><path d="M3.3 19a10 10 0 1 1 17.4 0"/></svg>',
+    eng:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h2V7h4V5h4v2h3l2 3h2v6h-2l-2 3H8l-2-3H4z"/></svg>',
+    pwr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
+    gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><path d="M5 7v10M12 7v10M19 7v5H5"/></svg>',
+    fuel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12z"/></svg>',
+    seat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v10h10M7 13l-1 8M17 13l1 8M7 17h10"/></svg>',
+    km:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>'};
   function src(c){return "cars/"+c.img+".jpg"}
   function sm(c){return "cars/sm/"+c.img+".jpg"}
 
@@ -576,7 +690,7 @@ footer .made img{width:18px;height:18px}
   $("#tag").innerHTML='<span>'+FEAT[0].t+'</span> <b>'+FEAT[0].b+'</b>';$("#trk").style.width=(100/FEAT.length)+"%";
   $("#next").addEventListener("click",function(){go(i+1)});
   $("#prev").addEventListener("click",function(){go(i-1)});
-  $("#play").addEventListener("click",function(){toBook(FEAT[i].n)});
+  $("#play").addEventListener("click",function(){openCar(FEAT[i].n)});
   d.addEventListener("keydown",function(e){if(scrollY>innerHeight*.6||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==="ArrowRight")go(i+1);if(e.key==="ArrowLeft")go(i-1)});
   hero.addEventListener("mouseenter",function(){clearTimeout(timer)});hero.addEventListener("mouseleave",restart);
   d.addEventListener("visibilitychange",function(){if(d.hidden)clearTimeout(timer);else restart()});
@@ -595,7 +709,7 @@ footer .made img{width:18px;height:18px}
   $("#chips").innerHTML=cats.map(function(k){var n=k==="all"?CARS.length:CARS.filter(function(c){return c.c===k}).length;return '<button type="button" class="chip" data-cat="'+k+'" aria-pressed="'+(k===cur)+'">'+(k==="all"?"All cars":CAT[k])+'<small>'+n+'</small></button>'}).join("");
   function render(){var list=CARS.filter(function(c){return cur==="all"||c.c===cur});
     fleet.innerHTML=list.map(function(c){
-    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="Book '+c.n+'"><div class="pic2">'+(c.img?'<img src="'+sm(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="640" height="400">':'<span class="ph"><b>'+c.n+'</b><small>Photo coming soon</small></span>')+'<span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">'+ARROW+'</span></div></div></article>'}).join("");
+    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="See details for '+c.n+'"><div class="pic2">'+(c.img?'<img src="'+sm(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="640" height="400">':'<span class="ph"><b>'+c.n+'</b><small>Photo coming soon</small></span>')+'<span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">'+ARROW+'</span></div></div></article>'}).join("");
     fleet.scrollLeft=0;$("#fc").textContent=list.length+" car"+(list.length>1?"s":"");fbar()}
   var ftrk=$("#ftrk");
   function fbar(){var max=fleet.scrollWidth-fleet.clientWidth,w=max>0?fleet.clientWidth/fleet.scrollWidth:1;ftrk.style.width=(w*100)+"%";ftrk.style.transform="translate3d("+(max>0?fleet.scrollLeft/max*(1/w-1)*100:0)+"%,0,0)"}
@@ -618,7 +732,47 @@ footer .made img{width:18px;height:18px}
     el.innerHTML='<div><small>'+e.c.n+' · '+e.days+' day'+(e.days>1?'s':'')+'</small><b>'+inr(e.total)+'</b></div><small class="r">'+e.km+' km included<br>Extra km ₹10 · confirmed on WhatsApp</small>';el.classList.add("on")}
   [sel,$("#bFrom"),$("#bTo")].forEach(function(x){x.addEventListener("change",est);x.addEventListener("input",est)});est();
   function toBook(n){if(n){sel.value=n;est()}$("#book").scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},700)}
-  d.addEventListener("click",function(e){var p=e.target.closest("[data-pick]");if(p)toBook(p.dataset.pick)});
+  d.addEventListener("click",function(e){var p=e.target.closest("[data-pick]");if(p)openCar(p.dataset.pick)});
+
+  /* ---------- car detail panel with its own enquiry form ---------- */
+  var dlg=$("#dlg"),dCar=null,lastFocus=null,pushed=false;
+  function mCalc(){var a=new Date($("#mFrom").value),b=new Date($("#mTo").value);if(!dCar||isNaN(a)||isNaN(b)||b<=a)return null;var days=Math.max(1,Math.ceil((b-a)/864e5));return {c:dCar,a:a,b:b,days:days,total:days*dCar.p,km:days*KM[dCar.c]}}
+  function mEst(){var e=mCalc(),el=$("#mEst");if(!e){el.classList.remove("on");return}
+    el.innerHTML='<div><small>'+e.days+' day'+(e.days>1?'s':'')+'</small><b>'+inr(e.total)+'</b></div><small class="r">'+e.km+' km included<br>Extra km ₹10</small>';el.classList.add("on")}
+  ["change","input"].forEach(function(ev){$("#mFrom").addEventListener(ev,mEst);$("#mTo").addEventListener(ev,mEst)});
+  function openCar(n){var c=find(n);if(!c)return;dCar=c;var sp=SPEC[c.n]||["-","-","-","-","-"];
+    $("#dHero").innerHTML=(c.img?'<img src="'+src(c)+'" alt="'+c.n+'" decoding="async">':'<span class="ph">'+c.n+'</span>')+
+      '<div class="cap"><div><small>'+CAT[c.c]+'</small><h3 id="dName">'+c.n+'</h3></div><div class="pr"><b>'+inr(c.p)+'</b><span>per day</span></div></div>';
+    var rows=[["mil","Mileage",sp[3]],["spd","Top speed",sp[4]],["eng","Engine",sp[0]],["pwr","Power",sp[2]],["gear","Gearbox",c.auto?"Automatic":"Manual"],["fuel","Fuel",sp[1]],["seat","Seats",c.s+" seats"],["km","Km included",KM[c.c]+" km/day"]];
+    $("#dSpecs").innerHTML=rows.map(function(r){return '<div class="spec"><i>'+IC[r[0]]+'</i><small>'+r[1]+'</small><b>'+r[2]+'</b></div>'}).join("");
+    $("#dNote").innerHTML='<p>Extra km ₹10 each · late return ₹300 per hour</p><p>Bring your driving licence and an original ID at pickup</p><p style="font-size:11.5px">Specs are typical figures for this model. Your car\'s exact variant may differ.</p>';
+    $("#dTitle").textContent="Book the "+c.n;$("#dGoP").textContent=inr(c.p);$("#dGo").classList.remove("hide");
+    if(!$("#mFrom").value){$("#mFrom").value=$("#bFrom").value;$("#mTo").value=$("#bTo").value}
+    $("#mErr").textContent="";mEst();
+    lastFocus=d.activeElement;clearTimeout(timer);
+    d.documentElement.classList.add("lock");dlg.classList.add("open");dlg.setAttribute("aria-hidden","false");
+    $(".dlg-l",dlg).scrollTop=0;$(".dlg-box",dlg).scrollTop=0;
+    setTimeout(function(){$(".dlg-x",dlg).focus({preventScroll:true})},60);
+    if(!pushed){try{history.pushState({car:1},"");pushed=true}catch(e){}}}
+  function closeCar(fromPop){if(!dlg.classList.contains("open"))return;dlg.classList.remove("open");dlg.setAttribute("aria-hidden","true");d.documentElement.classList.remove("lock");
+    if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});restart();
+    if(pushed&&!fromPop){pushed=false;try{history.back()}catch(e){}}else pushed=false}
+  $("#dGoB").addEventListener("click",function(){$("#mf").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(function(){$("#mFrom").focus({preventScroll:true})},600)});
+  if("IntersectionObserver" in window)new IntersectionObserver(function(es){es.forEach(function(en){$("#dGo").classList.toggle("hide",en.isIntersecting)})},{root:null,threshold:.15}).observe($("#mf"));
+  addEventListener("popstate",function(){if(dlg.classList.contains("open")){pushed=false;closeCar(true)}});
+  $$("[data-close]",dlg).forEach(function(x){x.addEventListener("click",function(){closeCar()})});
+  d.addEventListener("keydown",function(e){if(!dlg.classList.contains("open"))return;if(e.key==="Escape")closeCar();
+    if(e.key==="Tab"){var f=$$("button,input,select,a[href]",dlg).filter(function(x){return x.offsetParent!==null});if(!f.length)return;var a=f[0],z=f[f.length-1];
+      if(e.shiftKey&&d.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&d.activeElement===z){e.preventDefault();a.focus()}}});
+  $("#mf").addEventListener("submit",function(e){e.preventDefault();
+    var er=$("#mErr"),x=mCalc(),nm=$("#mName").value.trim(),ph=$("#mPhone").value.replace(/\D/g,"").replace(/^(91|0)(?=\d{10}$)/,""),nt=$("#mNote").value.trim();
+    if(!x)return er.textContent="Please pick a return time after the pickup time.";
+    if(!nm)return er.textContent="Please add your name.";
+    if(!/^[6-9]\d{9}$/.test(ph))return er.textContent="Please add a 10-digit mobile number.";
+    er.textContent="";
+    var msg=["Hi BS Car Rentals, I'd like to book a car.","","Car: "+x.c.n+" ("+inr(x.c.p)+"/day)","Pickup: "+fmt(x.a),"Return: "+fmt(x.b),"Days: "+x.days+" · Estimate: "+inr(x.total)].concat(nt?["Note: "+nt]:[]).concat(["","Name: "+nm,"Phone: "+ph]).join("\n");
+    window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(msg),"_blank","noopener")});
+
   d.addEventListener("keydown",function(e){var p=e.target.closest&&e.target.closest("[data-pick]");if(p&&(e.key==="Enter"||e.key===" ")&&p.tagName!=="BUTTON"){e.preventDefault();toBook(p.dataset.pick)}});
   $("#bf").addEventListener("submit",function(e){e.preventDefault();
     var er=$("#bErr"),x=calc(),nm=$("#bName").value.trim(),ph=$("#bPhone").value.replace(/\D/g,"").replace(/^(91|0)(?=\d{10}$)/,"");
