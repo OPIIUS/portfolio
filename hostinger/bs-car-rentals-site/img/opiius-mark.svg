@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>OPIIUS</title>
+  <defs>
+    <radialGradient id="t" cx=".3" cy=".18" r="1">
+      <stop offset="0" stop-color="#3a3a41"/>
+      <stop offset=".45" stop-color="#141416"/>
+      <stop offset="1" stop-color="#070708"/>
+    </radialGradient>
+    <linearGradient id="r" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffc2b2"/>
+      <stop offset=".28" stop-color="#ff5530"/>
+      <stop offset=".62" stop-color="#e01e00"/>
+      <stop offset="1" stop-color="#7a0e00"/>
+    </linearGradient>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".75"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.4"/></filter>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="url(#t)"/>
+  <rect x=".5" y=".5" width="63" height="63" rx="14.5" fill="none" stroke="#fff" stroke-opacity=".1"/>
+  <!-- ring: an O with a gap at the top right, where the spark sits -->
+  <path d="M46.1 26.9A15 15 0 1 1 37.1 17.9" fill="none" stroke="#ff3d1f" stroke-width="8" stroke-linecap="round" filter="url(#glow)" opacity=".55"/>
+  <path d="M46.1 26.9A15 15 0 1 1 37.1 17.9" fill="none" stroke="url(#r)" stroke-width="7.5" stroke-linecap="round"/>
+  <path d="M46.1 26.9A15 15 0 1 1 37.1 17.9" fill="none" stroke="url(#g)" stroke-width="2" stroke-linecap="round" transform="translate(-.6 -.9)"/>
+  <path d="M43 15.6l1.5 4.3 4.3 1.5-4.3 1.5-1.5 4.3-1.5-4.3-4.3-1.5 4.3-1.5z" fill="#fff"/>
+</svg>
