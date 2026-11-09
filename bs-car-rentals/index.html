@@ -6,225 +6,261 @@
 <title>BS Car Rentals · Self-drive cars in Guwahati from ₹1,500/day</title>
 <meta name="description" content="Self-drive car rental in Guwahati. Hatchbacks, sedans, SUVs and 7-seaters from ₹1,500 a day. Pick your car and book on WhatsApp. Lokhra, Guwahati.">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#111416">
+<meta name="theme-color" content="#1f272c">
 <link rel="icon" href="/assets/site/logo/opiius-mark.svg" type="image/svg+xml">
 <link rel="preload" as="image" href="cars/thar-roxx.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap">
 <style>
-:root{--bg:#e9ecee;--paper:#f7f8f9;--ink:#111416;--ink2:#3b4146;--dim:#6b7378;--line:#d4d9dd;--dark:#111416;--dark2:#1a1f22;--red:#e5322d;--wa:#1faa59;
-  --ease:cubic-bezier(.77,0,.18,1);--out:cubic-bezier(.22,1,.36,1)}
+:root{--char:#222b31;--char2:#1a2126;--char3:#2c363d;--red:#cf3129;--red2:#a91f19;--ink:#14191c;--ink2:#3b4449;--dim:#6c767c;--line:#e2e6e8;--bg:#f5f6f7;--wa:#1faa59;
+  --ease:cubic-bezier(.77,0,.18,1);--out:cubic-bezier(.22,1,.36,1);--f:Montserrat,system-ui,sans-serif}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:20px;background:var(--bg)}
-body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-h1,h2,h3,h4{margin:0;font-weight:400;letter-spacing:-.02em;line-height:1.1}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4{margin:0;line-height:1.05}
 p{margin:0}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
 button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 [hidden]{display:none!important}
+.o{color:transparent;-webkit-text-stroke:1.5px currentColor}
 
-/* buttons: white block + square arrow block, as in the hero */
-.cta{display:inline-flex;align-items:stretch;height:52px;border:0;padding:0;background:none}
-.cta b{display:flex;align-items:center;padding:0 30px;background:#fff;color:var(--ink);font-weight:500;font-size:15px;transition:background .25s}
-.cta i{display:grid;place-items:center;width:52px;background:#3a4044;color:#fff;font-style:normal;font-size:18px;transition:background .25s,transform .25s}
-.cta:hover i{background:var(--red)}
-.cta.wa b{background:var(--wa);color:#fff}
-.cta.wa i{background:#168546}
-.cta.block{width:100%}.cta.block b{flex:1;justify-content:center}
+/* ---------- INTRO ---------- */
+.intro{position:fixed;inset:0;z-index:100;background:#fff;display:grid;place-items:center;transition:opacity .5s ease,visibility .5s}
+.intro.out{opacity:0;visibility:hidden}
+.intro .in{text-align:center;opacity:0;transform:translateY(10px);animation:introIn .6s var(--out) .1s forwards}
+.intro .em{width:58px;height:58px;margin:0 auto}
+.intro .t1{margin-top:12px;font-weight:800;font-size:22px;letter-spacing:.06em;color:var(--red);-webkit-text-stroke:1px var(--red);color:transparent}
+.intro .t2{display:inline-block;margin-top:4px;background:var(--red);color:#fff;font-weight:800;font-size:20px;letter-spacing:.05em;padding:3px 12px}
+@keyframes introIn{to{opacity:1;transform:none}}
 
-/* ---------- HERO SHOWCASE ---------- */
-.hero{position:relative;height:100svh;min-height:620px;max-height:980px;background:var(--dark);color:#fff;overflow:hidden;isolation:isolate}
-.stage{position:absolute;inset:0}
+/* ---------- HERO ---------- */
+.hero{position:relative;height:100svh;min-height:640px;max-height:1000px;background:var(--bg);overflow:hidden}
+.side{position:absolute;left:0;top:0;width:21vw;height:82.6%;background:linear-gradient(180deg,#2b343a,#1f272c)}
+.pic{position:absolute;left:21vw;right:0;top:0;height:82.6%;overflow:hidden;background:var(--char2)}
 .shot{position:absolute;inset:0;overflow:hidden}
-.inner{position:absolute;inset:0;background:radial-gradient(90% 80% at 62% 55%,#2c3337 0,#171b1e 55%,#0d1012 100%)}
-.inner::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.035) 0 8%,transparent 8% 20%,rgba(255,255,255,.03) 20% 23%,transparent 23% 70%,rgba(255,255,255,.025) 70% 74%,transparent 74%)}
-.shot .car{position:absolute;left:56%;bottom:7%;width:min(66vw,980px);transform:translate3d(-42%,0,0);
-  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 20%,#000 80%,transparent 100%);-webkit-mask-composite:source-in;
-  mask-image:linear-gradient(180deg,transparent 0,#000 13%,#000 86%,transparent 100%),linear-gradient(90deg,transparent 0,#000 20%,#000 80%,transparent 100%);mask-composite:intersect;opacity:.9}
-.inner::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(13,16,18,.92) 0,rgba(13,16,18,.55) 26%,rgba(13,16,18,0) 52%),linear-gradient(90deg,#0f1214 0,rgba(15,18,20,.7) 28%,rgba(15,18,20,0) 48%)}
-.shot .floor{position:absolute;left:0;right:0;bottom:0;height:24%;background:linear-gradient(180deg,rgba(17,20,22,0),#111416)}
-/* the wipe: the new slide slides in from the right while its content slides the other way,
-   so it looks like a curtain revealing it; transforms only, so it runs on the graphics chip */
-.shot.in{transform:translate3d(100%,0,0);animation:slide 1.15s var(--ease) forwards;will-change:transform}
-.shot.in>.inner{transform:translate3d(-100%,0,0);animation:slide 1.15s var(--ease) forwards;will-change:transform}
-.shot.in .car{animation:settle 1.6s var(--out) both}
+.inner{position:absolute;inset:0}
+.inner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 62%}
+/* grading: darken, teal-black shadows and the red "ceiling light" glow of the reference */
+.inner::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(18,24,28,.78) 0,rgba(18,24,28,.25) 38%,rgba(18,24,28,.35) 70%,rgba(18,24,28,.9) 100%),linear-gradient(90deg,rgba(26,33,38,.85) 0,rgba(26,33,38,.2) 30%,rgba(26,33,38,0) 60%,rgba(18,24,28,.35) 100%)}
+.inner::after{content:"";position:absolute;inset:0;z-index:2;background:radial-gradient(40% 22% at 26% 4%,rgba(225,30,30,.75),rgba(225,30,30,0) 70%),radial-gradient(30% 10% at 22% 20%,rgba(225,30,30,.55),rgba(225,30,30,0) 70%),radial-gradient(28% 8% at 24% 31%,rgba(225,30,30,.4),rgba(225,30,30,0) 70%)}
+.shot.in{transform:translate3d(100%,0,0);animation:slide 1.1s var(--ease) forwards;will-change:transform}
+.shot.in>.inner{transform:translate3d(-100%,0,0);animation:slide 1.1s var(--ease) forwards;will-change:transform}
+.shot.in img{animation:zoom 1.8s var(--out) both}
 @keyframes slide{to{transform:translate3d(0,0,0)}}
-@keyframes settle{from{transform:translate3d(-38%,0,0) scale(1.05)}}
-/* the sweeping edge of the wipe */
-.edge{position:absolute;top:0;bottom:0;width:22%;right:-22%;z-index:2;background:linear-gradient(90deg,rgba(13,16,18,0),#0d1012 60%);pointer-events:none}
-.edge.go{animation:edge 1.15s var(--ease) forwards;will-change:transform}
-@keyframes edge{from{transform:translate3d(0,0,0)}to{transform:translate3d(-555%,0,0)}}
+@keyframes zoom{from{transform:scale(1.08)}}
+.edge{position:absolute;top:0;bottom:0;right:-26%;width:26%;z-index:3;background:linear-gradient(90deg,rgba(26,33,38,0),#1a2126 70%);pointer-events:none}
+.edge.go{animation:edge 1.1s var(--ease) forwards;will-change:transform}
+@keyframes edge{to{transform:translate3d(-490%,0,0)}}
 
-.top{position:absolute;z-index:5;left:0;right:0;top:0;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:20px;padding:30px 4vw}
-.brand{font-size:21px;font-weight:500;letter-spacing:-.01em;justify-self:start}
-.brand::after{content:"";display:block;width:26px;height:2px;background:#fff;margin-top:10px}
-.tagline{font-size:13.5px;color:#d5dade;text-align:center;max-width:46ch}
-.top .see{justify-self:end;font-size:13.5px;color:#d5dade;display:flex;gap:8px;align-items:center;transition:color .2s}
-.top .see:hover{color:#fff}
+.logo{position:absolute;z-index:6;left:2.6vw;top:26px;display:flex;align-items:center;gap:12px;color:#fff}
+.em{width:64px;height:64px;flex:none}
+.tools{position:absolute;z-index:6;left:14.6vw;top:22px;display:flex;gap:14px;align-items:center;color:#d6dce0;font-size:12px;font-weight:600}
+.tools a{display:grid;place-items:center;width:28px;height:28px}
+.tools svg{width:17px;height:17px}
+.prog{position:absolute;z-index:6;left:26.5vw;top:28px;display:flex;align-items:center;gap:14px;color:#fff;font-size:12px;font-weight:600}
+.prog .bar{width:min(21vw,300px);height:2px;background:rgba(255,255,255,.28);position:relative;overflow:hidden}
+.prog .bar span{position:absolute;left:0;top:0;bottom:0;background:#fff;width:20%;transition:width .9s var(--out)}
+.burger{position:absolute;z-index:8;right:2.6vw;top:22px;width:40px;height:40px;border:0;background:none;display:grid;place-items:center}
+.burger span{display:block;width:20px;height:2px;background:#fff;box-shadow:0 6px 0 #fff,0 -6px 0 #fff;transition:transform .3s,box-shadow .3s}
+.menu-open .burger span{transform:rotate(45deg);box-shadow:0 0 0 #fff,0 0 0 #fff}
+.menu-open .burger span::after{content:"";display:block;width:20px;height:2px;background:#fff;transform:rotate(-90deg)}
 
-.copy{position:absolute;z-index:5;left:4vw;top:50%;transform:translateY(-44%);width:min(36vw,440px)}
-.count{display:flex;align-items:center;gap:12px;font-size:12.5px;color:#aeb6bc;letter-spacing:.08em}
-.count .bar{width:80px;height:2px;background:rgba(255,255,255,.18);position:relative;overflow:hidden}
-.count .bar span{position:absolute;inset:0;background:#fff;transform-origin:left;transform:scaleX(0)}
-.count .bar span.run{animation:prog var(--dur,6s) linear forwards}
-@keyframes prog{to{transform:scaleX(1)}}
-.copy h1{font-size:clamp(40px,4.6vw,64px);margin-top:22px}
-.copy .dash{width:34px;height:2px;background:#fff;margin:22px 0}
-.copy p.lead{font-size:clamp(19px,1.9vw,26px);line-height:1.3;color:#eef1f3;max-width:18ch}
-.copy .price{margin-top:16px;color:#aeb6bc;font-size:14.5px}
-.copy .price b{color:#fff;font-weight:500;font-size:18px}
-.copy .cta{margin-top:30px}
-.txt{transition:opacity .45s,transform .6s var(--out)}
-.swap .txt{opacity:0;transform:translateY(14px)}
+.vt{position:absolute;z-index:5;left:10.4vw;bottom:calc(17.4% + 11vh);writing-mode:vertical-rl;transform:rotate(180deg);display:flex;flex-direction:column;gap:.06em;font-weight:900;font-size:min(9.6vh,7.4vw);line-height:.9;letter-spacing:.01em;text-transform:uppercase;color:#fff}
+.vt span{white-space:nowrap;display:block}
+.vt .o{-webkit-text-stroke:1.3px #9aa6ad;font-weight:800}
+.vsub{position:absolute;z-index:5;left:calc(10.4vw + min(18.6vh,14.3vw));bottom:calc(17.4% + 11vh);writing-mode:vertical-rl;transform:rotate(180deg);color:#cfd6da;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.tag{position:absolute;z-index:5;right:13vw;bottom:calc(17.4% + 11.5vh);color:#e9edef;font-size:clamp(22px,2.8vw,38px);font-weight:300;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tag b{font-weight:800;color:#fff}
 
-.foot{position:absolute;z-index:5;left:4vw;bottom:4.5%;font-size:12px;color:#8f989e}
-.arrows{position:absolute;z-index:5;left:4vw;bottom:calc(4.5% + 30px);display:flex;gap:8px}
-.arrows button{width:42px;height:42px;border:1px solid rgba(255,255,255,.22);background:none;color:#fff;font-size:16px;transition:background .2s}
-.arrows button:hover{background:rgba(255,255,255,.1)}
+.panel{position:absolute;z-index:6;left:12.9vw;right:12.9vw;bottom:8%;height:19%;min-height:140px;display:flex;background:linear-gradient(90deg,#c9302a,#d6413a 55%,#c42d27);box-shadow:0 24px 50px -24px rgba(120,10,10,.6)}
+.thumb{position:relative;flex:none;width:28.7%;margin:7px;overflow:hidden;background:#111}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 60%;filter:none}
+.thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,24,28,.15),rgba(18,24,28,.45))}
+.thumb .ti{position:absolute;inset:0;transition:transform .8s var(--ease)}
+.play{position:absolute;z-index:3;left:calc(28.7% + 7px);top:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;border:5px solid rgba(255,255,255,.35);background:#fff;color:var(--red);display:grid;place-items:center;font-size:18px;font-weight:800;background-clip:padding-box;transition:transform .3s var(--out)}
+.play:hover{transform:translate(-50%,-50%) scale(1.08)}
+.pv{position:relative;flex:1;overflow:hidden}
+.pvi{position:absolute;inset:0;display:flex;align-items:center;padding:0 3.2vw 0 4vw;gap:0;color:#fff;transition:transform .8s var(--ease),opacity .6s}
+.pvi.up{transform:translate3d(0,-100%,0);opacity:0}
+.pvi.down{transform:translate3d(0,100%,0);opacity:0}
+.sp{flex:1;padding:0 2vw;border-left:1px solid rgba(255,255,255,.25)}
+.sp:first-child{border-left:0;padding-left:0}
+.sp small{display:block;font-size:13px;font-weight:700;letter-spacing:.01em}
+.sp b{display:block;font-weight:300;font-size:clamp(22px,2.6vw,36px);letter-spacing:-.01em;line-height:1.15;white-space:nowrap}
+.sp b em{font-style:normal;font-size:.62em}
+.pbtn{flex:none;height:42px;padding:0 20px;border:0;background:#fff;color:var(--red);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 10px 20px -10px rgba(0,0,0,.5);transition:transform .25s}
+.pbtn:hover{transform:translateY(-2px)}
+.arr{position:absolute;z-index:6;right:3.4vw;bottom:calc(17.4% + 14px);display:flex;gap:18px}
+.arr button{width:40px;height:40px;border:0;background:none;color:#fff;font-size:20px;display:grid;place-items:center;transition:transform .2s}
+.arr button:hover{transform:scale(1.2)}
+.social{position:absolute;z-index:6;left:2.6vw;bottom:calc(17.4% + 2.4vh);display:flex;gap:20px;color:#fff}
+.social a{display:grid;place-items:center;width:24px;height:24px;opacity:.9}
+.social svg{width:17px;height:17px}
+
+/* hero entrance after the intro */
+.hero .ent{opacity:0;transform:translate3d(0,26px,0);transition:opacity .9s var(--out),transform .9s var(--out)}
+.hero .vt.ent{transform:rotate(180deg) translate3d(0,-26px,0)}
+.hero .vsub.ent{transform:rotate(180deg) translate3d(0,-26px,0)}
+.ready .ent{opacity:1;transform:none}
+.ready .vt.ent,.ready .vsub.ent{transform:rotate(180deg)}
+.hero .pic{clip-path:inset(0 0 0 100%);transition:clip-path 1.1s var(--ease)}
+.ready .pic{clip-path:inset(0 0 0 0)}
+
+/* full-screen menu */
+.nav{position:fixed;inset:0;z-index:7;background:rgba(26,33,38,.97);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:0 10vw;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.menu-open .nav{opacity:1;visibility:visible}
+.nav a{font-size:clamp(34px,6vw,72px);font-weight:800;text-transform:uppercase;line-height:1.15;letter-spacing:-.01em;transition:color .2s,transform .4s var(--out);transform:translateX(-20px)}
+.menu-open .nav a{transform:none}
+.nav a:hover{color:var(--red)}
+.nav p{margin-top:30px;color:#9aa6ad;font-size:15px}
+.menu-open .burger{position:fixed}
 
 /* ---------- SECTIONS ---------- */
 .sec{padding:110px 0 0}
-.kick{display:flex;align-items:center;gap:12px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
-.kick::before{content:"";width:26px;height:2px;background:var(--ink)}
-.h2{font-size:clamp(34px,4.4vw,56px);margin-top:18px}
-.h2 .f{color:#9aa3a9}
-.lead2{color:var(--dim);font-size:17px;max-width:46ch;margin-top:16px}
-.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:34px}
-.rv{opacity:0;transform:translateY(24px);transition:opacity .9s var(--out),transform .9s var(--out);transition-delay:var(--d,0s)}
+.kick{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.h2{font-size:clamp(36px,5vw,64px);font-weight:900;text-transform:uppercase;letter-spacing:-.01em;margin-top:14px}
+.h2 .o{-webkit-text-stroke:1.5px var(--ink);font-weight:800}
+.lead2{color:var(--dim);font-size:16.5px;max-width:46ch;margin-top:16px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:36px}
+.rv{opacity:0;transform:translate3d(0,26px,0);transition:opacity .9s var(--out),transform .9s var(--out);transition-delay:var(--d,0s)}
 .rv.in{opacity:1;transform:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:54px;padding:0 28px;border:0;background:var(--red);color:#fff;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;box-shadow:0 14px 26px -14px rgba(160,20,20,.8);transition:transform .25s,background .2s}
+.btn:hover{transform:translateY(-2px);background:#bb2a23}
+.btn svg{width:20px;height:20px}
+.btn.block{width:100%}
 
 /* booking */
-.book{background:var(--dark);color:#fff;padding:70px 0}
-.book .grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;align-items:start}
-.book .kick{color:#aeb6bc}.book .kick::before{background:#fff}
-.book .h2 .f{color:#7d878d}
-.book .lead2{color:#aeb6bc}
+.book{background:linear-gradient(180deg,#222b31,#1a2126);color:#fff;padding:80px 0;margin-top:0}
+.book .grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start}
+.book .h2 .o{-webkit-text-stroke:1.5px #fff}
+.book .lead2{color:#aab4ba}
 .form{display:grid;gap:14px}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .f2>*,.form>*{min-width:0}
-.fld label{display:block;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#aeb6bc;margin-bottom:8px}
-.fld input,.fld select{width:100%;min-width:0;height:52px;border:1px solid #3a4246;background:var(--dark2);color:#fff;padding:0 14px;font-size:16px;border-radius:0;outline:none;transition:border-color .2s;color-scheme:dark}
-.fld input:focus,.fld select:focus{border-color:#fff}
+.fld label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#aab4ba;margin-bottom:8px}
+.fld input,.fld select{width:100%;min-width:0;height:54px;border:1px solid #39444b;background:#283238;color:#fff;padding:0 14px;font-size:16px;border-radius:0;outline:none;transition:border-color .2s;color-scheme:dark}
+.fld input:focus,.fld select:focus{border-color:var(--red)}
 .fld select option,.fld select optgroup{color:#111;background:#fff}
-.est{display:none;border:1px solid #3a4246;padding:14px 16px}
+.est{display:none;background:var(--red);padding:14px 18px}
 .est.on{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.est b{font-size:26px;font-weight:500;letter-spacing:-.02em;display:block}
-.est small{display:block;color:#aeb6bc;font-size:13px}
-.err{color:#ff7b74;font-size:14px;min-height:1em}
-.fine{color:#8f989e;font-size:13px}
+.est b{display:block;font-size:30px;font-weight:300;letter-spacing:-.01em}
+.est small{display:block;font-size:12.5px;font-weight:600;color:#ffe2df}
+.err{color:#ff8f88;font-size:14px;font-weight:600;min-height:1em}
+.fine{color:#8f9aa1;font-size:13px}
 
 /* fleet */
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:26px}
-.chip{height:40px;padding:0 16px;border:1px solid var(--line);background:none;font-size:14px;color:var(--ink2);transition:background .2s,color .2s,border-color .2s}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+.chip{height:42px;padding:0 18px;border:1px solid #cfd5d8;background:#fff;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);transition:background .2s,color .2s,border-color .2s}
 .chip small{color:var(--dim);margin-left:6px}
-.chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
-.chip[aria-pressed=true] small{color:#aeb6bc}
-.fleet{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--line);border:2px solid var(--line)}
-.carc{background:var(--paper);display:flex;flex-direction:column;cursor:pointer;position:relative}
-.carc .pic{position:relative;aspect-ratio:8/5;overflow:hidden;background:#dfe4e8}
-.carc .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 65%;transition:transform .8s var(--out)}
-.carc:hover .pic img{transform:scale(1.05)}
-.carc .tg{position:absolute;left:12px;top:12px;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.9);padding:4px 8px}
-.carc .tg.auto{left:auto;right:12px;background:var(--ink);color:#fff}
-.carc .bd{padding:18px 18px 20px;display:flex;flex-direction:column;flex:1}
-.carc h3{font-size:20px}
-.carc .meta{color:var(--dim);font-size:13.5px;margin-top:4px}
-.carc .row{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:auto;padding-top:16px}
-.carc .pr{font-size:22px;font-weight:500;letter-spacing:-.02em}
-.carc .pr small{font-size:13px;color:var(--dim);font-weight:400}
-.carc .go{font-size:14px;font-weight:500;display:flex;gap:6px;align-items:center}
+.chip[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.chip[aria-pressed=true] small{color:#ffd9d6}
+.fleet{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.carc{background:#fff;display:flex;flex-direction:column;cursor:pointer;position:relative;box-shadow:0 1px 2px rgba(0,0,0,.04),0 18px 36px -24px rgba(0,0,0,.25);transition:transform .35s var(--out),box-shadow .35s}
+.carc:hover{transform:translateY(-4px);box-shadow:0 2px 4px rgba(0,0,0,.05),0 30px 50px -26px rgba(0,0,0,.35)}
+.carc .pic2{position:relative;aspect-ratio:8/5;overflow:hidden;background:#1a2126}
+.carc .pic2 img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 62%;transition:transform .8s var(--out)}
+.carc .pic2::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,24,28,.25),rgba(18,24,28,0) 40%,rgba(18,24,28,.35))}
+.carc:hover .pic2 img{transform:scale(1.06)}
+.carc .tg{position:absolute;z-index:1;left:0;top:12px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:#fff;padding:5px 10px}
+.carc .tg.auto{left:auto;right:0;background:#fff;color:var(--ink)}
+.carc .bd{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
+.carc h3{font-size:18px;font-weight:800;text-transform:uppercase;letter-spacing:.01em}
+.carc .meta{color:var(--dim);font-size:13px;margin-top:4px}
+.carc .row{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:auto;padding-top:14px}
+.carc .pr{font-size:24px;font-weight:300;letter-spacing:-.01em;color:var(--red)}
+.carc .pr small{font-size:12.5px;color:var(--dim)}
+.carc .go{font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;display:flex;gap:6px;align-items:center}
 .carc .go i{font-style:normal;color:var(--red);transition:transform .3s}
 .carc:hover .go i{transform:translateX(4px)}
-.note{color:var(--dim);font-size:14px;margin-top:16px}
+.note{color:var(--dim);font-size:14px;margin-top:18px}
 .note small{display:block;margin-top:4px;font-size:12.5px}
 
 /* steps */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
-.stp{padding:28px 24px 0 0}
-.stp .n{font-size:13px;color:var(--dim);letter-spacing:.08em}
-.stp h3{font-size:22px;margin-top:14px}
-.stp p{color:var(--dim);font-size:15px;margin-top:8px;max-width:30ch}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.stp{background:#fff;padding:28px 24px;position:relative;overflow:hidden}
+.stp .n{position:absolute;right:14px;top:6px;font-size:64px;font-weight:900;color:transparent;-webkit-text-stroke:1.2px #e3e7ea;line-height:1}
+.stp h3{font-size:17px;font-weight:800;text-transform:uppercase;margin-top:38px}
+.stp p{color:var(--dim);font-size:14.5px;margin-top:8px}
+.stp::before{content:"";position:absolute;left:24px;top:28px;width:28px;height:3px;background:var(--red)}
 
 /* docs + rules */
-.two{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border:2px solid var(--line)}
-.panel{background:var(--paper);padding:34px}
-.panel.dk{background:var(--dark);color:#fff}
-.panel h3{font-size:26px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel2{background:#fff;padding:34px}
+.panel2.dk{background:linear-gradient(160deg,#2b343a,#1f272c);color:#fff}
+.panel2 h3{font-size:20px;font-weight:800;text-transform:uppercase}
 .ul{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:16px}
-.ul li{display:grid;grid-template-columns:22px 1fr;gap:12px}
-.ul li::before{content:"";width:14px;height:2px;background:currentColor;margin-top:12px}
-.ul small{display:block;color:#aeb6bc;font-size:14px;margin-top:2px}
-.rl{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin-top:16px}
+.ul li{display:grid;grid-template-columns:22px 1fr;gap:12px;font-weight:600}
+.ul li::before{content:"";width:12px;height:12px;background:var(--red);margin-top:6px}
+.ul small{display:block;color:#aab4ba;font-size:14px;font-weight:400;margin-top:2px}
+.rl{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;margin-top:14px}
 .rl div{padding:14px 0;border-bottom:1px solid var(--line)}
-.rl b{display:block;font-weight:500;font-size:15px}
+.rl b{display:block;font-weight:700;font-size:14.5px}
 .rl span{color:var(--dim);font-size:14px}
 details.more{margin-top:18px}
-details.more summary{cursor:pointer;font-weight:500;display:inline-flex;gap:8px}
-details.more summary::after{content:"→";color:var(--red)}
+details.more summary{cursor:pointer;font-weight:800;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
 details.more ol{color:var(--dim);font-size:14.5px;padding-left:20px;margin:12px 0 0;display:grid;gap:8px}
 
 /* faq */
-.faq{border-top:1px solid var(--line);max-width:860px}
-.q{border-bottom:1px solid var(--line)}
-.q summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:22px 0;font-size:19px}
+.faq{max-width:880px;display:grid;gap:10px}
+.q{background:#fff}
+.q summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;padding:20px 24px;font-weight:700;font-size:16.5px}
 .q summary::-webkit-details-marker{display:none}
-.q summary::after{content:"+";font-size:22px;line-height:1;color:var(--dim);transition:transform .3s}
+.q summary::after{content:"+";font-size:24px;line-height:1;color:var(--red);transition:transform .3s}
 .q[open] summary::after{transform:rotate(45deg)}
-.q p{color:var(--dim);padding:0 0 22px;max-width:62ch}
+.q p{color:var(--dim);padding:0 24px 22px;max-width:64ch}
 
-/* map */
-.map{position:relative;margin-top:2px;border:2px solid var(--line);border-top:0;height:420px;background:#dfe4e8}
+/* contact + map */
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ct{background:#fff;padding:26px;display:block;transition:transform .3s var(--out)}
+.ct:hover{transform:translateY(-3px)}
+.ct small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--red)}
+.ct b{display:block;font-size:24px;font-weight:300;margin-top:10px}
+.ct span{display:block;color:var(--dim);font-size:14px;margin-top:6px}
+.map{position:relative;margin-top:16px;height:420px;background:#dfe4e8;overflow:hidden}
 .map iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(1) contrast(1.05)}
-.map .pin{position:absolute;left:24px;bottom:24px;width:min(340px,calc(100% - 48px));background:var(--dark);color:#fff;padding:24px}
-.map .pin small{display:block;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#aeb6bc}
-.map .pin>b{display:block;font-size:22px;font-weight:400;margin-top:8px}
-.map .pin p{color:#aeb6bc;font-size:14.5px;margin-top:6px}
-.map .pin .cta{margin-top:18px;height:46px}
-.map .pin .cta b{font-size:14px;margin:0;padding:0 22px}
-.map .pin .cta i{width:46px}
-/* contact + footer */
-.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:2px solid var(--line)}
-.ct{background:var(--paper);padding:28px;display:block;transition:background .2s}
-.ct:hover{background:#fff}
-.ct small{display:block;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
-.ct b{display:block;font-size:24px;font-weight:400;margin-top:10px;letter-spacing:-.02em}
-.ct span{display:flex;gap:6px;color:var(--dim);font-size:14px;margin-top:8px}
-.ct span i{font-style:normal;color:var(--red)}
-footer{margin-top:110px;background:var(--dark);color:#aeb6bc;padding:56px 0 0;overflow:hidden}
+.map .pin{position:absolute;left:24px;bottom:24px;width:min(340px,calc(100% - 48px));background:linear-gradient(90deg,#c9302a,#d6413a);color:#fff;padding:24px}
+.map .pin small{display:block;font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ffd9d6}
+.map .pin>b{display:block;font-size:22px;font-weight:800;text-transform:uppercase;margin-top:6px}
+.map .pin p{color:#ffe2df;font-size:14px;margin-top:4px}
+.map .pin .btn{margin-top:16px;height:46px;background:#fff;color:var(--red);box-shadow:none}
+
+footer{margin-top:110px;background:linear-gradient(180deg,#222b31,#1a2126);color:#aab4ba;padding:56px 0 0;overflow:hidden}
 footer .cols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:24px}
-footer h4{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:#fff;margin-bottom:12px;font-weight:500}
+footer h4{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin-bottom:12px}
 footer p,footer a{font-size:14.5px}
-footer .b{color:#fff;font-size:21px;font-weight:500}
-footer .b::after{content:"";display:block;width:26px;height:2px;background:#fff;margin:10px 0 14px}
-footer .fb{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:40px;padding-top:20px;border-top:1px solid #2a3034;font-size:13px}
+footer .b{display:flex;align-items:center;gap:12px;color:#fff;font-weight:800;font-size:18px;text-transform:uppercase;margin-bottom:12px}
+footer .b .em{width:44px;height:44px}
+footer .fb{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:40px;padding-top:20px;border-top:1px solid #333e45;font-size:13px}
 footer .made{display:inline-flex;gap:8px;align-items:center;color:#fff}
 footer .made img{width:18px;height:18px}
-.word{font-size:clamp(56px,13vw,200px);font-weight:500;letter-spacing:-.05em;line-height:.8;white-space:nowrap;text-align:center;color:transparent;background:linear-gradient(180deg,#2a3135,rgba(17,20,22,0));-webkit-background-clip:text;background-clip:text;margin-top:30px;transform:translateY(10%);user-select:none}
+.word{font-size:clamp(56px,12.5vw,190px);font-weight:900;text-transform:uppercase;letter-spacing:-.02em;line-height:.8;white-space:nowrap;text-align:center;color:transparent;-webkit-text-stroke:1.2px #3a454c;margin-top:34px;transform:translateY(12%);user-select:none}
 .fab{position:fixed;z-index:40;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;background:var(--wa);display:grid;place-items:center;box-shadow:0 12px 26px -8px rgba(0,0,0,.45);opacity:0;transform:translateY(20px);transition:opacity .4s,transform .4s;pointer-events:none}
 .fab.show{opacity:1;transform:none;pointer-events:auto}
 .fab svg{width:30px;height:30px}
 
-@media (min-width:861px) and (max-width:1180px){.shot .car{left:63%;width:62vw}}
-@media (max-width:1000px){.fleet{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:1fr 1fr;row-gap:30px}}
+@media (max-width:1100px){.fleet{grid-template-columns:repeat(3,1fr)}.steps{grid-template-columns:1fr 1fr}.tools{display:none}}
 @media (max-width:860px){
-  .top{grid-template-columns:1fr auto;padding:22px 20px}.tagline{display:none}
-  .hero{height:auto;min-height:0;max-height:none;padding-bottom:30px}
-  .stage{position:relative;height:52vh;min-height:300px}
-  .inner{background:linear-gradient(180deg,#1d2226,#111416)}
-  .inner::after{background:linear-gradient(180deg,rgba(13,16,18,.85) 0,rgba(13,16,18,0) 40%)}
-  .shot .car{width:118vw;left:50%;bottom:0;transform:translate3d(-50%,0,0)}
-  .shot.in .car{animation:none}
-  .edge{height:52vh;min-height:300px;bottom:auto}
-  .copy{position:relative;left:auto;top:auto;transform:none;width:auto;padding:0 20px;margin-top:-10px}
-  .copy h1{margin-top:16px}.copy .dash{margin:16px 0}
-  .foot{display:none}
-  .arrows{left:auto;right:20px;bottom:auto;top:calc(max(52vh,300px) - 8px)}
-  .arrows button{width:38px;height:38px}
+  .hero{height:auto;min-height:0;max-height:none;padding-bottom:26px}
+  .side,.social,.tools,.vsub{display:none}
+  .pic{position:relative;left:0;height:64vh;min-height:360px}
+  .inner::before{background:linear-gradient(180deg,rgba(18,24,28,.7) 0,rgba(18,24,28,.15) 35%,rgba(18,24,28,.35) 65%,rgba(18,24,28,.92) 100%)}
+  .logo{left:16px;top:16px}.em{width:52px;height:52px}
+  .prog{left:auto;right:64px;top:28px}.prog .bar{width:70px}
+  .burger{right:12px;top:18px}
+  .vt{left:14px;bottom:auto;top:96px;font-size:min(9.6vw,52px)}
+  .tag{right:16px;bottom:auto;top:calc(max(64vh,360px) - 112px);font-size:20px}
+  .arr{right:8px;bottom:auto;top:calc(max(64vh,360px) - 76px);gap:4px}
+  .panel{position:relative;left:auto;right:auto;bottom:auto;height:auto;min-height:0;margin:-22px 16px 0;flex-direction:column}
+  .thumb,.play{display:none}
+  .pv{min-height:150px}
+  .pvi{flex-wrap:wrap;padding:18px 18px 16px;align-content:center;row-gap:14px}
+  .sp{padding:0 12px}.sp b{font-size:22px}.sp small{font-size:11.5px}
+  .pbtn{width:100%}
   .book .grid,.two{grid-template-columns:1fr}
   .book .grid{gap:30px}
-  .fleet{grid-template-columns:1fr 1fr}
+  .fleet{grid-template-columns:1fr 1fr;gap:10px}
   .contact{grid-template-columns:1fr}
-  .map{height:auto;border-top:0}
+  .map{height:auto}
   .map iframe{position:relative;height:320px;display:block}
   .map .pin{position:relative;left:auto;bottom:auto;width:auto}
   footer .cols{grid-template-columns:1fr 1fr}
@@ -232,49 +268,61 @@ footer .made img{width:18px;height:18px}
 @media (max-width:560px){
   .f2,.rl{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
-  .carc .bd{padding:12px 12px 14px}.carc h3{font-size:16.5px}.carc .pr{font-size:18px}.carc .row{flex-direction:column;align-items:flex-start;gap:6px}
-  .carc .tg{font-size:10px;left:8px;top:8px;padding:3px 6px}.carc .tg.auto{top:auto;bottom:8px;right:8px}
-  .panel{padding:24px}
+  .carc .bd{padding:12px 12px 14px}.carc h3{font-size:14.5px}.carc .pr{font-size:19px}.carc .row{flex-direction:column;align-items:flex-start;gap:6px}
+  .carc .tg{font-size:9.5px;padding:4px 7px;top:8px}.carc .tg.auto{top:auto;bottom:8px}
+  .panel2{padding:24px}
   .sec{padding-top:80px}
   footer .cols{grid-template-columns:1fr}
-  .cta b{padding:0 22px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}
-  .rv{opacity:1;transform:none}
+  .rv,.hero .ent{opacity:1;transform:none}
 }
 </style>
 </head>
 <body>
 
+<div class="intro" id="intro" aria-hidden="true"><div class="in">
+  <svg class="em" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#fff" stroke="#cf3129" stroke-width="3"/><circle cx="32" cy="32" r="24" fill="#222b31"/><text x="32" y="38.5" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="900" font-size="18" fill="#fff">BS</text></svg>
+  <p class="t1">BS CAR</p><p class="t2">RENTALS</p>
+</div></div>
+
 <header class="hero" id="top" aria-roledescription="carousel" aria-label="Featured cars">
-  <div class="stage" id="stage"></div>
-  <div class="edge" id="edge" aria-hidden="true"></div>
+  <div class="side"></div>
+  <div class="pic" id="pic"><div id="stage"></div><div class="edge" id="edge" aria-hidden="true"></div></div>
 
-  <div class="top">
-    <a class="brand" href="#top">BS Car Rentals</a>
-    <p class="tagline">Self-drive cars in Guwahati, from ₹1,500 a day</p>
-    <a class="see" href="#cars">See all cars <span aria-hidden="true">→</span></a>
+  <a class="logo" href="#top" aria-label="BS Car Rentals home"><svg class="em" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#fff" stroke="#cf3129" stroke-width="3"/><circle cx="32" cy="32" r="24" fill="#222b31"/><text x="32" y="38.5" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="900" font-size="18" fill="#fff">BS</text></svg></a>
+  <div class="tools ent"><a href="tel:+919101583341" aria-label="Call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a><span>Guwahati</span></div>
+  <div class="prog ent"><span id="idx">01</span><span class="bar"><span id="bar"></span></span><span id="tot">05</span></div>
+  <button class="burger" type="button" id="burger" aria-label="Menu" aria-expanded="false"><span></span></button>
+
+  <h1 class="vt ent"><span class="o">BS Car</span><span>Rentals</span></h1>
+  <p class="vsub ent">Self-drive cars · Guwahati</p>
+  <p class="tag ent" id="tag" aria-live="polite"><span>The weekend</span> <b>beast</b></p>
+
+  <div class="panel ent">
+    <div class="thumb"><div class="ti" id="thumb"></div></div>
+    <button class="play" type="button" id="play" aria-label="Book this car">▶</button>
+    <div class="pv" id="pv"></div>
   </div>
-
-  <div class="copy" id="copy" aria-live="polite">
-    <div class="count txt"><span id="idx">01</span><span class="bar"><span id="prog"></span></span><span id="tot">05</span></div>
-    <h1 class="txt" id="sName">Thar Roxx</h1>
-    <div class="dash"></div>
-    <p class="lead txt" id="sLine">Five doors, made for hills and weekend getaways.</p>
-    <p class="price txt" id="sPrice"></p>
-    <button class="cta" type="button" id="sBook"><b>Book this car</b><i aria-hidden="true">→</i></button>
+  <div class="arr ent"><button type="button" id="prev" aria-label="Previous car">‹</button><button type="button" id="next" aria-label="Next car">›</button></div>
+  <div class="social ent">
+    <a href="https://wa.me/919101583341" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9 3 3.4 8.6 3.4 15.5c0 2.3.6 4.5 1.8 6.4L3.3 29l7.3-1.9c1.8 1 3.9 1.5 6 1.5h.1c6.9 0 12.5-5.6 12.5-12.5S22.9 3 16 3zm7.3 17.7c-.3.9-1.8 1.7-2.5 1.8-.6.1-1.5.1-2.4-.2-.5-.2-1.3-.4-2.2-.8-3.8-1.6-6.3-5.5-6.5-5.8-.2-.3-1.5-2-1.5-3.8s1-2.7 1.3-3.1c.3-.4.7-.5 1-.5h.7c.2 0 .5-.1.8.6.3.7 1 2.5 1.1 2.7.1.2.2.4 0 .7-.1.3-.2.4-.4.7l-.6.7c-.2.2-.4.4-.2.8.2.4 1 1.7 2.2 2.7 1.5 1.3 2.8 1.7 3.2 1.9.4.2.6.2.8-.1.2-.3 1-1.1 1.2-1.5.3-.4.5-.3.9-.2.4.1 2.3 1.1 2.7 1.3.4.2.7.3.8.4.1.2.1 1-.2 1.9z"/></svg></a>
+    <a href="tel:+919101583341" aria-label="Call"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></a>
+    <a href="#contact" aria-label="Location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></a>
   </div>
-
-  <div class="arrows"><button type="button" id="prev" aria-label="Previous car">←</button><button type="button" id="nextB" aria-label="Next car">→</button></div>
-  <p class="foot">Lokhra, Guwahati · Book on WhatsApp</p>
 </header>
+
+<nav class="nav" id="nav" aria-label="Main">
+  <a href="#cars">Our cars</a><a href="#book">Book a car</a><a href="#rules">Rules</a><a href="#contact">Contact</a>
+  <p>Call or WhatsApp 91015 83341 · Lokhra, Guwahati</p>
+</nav>
 
 <main>
 <section class="book" id="book"><div class="wrap grid">
   <div>
     <p class="kick rv">Book your car</p>
-    <h2 class="h2 rv">See your price,<br><span class="f">book on WhatsApp.</span></h2>
+    <h2 class="h2 rv"><span class="o">See your</span><br>price now</h2>
     <p class="lead2 rv">Pick a car and your times. You see the price straight away, and we confirm on WhatsApp.</p>
   </div>
   <form class="form rv" id="bf" novalidate>
@@ -289,32 +337,32 @@ footer .made img{width:18px;height:18px}
       <div class="fld"><label for="bPhone">WhatsApp number</label><input id="bPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="10-digit mobile"></div>
     </div>
     <p class="err" id="bErr" role="alert"></p>
-    <button class="cta wa block" type="submit"><b>Book on WhatsApp</b><i aria-hidden="true">→</i></button>
+    <button class="btn block" type="submit"><svg viewBox="0 0 32 32" fill="#fff"><path d="M16 3C9 3 3.4 8.6 3.4 15.5c0 2.3.6 4.5 1.8 6.4L3.3 29l7.3-1.9c1.8 1 3.9 1.5 6 1.5h.1c6.9 0 12.5-5.6 12.5-12.5S22.9 3 16 3z"/></svg>Book on WhatsApp</button>
     <p class="fine">Bring your driving licence and an original ID at pickup.</p>
   </form>
 </div></section>
 
 <section class="sec" id="cars"><div class="wrap">
-  <div class="head"><div><p class="kick rv">Our cars</p><h2 class="h2 rv">Nineteen cars,<br><span class="f">one for every trip.</span></h2></div><p class="lead2 rv">City runs, family trips or a long drive. Prices are per day.</p></div>
+  <div class="head"><div><p class="kick rv">Our cars</p><h2 class="h2 rv"><span class="o">Nineteen</span> cars</h2></div><p class="lead2 rv">City runs, family trips or a long drive. Prices are per day.</p></div>
   <div class="chips rv" id="chips" role="group" aria-label="Filter cars"></div>
   <div class="fleet" id="fleet"></div>
   <p class="note">Hatchbacks and sedans include 280 km a day, SUVs and 7-seaters 300 km a day. Extra km ₹10 each. Need a bike? Ask us on WhatsApp.<small>Car photos are for illustration. The actual car and colour may vary.</small></p>
 </div></section>
 
 <section class="sec" id="how"><div class="wrap">
-  <div class="head"><div><p class="kick rv">How it works</p><h2 class="h2 rv">On the road<br><span class="f">in four steps.</span></h2></div></div>
+  <div class="head"><div><p class="kick rv">How it works</p><h2 class="h2 rv"><span class="o">Four</span> steps</h2></div></div>
   <div class="steps">
-    <div class="stp rv"><p class="n">01</p><h3>Pick your car</h3><p>Choose the car and your pickup and return times. You see the price straight away.</p></div>
-    <div class="stp rv"><p class="n">02</p><h3>Book on WhatsApp</h3><p>Your booking comes to us on WhatsApp and we confirm the car for you.</p></div>
-    <div class="stp rv"><p class="n">03</p><h3>Pick it up</h3><p>Bring your driving licence and original ID. We check the car together and record its condition.</p></div>
-    <div class="stp rv"><p class="n">04</p><h3>Drive and return</h3><p>Enjoy the trip and return the car on time, in the same condition.</p></div>
+    <div class="stp rv"><span class="n">01</span><h3>Pick your car</h3><p>Choose the car and your pickup and return times. You see the price straight away.</p></div>
+    <div class="stp rv"><span class="n">02</span><h3>Book on WhatsApp</h3><p>Your booking comes to us on WhatsApp and we confirm the car for you.</p></div>
+    <div class="stp rv"><span class="n">03</span><h3>Pick it up</h3><p>Bring your driving licence and original ID. We check the car together and record its condition.</p></div>
+    <div class="stp rv"><span class="n">04</span><h3>Drive and return</h3><p>Enjoy the trip and return the car on time, in the same condition.</p></div>
   </div>
 </div></section>
 
 <section class="sec" id="rules"><div class="wrap">
-  <div class="head"><div><p class="kick rv">Before you drive</p><h2 class="h2 rv">Simple rules,<br><span class="f">no surprises.</span></h2></div></div>
-  <div class="two rv">
-    <div class="panel dk">
+  <div class="head"><div><p class="kick rv">Before you drive</p><h2 class="h2 rv"><span class="o">Simple</span> rules</h2></div></div>
+  <div class="two">
+    <div class="panel2 dk rv">
       <h3>Documents at pickup</h3>
       <ul class="ul">
         <li><span>Valid driving licence<small>You must be 18 or older.</small></span></li>
@@ -322,7 +370,7 @@ footer .made img{width:18px;height:18px}
         <li><span>Your phone number and an alternate number<small>So we can reach you during the trip.</small></span></li>
       </ul>
     </div>
-    <div class="panel">
+    <div class="panel2 rv">
       <h3>Rental rules, in short</h3>
       <div class="rl">
         <div><b>Km per day</b><span>280 km hatchbacks and sedans, 300 km SUVs and 7-seaters</span></div>
@@ -350,25 +398,25 @@ footer .made img{width:18px;height:18px}
 </div></section>
 
 <section class="sec" id="faq"><div class="wrap">
-  <div class="head"><div><p class="kick rv">FAQ</p><h2 class="h2 rv">Before you book.</h2></div></div>
-  <div class="faq rv">
-    <details class="q" open><summary>How is the price worked out?</summary><p>Each car has a price per day. A booking is counted in 24-hour days from your pickup time. The price you see in the booking form is your estimate, and we confirm it on WhatsApp.</p></details>
-    <details class="q"><summary>Can I take the car outside Assam?</summary><p>Tell us your route when you book on WhatsApp and we'll confirm.</p></details>
-    <details class="q"><summary>What happens if the car breaks down?</summary><p>Call us right away. We act immediately, and if it can't be fixed we may give you a replacement car at no extra cost.</p></details>
-    <details class="q"><summary>Do you rent bikes too?</summary><p>Yes, ask us on WhatsApp for the bikes available on your dates.</p></details>
+  <div class="head"><div><p class="kick rv">FAQ</p><h2 class="h2 rv"><span class="o">Before</span> you book</h2></div></div>
+  <div class="faq">
+    <details class="q rv" open><summary>How is the price worked out?</summary><p>Each car has a price per day. A booking is counted in 24-hour days from your pickup time. The price you see in the booking form is your estimate, and we confirm it on WhatsApp.</p></details>
+    <details class="q rv"><summary>Can I take the car outside Assam?</summary><p>Tell us your route when you book on WhatsApp and we'll confirm.</p></details>
+    <details class="q rv"><summary>What happens if the car breaks down?</summary><p>Call us right away. We act immediately, and if it can't be fixed we may give you a replacement car at no extra cost.</p></details>
+    <details class="q rv"><summary>Do you rent bikes too?</summary><p>Yes, ask us on WhatsApp for the bikes available on your dates.</p></details>
   </div>
 </div></section>
 
 <section class="sec" id="contact"><div class="wrap">
-  <div class="head"><div><p class="kick rv">Contact</p><h2 class="h2 rv">Talk to us,<br><span class="f">or come and see the cars.</span></h2></div></div>
-  <div class="contact rv">
-    <a class="ct" href="tel:+919101583341"><small>Call</small><b>91015 83341</b><span>Tap to call <i>→</i></span></a>
-    <a class="ct" href="https://wa.me/919101583341" target="_blank" rel="noopener"><small>WhatsApp</small><b>91015 83341</b><span>Tap to chat <i>→</i></span></a>
-    <a class="ct" href="https://www.google.com/maps/search/?api=1&amp;query=Lokhra+Chagalpara+Sawkuchi+Guwahati+781040" target="_blank" rel="noopener"><small>Visit</small><b>Lokhra, Guwahati</b><span>Chagalpara, Sawkuchi, 781040 <i>→</i></span></a>
+  <div class="head"><div><p class="kick rv">Contact</p><h2 class="h2 rv"><span class="o">Find</span> us</h2></div></div>
+  <div class="contact">
+    <a class="ct rv" href="tel:+919101583341"><small>Call</small><b>91015 83341</b><span>Tap to call</span></a>
+    <a class="ct rv" href="https://wa.me/919101583341" target="_blank" rel="noopener"><small>WhatsApp</small><b>91015 83341</b><span>Tap to chat</span></a>
+    <a class="ct rv" href="https://www.google.com/maps/search/?api=1&amp;query=Lokhra+Chagalpara+Sawkuchi+Guwahati+781040" target="_blank" rel="noopener"><small>Visit</small><b>Lokhra, Guwahati</b><span>Chagalpara, Sawkuchi, 781040</span></a>
   </div>
   <div class="map rv">
     <iframe title="Map: BS Car Rentals, Lokhra Chagalpara, Sawkuchi, Guwahati" src="https://www.google.com/maps?q=Lokhra+Chagalpara,+Sawkuchi,+Guwahati,+Assam+781040&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-    <div class="pin"><small>Find us</small><b>BS Car Rentals</b><p>Lokhra Chagalpara, Sawkuchi<br>Guwahati, Assam 781040</p><a class="cta" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lokhra+Chagalpara+Sawkuchi+Guwahati+781040" target="_blank" rel="noopener"><b>Get directions</b><i aria-hidden="true">→</i></a></div>
+    <div class="pin"><small>Find us</small><b>BS Car Rentals</b><p>Lokhra Chagalpara, Sawkuchi<br>Guwahati, Assam 781040</p><a class="btn" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lokhra+Chagalpara+Sawkuchi+Guwahati+781040" target="_blank" rel="noopener">Get directions →</a></div>
   </div>
 </div></section>
 </main>
@@ -377,7 +425,7 @@ footer .made img{width:18px;height:18px}
 
 <footer><div class="wrap">
   <div class="cols">
-    <div><p class="b">BS Car Rentals</p><p>BS Self Drive Car and Bike Rental Services, Lokhra Chagalpara, Sawkuchi, Guwahati 781040. Registered with Guwahati Municipal Corporation (trade licence 1747900575107751).</p></div>
+    <div><p class="b"><svg class="em" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#fff" stroke="#cf3129" stroke-width="3"/><circle cx="32" cy="32" r="24" fill="#222b31"/><text x="32" y="38.5" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="900" font-size="18" fill="#fff">BS</text></svg>BS Car Rentals</p><p>BS Self Drive Car and Bike Rental Services, Lokhra Chagalpara, Sawkuchi, Guwahati 781040. Registered with Guwahati Municipal Corporation (trade licence 1747900575107751).</p></div>
     <div><h4>Rent</h4><p><a href="#cars">Our cars</a></p><p><a href="#book">Book a car</a></p></div>
     <div><h4>Help</h4><p><a href="#rules">Rules and documents</a></p><p><a href="#faq">FAQ</a></p></div>
     <div><h4>Contact</h4><p><a href="tel:+919101583341">91015 83341</a></p><p><a href="https://wa.me/919101583341" target="_blank" rel="noopener">WhatsApp us</a></p></div>
@@ -417,45 +465,63 @@ footer .made img{width:18px;height:18px}
   function find(n){return CARS.filter(function(c){return c.n===n})[0]}
   function src(c){return "cars/"+c.img+".jpg"}
 
-  /* ---------- hero showcase: a panel sweeps right to left to reveal the next car ---------- */
+  /* ---------- intro, then the hero comes in ---------- */
+  var hero=$(".hero"),intro=$("#intro"),seen=false;
+  try{seen=sessionStorage.getItem("bsIntro")==="1";sessionStorage.setItem("bsIntro","1")}catch(e){}
+  function ready(){intro.classList.add("out");setTimeout(function(){hero.classList.add("ready");restart()},still?0:250);setTimeout(function(){intro.remove()},700)}
+  if(seen||still)ready();else{setTimeout(ready,1500);intro.addEventListener("click",ready,{once:true})}
+
+  /* ---------- hero showcase ---------- */
   var FEAT=[
-    {n:"Thar Roxx",line:"Five doors, made for hills and weekend getaways."},
-    {n:"XUV700",line:"Seven seats and real comfort for the family road trip."},
-    {n:"Scorpio N",line:"Seven seats and real road presence for any trip."},
-    {n:"XUV300",line:"Automatic and easy to drive, made for city traffic."},
-    {n:"Swift Dzire",line:"A comfortable sedan for family trips, light on fuel."}];
-  var i=0,timer=null,busy=false,DUR=6000,stage=$("#stage"),copy=$("#copy");
+    {n:"Thar Roxx",t:"The weekend",b:"beast"},
+    {n:"Scorpio N",t:"The road",b:"king"},
+    {n:"XUV700",t:"The family",b:"flagship"},
+    {n:"XUV300",t:"The city",b:"automatic"},
+    {n:"Swift Dzire",t:"The smart",b:"sedan"}];
+  var i=0,timer=null,busy=false,DUR=6500,stage=$("#stage"),pv=$("#pv"),th=$("#thumb");
   $("#tot").textContent=("0"+FEAT.length).slice(-2);
   FEAT.forEach(function(f){var im=new Image();im.src=src(find(f.n))});
-  function shot(c,anim){var s=d.createElement("div");s.className="shot"+(anim?" in":"");s.innerHTML='<div class="inner"><img class="car" src="'+src(c)+'" alt="'+c.n+'" decoding="async"><div class="floor"></div></div>';return s}
-  function fill(){var f=FEAT[i],c=find(f.n);
-    $("#idx").textContent=("0"+(i+1)).slice(-2);$("#sName").textContent=c.n;$("#sLine").textContent=f.line;
-    $("#sPrice").innerHTML="From <b>"+inr(c.p)+"</b> a day · "+c.s+" seats · "+KM[c.c]+" km/day"}
-  function progress(){var b=$("#prog");b.classList.remove("run");void b.offsetWidth;b.style.setProperty("--dur",DUR+"ms");if(!still)b.classList.add("run")}
-  function restart(){clearTimeout(timer);progress();if(!still)timer=setTimeout(function(){go(i+1)},DUR)}
-  function go(to){if(busy)return;var n=(to+FEAT.length)%FEAT.length;if(n===i)return;busy=true;i=n;
-    copy.classList.add("swap");
-    stage.appendChild(shot(find(FEAT[i].n),!still));
+  function shot(c,anim){var s=d.createElement("div");s.className="shot"+(anim?" in":"");s.innerHTML='<div class="inner"><img src="'+src(c)+'" alt="'+c.n+'" decoding="async"></div>';return s}
+  function info(c){var e=d.createElement("div");e.className="pvi";
+    e.innerHTML='<div class="sp"><small>Per day</small><b>'+inr(c.p)+'</b></div><div class="sp"><small>Seats</small><b>'+c.s+'</b></div><div class="sp"><small>Km per day</small><b>'+KM[c.c]+'<em>km</em></b></div><button class="pbtn" type="button" data-pick="'+c.n+'">Book now</button>';return e}
+  function thumbImg(c){var e=d.createElement("img");e.src=src(c);e.alt="";e.decoding="async";return e}
+  function setText(){var f=FEAT[i];$("#idx").textContent=("0"+(i+1)).slice(-2);$("#bar").style.width=((i+1)/FEAT.length*100)+"%";
+    var tg=$("#tag");tg.innerHTML='<span>'+f.t+'</span> <b>'+f.b+'</b>'}
+  function go(to){if(busy)return;var n=(to+FEAT.length)%FEAT.length;if(n===i)return;var dir=to<i&&!(i===FEAT.length-1&&n===0)?-1:1;busy=true;i=n;var c=find(FEAT[i].n);
+    stage.appendChild(shot(c,!still));
     if(!still){var e=$("#edge");e.classList.remove("go");void e.offsetWidth;e.classList.add("go")}
-    setTimeout(function(){fill();copy.classList.remove("swap")},still?0:520);
-    setTimeout(function(){while(stage.children.length>1)stage.removeChild(stage.firstChild);busy=false},still?0:1200);
+    /* the red panel: old content slides up, new content slides in from below */
+    var old=pv.firstElementChild,nw=info(c);nw.classList.add(still?"x":(dir>0?"down":"up"));pv.appendChild(nw);
+    var oldT=th.firstElementChild,nt=thumbImg(c);
+    requestAnimationFrame(function(){requestAnimationFrame(function(){nw.classList.remove("down","up");if(old)old.classList.add(dir>0?"up":"down")})});
+    th.style.transition="none";th.appendChild(nt);nt.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:translate3d(0,"+(dir>0?100:-100)+"%,0);transition:transform .8s cubic-bezier(.77,0,.18,1)";
+    requestAnimationFrame(function(){requestAnimationFrame(function(){nt.style.transform="translate3d(0,0,0)";if(oldT){oldT.style.transition="transform .8s cubic-bezier(.77,0,.18,1)";oldT.style.transform="translate3d(0,"+(dir>0?-100:100)+"%,0)"}})});
+    setText();
+    setTimeout(function(){while(stage.children.length>1)stage.removeChild(stage.firstChild);if(old)old.remove();if(oldT)oldT.remove();busy=false},still?0:1150);
     restart()}
-  stage.appendChild(shot(find(FEAT[0].n),false));fill();restart();
-  $("#nextB").addEventListener("click",function(){go(i+1)});
+  function restart(){clearTimeout(timer);if(!still&&hero.classList.contains("ready"))timer=setTimeout(function(){go(i+1)},DUR)}
+  stage.appendChild(shot(find(FEAT[0].n),false));pv.appendChild(info(find(FEAT[0].n)));
+  var t0=thumbImg(find(FEAT[0].n));t0.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover";th.appendChild(t0);setText();
+  $("#next").addEventListener("click",function(){go(i+1)});
   $("#prev").addEventListener("click",function(){go(i-1)});
+  $("#play").addEventListener("click",function(){toBook(FEAT[i].n)});
   d.addEventListener("keydown",function(e){if(scrollY>innerHeight*.6||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.key==="ArrowRight")go(i+1);if(e.key==="ArrowLeft")go(i-1)});
-  var hero=$(".hero");
-  hero.addEventListener("mouseenter",function(){clearTimeout(timer);$("#prog").classList.remove("run")});
-  hero.addEventListener("mouseleave",restart);
+  hero.addEventListener("mouseenter",function(){clearTimeout(timer)});hero.addEventListener("mouseleave",restart);
   d.addEventListener("visibilitychange",function(){if(d.hidden)clearTimeout(timer);else restart()});
-  var tx=null;stage.addEventListener("touchstart",function(e){tx=e.touches[0].clientX},{passive:true});
-  stage.addEventListener("touchend",function(e){if(tx===null)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));tx=null},{passive:true});
+  var tx=null,pic=$("#pic");pic.addEventListener("touchstart",function(e){tx=e.touches[0].clientX},{passive:true});
+  pic.addEventListener("touchend",function(e){if(tx===null)return;var dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)go(i+(dx<0?1:-1));tx=null},{passive:true});
+
+  /* menu */
+  var bg=$("#burger");function menu(o){d.body.classList.toggle("menu-open",o);bg.setAttribute("aria-expanded",o)}
+  bg.addEventListener("click",function(){menu(!d.body.classList.contains("menu-open"))});
+  $$("#nav a").forEach(function(a){a.addEventListener("click",function(){menu(false)})});
+  d.addEventListener("keydown",function(e){if(e.key==="Escape")menu(false)});
 
   /* ---------- fleet ---------- */
   var cur="all",cats=["all","hatch","sedan","csuv","suv","mpv"];
   $("#chips").innerHTML=cats.map(function(k){var n=k==="all"?CARS.length:CARS.filter(function(c){return c.c===k}).length;return '<button type="button" class="chip" data-cat="'+k+'" aria-pressed="'+(k===cur)+'">'+(k==="all"?"All cars":CAT[k])+'<small>'+n+'</small></button>'}).join("");
   function render(){$("#fleet").innerHTML=CARS.filter(function(c){return cur==="all"||c.c===cur}).map(function(c){
-    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="Book '+c.n+'"><div class="pic"><img src="'+src(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="600" height="370"><span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">Book <i>→</i></span></div></div></article>'}).join("")}
+    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="Book '+c.n+'"><div class="pic2"><img src="'+src(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="600" height="370"><span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km/day</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">Book <i>→</i></span></div></div></article>'}).join("")}
   render();
   $("#chips").addEventListener("click",function(e){var b=e.target.closest("[data-cat]");if(!b)return;cur=b.dataset.cat;$$("#chips .chip").forEach(function(x){x.setAttribute("aria-pressed",x===b)});render()});
 
@@ -474,9 +540,8 @@ footer .made img{width:18px;height:18px}
     el.innerHTML='<div><small>'+e.c.n+' · '+e.days+' day'+(e.days>1?'s':'')+'</small><b>'+inr(e.total)+'</b></div><small>'+e.km+' km included · extra km ₹10<br>Estimate, confirmed on WhatsApp</small>';el.classList.add("on")}
   [sel,$("#bFrom"),$("#bTo")].forEach(function(x){x.addEventListener("change",est);x.addEventListener("input",est)});est();
   function toBook(n){if(n){sel.value=n;est()}$("#book").scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},700)}
-  $("#sBook").addEventListener("click",function(){toBook(FEAT[i].n)});
   d.addEventListener("click",function(e){var p=e.target.closest("[data-pick]");if(p)toBook(p.dataset.pick)});
-  d.addEventListener("keydown",function(e){var p=e.target.closest&&e.target.closest("[data-pick]");if(p&&(e.key==="Enter"||e.key===" ")){e.preventDefault();toBook(p.dataset.pick)}});
+  d.addEventListener("keydown",function(e){var p=e.target.closest&&e.target.closest("[data-pick]");if(p&&(e.key==="Enter"||e.key===" ")&&p.tagName!=="BUTTON"){e.preventDefault();toBook(p.dataset.pick)}});
   $("#bf").addEventListener("submit",function(e){e.preventDefault();
     var er=$("#bErr"),x=calc(),nm=$("#bName").value.trim(),ph=$("#bPhone").value.replace(/\D/g,"").replace(/^(91|0)(?=\d{10}$)/,"");
     if(!x)return er.textContent="Please pick a return time after the pickup time.";
