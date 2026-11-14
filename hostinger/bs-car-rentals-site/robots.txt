@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bscarental.co.in/sitemap.xml
+Sitemap: https://bscarrental.co.in/sitemap.xml
