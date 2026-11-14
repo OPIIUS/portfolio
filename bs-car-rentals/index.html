@@ -156,6 +156,11 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 .chip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
 .chip[aria-pressed=true] small{color:#b9c2c7}
 .fleet{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(12px,1.4vw,18px)}
+.sfleet{grid-template-columns:repeat(3,1fr);max-width:920px}
+.sfleet .carc .pic2{aspect-ratio:4/5}
+.sfleet .carc .pic2 img{object-position:center}
+.dlg-hero.tall{background:radial-gradient(80% 70% at 50% 40%,#3a3f44,#161c20)}
+.dlg-hero.tall img{object-fit:contain;object-position:center}
 .carc{background:#fff;display:flex;flex-direction:column;cursor:pointer;position:relative;box-shadow:0 1px 2px rgba(0,0,0,.04),0 18px 36px -26px rgba(0,0,0,.28);transition:transform .45s var(--out),box-shadow .45s}
 .carc:hover{transform:translate3d(0,-5px,0);box-shadow:0 2px 4px rgba(0,0,0,.05),0 30px 50px -28px rgba(0,0,0,.4)}
 .carc .pic2{position:relative;aspect-ratio:16/10;overflow:hidden;background:#1a2126}
@@ -361,6 +366,7 @@ html.lock,html.lock body{overflow:hidden}
   .fleet{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 calc(var(--pad) * -1);padding:4px var(--pad) 18px;scroll-padding:0 var(--pad);scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .fleet::-webkit-scrollbar{display:none}
   .carc{flex:none;width:clamp(220px,68vw,300px);scroll-snap-align:start}
+  .sfleet .carc{width:clamp(170px,46vw,230px)}
   .carc:hover{transform:none}
   .swipe{display:flex;align-items:center;gap:10px;margin-top:2px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
   .swipe .track{flex:1;height:2px;background:#dde2e5;position:relative;overflow:hidden}
@@ -399,7 +405,7 @@ html.lock,html.lock body{overflow:hidden}
 <div class="bar" id="bar"><div class="wrap">
   <a href="#top" aria-label="Back to top"><svg class="em" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#fff" stroke="#d0342c" stroke-width="3"/><circle cx="32" cy="32" r="24" fill="#1c2328"/><text x="32" y="38.5" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="900" font-size="18" fill="#fff">BS</text></svg></a>
   <span class="nm">BS Car Rentals</span>
-  <nav aria-label="Sections"><a href="#cars">Cars</a><a href="#how">How it works</a><a href="#rules">Rules</a><a href="#contact">Contact</a></nav>
+  <nav aria-label="Sections"><a href="#cars">Cars</a><a href="#scooty">Scooty</a><a href="#how">How it works</a><a href="#rules">Rules</a><a href="#contact">Contact</a></nav>
   <a class="pill" href="#book">Book now</a>
   <button class="burger2" type="button" data-menu aria-label="Menu"><span></span></button>
 </div></div>
@@ -432,7 +438,7 @@ html.lock,html.lock body{overflow:hidden}
 
 <nav class="nav" id="nav" aria-label="Main">
   <button class="x" type="button" data-menu aria-label="Close menu">×</button>
-  <a href="#cars">Our cars</a><a href="#book">Book a car</a><a href="#how">How it works</a><a href="#rules">Rules</a><a href="#contact">Contact</a>
+  <a href="#cars">Our cars</a><a href="#scooty">Scooty</a><a href="#book">Book a car</a><a href="#how">How it works</a><a href="#rules">Rules</a><a href="#contact">Contact</a>
   <p>Call or WhatsApp 91015 83341 · VIP Road, Lokhra, Guwahati</p>
 </nav>
 
@@ -443,6 +449,12 @@ html.lock,html.lock body{overflow:hidden}
   <div class="fleet" id="fleet"></div>
   <div class="swipe" aria-hidden="true"><span id="fc">22 cars</span><span class="track"><span id="ftrk"></span></span><span>Swipe</span></div>
   <p class="note">Hatchbacks and sedans include 280 km a day, SUVs and 7-seaters 300 km. Extra km ₹10 each. Need a bike? Ask us on WhatsApp.<small>Car photos are for illustration. The actual car and colour may vary.</small></p>
+</div></section>
+
+<section class="sec" id="scooty"><div class="wrap">
+  <div class="head"><div><p class="kick rv">Scooty</p><h2 class="h2 rv"><span class="o">Ride</span> the city</h2></div><p class="lead2 rv">Easy automatic scooters for getting around Guwahati. Prices are per day.</p></div>
+  <div class="fleet sfleet" id="sfleet"></div>
+  <p class="note">Bring a valid two-wheeler driving licence and an original ID at pickup.<small>Photos are for illustration. The actual scooter and colour may vary.</small></p>
 </div></section>
 
 <section class="book" id="book"><div class="wrap grid">
@@ -574,7 +586,7 @@ html.lock,html.lock body{overflow:hidden}
 <footer><div class="wrap">
   <div class="cols">
     <div><p class="b"><svg class="em" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#fff" stroke="#d0342c" stroke-width="3"/><circle cx="32" cy="32" r="24" fill="#1c2328"/><text x="32" y="38.5" text-anchor="middle" font-family="Montserrat,sans-serif" font-weight="900" font-size="18" fill="#fff">BS</text></svg>BS Car Rentals</p><p>BS Self Drive Car and Bike Rental Services, Chagalpara, near Manasha Mandir Path, VIP Road, Lokhra, Guwahati, Assam 781040. Registered with Guwahati Municipal Corporation (trade licence 1747900575107751).</p></div>
-    <div class="links"><h4>Rent</h4><a href="#cars">Our cars</a><a href="#book">Book a car</a></div>
+    <div class="links"><h4>Rent</h4><a href="#cars">Our cars</a><a href="#scooty">Scooty</a><a href="#book">Book a car</a></div>
     <div class="links"><h4>Help</h4><a href="#rules">Rules</a><a href="#faq">FAQ</a></div>
     <div class="links"><h4>Contact</h4><a href="tel:+919101583341">91015 83341</a><a href="https://wa.me/919101583341" target="_blank" rel="noopener">WhatsApp us</a></div>
   </div>
@@ -590,8 +602,8 @@ html.lock,html.lock body{overflow:hidden}
   $("#yr").textContent=new Date().getFullYear();
   d.head.insertAdjacentHTML("beforeend","<style>.show-s{display:none}@media (max-width:860px){.show-s{display:inline}}</style>");
 
-  var CAT={hatch:"Hatchback",sedan:"Sedan",csuv:"Compact SUV",suv:"SUV",mpv:"7-seater"};
-  var KM={hatch:280,sedan:280,csuv:300,suv:300,mpv:300};
+  var CAT={hatch:"Hatchback",sedan:"Sedan",csuv:"Compact SUV",suv:"SUV",mpv:"7-seater",scooty:"Scooty"};
+  var KM={hatch:280,sedan:280,csuv:300,suv:300,mpv:300,scooty:0};
   var CARS=[
     {n:"Alto K10",img:"alto-k10",c:"hatch",p:1500,s:5},
     {n:"Swift",img:"swift",c:"hatch",p:1800,s:5},
@@ -614,7 +626,10 @@ html.lock,html.lock body{overflow:hidden}
     {n:"Thar Roxx",img:"thar-roxx",c:"suv",p:4000,s:5},
     {n:"Ertiga",img:"ertiga",c:"mpv",p:3000,s:7},
     {n:"Kia Carens",img:"kia-carens",c:"mpv",p:3000,s:7},
-    {n:"Innova Crysta",img:"innova-crysta",c:"mpv",p:4000,s:7}];
+    {n:"Innova Crysta",img:"innova-crysta",c:"mpv",p:4000,s:7},
+    {n:"Yamaha Aerox 155",img:"aerox",c:"scooty",p:800,s:2,auto:1},
+    {n:"TVS Ntorq 125",img:"ntorq",c:"scooty",p:700,s:2,auto:1},
+    {n:"Honda Activa 6G",img:"activa",c:"scooty",p:600,s:2,auto:1}];
   function find(n){return CARS.filter(function(c){return c.n===n})[0]}
   /* typical figures for each model (approximate; the exact variant may differ) */
   var SPEC={
@@ -639,7 +654,10 @@ html.lock,html.lock body{overflow:hidden}
     "Thar Roxx":["2.2 L","Diesel","175 PS","15 km/l","~170 km/h"],
     "Ertiga":["1.5 L","Petrol","103 PS","20 km/l","~170 km/h"],
     "Kia Carens":["1.5 L","Petrol","115 PS","16 km/l","~180 km/h"],
-    "Innova Crysta":["2.4 L","Diesel","150 PS","13 km/l","~180 km/h"]};
+    "Innova Crysta":["2.4 L","Diesel","150 PS","13 km/l","~180 km/h"],
+    "Yamaha Aerox 155":["155 cc","Petrol","15 PS","~40 km/l","~115 km/h"],
+    "TVS Ntorq 125":["125 cc","Petrol","9.4 PS","~45 km/l","~95 km/h"],
+    "Honda Activa 6G":["110 cc","Petrol","7.8 PS","~50 km/l","~85 km/h"]};
   var IC={
     mil:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v17M3 22h12M15 10h2a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V8l-3-3M6 8h6"/></svg>',
     spd:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l4-4"/><path d="M3.3 19a10 10 0 1 1 17.4 0"/></svg>',
@@ -708,10 +726,13 @@ html.lock,html.lock body{overflow:hidden}
 
   /* ---------- fleet ---------- */
   var cur="all",cats=["all","hatch","sedan","csuv","suv","mpv"],fleet=$("#fleet");
-  $("#chips").innerHTML=cats.map(function(k){var n=k==="all"?CARS.length:CARS.filter(function(c){return c.c===k}).length;return '<button type="button" class="chip" data-cat="'+k+'" aria-pressed="'+(k===cur)+'">'+(k==="all"?"All cars":CAT[k])+'<small>'+n+'</small></button>'}).join("");
-  function render(){var list=CARS.filter(function(c){return cur==="all"||c.c===cur});
-    fleet.innerHTML=list.map(function(c){
-    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="See details for '+c.n+'"><div class="pic2">'+(c.img?'<img src="'+sm(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="640" height="400">':'<span class="ph"><b>'+c.n+'</b><small>Photo coming soon</small></span>')+'<span class="tg">'+CAT[c.c]+'</span>'+(c.auto?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+c.s+' seats · '+KM[c.c]+' km</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">'+ARROW+'</span></div></div></article>'}).join("");
+  var AUTOS=CARS.filter(function(c){return c.c!=="scooty"}),SCOOTY=CARS.filter(function(c){return c.c==="scooty"});
+  function card(c){var sc=c.c==="scooty";
+    return '<article class="carc" data-pick="'+c.n+'" tabindex="0" role="button" aria-label="See details for '+c.n+'"><div class="pic2">'+(c.img?'<img src="'+sm(c)+'" alt="'+c.n+'" loading="lazy" decoding="async" width="640" height="400">':'<span class="ph"><b>'+c.n.split(" ").slice(1).join(" ")+'</b><small>Photo coming soon</small></span>')+'<span class="tg">'+CAT[c.c]+'</span>'+(c.auto&&!sc?'<span class="tg auto">Automatic</span>':'')+'</div><div class="bd"><h3>'+c.n+'</h3><p class="meta">'+(sc?'2 seats · Automatic':c.s+' seats · '+KM[c.c]+' km')+'</p><div class="row"><p class="pr">'+inr(c.p)+' <small>/ day</small></p><span class="go">'+ARROW+'</span></div></div></article>'}
+  $("#sfleet").innerHTML=SCOOTY.map(card).join("");
+  $("#chips").innerHTML=cats.map(function(k){var n=k==="all"?AUTOS.length:CARS.filter(function(c){return c.c===k}).length;return '<button type="button" class="chip" data-cat="'+k+'" aria-pressed="'+(k===cur)+'">'+(k==="all"?"All cars":CAT[k])+'<small>'+n+'</small></button>'}).join("");
+  function render(){var list=AUTOS.filter(function(c){return cur==="all"||c.c===cur});
+    fleet.innerHTML=list.map(card).join("");
     fleet.scrollLeft=0;$("#fc").textContent=list.length+" car"+(list.length>1?"s":"");fbar()}
   var ftrk=$("#ftrk");
   function fbar(){var max=fleet.scrollWidth-fleet.clientWidth,w=max>0?fleet.clientWidth/fleet.scrollWidth:1;ftrk.style.width=(w*100)+"%";ftrk.style.transform="translate3d("+(max>0?fleet.scrollLeft/max*(1/w-1)*100:0)+"%,0,0)"}
@@ -721,7 +742,7 @@ html.lock,html.lock body{overflow:hidden}
 
   /* ---------- booking ---------- */
   var sel=$("#bCar");
-  sel.innerHTML=cats.slice(1).map(function(k){return '<optgroup label="'+CAT[k]+'">'+CARS.filter(function(c){return c.c===k}).map(function(c){return '<option value="'+c.n+'">'+c.n+' · '+inr(c.p)+'/day</option>'}).join("")+'</optgroup>'}).join("");
+  sel.innerHTML=cats.slice(1).concat(["scooty"]).map(function(k){return '<optgroup label="'+CAT[k]+'">'+CARS.filter(function(c){return c.c===k}).map(function(c){return '<option value="'+c.n+'">'+c.n+' · '+inr(c.p)+'/day</option>'}).join("")+'</optgroup>'}).join("");
   sel.value="Swift";
   function pad(n){return ("0"+n).slice(-2)}
   function local(x){return x.getFullYear()+"-"+pad(x.getMonth()+1)+"-"+pad(x.getDate())+"T"+pad(x.getHours())+":"+pad(x.getMinutes())}
@@ -731,7 +752,7 @@ html.lock,html.lock body{overflow:hidden}
     if(!c||isNaN(a)||isNaN(b)||b<=a)return null;var days=Math.max(1,Math.ceil((b-a)/864e5));return {c:c,a:a,b:b,days:days,total:days*c.p,km:days*KM[c.c]}}
   function fmt(x){return x.toLocaleString("en-IN",{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}
   function est(){var e=calc(),el=$("#est");if(!e){el.classList.remove("on");return}
-    el.innerHTML='<div><small>'+e.c.n+' · '+e.days+' day'+(e.days>1?'s':'')+'</small><b>'+inr(e.total)+'</b></div><small class="r">'+e.km+' km included<br>Extra km ₹10 · confirmed on WhatsApp</small>';el.classList.add("on")}
+    el.innerHTML='<div><small>'+e.c.n+' · '+e.days+' day'+(e.days>1?'s':'')+'</small><b>'+inr(e.total)+'</b></div><small class="r">'+(e.km?e.km+' km included<br>Extra km ₹10 · confirmed on WhatsApp':'Km limit and helmet<br>confirmed on WhatsApp')+'</small>';el.classList.add("on")}
   [sel,$("#bFrom"),$("#bTo")].forEach(function(x){x.addEventListener("change",est);x.addEventListener("input",est)});est();
   function toBook(n){if(n){sel.value=n;est()}$("#book").scrollIntoView({behavior:"smooth"});setTimeout(function(){$("#bName").focus({preventScroll:true})},700)}
   d.addEventListener("click",function(e){var p=e.target.closest("[data-pick]");if(p)openCar(p.dataset.pick)});
@@ -740,14 +761,14 @@ html.lock,html.lock body{overflow:hidden}
   var dlg=$("#dlg"),dCar=null,lastFocus=null,pushed=false;
   function mCalc(){var a=new Date($("#mFrom").value),b=new Date($("#mTo").value);if(!dCar||isNaN(a)||isNaN(b)||b<=a)return null;var days=Math.max(1,Math.ceil((b-a)/864e5));return {c:dCar,a:a,b:b,days:days,total:days*dCar.p,km:days*KM[dCar.c]}}
   function mEst(){var e=mCalc(),el=$("#mEst");if(!e){el.classList.remove("on");return}
-    el.innerHTML='<div><small>'+e.days+' day'+(e.days>1?'s':'')+'</small><b>'+inr(e.total)+'</b></div><small class="r">'+e.km+' km included<br>Extra km ₹10</small>';el.classList.add("on")}
+    el.innerHTML='<div><small>'+e.days+' day'+(e.days>1?'s':'')+'</small><b>'+inr(e.total)+'</b></div><small class="r">'+(e.km?e.km+' km included<br>Extra km ₹10':'Km limit and helmet<br>confirmed on WhatsApp')+'</small>';el.classList.add("on")}
   ["change","input"].forEach(function(ev){$("#mFrom").addEventListener(ev,mEst);$("#mTo").addEventListener(ev,mEst)});
   function openCar(n){var c=find(n);if(!c)return;dCar=c;var sp=SPEC[c.n]||["-","-","-","-","-"];
-    $("#dHero").innerHTML=(c.img?'<img src="'+src(c)+'" alt="'+c.n+'" decoding="async">':'<span class="ph">'+c.n+'</span>')+
+    $("#dHero").classList.toggle("tall",c.c==="scooty");$("#dHero").innerHTML=(c.img?'<img src="'+src(c)+'" alt="'+c.n+'" decoding="async">':'<span class="ph">'+c.n+'</span>')+
       '<div class="cap"><div><small>'+CAT[c.c]+'</small><h3 id="dName">'+c.n+'</h3></div><div class="pr"><b>'+inr(c.p)+'</b><span>per day</span></div></div>';
-    var rows=[["mil","Mileage",sp[3]],["spd","Top speed",sp[4]],["eng","Engine",sp[0]],["pwr","Power",sp[2]],["gear","Gearbox",c.auto?"Automatic":"Manual"],["fuel","Fuel",sp[1]],["seat","Seats",c.s+" seats"],["km","Km included",KM[c.c]+" km/day"]];
+    var rows=[["mil","Mileage",sp[3]],["spd","Top speed",sp[4]],["eng","Engine",sp[0]],["pwr","Power",sp[2]],["gear","Gearbox",c.auto?"Automatic":"Manual"],["fuel","Fuel",sp[1]],["seat","Seats",c.s+" seats"],["km","Km included",KM[c.c]?KM[c.c]+" km/day":"Ask us"]];
     $("#dSpecs").innerHTML=rows.map(function(r){return '<div class="spec"><i>'+IC[r[0]]+'</i><small>'+r[1]+'</small><b>'+r[2]+'</b></div>'}).join("");
-    $("#dNote").innerHTML='<p>Extra km ₹10 each · late return ₹300 per hour</p><p>Bring your driving licence and an original ID at pickup</p><p style="font-size:11.5px">Specs are typical figures for this model. Your car\'s exact variant may differ.</p>';
+    $("#dNote").innerHTML=(c.c==="scooty"?'<p>Bring a valid two-wheeler driving licence and an original ID at pickup</p><p>Ask us on WhatsApp about helmets and the km limit</p>':'<p>Extra km ₹10 each · late return ₹300 per hour</p><p>Bring your driving licence and an original ID at pickup</p>')+'<p style="font-size:11.5px">Specs are typical figures for this model. The exact variant may differ.</p>';
     $("#dTitle").textContent="Book the "+c.n;$("#dGoP").textContent=inr(c.p);$("#dGo").classList.remove("hide");
     if(!$("#mFrom").value){$("#mFrom").value=$("#bFrom").value;$("#mTo").value=$("#bTo").value}
     $("#mErr").textContent="";mEst();
