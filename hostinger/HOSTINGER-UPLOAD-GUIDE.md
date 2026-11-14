@@ -1,5 +1,7 @@
 # BS Car Rentals: putting the website live on Hostinger
 
+**Domain: `bscarental.co.in`**. The website files are already set up for this exact domain: Google listing, share preview and sitemap.
+
 You need two things:
 
 1. **`bs-car-rentals-website.zip`**: the complete website, already tested and ready to upload.
@@ -16,11 +18,20 @@ You need no coding and no extra tools. The whole job takes about 20 minutes, plu
 | `img/` | The small OPIIUS logo used in the footer |
 | `favicon.svg` | The little "BS" icon shown in the browser tab |
 | `.htaccess` | Hostinger settings that make the site load faster. This file is hidden; don't delete it. |
-| `robots.txt` | Lets Google find and list the website |
+| `robots.txt`, `sitemap.xml` | Let Google find and list the website at bscarental.co.in |
 
 Bookings and enquiries go straight to WhatsApp on **91015 83341**. There is no database, email setup or form service to configure.
 
 ---
+
+## Step 0: Make sure the domain is active
+
+When this package was made, the `.in` registry did **not** show bscarental.co.in yet. That is normal for a new `.co.in` domain, which can take **up to 24 hours** to activate.
+
+1. Check your email, including Spam, for a message from the domain seller asking you to **verify your email / contact details**. Click the link: **the domain stays inactive until you do**.
+2. In hPanel go to **Domains → bscarental.co.in**. The status should say **Active**. If it says *Pending*, *Verification required* or *Suspended*, follow what it asks.
+3. Check the spelling is exactly **bscarental.co.in** (one "r", no "s").
+4. To check from any phone, open **dnschecker.org**, type `bscarental.co.in` and choose **NS**. Once it shows `dns-parking.com` nameservers, the domain is live and pointing to Hostinger.
 
 ## Step 1: Get the domain
 
@@ -31,7 +42,7 @@ Bookings and enquiries go straight to WhatsApp on **91015 83341**. There is no d
 4. Skip to Step 2. There are no DNS settings to change.
 
 **B. The domain was bought somewhere else (GoDaddy, BigRock, Namecheap…)**
-1. Log in to the site where the domain was bought.
+1. Log in to the site where bscarental.co.in was bought.
 2. Find **Nameservers** for that domain and choose **Custom nameservers**.
 3. Replace what is there with these two:
    - `ns1.dns-parking.com`
@@ -46,7 +57,7 @@ Bookings and enquiries go straight to WhatsApp on **91015 83341**. There is no d
 2. When it asks what kind of website, choose **Custom PHP/HTML website**. Hostinger sometimes calls this "Empty website" or "Skip, I want to upload my own".
 
    ⚠️ **Don't** choose WordPress or the Website Builder.
-3. Pick your domain from the list. If you bought it elsewhere, type it in.
+3. Pick **bscarental.co.in** from the list. If you bought it elsewhere, type it in.
 4. Finish the setup and wait until it says the website was created.
 
 ---
@@ -81,7 +92,7 @@ Bookings and enquiries go straight to WhatsApp on **91015 83341**. There is no d
 
 ## Step 5: Check that everything works
 
-Open your domain on **a phone and a computer** and tick these off:
+Open **https://bscarental.co.in** on **a phone and a computer** and tick these off:
 
 - [ ] The red-and-black page opens with the car slideshow.
 - [ ] The padlock 🔒 shows next to the address.
@@ -100,10 +111,11 @@ If you still see an old page, clear the cache: in hPanel go to **Advanced → Ca
 1. **Google Business Profile:** add the website link. This matters most, because people searching "car rental Lokhra" will see it.
 2. **Instagram bio, WhatsApp Business profile and Facebook page:** add the website link to each.
 3. **Optional, to appear on Google faster:**
-   1. Go to **search.google.com/search-console** → **Add property → Domain** and enter your domain.
+   1. Go to **search.google.com/search-console** → **Add property → Domain** and enter `bscarental.co.in`.
    2. Google gives you a **TXT record**. In hPanel go to **Domains → DNS / Nameservers → Add record**, choose type **TXT**, and paste the record.
    3. Back in Search Console, click **Verify**.
-   4. Then use **URL inspection → Request indexing**.
+   4. Go to **Sitemaps**, enter `sitemap.xml` and click **Submit**.
+   5. Then use **URL inspection → Request indexing**.
 
 ---
 
@@ -149,7 +161,7 @@ Rules:
 
 ## Good to know
 
-- **The map** points to Lokhra Chagalpara, Sawkuchi in general. For an exact pin, the owner opens Google Maps at the shop, taps **Share** and sends you the link. In `index.html`, search for `Lokhra+Chagalpara` and swap the address part of those links.
+- **The map** shows the exact Google pin for "BS Self Drive Car & Bike Rental Services Guwahati" (Chagalpara, near Manasha Mandir Path, VIP Road, Lokhra). The **Get directions** buttons open the owner's own Google Maps link.
 - **Car specs** (mileage, top speed, engine…) are typical figures for each model. The site says they may differ by variant. To edit them, search for `var SPEC=` in `index.html`.
 - **A backup** of this exact website is also saved in the OPIIUS GitHub account under `hostinger/bs-car-rentals-site`.
 - **Monthly cost:** the Hostinger plan plus the yearly domain renewal. Turn on **auto-renew** for both, so the site never goes offline.

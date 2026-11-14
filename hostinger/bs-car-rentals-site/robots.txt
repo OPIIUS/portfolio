@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://bscarental.co.in/sitemap.xml
