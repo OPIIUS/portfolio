@@ -161,7 +161,7 @@ Rules:
 
 ## Good to know
 
-- **The map** points to Lokhra Chagalpara, Sawkuchi in general. For an exact pin, the owner opens Google Maps at the shop, taps **Share** and sends you the link. In `index.html`, search for `Lokhra+Chagalpara` and swap the address part of those links.
+- **The map** shows the exact Google pin for "BS Self Drive Car & Bike Rental Services Guwahati" (Chagalpara, near Manasha Mandir Path, VIP Road, Lokhra). The **Get directions** buttons open the owner's own Google Maps link.
 - **Car specs** (mileage, top speed, engine…) are typical figures for each model. The site says they may differ by variant. To edit them, search for `var SPEC=` in `index.html`.
 - **A backup** of this exact website is also saved in the OPIIUS GitHub account under `hostinger/bs-car-rentals-site`.
 - **Monthly cost:** the Hostinger plan plus the yearly domain renewal. Turn on **auto-renew** for both, so the site never goes offline.
