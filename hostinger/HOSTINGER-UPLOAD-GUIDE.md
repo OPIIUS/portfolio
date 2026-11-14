@@ -14,7 +14,7 @@ You need no coding and no extra tools. The whole job takes about 20 minutes, plu
 | File | What it is |
 |---|---|
 | `index.html` | The website itself (all pages, design, booking and enquiry forms) |
-| `cars/` | All 21 car photos, plus smaller copies in `cars/sm/` for phones |
+| `cars/` | All 22 car and 3 scooty photos, plus smaller copies in `cars/sm/` for phones |
 | `img/` | The small OPIIUS logo used in the footer |
 | `favicon.svg` | The little "BS" icon shown in the browser tab |
 | `.htaccess` | Hostinger settings that make the site load faster. This file is hidden; don't delete it. |
