@@ -1,0 +1,11 @@
+# BS Fleet Manager: keep code, data and uploads private
+Options -Indexes
+DirectoryIndex index.php
+<FilesMatch "^(config\.php|.*\.md|.*\.sqlite.*|.*\.json\.gz)$">
+  Require all denied
+</FilesMatch>
+RedirectMatch 404 ^/(.*/)?(lib|pages|storage|tests)(/|$)
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+</IfModule>
