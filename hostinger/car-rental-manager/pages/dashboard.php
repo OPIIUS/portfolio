@@ -17,6 +17,7 @@ function page_dashboard() {
     $live = array_intersect_key($map, array_column(rows('SELECT id FROM vehicles WHERE archived = 0'), 'id', 'id'));
     $cnt = array_count_values(array_map(fn($m) => $m['status'], $live));
     $late = count(array_filter($live, fn($m) => $m['late']));
+    if (can('fleet_edit') && ($need = cars_needing_details())) $h .= '<div class="flash info">' . count($need) . ' car' . (count($need) === 1 ? '' : 's') . ' still need the real registration number or kilometre reading. <a href="' . e(url('fleet')) . '">Fill them in</a></div>';
     $h .= '<h2 class="first">Cars</h2><div class="stats">' . tile('Total cars', $vcount, url('fleet')) . tile('Available', $cnt['available'] ?? 0, url('fleet', ['status' => 'available']), 'good')
         . tile('Currently rented', $cnt['rented'] ?? 0, url('rentals'), '', $late ? '<span class="red">' . $late . ' overdue</span>' : '') . tile('Reserved', $cnt['booked'] ?? 0, url('fleet', ['status' => 'booked']), '', 'pickup within 24 hours')
         . tile('Under maintenance', ($cnt['maintenance'] ?? 0), url('fleet', ['status' => 'maintenance']), ($cnt['maintenance'] ?? 0) ? 'warn' : '', ($cnt['unavailable'] ?? 0) ? ($cnt['unavailable'] . ' unavailable') : '') . '</div>';

@@ -43,6 +43,7 @@ function page_fleet() {
         return true;
     });
     $h = page_head($archived ? 'Removed cars' : 'Cars', count($all) . ' car' . (count($all) === 1 ? '' : 's'), can('fleet_edit') && !$archived ? btn('Add car', url('vehicle_new'), 'primary') : '');
+    if (!$archived && ($need = cars_needing_details())) $h .= '<div class="flash info"><b>' . count($need) . ' car' . (count($need) === 1 ? '' : 's') . ' still need the real registration number or kilometre reading.</b> Open each one → Edit. ' . implode(', ', array_map(fn($c) => '<a href="' . e(url('vehicle', ['id' => $c['id'], 'tab' => 'edit'])) . '">' . e($c['reg_no']) . ' ' . e($c['name']) . '</a>', array_slice($need, 0, 8))) . (count($need) > 8 ? '…' : '') . '</div>';
     $h .= '<div class="chips">';
     foreach (['' => 'All'] + VEHICLE_STATUS_LABEL as $k => $l) $h .= '<a class="chip' . ($st === $k ? ' on' : '') . '" href="' . e(url('fleet', ['status' => $k] + ($archived ? ['archived' => 1] : []))) . '">' . e($l) . ' <b>' . ($k ? ($counts[$k] ?? 0) : count($all)) . '</b></a>';
     $h .= '<a class="chip' . ($st === 'damaged' ? ' on' : '') . '" href="' . e(url('fleet', ['status' => 'damaged'])) . '">Has damage <b>' . count(array_intersect_key($dmg, array_column($all, 'id', 'id'))) . '</b></a></div>';

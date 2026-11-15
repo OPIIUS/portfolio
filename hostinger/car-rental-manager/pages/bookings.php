@@ -70,7 +70,7 @@ function booking_form($b = null) {
             . '<h3>Money received now</h3><div class="grid3">' . field('Advance payment', money_in('advance', old('advance', ''))) . field('Security deposit received', money_in('deposit_now', old('deposit_now', '')))
             . field('Paid by', sel('method', PAY_METHODS, old('method', 'UPI'))) . field('Transaction reference', inp('reference', old('reference'), 'text', 'placeholder="Optional"')) . '</div>';
     } else if ($isNew) $h .= '<p class="muted small">The price is calculated from the car\'s daily price. The owner can change it.</p><input type="hidden" name="auto_price" value="1">';
-    $h .= field('Special conditions or notes', txt('notes', $g('notes'), 'placeholder="e.g. Only within Assam. No smoking."')) . field('Pickup place (optional)', inp('pickup_location', $g('pickup_location')));
+    $h .= field('Special conditions or notes', txt('notes', $g('notes', $isNew ? (string)setting('default_rental_terms', '') : ''), 'rows="4" placeholder="e.g. Only within Assam. No smoking."'), $isNew && setting('default_rental_terms') ? 'Your usual rental rules are filled in. Change them for this rental if needed.' : '') . field('Pickup place (optional)', inp('pickup_location', $g('pickup_location')));
     if ($isNew) {
         $now = old('mode', 'now');
         $h .= '<h3>Is the customer taking the car now?</h3><div class="row"><label class="check"><input type="radio" name="mode" value="now" data-mode' . ($now === 'now' ? ' checked' : '') . '> Yes, hand over the car now</label><label class="check"><input type="radio" name="mode" value="later" data-mode' . ($now === 'later' ? ' checked' : '') . '> No, reserve it for later</label></div>';

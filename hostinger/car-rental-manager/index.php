@@ -5,6 +5,7 @@ require __DIR__ . '/lib/core.php';
 require __DIR__ . '/lib/schema.php';
 require __DIR__ . '/lib/domain.php';
 require __DIR__ . '/lib/view.php';
+require __DIR__ . '/lib/preset.php';
 
 if (!installed()) { header('Location: install.php'); exit; }
 

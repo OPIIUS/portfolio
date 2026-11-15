@@ -31,6 +31,7 @@ function page_settings() {
                     if (!ctype_digit($v) || (int)$v < $min || (int)$v > $max) throw new UserError('Check the value for "' . str_replace('_', ' ', $k) . "\" (between $min and $max).");
                     setting_save($k, (int)$v);
                 }
+                setting_save('default_rental_terms', mb_substr((string)post('default_rental_terms'), 0, 2000));
                 foreach (['late_fee_per_hour' => 'late fee', 'extra_km_rate' => 'extra km rate'] as $k => $l) { $m = parse_money(post($k)); if ($m === false) throw new UserError("Check the $l."); setting_save($k, $m); }
                 audit('settings', 'rules', null, ['reminder_days' => implode(',', $nums)]); flash('success', 'Rules saved.'); break;
             case 'categories':
@@ -126,6 +127,7 @@ function page_settings() {
             . '<h3>Servicing</h3><div class="grid3">' . field('Default service interval (km)', inp('default_service_km', $s('default_service_km'), 'number')) . field('Default service interval (days)', inp('default_service_days', $s('default_service_days'), 'number'))
             . field('Warn this many km before', inp('service_km_warning', $s('service_km_warning'), 'number')) . field('Warn this many days before', inp('service_days_warning', $s('service_days_warning'), 'number')) . '</div>'
             . '<h3>Suggested charges at return</h3><p class="muted small">These are only suggestions shown when a car comes back. Nothing is charged unless you tick it.</p><div class="grid3">' . field('Late return, per hour', money_in('late_fee_per_hour', $s('late_fee_per_hour'))) . field('Extra km, per km', money_in('extra_km_rate', $s('extra_km_rate'))) . '</div>'
+            . '<h3>Usual rental rules</h3>' . field('Filled into every new rental (can be changed per rental)', '<textarea name="default_rental_terms" rows="6">' . e($s('default_rental_terms')) . '</textarea>')
             . '<h3>Security</h3>' . field('Sign out after inactivity (minutes)', inp('session_minutes', $s('session_minutes'), 'number')) . '<button class="btn primary">Save</button></form>';
     }
     if ($tab === 'documents') {
