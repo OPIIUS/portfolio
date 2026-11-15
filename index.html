@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>OPIIUS · We build your website first. You decide after.</title>
-<meta name="description" content="OPIIUS builds a free preview of your website first, with bookings and enquiries going to your WhatsApp. Like it? ₹2,000 a month in India, $120 worldwide. Changes included, cancel anytime.">
+<meta name="description" content="OPIIUS builds websites and business software: management systems, booking, CRM, billing, inventory, dashboards, Google Sheets automation, AI chatbots and phone apps. Free preview first. Websites from ₹2,000 a month.">
 <link rel="canonical" href="https://opiius.online/">
 <meta name="theme-color" content="#ececec">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="OPIIUS">
 <meta property="og:title" content="OPIIUS · We build your website first. You decide after.">
-<meta property="og:description" content="Get a free preview of your website before you pay anything. Then ₹2,000/month in India, $120/month worldwide, changes included, cancel anytime.">
+<meta property="og:description" content="Websites and business software built for you: management systems, booking, CRM, billing, inventory, dashboards, automation, AI chatbots and phone apps. Free preview first.">
 <meta property="og:url" content="https://opiius.online/">
 <meta property="og:image" content="https://opiius.online/shots/01-lead-gen.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -191,6 +191,19 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 
 
 /* tablet */
+/* beyond websites */
+.bwg{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.bw{background:#fff;border-radius:22px;padding:22px 20px 24px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:8px;transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s}
+.bw:hover{transform:translateY(-3px);box-shadow:0 2px 6px rgba(0,0,0,.06),0 24px 40px -22px rgba(0,0,0,.3)}
+.bwi{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:var(--ink);color:#fff;margin-bottom:6px}
+.bwi svg{width:22px;height:22px}
+.bw:nth-child(3n+2) .bwi{background:var(--red)}
+.bw b{font-size:17px;line-height:1.25;letter-spacing:-.01em}
+.bw small{color:var(--ink2);font-size:14.5px;line-height:1.45}
+.bwn{margin-top:26px;color:var(--ink2);font-weight:600}
+.bwn a{color:var(--red)}
+@media (max-width:980px){.bwg{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.bwg{grid-template-columns:1fr;gap:12px}.bw{flex-direction:row;flex-wrap:wrap;align-items:center;column-gap:14px;padding:18px}.bwi{margin:0}.bw b{flex:1;min-width:0}.bw small{flex-basis:100%}}
 @media (max-width:980px){
   .book{grid-template-columns:1fr}
   .gal{grid-template-columns:1fr 1fr}
@@ -249,7 +262,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 
 <nav class="nav" id="nav" aria-label="Main">
   <a class="logo" href="/" aria-label="OPIIUS home"><img src="/assets/site/logo/opiius-mark.svg" width="30" height="30" alt="">OPIIUS</a>
-  <div class="links"><a href="#book">Enquire</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a></div>
+  <div class="links"><a href="#book">Enquire</a><a href="#build">Software</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a></div>
   <a class="btn dark" href="#book">Free preview</a>
   <button class="menu" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav"><span></span></button>
 </nav>
@@ -267,6 +280,13 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
   </div>
   <a class="notch" href="#book">Scroll for more <i>↓</i></a>
 </section>
+
+<section class="sec" id="build"><div class="wrap">
+  <div class="sec-h"><div><span class="lbl rv">Beyond websites</span><h2 class="h2 rv">Software for<br><span class="f">every part of your business.</span></h2></div>
+    <p class="lead rv">Besides websites, OPIIUS builds the tools that run your business, made to fit how you work. It all runs in a browser on phone or computer, so there is nothing to install.</p></div>
+  <div class="bwg"><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg></span><b>Business management systems</b><small>Run the whole business from one screen: stock, staff, orders and customers. Like the rental system we built for BS Car Rentals.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v15H4zM4 10h16M9 3v4M15 3v4"/></svg></span><b>Booking & appointments</b><small>Customers pick a slot; you see every booking, reminder and no-show in one calendar.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 19v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9.5 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM19 8v6M22 11h-6"/></svg></span><b>CRM & lead tracker</b><small>Every enquiry in one place, with who to follow up today and what was said last time.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2zM9 7h6M9 11h6M9 15h4"/></svg></span><b>Billing, invoices & receipts</b><small>Bills and receipts in your format, part payments, and an automatic list of who still owes you.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5 9 5zM3 8v8l9 5 9-5V8M12 13v8"/></svg></span><b>Inventory & stock</b><small>Know what is in stock, what is running low and what sold, without counting by hand.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg></span><b>Dashboards & reports</b><small>Sales, expenses and profit on one page, with Excel and PDF downloads.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 3h16v18H4zM4 9h16M4 15h16M10 3v18"/></svg></span><b>Google Sheets & Excel automation</b><small>Sheets that fill themselves, send emails, remind your team and build reports on their own.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2zM8 10h.01M12 10h.01M16 10h.01"/></svg></span><b>AI chatbots & assistants</b><small>A chatbot that answers customer questions and takes enquiries day and night, trained on your business.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM11 18h2"/></svg></span><b>Phone apps (installable web apps)</b><small>An app your customers and staff install from your link, with an icon on the home screen and no app store needed.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6zM9 12l2 2 4-4"/></svg></span><b>Staff portals & admin panels</b><small>Separate logins for owner and staff, with you deciding who sees money, customers or reports.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 2h14v20H5zM8 6h8M8 11h2M12 11h2M16 11v6M8 15h2M12 15h2M8 19h6"/></svg></span><b>Calculators & quote tools</b><small>Instant price, EMI or quote calculators that turn visitors into enquiries.</small></div><div class="bw rv"><span class="bwi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6v18h12V7zM14 3v4h4M9 13h6M9 17h6"/></svg></span><b>Forms, PDFs & document generators</b><small>Online forms, certificates, offer letters and reports created as PDFs automatically.</small></div></div>
+  <p class="bwn rv">Tell us what you need in the form below. We send a free plan and a working demo first. <a href="#book">Get a free plan →</a></p>
+</div></section>
 
 <section class="cta" id="book">
   <div class="art" aria-hidden="true"><svg><use href="#ring"/></svg></div>
@@ -317,7 +337,7 @@ footer{margin:12px;border-radius:var(--r);background:var(--paper);box-shadow:var
 
 <footer id="contact"><div class="wrap">
   <div class="ft">
-    <div class="me rv"><a class="logo" href="/"><img src="/assets/site/logo/opiius-mark.svg" width="30" height="30" alt="">OPIIUS</a><p>Any website or software, built for you. Guwahati, Assam, India.</p></div>
+    <div class="me rv"><a class="logo" href="/"><img src="/assets/site/logo/opiius-mark.svg" width="30" height="30" alt="">OPIIUS</a><p>Websites, plus business software: management systems, booking, CRM, billing, inventory, dashboards, automation, AI chatbots and phone apps. Guwahati, Assam, India.</p></div>
     <a class="ct rv" href="https://wa.me/918638830682?text=Hi%20OPIIUS%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener"><small>WhatsApp</small><b>86388 30682</b></a>
     <a class="ct rv" href="mailto:opiiusservice@gmail.com?subject=Project%20enquiry"><small>Email</small><b>opiiusservice<wbr>@gmail.com</b></a>
     <a class="ct rv" href="https://github.com/OPIIUS" target="_blank" rel="noopener"><small>GitHub</small><b>github.com/OPIIUS</b></a>
