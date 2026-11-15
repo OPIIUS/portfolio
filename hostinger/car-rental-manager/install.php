@@ -3,13 +3,19 @@
 define('APP', true);
 require __DIR__ . '/lib/core.php';
 require __DIR__ . '/lib/schema.php';
+require __DIR__ . '/lib/preset.php';
 
 header('X-Frame-Options: DENY');
 header('Cache-Control: no-store');
 if (installed()) { http_response_code(403); exit('Already set up. To start again, delete config.php first.'); }
 
 $errors = []; $done = false;
-$f = fn($k, $d = '') => isset($_POST[$k]) ? trim((string)$_POST[$k]) : $d;
+$presets = preset_list();
+$pkey = $_POST['preset'] ?? ($_GET['preset'] ?? (count($presets) === 1 ? array_key_first($presets) : ''));
+$P = $pkey !== '' ? preset_load((string)$pkey) : null;
+$pd = fn($k, $d = '') => $P['settings'][$k] ?? $d;
+$f = fn($k, $d = '') => isset($_POST[$k]) ? trim((string)$_POST[$k]) : ($_SERVER['REQUEST_METHOD'] === 'POST' ? $d : $pd($k, $d));
+$added = 0;
 
 $checks = [
     'PHP 8.1 or newer' => version_compare(PHP_VERSION, '8.1', '>='),
@@ -51,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (val(driver() === 'sqlite' ? "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='users'" : "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = 'users'"))
                     throw new RuntimeException('This database already has fleet manager tables. Use a new, empty database.');
                 schema_install();
+                if ($P) $added = preset_apply($P, ($_POST['add_fleet'] ?? '') === '1');
                 if ($f('business_name') !== '') q('UPDATE settings SET v = ? WHERE k = ?', [$f('business_name'), 'business_name']);
                 $set = ['business_phone' => mb_substr($f('business_phone'), 0, 30), 'business_address' => mb_substr($f('business_address'), 0, 500), 'owner_name' => mb_substr($name, 0, 100),
                     'currency' => isset(CURRENCIES[$f('currency')]) ? $f('currency') : 'INR', 'opening_date' => $f('opening_date'), 'vehicle_count' => $f('vehicle_count'),
@@ -73,7 +80,8 @@ $h = fn($s) => htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
 <title>Set up · Car Rental Manager</title><link rel="stylesheet" href="assets/app.css"></head><body><main class="bare"><div class="auth wide">
 <h1>Welcome. Let's set up your business.</h1>
 <?php if ($done): ?>
-  <div class="flash success">Setup is complete. The owner account is ready.</div>
+  <div class="flash success">Setup is complete. The owner account is ready.<?= $added ? " $added vehicles were added from " . $h($P['label']) . '.' : '' ?></div>
+  <?php if ($added): ?><p>Next: open <b>Cars</b> and enter each vehicle's <b>real registration number</b> and <b>current kilometre reading</b> (they show as TEMP 01, TEMP 02… until you do). Then add insurance and PUC expiry dates under <b>Maintenance &amp; Documents</b>.</p><?php endif; ?>
   <p>For safety, <b>delete install.php</b> from the server now (it no longer works, but there is no need to keep it).</p>
   <p><a class="btn primary" href="index.php">Sign in</a></p>
 <?php else: ?>
@@ -96,16 +104,23 @@ $h = fn($s) => htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
       </div>
     </div>
     <h3>Your business</h3>
+    <?php if ($presets): ?>
+    <label class="field"><span>Start from</span><select name="preset" onchange="location='install.php?preset='+encodeURIComponent(this.value)"><option value="">Blank (enter my own details)</option><?php foreach (array_keys($presets) as $k): $pl = preset_load($k); ?><option value="<?= $h($k) ?>" <?= $pkey === $k ? 'selected' : '' ?>><?= $h($pl['label'] ?? $k) ?> (details from their website)</option><?php endforeach; ?></select></label>
+    <?php endif; ?>
     <p class="muted small">Only the business name is needed now. Everything can be changed later in Settings.</p>
     <div class="grid2">
       <label class="field"><span>Business name *</span><input name="business_name" value="<?= $h($f('business_name')) ?>" required></label>
       <label class="field"><span>Phone number</span><input name="business_phone" value="<?= $h($f('business_phone')) ?>"></label>
       <label class="field"><span>Currency</span><select name="currency"><?php foreach (CURRENCIES as $code => $sym): ?><option value="<?= $code ?>" <?= $f('currency', 'INR') === $code ? 'selected' : '' ?>><?= $code ?> (<?= $h(trim($sym)) ?>)</option><?php endforeach; ?></select></label>
       <label class="field"><span>Business opening date</span><input type="date" name="opening_date" value="<?= $h($f('opening_date')) ?>"></label>
-      <label class="field"><span>Number of vehicles</span><input type="number" min="0" max="5000" name="vehicle_count" value="<?= $h($f('vehicle_count')) ?>"></label>
+      <label class="field"><span>Number of vehicles</span><input type="number" min="0" max="5000" name="vehicle_count" value="<?= $h($f('vehicle_count', $P ? (string)count($P['vehicles'] ?? []) : '')) ?>"></label>
       <label class="field"><span>Usual way you charge rent</span><select name="default_rate_type"><?php foreach (['daily' => 'Per day', 'monthly' => 'Per month', 'fixed' => 'Fixed amount per trip'] as $k => $l): ?><option value="<?= $k ?>" <?= $f('default_rate_type', 'daily') === $k ? 'selected' : '' ?>><?= $l ?></option><?php endforeach; ?></select></label>
     </div>
     <label class="field"><span>Address</span><textarea name="business_address" rows="2"><?= $h($f('business_address')) ?></textarea></label>
+    <?php if ($P && !empty($P['vehicles'])): ?>
+    <label class="check"><input type="checkbox" name="add_fleet" value="1" <?= $_SERVER['REQUEST_METHOD'] !== 'POST' || ($_POST['add_fleet'] ?? '') === '1' ? 'checked' : '' ?>> Add <?= $h($P['label']) ?>'s <?= count($P['vehicles']) ?> vehicles with names, categories, daily prices, seats, free km and photos</label>
+    <p class="muted small">Registration numbers and kilometre readings are not on the website: the vehicles start as TEMP 01, TEMP 02… with 0 km, and the app reminds you to fill them in. Rental rules (₹300/hour late fee, ₹10/extra km, km per day) are also set.</p>
+    <?php endif; ?>
     <h3>Owner account</h3>
     <div class="grid2">
       <label class="field"><span>Owner name</span><input name="owner_name" value="<?= $h($f('owner_name')) ?>" required></label>
