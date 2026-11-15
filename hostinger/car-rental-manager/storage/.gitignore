@@ -1,0 +1,16 @@
+*
+!.htaccess
+!index.php
+!.gitignore
+!uploads/
+!backups/
+!sessions/
+uploads/*
+backups/*
+sessions/*
+!uploads/.htaccess
+!uploads/index.php
+!backups/.htaccess
+!backups/index.php
+!sessions/.htaccess
+!sessions/index.php
