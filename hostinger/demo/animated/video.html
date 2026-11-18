@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BS Car Rental Manager · Animated Explainer</title>
+<!--
+  Animated explainer (1080x1920) for the BS Car Rentals management system.
+  Every frame is drawn from a time value by render(t), so render.js can record
+  it frame by frame. Open this file in a browser to preview (plays in real time).
+-->
+<style>
+  :root { --bg:#0e0e10; --ink:#fff; --dim:#a1a1a8; --blue:#0071e3; --blue2:#3d9bff;
+          --green:#2fbf5b; --red:#ff3d1f; --amber:#ffb340; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:1080px; height:1920px; overflow:hidden; background:var(--bg); }
+  body { font-family:Inter, "Inter Display", system-ui, sans-serif; color:var(--ink);
+         -webkit-font-smoothing:antialiased; }
+  #stage { position:absolute; inset:0; overflow:hidden;
+           background: radial-gradient(1200px 900px at 50% 105%, #10284a 0%, rgba(14,14,16,0) 70%),
+                       radial-gradient(700px 500px at 100% 0%, #1b1b22 0%, rgba(14,14,16,0) 70%), var(--bg); }
+  .glow { position:absolute; width:900px; height:900px; border-radius:50%;
+          background:radial-gradient(circle, rgba(0,113,227,.35), rgba(0,113,227,0) 65%);
+          left:90px; top:820px; filter:blur(10px); }
+
+  /* header */
+  #brand { position:absolute; left:70px; top:70px; display:flex; align-items:center; gap:18px; }
+  #brand .bs { width:64px; height:64px; border-radius:16px; background:#fff; color:#1d1d1f;
+               font-weight:800; font-size:26px; display:grid; place-items:center; }
+  #brand .t1 { font-weight:700; font-size:30px; letter-spacing:-.3px; }
+  #brand .t2 { color:var(--dim); font-size:24px; margin-top:2px; }
+  #step { position:absolute; right:70px; top:84px; font-size:26px; color:var(--dim);
+          font-variant-numeric:tabular-nums; font-weight:600; }
+  #step b { color:#fff; }
+
+  /* text */
+  #text { position:absolute; left:70px; right:70px; top:200px; }
+  #title { font-size:80px; font-weight:800; line-height:1.04; letter-spacing:-2px; }
+  #title em { font-style:normal; color:var(--blue2); }
+  #sub { margin-top:26px; font-size:38px; line-height:1.32; color:#d4d4d9; font-weight:450; max-width:930px; }
+
+  /* phone */
+  #phone { position:absolute; left:50%; top:600px; width:720px; height:1250px; margin-left:-360px;
+           border-radius:86px; background:#1c1c1f; padding:22px;
+           box-shadow: 0 0 0 3px #3a3a40, 0 50px 120px rgba(0,0,0,.6), 0 0 160px rgba(0,113,227,.18);
+           transform-origin:50% 0%; }
+  #screen { position:relative; width:100%; height:100%; border-radius:66px; overflow:hidden; background:#f5f5f7; }
+  #notch { position:absolute; top:18px; left:50%; width:190px; height:52px; margin-left:-95px;
+           background:#000; border-radius:30px; z-index:50; }
+  #sbar { position:absolute; left:0; right:0; top:0; height:74px; background:#fff; z-index:45;
+          display:flex; align-items:center; justify-content:space-between; padding:6px 44px 0 56px;
+          font-size:24px; font-weight:700; color:#1d1d1f; }
+  #sbar span:last-child { letter-spacing:2px; font-size:20px; }
+  .shot { position:absolute; left:0; top:0; width:676px; height:auto; transform-origin:0 0; will-change:transform; }
+  .ring { position:absolute; width:120px; height:120px; margin:-60px 0 0 -60px; border-radius:50%;
+          border:6px solid var(--blue); background:rgba(0,113,227,.16); z-index:40; }
+  .dot { position:absolute; width:44px; height:44px; margin:-22px 0 0 -22px; border-radius:50%;
+         background:rgba(0,113,227,.85); z-index:4; box-shadow:0 0 0 6px rgba(255,255,255,.7); }
+
+  /* floating chips */
+  .chip { position:absolute; z-index:10; display:flex; align-items:center; gap:16px;
+          background:rgba(255,255,255,.97); color:#1d1d1f; border-radius:26px; padding:20px 28px 20px 20px;
+          font-size:31px; font-weight:700; letter-spacing:-.3px; white-space:nowrap;
+          box-shadow:0 24px 60px rgba(0,0,0,.45); }
+  .chip i { width:52px; height:52px; border-radius:15px; display:grid; place-items:center;
+            font-style:normal; font-size:28px; color:#fff; flex:none; }
+  .chip.g i{background:var(--green)} .chip.b i{background:var(--blue)}
+  .chip.r i{background:var(--red)}   .chip.a i{background:#f59e0b}
+  .chip.w i{background:#1fa855}
+
+  /* progress */
+  #prog { position:absolute; left:70px; right:70px; bottom:40px; height:8px; border-radius:4px; background:rgba(255,255,255,.12); }
+  #prog div { height:100%; border-radius:4px; background:var(--blue2); width:0; }
+
+  /* intro / outro */
+  .card { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+          text-align:center; padding:0 80px; z-index:20; }
+  .card .logo { width:180px; height:180px; border-radius:46px; background:#fff; color:#1d1d1f; font-weight:800;
+                font-size:74px; display:grid; place-items:center; box-shadow:0 30px 90px rgba(0,113,227,.35); }
+  .card h1 { font-size:96px; font-weight:800; letter-spacing:-3px; margin-top:56px; line-height:1.02; }
+  .card h2 { font-size:44px; font-weight:600; color:var(--blue2); margin-top:22px; }
+  .card p  { font-size:40px; color:#d4d4d9; margin-top:40px; line-height:1.35; }
+  .card .url { margin-top:56px; font-size:40px; font-weight:700; background:#fff; color:#1d1d1f;
+               padding:22px 40px; border-radius:24px; }
+  .card .by { position:absolute; bottom:120px; display:flex; align-items:center; gap:18px; font-size:30px; color:var(--dim); }
+  .card .by img { width:64px; height:64px; }
+  .card .by b { color:#fff; letter-spacing:1px; }
+  .pills { display:flex; gap:18px; flex-wrap:wrap; justify-content:center; margin-top:46px; }
+  .pills span { font-size:32px; font-weight:600; padding:16px 28px; border-radius:40px; background:rgba(255,255,255,.08);
+                border:2px solid rgba(255,255,255,.14); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="glow"></div>
+  <div id="brand"><div class="bs">BS</div><div><div class="t1">BS Car Rentals</div><div class="t2">Car Rental Manager</div></div></div>
+  <div id="step"></div>
+  <div id="text"><div id="title"></div><div id="sub"></div></div>
+  <div id="phone"><div id="screen"><div id="notch"></div><div id="sbar"><span>9:41</span><span>▂▄▆ ▮</span></div></div></div>
+  <div id="chips"></div>
+  <div id="prog"><div></div></div>
+
+  <div class="card" id="intro">
+    <div class="logo">BS</div>
+    <h1>BS Car Rentals</h1>
+    <h2>Car Rental Manager</h2>
+    <p>Your whole rental business,<br>right on your phone.</p>
+  </div>
+
+  <div class="card" id="outro">
+    <div class="logo">BS</div>
+    <h1>Everything in<br>one place</h1>
+    <div class="pills"><span>Cars</span><span>Customers</span><span>Rentals</span><span>Payments</span><span>Damage</span><span>Papers</span><span>Reports</span><span>Staff</span></div>
+    <p>Works on any phone or computer.<br>No app to install.</p>
+    <div class="url">bscarrental.co.in/manage</div>
+    <div class="by"><img src="../../../assets/site/logo/opiius-mark.svg" alt=""><span>Built by <b>OPIIUS</b></span></div>
+  </div>
+</div>
+
+<script>
+/* ---------- content ---------- */
+// Screenshot coordinates are in the original 1170 x 1992 image pixels.
+const S = n => 'shots/s' + String(n).padStart(2,'0') + '.jpg';
+const INTRO = 3.2, OUTRO = 5.0, SCENE = 5.6;
+
+const scenes = [
+  { title:'See your day <em>at a glance</em>',
+    sub:'Open it and you know which cars are free, which are out, and who still owes you money.',
+    shots:[ {img:0, at:0,   from:[585,700], to:[585,900], z0:1, z1:1.08, tap:[860,840,1.0]},
+            {img:1, at:2.8, from:[585,1300], to:[585,1300], z0:1.0, z1:1.12, tap:[480,1400,3.4]} ],
+    chips:[ ['g','✓','20 cars available',  'L', 760, 0.9],
+            ['r','!','1 car is overdue',    'R', 1000, 1.6],
+            ['a','₹','₹19,200 still to collect','L', 1440, 3.4] ] },
+
+  { title:'All your cars in <em>one list</em>',
+    sub:'Tap any car to see its trips, money earned, kilometres and any damage.',
+    shots:[ {img:2, at:0,   from:[585,600], to:[585,800], z0:1, z1:1.06, tap:[420,656,0.9]},
+            {img:3, at:2.6, from:[585,700], to:[585,900], z0:1, z1:1.1, tap:[860,1180,3.4]} ],
+    chips:[ ['b','🔍','Search by car number','R', 820, 1.0],
+            ['g','₹','₹6,500 earned by this car','L', 1150, 3.0],
+            ['r','!','1 damage not repaired','R', 1500, 3.7] ] },
+
+  { title:'Know every <em>customer</em>',
+    sub:'Their rentals, payments and ID in one place. Call or WhatsApp them in one tap.',
+    shots:[ {img:4, at:0, from:[585,600], to:[585,900], z0:1, z1:1.1, tap:[968,492,1.0], tap2:[300,1080,2.8]} ],
+    chips:[ ['w','✆','WhatsApp in one tap','R', 800, 1.3],
+            ['g','✓','₹6,500 paid so far',  'L', 1180, 2.2],
+            ['r','₹','₹3,100 still due',    'R', 1460, 3.1] ] },
+
+  { title:'Rent out a car <em>in a minute</em>',
+    sub:'Pick the customer and the car. The price is worked out for you. Tick the checklist before handing over.',
+    shots:[ {img:5, at:0,   from:[585,700], to:[585,800], z0:1, z1:1.06, tap:[584,890,0.7]},
+            {img:6, at:1.9, from:[585,600], to:[585,700], z0:1, z1:1.06, tap:[584,664,2.4]},
+            {img:7, at:3.7, from:[585,1300], to:[585,1300], z0:1, z1:1.08, tap:[620,1450,4.2]} ],
+    chips:[ ['b','🚗','No double booking',     'L', 900, 0.9],
+            ['g','₹','Price calculated for you','R', 1140, 2.6],
+            ['b','✓','Condition checklist',   'L', 1500, 4.2] ] },
+
+  { title:'Track <em>every trip</em>',
+    sub:'See who has which car, when it is due back, and who is running late.',
+    shots:[ {img:8, at:0,   from:[585,900], to:[585,1100], z0:1, z1:1.08, tap:[300,1350,1.0]},
+            {img:9, at:2.7, from:[585,900], to:[585,1100], z0:1, z1:1.08, tap:[316,1428,3.6]} ],
+    chips:[ ['r','⏱','4h late: call now',      'R', 1040, 1.2],
+            ['a','₹','Advance and balance',    'L', 900, 3.0],
+            ['w','✆','Send a WhatsApp reminder','R', 1480, 3.8] ] },
+
+  { title:'Take the car <em>back</em>',
+    sub:'Enter km and fuel and note any damage. Extra km, late hours and damage go on the bill.',
+    shots:[ {img:10, at:0,   from:[585,600], to:[585,700], z0:1, z1:1.06, tap:[584,780,0.7]},
+            {img:11, at:1.8, from:[585,700], to:[585,900], z0:1, z1:1.06, tap:[120,560,2.3]},
+            {img:13, at:3.6, from:[585,700], to:[585,700], z0:1, z1:1.1, tap:[940,720,4.1]} ],
+    chips:[ ['a','km','Extra km charged',      'L', 980, 1.0],
+            ['r','⏱','Late return charged',   'R', 1240, 2.4],
+            ['b','⇄','Before vs after check', 'L', 1520, 4.1] ] },
+
+  { title:'Never forget <em>money owed</em>',
+    sub:'One list of everyone who still owes you. Remind them on WhatsApp with one tap.',
+    shots:[ {img:15, at:0,   from:[585,700], to:[585,700], z0:1, z1:1.08, tap:[860,700,1.0]},
+            {img:16, at:2.7, from:[585,600], to:[585,800], z0:1, z1:1.08, tap:[776,600,3.4]} ],
+    chips:[ ['a','₹','₹19,200 to collect',  'L', 860, 0.9],
+            ['r','!','Overdue shown in red','R', 1120, 1.7],
+            ['w','✆','WhatsApp reminder',   'L', 1480, 3.5] ] },
+
+  { title:'Papers and service <em>on time</em>',
+    sub:'Get reminded before insurance, PUC or a service is due, so no car is caught out.',
+    shots:[ {img:17, at:0, from:[585,600], to:[585,900], z0:1, z1:1.12, tap:[340,552,1.0], tap2:[600,935,2.8]} ],
+    chips:[ ['r','!','PUC expired: renew',   'R', 820, 1.1],
+            ['a','🔧','Service overdue',     'L', 1120, 2.8],
+            ['g','✓','Insurance dates saved','R', 1460, 3.6] ] },
+
+  { title:'See how the <em>business</em> is doing',
+    sub:'Money collected, rentals and expenses, month by month. Download to Excel any time.',
+    shots:[ {img:18, at:0, from:[585,700], to:[585,1000], z0:1, z1:1.1, tap:[860,1110,1.2]} ],
+    chips:[ ['g','₹','₹48,700 collected',    'L', 900, 1.2],
+            ['a','🔧','Expenses tracked',     'R', 1160, 2.2],
+            ['b','⇩','Excel and CSV download','L', 1480, 3.2] ] },
+
+  { title:'Staff logins, <em>your rules</em>',
+    sub:'Give each staff member their own login. You choose what they can see and do.',
+    shots:[ {img:19, at:0, from:[585,800], to:[585,1300], z0:1, z1:1.1, tap:[330,1600,1.6]} ],
+    chips:[ ['b','👤','Owner sees everything','R', 820, 0.9],
+            ['a','🔒','Staff see only what you allow','L', 1180, 2.0],
+            ['g','✓','Records are never deleted','R', 1520, 3.1] ] },
+];
+const TOTAL = INTRO + scenes.length*SCENE + OUTRO;
+
+/* ---------- build DOM ---------- */
+const screen = document.getElementById('screen'), chipsEl = document.getElementById('chips');
+const SW = 676, SCALE = SW/1170, SH = 1206, TOP = 74;           // screen size in px; image px -> screen px
+scenes.forEach((sc,i)=>{
+  sc.start = INTRO + i*SCENE;
+  sc.shots.forEach(sh=>{
+    const im = document.createElement('img'); im.className='shot'; im.src=S(sh.img); screen.appendChild(im); sh.el=im;
+    [['tap','ring'],['tap2','ring']].forEach(([k,c])=>{ if(sh[k]){ const r=document.createElement('div'); r.className=c; screen.appendChild(r); sh[k+'El']=r; }});
+  });
+  sc.chipEls = sc.chips.map(([c,icon,txt,side,y])=>{
+    const d=document.createElement('div'); d.className='chip '+c; d.innerHTML='<i>'+icon+'</i>'+txt; chipsEl.appendChild(d); return d; });
+});
+
+/* ---------- helpers ---------- */
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const ease=x=>{x=clamp(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;};
+const out=x=>{x=clamp(x);return 1-Math.pow(1-x,3);};
+const back=x=>{x=clamp(x);const c=1.6;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2);};
+const lerp=(a,b,t)=>a+(b-a)*t;
+const $=id=>document.getElementById(id);
+
+let lastScene=-1;
+function render(t){
+  // progress
+  $('prog').firstChild.style.width = (clamp(t/TOTAL)*100)+'%';
+
+  // intro
+  const io = 1-ease((t-(INTRO-0.6))/0.6);
+  const intro=$('intro'); intro.style.opacity = io; intro.style.display = io>0?'flex':'none';
+  intro.querySelector('.logo').style.transform = `scale(${lerp(.6,1,back(t/0.8))})`;
+  [...intro.children].slice(1).forEach((el,k)=>{ const p=out((t-0.25-k*0.18)/0.6);
+    el.style.opacity=p; el.style.transform=`translateY(${(1-p)*40}px)`; });
+
+  // outro
+  const os = scenes.length*SCENE+INTRO, op = ease((t-os)/0.7);
+  const outro=$('outro'); outro.style.display = op>0?'flex':'none'; outro.style.opacity=op;
+  outro.querySelector('.logo').style.transform = `scale(${lerp(.6,1,back((t-os)/0.8))})`;
+  [...outro.children].slice(1).forEach((el,k)=>{ if(el.classList.contains('by')) { el.style.opacity=out((t-os-1.4)/0.6); return; }
+    const p=out((t-os-0.3-k*0.2)/0.6); el.style.opacity=p; el.style.transform=`translateY(${(1-p)*40}px)`; });
+
+  // main layer (header, text, phone) fades in after intro and out at outro
+  const main = Math.min(ease((t-(INTRO-0.5))/0.7), 1-ease((t-os)/0.5));
+  ['brand','step','text','phone','prog'].forEach(id=>$(id).style.opacity=main);
+  const ph = $('phone'); const pin = out((t-(INTRO-0.5))/0.9), pout = ease((t-os)/0.6);
+  ph.style.transform = `translateY(${(1-pin)*500 + pout*300}px) scale(${lerp(.92,1,pin)})`;
+
+  // which scene
+  let si = Math.floor((t-INTRO)/SCENE); si = clamp(si,0,scenes.length-1);
+  const sc = scenes[si], lt = t - sc.start;
+  $('step').innerHTML = `<b>${si+1}</b> / ${scenes.length}`;
+
+  // text
+  if(si!==lastScene){ $('title').innerHTML=sc.title; $('sub').textContent=sc.sub; lastScene=si; }
+  const tin = out(lt/0.6), tout = ease((lt-(SCENE-0.35))/0.35);
+  $('title').style.opacity = tin*(1-tout); $('title').style.transform=`translateY(${(1-tin)*50 - tout*30}px)`;
+  const sin = out((lt-0.15)/0.6);
+  $('sub').style.opacity = sin*(1-tout); $('sub').style.transform=`translateY(${(1-sin)*50 - tout*30}px)`;
+
+  // shots: all hidden, then lay out current scene (plus previous scene's last shot for cross-slide)
+  scenes.forEach(s=>s.shots.forEach(sh=>{ sh.el.style.display='none'; ['tapEl','tap2El'].forEach(k=>sh[k]&&(sh[k].style.display='none')); }));
+  const drawShot=(sh, st, dur, xoff)=>{
+    const p = clamp(st/dur); const z = lerp(sh.z0, sh.z1, ease(p));
+    const fx = lerp(sh.from[0], sh.to[0], ease(p)), fy = lerp(sh.from[1], sh.to[1], ease(p));
+    // keep the focus point at screen centre, but never pan past the image edges
+    const sc2 = SCALE*z, iw=1170*sc2, ih=1992*sc2;
+    let x = SW/2 - fx*sc2, y = TOP + (SH-TOP)/2 - fy*sc2;
+    x = clamp(x, SW-iw, 0); y = clamp(y, SH-ih, TOP);
+    sh.el.style.display='block'; sh.el.style.transform=`translate(${x+xoff}px,${y}px) scale(${z})`;
+    [['tap','tapEl'],['tap2','tap2El']].forEach(([k,ek])=>{ if(!sh[k]) return;
+      const [tx,ty,tt]=sh[k]; const r=sh[ek]; const a=st-(tt-sh.at);
+      if(a<0||a>1.6){ r.style.display='none'; return; }
+      r.style.display='block'; r.style.left=(x+xoff+tx*sc2)+'px'; r.style.top=(y+ty*sc2)+'px';
+      const pulse = a<0.35 ? back(a/0.35) : 1 + 0.12*Math.sin((a-0.35)*7);
+      r.style.transform=`scale(${pulse})`; r.style.opacity = a>1.3 ? 1-(a-1.3)/0.3 : 1; });
+  };
+  const shots = sc.shots;
+  for(let k=0;k<shots.length;k++){
+    const sh=shots[k], next=shots[k+1];
+    const end = next? next.at : SCENE;
+    const st = lt - sh.at;
+    if(st < -0.01) continue;
+    // slide in (from right) over 0.5s, except first shot of the very first scene
+    const sl = (k===0) ? (si===0?1:out(lt/0.5)) : out(st/0.5);
+    if(lt > end + 0.5 && next) continue;
+    const leaving = next ? out((lt-next.at)/0.5) : 0;
+    drawShot(sh, st, (end-sh.at)+0.5, (1-sl)*SW - leaving*SW*0.35);
+    if(next && leaving>0) sh.el.style.filter=`brightness(${1-leaving*0.3})`; else sh.el.style.filter='';
+  }
+  // previous scene's last shot slides out to the left
+  if(si>0 && lt<0.5){ const ps=scenes[si-1], last=ps.shots[ps.shots.length-1];
+    drawShot(last, SCENE-last.at, SCENE-last.at+0.5, -out(lt/0.5)*SW*0.35); last.el.style.filter=`brightness(${1-out(lt/0.5)*0.3})`;
+    ['tapEl','tap2El'].forEach(k=>last[k]&&(last[k].style.display='none')); }
+  // keep z-order: current scene on top
+  shots.forEach((sh,k)=>sh.el.style.zIndex=10+k);
+
+  // chips
+  scenes.forEach((s,i)=>s.chipEls.forEach(el=>el.style.display = i===si?'flex':'none'));
+  sc.chips.forEach(([c,icon,txt,side,y,at],k)=>{
+    const el=sc.chipEls[k]; const a=lt-at;
+    const pin = back(a/0.5), fade = 1-ease((lt-(SCENE-0.4))/0.35);
+    el.style.opacity = clamp(a/0.25)*fade;
+    el.style.top = y+'px';
+    const bob = Math.sin((lt+k)*1.6)*6;
+    if(side==='L'){ el.style.left='40px'; el.style.right='auto'; el.style.transform=`translate(${(1-pin)*-120}px,${bob}px) scale(${lerp(.7,1,clamp(pin,0,1.2))})`; el.style.transformOrigin='0 50%'; }
+    else { el.style.right='40px'; el.style.left='auto'; el.style.transform=`translate(${(1-pin)*120}px,${bob}px) scale(${lerp(.7,1,clamp(pin,0,1.2))})`; el.style.transformOrigin='100% 50%'; }
+  });
+}
+window.render = render; window.TOTAL = TOTAL;
+
+// live preview when opened in a browser (render.js sets ?record to drive frames itself)
+if(!location.search.includes('record')){
+  let t0=null; const loop=ts=>{ if(t0===null)t0=ts; render(((ts-t0)/1000)%TOTAL); requestAnimationFrame(loop); };
+  Promise.all([...document.images].map(i=>i.complete?1:new Promise(r=>i.onload=i.onerror=r))).then(()=>requestAnimationFrame(loop));
+} else render(0);
+</script>
+</body>
+</html>
