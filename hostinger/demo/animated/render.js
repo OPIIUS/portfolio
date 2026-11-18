@@ -26,8 +26,11 @@ const fs = require('fs');
   const out = args[0] || 'out.mp4', fps = 30;
   const total = await page.evaluate(() => TOTAL);
   const frames = Math.round(total * fps);
-  const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-',
-    '-c:v', 'libx264', '-preset', 'slow', '-crf', '20', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out], { stdio: ['pipe', 'inherit', 'inherit'] });
+  // the voice track from voice.py is added when it exists
+  const voice = path.join(__dirname, 'voice', 'voiceover.wav');
+  const audio = fs.existsSync(voice) ? ['-i', voice, '-c:a', 'aac', '-b:a', '128k', '-shortest'] : [];
+  const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-', ...audio,
+    '-c:v', 'libx264', '-preset', 'slow', '-crf', '24', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', out], { stdio: ['pipe', 'inherit', 'inherit'] });
   for (let f = 0; f < frames; f++) {
     await page.evaluate(t => render(t), f / fps);
     const buf = await page.screenshot({ type: 'jpeg', quality: 92 });

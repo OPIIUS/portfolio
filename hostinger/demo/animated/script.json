@@ -1,0 +1,56 @@
+{
+  "_note": "Voiceover and on-screen steps. 'say' is spoken (written for the voice), 'cap' is the caption shown. shot = screenshot number in shots/, tap = [x,y] in screenshot pixels (1170x1992), focus = point the camera centres on.",
+  "intro": { "say": "This is the B S Car Rentals manager. Your whole rental business, right on your phone. Let's go through it, one step at a time." },
+  "scenes": [
+    { "title": "See your day <em>at a glance</em>", "lines": [
+      { "shot": 0, "focus": [585, 700],  "tap": null,        "cap": "The dashboard shows your whole day.", "say": "When you open it, the dashboard shows your whole day." },
+      { "shot": 0, "focus": [585, 800],  "tap": [860, 840],  "cap": "How many cars are free, and how many are out.", "say": "You can see how many cars are free, and how many are out with customers." },
+      { "shot": 0, "focus": [585, 1500], "tap": [860, 1860], "cap": "Money collected this month, and money still due.", "say": "It also shows the money collected this month, and the money still due." },
+      { "shot": 1, "focus": [585, 1400], "tap": [480, 1400], "cap": "Anything that needs your attention is listed here.", "say": "And anything that needs your attention, like a late car, or an expired paper, is listed right here." }
+    ]},
+    { "title": "All your cars in <em>one list</em>", "lines": [
+      { "shot": 2, "focus": [585, 800],  "tap": [420, 656],  "cap": "All 25 cars in one list. Filter by available or rented.", "say": "All twenty five cars are in one list. You can filter them by available, rented, or under service." },
+      { "shot": 3, "focus": [585, 800],  "tap": [864, 920],  "cap": "Tap a car to see its trips, earnings and kilometres.", "say": "Tap any car to see its trips, the money it has earned, and its kilometres." },
+      { "shot": 3, "focus": [585, 1000], "tap": [864, 1180], "cap": "Damage not yet repaired is shown in red.", "say": "Any damage that has not been repaired yet is shown in red." }
+    ]},
+    { "title": "Know every <em>customer</em>", "lines": [
+      { "shot": 4, "focus": [585, 800],  "tap": [240, 820],  "cap": "Each customer has a page with every rental and payment.", "say": "Each customer has their own page, with every rental and every payment." },
+      { "shot": 4, "focus": [585, 900],  "tap": [292, 1072], "cap": "See what they have paid, and what they still owe.", "say": "You can see what they have paid, and what they still owe." },
+      { "shot": 4, "focus": [585, 600],  "tap": [968, 492],  "cap": "Call or WhatsApp them in one tap.", "say": "And you can call them, or message them on WhatsApp, with one tap." }
+    ]},
+    { "title": "Rent out a car <em>in a minute</em>", "lines": [
+      { "shot": 5, "focus": [585, 800],  "tap": [584, 890],  "cap": "Choose the customer and the car. No double bookings.", "say": "To rent out a car, choose the customer and the car. The same car can never be given to two people at once." },
+      { "shot": 6, "focus": [585, 650],  "tap": [584, 664],  "cap": "The price is worked out for you.", "say": "The price is worked out for you, from the dates and the daily rate." },
+      { "shot": 7, "focus": [585, 1300], "tap": [620, 1450], "cap": "Note km and fuel, and tick the condition checklist.", "say": "Before you hand over the keys, note the kilometres and fuel, and tick the condition checklist." }
+    ]},
+    { "title": "Track <em>every trip</em>", "lines": [
+      { "shot": 8, "focus": [585, 1100], "tap": [300, 1350], "cap": "Every car that is out, and when it is due back.", "say": "The rentals page shows every car that is out, and when it is due back. Late returns are marked in red." },
+      { "shot": 9, "focus": [585, 900],  "tap": [656, 928],  "cap": "The advance paid, and the balance left.", "say": "Open a rental to see the advance paid, and the balance left." },
+      { "shot": 9, "focus": [585, 1200], "tap": [316, 1428], "cap": "Send a WhatsApp reminder in one tap.", "say": "You can send the customer a WhatsApp reminder, with one tap." }
+    ]},
+    { "title": "Take the car <em>back</em>", "lines": [
+      { "shot": 10, "focus": [585, 700], "tap": [584, 780],  "cap": "Enter the kilometres, fuel and condition.", "say": "When the car comes back, enter the kilometres, the fuel, and the condition." },
+      { "shot": 11, "focus": [585, 700], "tap": [120, 560],  "cap": "Extra km, late hours or damage go on the bill.", "say": "Extra kilometres, late hours, or new damage are added to the bill." },
+      { "shot": 13, "focus": [700, 800], "tap": [940, 720],  "cap": "The before and after check is saved.", "say": "And the before and after check is saved, so there is no confusion later." }
+    ]},
+    { "title": "Never forget <em>money owed</em>", "lines": [
+      { "shot": 15, "focus": [585, 700], "tap": [300, 700],  "cap": "Everyone who still owes you money, in one list.", "say": "The money due page lists everyone who still owes you money." },
+      { "shot": 15, "focus": [585, 700], "tap": [860, 700],  "cap": "Late payments are shown in red.", "say": "Payments that are late are shown in red." },
+      { "shot": 16, "focus": [585, 700], "tap": [776, 600],  "cap": "Send a polite WhatsApp reminder from the list.", "say": "Send a polite WhatsApp reminder, straight from the list." }
+    ]},
+    { "title": "Papers and service <em>on time</em>", "lines": [
+      { "shot": 17, "focus": [585, 600], "tap": [340, 552],  "cap": "Reminders before insurance or PUC expires.", "say": "It keeps track of insurance and P U C dates, and reminds you before they expire." },
+      { "shot": 17, "focus": [585, 900], "tap": [230, 875],  "cap": "And when a car is due for service.", "say": "It also tells you when a car is due for service." }
+    ]},
+    { "title": "See how the <em>business</em> is doing", "lines": [
+      { "shot": 18, "focus": [585, 1000], "tap": [860, 1110], "cap": "Money collected, rentals and expenses.", "say": "Reports show the money collected, the number of rentals, and your expenses." },
+      { "shot": 18, "focus": [585, 1700], "tap": [140, 1936], "cap": "Download to Excel any time.", "say": "You can download them to Excel, at any time." }
+    ]},
+    { "title": "Staff logins, <em>your rules</em>", "lines": [
+      { "shot": 19, "focus": [585, 600],  "tap": [584, 428],  "cap": "Give each staff member their own login.", "say": "Give each staff member their own login." },
+      { "shot": 19, "focus": [585, 1400], "tap": [330, 1600], "cap": "You choose what they can see and do.", "say": "You choose exactly what they can see, and what they can do." },
+      { "shot": 19, "focus": [585, 1400], "tap": null,        "cap": "Nothing is ever deleted.", "say": "And nothing is ever deleted, so you always have a full record." }
+    ]}
+  ],
+  "outro": { "say": "Everything in one place. It works on any phone or computer, with no app to install. Just open B S car rental dot co dot in, slash manage." }
+}
