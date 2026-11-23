@@ -3,6 +3,7 @@ defined('APP') or exit;
 
 /* ---------- exports: Excel (.xlsx), CSV, and a print view for PDF ---------- */
 function export_table($name, array $headers, array $data, $format) {
+    $headers = str_replace('(₹)', '(' . setting('currency', 'INR') . ')', $headers);
     $name = preg_replace('/[^A-Za-z0-9_-]+/', '-', $name);
     audit('export', 'report', null, ['name' => $name, 'format' => $format, 'rows' => count($data)]);
     if ($format === 'csv') {

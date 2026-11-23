@@ -3,7 +3,9 @@
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-  var rupees = function (paise) { return '₹' + Math.round(paise / 100).toLocaleString('en-IN'); };
+  // Money hints use the business's own currency (set in Settings), passed in by the page.
+  var cur = document.documentElement.getAttribute('data-currency') || '₹';
+  var rupees = function (paise) { return cur + Math.round(paise / 100).toLocaleString(cur === '₹' ? 'en-IN' : 'en-GB'); };
 
   // menu
   document.addEventListener('click', function (e) {

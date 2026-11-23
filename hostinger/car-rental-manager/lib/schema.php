@@ -177,3 +177,18 @@ function schema_upgrade() {
     }
     setting_save('schema_version', SCHEMA_VERSION);
 }
+
+/* Called once by the installer after the currency is chosen: replaces India-specific defaults for other countries.
+   Money settings are in minor units (pence/cents). */
+function apply_region_defaults($currency) {
+    if ($currency === 'INR') return;
+    $uk = $currency === 'GBP';
+    foreach (['late_fee_per_hour' => '1000', 'extra_km_rate' => '25',
+        'categories' => "Small car\nHatchback\nSaloon\nEstate\nSUV\n7-seater\nVan\nMinibus"] as $k => $v) setting_save($k, $v);
+    q('DELETE FROM doc_types');
+    $types = $uk
+        ? [['Insurance', 'all', 1], ['MOT certificate', 'all', 1], ['Road tax (VED)', 'all', 1], ['V5C logbook', 'all', 0], ['Operator licence', '', 1]]
+        : [['Insurance', 'all', 1], ['Registration', 'all', 1], ['Roadworthiness inspection', 'all', 1], ['Road tax', '', 1], ['Commercial permit', '', 1]];
+    foreach ($types as $i => $t) insert('doc_types', ['name' => $t[0], 'required_for' => $t[1], 'has_expiry' => $t[2], 'active' => 1, 'sort' => $i]);
+    $GLOBALS['__fleet_settings'] = null;
+}

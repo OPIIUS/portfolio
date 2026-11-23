@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             foreach (['storage', 'storage/uploads', 'storage/backups', 'storage/sessions'] as $d) if (!is_dir(__DIR__ . "/$d")) mkdir(__DIR__ . "/$d", 0750, true);
             if (!is_file(__DIR__ . '/storage/.htaccess')) file_put_contents(__DIR__ . '/storage/.htaccess', "Require all denied\n");
-            $cfgText = "<?php\n// Created by the installer on " . date('Y-m-d H:i') . ". Keep this file private.\nreturn " . var_export(['db' => $db, 'key' => bin2hex(random_bytes(32))], true) . ";\n";
+            $cfgText = "<?php\n// Created by the installer on " . date('Y-m-d H:i') . ". Keep this file private.\nreturn " . var_export(['db' => $db, 'key' => bin2hex(random_bytes(32)), 'timezone' => in_array($f('timezone'), timezone_identifiers_list(), true) ? $f('timezone') : 'Asia/Kolkata'], true) . ";\n";
             $tmp = __DIR__ . '/config.php';
             if (file_put_contents($tmp, $cfgText) === false) throw new RuntimeException('Could not write config.php. Make the folder writable and try again.');
             putenv('FLEET_CONFIG=' . $tmp);
@@ -63,6 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'currency' => isset(CURRENCIES[$f('currency')]) ? $f('currency') : 'INR', 'opening_date' => $f('opening_date'), 'vehicle_count' => $f('vehicle_count'),
                     'default_rate_type' => in_array($f('default_rate_type'), ['daily', 'monthly', 'fixed'], true) ? $f('default_rate_type') : 'daily'];
                 foreach ($set as $k => $v) q('UPDATE settings SET v = ? WHERE k = ?', [(string)$v, $k]);
+                $GLOBALS['__fleet_settings'] = null;
+                if (!$P) apply_region_defaults($set['currency']);
                 insert('users', ['name' => $name, 'email' => $email, 'password_hash' => password_hash($pw, PASSWORD_DEFAULT), 'role' => 'owner', 'perms' => '[]',
                     'active' => 1, 'session_version' => 1, 'created_at' => date('Y-m-d H:i:s')]);
                 insert('audit_log', ['user_id' => null, 'action' => 'install', 'entity' => 'system', 'details' => 'Fleet manager set up', 'ip' => client_ip(), 'created_at' => date('Y-m-d H:i:s')]);
@@ -112,6 +114,7 @@ $h = fn($s) => htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8');
       <label class="field"><span>Business name *</span><input name="business_name" value="<?= $h($f('business_name')) ?>" required></label>
       <label class="field"><span>Phone number</span><input name="business_phone" value="<?= $h($f('business_phone')) ?>"></label>
       <label class="field"><span>Currency</span><select name="currency"><?php foreach (CURRENCIES as $code => $sym): ?><option value="<?= $code ?>" <?= $f('currency', 'INR') === $code ? 'selected' : '' ?>><?= $code ?> (<?= $h(trim($sym)) ?>)</option><?php endforeach; ?></select></label>
+      <label class="field"><span>Timezone</span><select name="timezone"><?php foreach (['Asia/Kolkata' => 'India', 'Europe/London' => 'United Kingdom', 'Europe/Dublin' => 'Ireland', 'Australia/Sydney' => 'Australia (Sydney)', 'Australia/Perth' => 'Australia (Perth)', 'Pacific/Auckland' => 'New Zealand', 'America/New_York' => 'USA / Canada (Eastern)', 'America/Chicago' => 'USA (Central)', 'America/Los_Angeles' => 'USA / Canada (Pacific)', 'Asia/Dubai' => 'UAE', 'Asia/Singapore' => 'Singapore', 'Asia/Kathmandu' => 'Nepal'] as $tz => $label): ?><option value="<?= $tz ?>" <?= $f('timezone', 'Asia/Kolkata') === $tz ? 'selected' : '' ?>><?= $h($label) ?></option><?php endforeach; ?></select></label>
       <label class="field"><span>Business opening date</span><input type="date" name="opening_date" value="<?= $h($f('opening_date')) ?>"></label>
       <label class="field"><span>Number of vehicles</span><input type="number" min="0" max="5000" name="vehicle_count" value="<?= $h($f('vehicle_count', $P ? (string)count($P['vehicles'] ?? []) : '')) ?>"></label>
       <label class="field"><span>Usual way you charge rent</span><select name="default_rate_type"><?php foreach (['daily' => 'Per day', 'monthly' => 'Per month', 'fixed' => 'Fixed amount per trip'] as $k => $l): ?><option value="<?= $k ?>" <?= $f('default_rate_type', 'daily') === $k ? 'selected' : '' ?>><?= $l ?></option><?php endforeach; ?></select></label>

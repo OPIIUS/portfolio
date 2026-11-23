@@ -5,6 +5,8 @@ defined('APP') or exit;
 const FUELS = ['Petrol', 'Diesel', 'CNG', 'Petrol + CNG', 'Electric', 'Hybrid'];
 const TRANSMISSIONS = ['Manual', 'Automatic'];
 const PAY_METHODS = ['Cash', 'UPI', 'Bank transfer', 'Card', 'Cheque', 'Deposit adjustment', 'Other'];
+/* The payment method a new payment starts with: UPI in India, card elsewhere. */
+function default_pay_method() { return setting('currency', 'INR') === 'INR' ? 'UPI' : 'Card'; }
 const EXPENSE_CATEGORIES = [
     'servicing' => 'Vehicle servicing', 'fuel' => 'Fuel', 'insurance' => 'Insurance', 'puc' => 'PUC', 'repairs' => 'Repairs',
     'tyres' => 'Tyres', 'battery' => 'Battery', 'cleaning' => 'Cleaning', 'parking' => 'Parking', 'tolls' => 'Tolls',
@@ -20,6 +22,15 @@ const FUEL_LEVELS = ['Empty', '1/4', '1/2', '3/4', 'Full'];
 const CHECK_ITEMS = ['Exterior body', 'Windscreen and glass', 'Lights and indicators', 'Tyres and spare wheel', 'Interior and seats',
     'AC working', 'Music system', 'Jack and tools', 'RC, insurance and PUC copies in car', 'Keys and remote'];
 const ID_TYPES = ['Aadhaar', 'Voter ID', 'Passport', 'PAN', 'Driving licence', 'Other'];
+
+/* Region-specific wording. India (INR) keeps the original lists; other currencies get neutral ones. */
+function in_india() { return setting('currency', 'INR') === 'INR'; }
+function check_items() {
+    return in_india() ? CHECK_ITEMS : ['Exterior body', 'Windscreen and glass', 'Lights and indicators', 'Tyres and spare wheel', 'Interior and seats',
+        'Air conditioning', 'Audio system', 'Jack and tools', 'Vehicle papers and insurance details in car', 'Keys and remote'];
+}
+function id_types() { return in_india() ? ID_TYPES : ['Driving licence', 'Passport', 'National ID card', 'Other']; }
+
 
 function categories() { return array_values(array_filter(array_map('trim', explode("\n", setting('categories', ''))))); }
 
