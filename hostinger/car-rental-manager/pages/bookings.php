@@ -68,9 +68,9 @@ function booking_form($b = null) {
             . field('Payment due date', inp('due_date', $g('due_date'), 'date'), 'Empty = the return date.') . field('Free km per day', inp('km_limit', $g('km_limit'), 'number', 'min="0" data-km'), 'Optional. For extra-km charges at return.') . '</div>';
         if ($isNew) $h .= '<div class="grid3">' . field('Additional charge (optional)', inp('extra_label', old('extra_label'), 'text', 'placeholder="e.g. Driver, delivery, child seat"')) . field('Additional charge amount', money_in('extra_amount', old('extra_amount', ''))) . '</div>'
             . '<h3>Money received now</h3><div class="grid3">' . field('Advance payment', money_in('advance', old('advance', ''))) . field('Security deposit received', money_in('deposit_now', old('deposit_now', '')))
-            . field('Paid by', sel('method', PAY_METHODS, old('method', 'UPI'))) . field('Transaction reference', inp('reference', old('reference'), 'text', 'placeholder="Optional"')) . '</div>';
+            . field('Paid by', sel('method', PAY_METHODS, old('method', default_pay_method()))) . field('Transaction reference', inp('reference', old('reference'), 'text', 'placeholder="Optional"')) . '</div>';
     } else if ($isNew) $h .= '<p class="muted small">The price is calculated from the car\'s daily price. The owner can change it.</p><input type="hidden" name="auto_price" value="1">';
-    $h .= field('Special conditions or notes', txt('notes', $g('notes', $isNew ? (string)setting('default_rental_terms', '') : ''), 'rows="4" placeholder="e.g. Only within Assam. No smoking."'), $isNew && setting('default_rental_terms') ? 'Your usual rental rules are filled in. Change them for this rental if needed.' : '') . field('Pickup place (optional)', inp('pickup_location', $g('pickup_location')));
+    $h .= field('Special conditions or notes', txt('notes', $g('notes', $isNew ? (string)setting('default_rental_terms', '') : ''), 'rows="4" placeholder="e.g. ' . (in_india() ? 'Only within Assam. No smoking.' : 'Island use only. No smoking. No pets.') . '"'), $isNew && setting('default_rental_terms') ? 'Your usual rental rules are filled in. Change them for this rental if needed.' : '') . field('Pickup place (optional)', inp('pickup_location', $g('pickup_location')));
     if ($isNew) {
         $now = old('mode', 'now');
         $h .= '<h3>Is the customer taking the car now?</h3><div class="row"><label class="check"><input type="radio" name="mode" value="now" data-mode' . ($now === 'now' ? ' checked' : '') . '> Yes, hand over the car now</label><label class="check"><input type="radio" name="mode" value="later" data-mode' . ($now === 'later' ? ' checked' : '') . '> No, reserve it for later</label></div>';
@@ -86,14 +86,14 @@ function checklist_fields($stage, $vehicle, $prev = null) {
     $h = '<div class="grid3">' . field($ret ? 'Final kilometre reading *' : 'Starting kilometre reading *', inp('odometer', $ret ? '' : ($vehicle['odometer'] ?? ''), 'number', 'min="0" inputmode="numeric" data-odo-input' . ($ret ? ' required' : '')), $prev ? 'At start: ' . number_format($prev['odometer']) . ' km' : ($vehicle ? 'Car\'s last reading: ' . number_format($vehicle['odometer']) . ' km' : '<span data-odo-hint></span>'))
         . field('Fuel level (optional)', sel('fuel_level', FUEL_LEVELS, $prev['fuel_level'] ?? 'Full', '', '—'), $prev ? 'At start: ' . e($prev['fuel_level'] ?: '—') : '')
         . field('Car condition', sel('condition', CONDITIONS, 'Good')) . '</div><div class="checks-grid">';
-    foreach (CHECK_ITEMS as $it) $h .= '<label class="check"><input type="checkbox" name="items[]" value="' . e($it) . '" checked> ' . e($it) . '</label>';
+    foreach (check_items() as $it) $h .= '<label class="check"><input type="checkbox" name="items[]" value="' . e($it) . '" checked> ' . e($it) . '</label>';
     return $h . '</div>' . field($ret ? 'Condition notes' : 'Existing scratches or dents (before rental)', txt('damage_notes', '', 'placeholder="' . ($ret ? 'e.g. Interior dirty' : 'e.g. Scratch on rear bumper') . '"'))
         . field('Photos (optional)', '<input type="file" name="photos[]" accept="image/*" multiple>');
 }
 
 function save_checklist($bookingId, $stage, $odo) {
     insert('checklists', ['booking_id' => $bookingId, 'stage' => $stage, 'odometer' => $odo, 'fuel_level' => in_array(post('fuel_level'), FUEL_LEVELS, true) ? post('fuel_level') : null,
-        'items' => json_encode(array_values(array_intersect(CHECK_ITEMS, (array)($_POST['items'] ?? [])))), 'damage_notes' => mb_substr(post('damage_notes'), 0, 2000),
+        'items' => json_encode(array_values(array_intersect(check_items(), (array)($_POST['items'] ?? [])))), 'damage_notes' => mb_substr(post('damage_notes'), 0, 2000),
         'condition_note' => in_array(post('condition'), CONDITIONS, true) ? post('condition') : null, 'override_reason' => post('ack_docs') === '1' ? 'Documents warning acknowledged' : null,
         'created_by' => current_user()['id'], 'created_at' => now()]);
     foreach (array_keys($_FILES['photos']['name'] ?? []) as $i) {
@@ -261,7 +261,7 @@ function page_booking() {
                 if (!$new || ts($new) <= ts($b['end_at'])) throw new UserError('The new return time must be later than ' . fmt_dt($b['end_at']) . '.');
                 if ($c = booking_conflicts($v['id'], $b['start_at'], $new, $id)) throw new UserError("Can't extend: {$v['reg_no']} is reserved for {$c[0]['customer_name']} from " . fmt_dt($c[0]['start_at']) . '.');
                 $amt = can('payments') ? money_post('ext_amount', 'extra charge') : 0;
-                if (post('ext_terms') === '' && $amt > 0) throw new UserError('Write the agreed terms for the extra charge (e.g. "2 more days at ₹3,000/day, agreed on phone").');
+                if (post('ext_terms') === '' && $amt > 0) throw new UserError('Write the agreed terms for the extra charge (e.g. "2 more days at ' . trim(currency_symbol()) . '3,000/day, agreed on phone").');
                 tx(function () use ($id, $b, $new, $amt, $me) {
                     $cid = $amt > 0 ? insert('booking_charges', ['booking_id' => $id, 'kind' => 'extension', 'label' => 'Extension to ' . fmt_dt($new), 'amount' => $amt, 'created_by' => $me, 'created_at' => now()]) : null;
                     insert('booking_extensions', ['booking_id' => $id, 'old_end' => $b['end_at'], 'new_end' => $new, 'charge_id' => $cid, 'note' => mb_substr(post('ext_terms'), 0, 500), 'created_by' => $me, 'created_at' => now()]);
@@ -379,7 +379,7 @@ function page_booking() {
         $h .= table(['Date', 'Type', 'Amount', 'Method', 'Receipt'], $trs, 'No payments yet.') . '</div>';
         $kinds = ['rental' => 'Rent payment', 'deposit' => 'Security deposit received', 'deposit_out' => 'Security deposit returned', 'refund' => 'Rent refunded'];
         $h .= '<div>' . form_open('payment', 'class="card stack"') . '<h3>Record payment</h3><div class="grid2">' . field('Type', sel('kind', $kinds, 'rental')) . field('Amount', money_in('amount', $b['balance'] > 0 ? $b['balance'] : '', 'required'))
-            . field('Method', sel('method', PAY_METHODS, 'UPI')) . field('Transaction reference', inp('reference', '', 'text', 'placeholder="Optional"')) . field('Date and time', inp('paid_at', date('Y-m-d\TH:i', strtotime(now())), 'datetime-local')) . field('Note', inp('note', '', 'text', 'placeholder="Optional"')) . '</div>'
+            . field('Method', sel('method', PAY_METHODS, default_pay_method())) . field('Transaction reference', inp('reference', '', 'text', 'placeholder="Optional"')) . field('Date and time', inp('paid_at', date('Y-m-d\TH:i', strtotime(now())), 'datetime-local')) . field('Note', inp('note', '', 'text', 'placeholder="Optional"')) . '</div>'
             . '<p class="muted small">Part payments are fine. Every payment is kept; a mistake is cancelled by the owner, never deleted.</p><button class="btn primary">Save payment</button></form>';
         if ($b['status'] !== 'cancelled') $h .= form_open('charge', 'class="card stack"') . '<h3>Add an agreed charge</h3><div class="grid2">' . field('What was agreed', inp('charge_label', '', 'text', 'placeholder="e.g. Fuel refill agreed with customer"')) . field('Amount', money_in('charge_amount', '')) . '</div><button class="btn">Add charge</button></form>';
         $h .= '</div></div>';

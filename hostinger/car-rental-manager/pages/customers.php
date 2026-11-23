@@ -8,7 +8,7 @@ function customer_from_post($existing = null) {
     $d['name'] = mb_substr(post('name'), 0, 120);
     if ($d['name'] === '') throw new UserError('Enter the customer\'s name.');
     $d['phone'] = preg_replace('/[^\d+]/', '', post('phone'));
-    if (!preg_match('/^\+?\d{10,13}$/', $d['phone'])) throw new UserError('Enter a valid phone number (10 digits).');
+    if (!preg_match('/^\+?\d{10,13}$/', $d['phone'])) throw new UserError('Enter a valid phone number: 10 to 13 digits, with or without the country code (e.g. +44).');
     $d['alt_phone'] = preg_replace('/[^\d+]/', '', post('alt_phone')) ?: null;
     $d['email'] = post('email');
     if ($d['email'] !== '' && !filter_var($d['email'], FILTER_VALIDATE_EMAIL)) throw new UserError('Check the email address.');
@@ -18,7 +18,7 @@ function customer_from_post($existing = null) {
     if (can('customer_sensitive') || !$existing) {
         $d['dl_number'] = strtoupper(mb_substr(post('dl_number'), 0, 40));
         $exp = parse_date(post('dl_expiry')); if ($exp === false) throw new UserError('Check the licence expiry date.'); $d['dl_expiry'] = $exp;
-        $d['id_type'] = in_array(post('id_type'), ID_TYPES, true) ? post('id_type') : null;
+        $d['id_type'] = in_array(post('id_type'), id_types(), true) ? post('id_type') : null;
         $d['id_number'] = mb_substr(post('id_number'), 0, 40);
         $d['id_verified'] = post('id_verified') === '1' ? 1 : 0;
     }
@@ -35,7 +35,7 @@ function customer_form($c, $action) {
         . field('Other phone', inp('alt_phone', $g('alt_phone'), 'tel')) . field('Email', inp('email', $g('email'), 'email')) . '</div>'
         . field('Address', txt('address', $g('address')));
     if ($sens) $h .= '<h3>Licence and ID</h3><div class="grid3">' . field('Driving licence number', inp('dl_number', $g('dl_number'), 'text', 'autocapitalize="characters"'))
-        . field('Licence valid until', inp('dl_expiry', $g('dl_expiry'), 'date')) . field('ID type', sel('id_type', ID_TYPES, $g('id_type'), '', '—'))
+        . field('Licence valid until', inp('dl_expiry', $g('dl_expiry'), 'date')) . field('ID type', sel('id_type', id_types(), $g('id_type'), '', '—'))
         . field('ID number', inp('id_number', $g('id_number'))) . '</div><label class="check"><input type="checkbox" name="id_verified" value="1"' . ($g('id_verified') ? ' checked' : '') . '> I have checked the original licence and ID</label>'
         . field('Upload licence / ID photo or PDF', '<input type="file" name="id_file" accept="image/*,application/pdf">', 'Stored privately. Only people with ID access can open it.');
     else $h .= '<p class="muted small">Licence and ID details are hidden for your account.</p>';

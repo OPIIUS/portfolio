@@ -20,7 +20,7 @@ function render_page($title, $content, $active = null) {
     $flashes = take_flashes();
     $alerts = $u ? count(visible_notifications()) : 0;
     header('Content-Type: text/html; charset=utf-8');
-    echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">';
+    echo '<!doctype html><html lang="en" data-currency="' . e(installed() ? trim(currency_symbol()) : '₹') . '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">';
     echo '<meta name="robots" content="noindex, nofollow"><meta name="theme-color" content="#f5f5f7"><title>' . e($title) . ' · ' . e(setting('business_name', 'Fleet')) . '</title>';
     echo '<link rel="icon" href="assets/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/app.css?v=' . APP_VERSION . '"></head><body>';
     if ($u) {
@@ -71,7 +71,7 @@ function sel($name, array $options, $selected = '', $extra = '', $blank = null) 
 }
 function txt($name, $value = '', $extra = '') { return '<textarea name="' . e($name) . '" rows="3" ' . $extra . '>' . e($value) . '</textarea>'; }
 function money_in($name, $paise = null, $extra = '') {
-    return '<div class="money-in"><i>₹</i><input type="text" inputmode="decimal" name="' . e($name) . '" value="' . e($paise === null || $paise === '' ? '' : rtrim(rtrim(money_plain($paise), '0'), '.')) . '" ' . $extra . '></div>';
+    return '<div class="money-in"><i>' . e(trim(currency_symbol())) . '</i><input type="text" inputmode="decimal" name="' . e($name) . '" value="' . e($paise === null || $paise === '' ? '' : rtrim(rtrim(money_plain($paise), '0'), '.')) . '" ' . $extra . '></div>';
 }
 function form_open($action, $extra = '', $multipart = false) {
     return '<form method="post" action="' . e(url(get('p', 'dashboard'), array_diff_key($_GET, ['p' => 1, 'receipt' => 1]))) . '"' . ($multipart ? ' enctype="multipart/form-data"' : '') . ' ' . $extra . '>' . csrf_field() . '<input type="hidden" name="action" value="' . e($action) . '">';

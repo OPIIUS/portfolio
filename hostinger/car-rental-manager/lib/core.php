@@ -2,7 +2,6 @@
 /* Core: configuration, database, sessions, security helpers, formatting. */
 defined('APP') or exit;
 
-date_default_timezone_set('Asia/Kolkata');
 mb_internal_encoding('UTF-8');
 
 define('ROOT', dirname(__DIR__));
@@ -20,6 +19,8 @@ function config($key = null, $default = null) {
     return $cfg[$key] ?? $default;
 }
 function installed() { return (bool)config('db'); }
+/* Timezone chosen at install time (config.php 'timezone'); India by default, as before. */
+date_default_timezone_set(in_array(config('timezone'), timezone_identifiers_list(), true) ? config('timezone') : 'Asia/Kolkata');
 
 /* ---------------- database ---------------- */
 function db() {
@@ -131,7 +132,7 @@ function money($paise, $sign = false) {
 function money_plain($paise) { return number_format(((int)$paise) / 100, 2, '.', ''); }
 /* "1,500.50" -> 150050. Returns false when invalid. */
 function parse_money($s, $allowZero = true) {
-    $s = trim(str_replace([',', '₹', ' '], '', (string)$s));
+    $s = trim(str_replace(array_merge([',', ' ', '₹'], array_map('trim', array_values(CURRENCIES))), '', (string)$s));
     if ($s === '') return $allowZero ? 0 : false;
     if (!preg_match('/^\d{1,9}(\.\d{1,2})?$/', $s)) return false;
     [$r, $f] = array_pad(explode('.', $s), 2, '0');
